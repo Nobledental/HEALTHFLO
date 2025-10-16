@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HealthFlo Solutions | Hospital & Patient Journeys Reimagined</title>
+    <meta
+      name="description"
+      content="Explore HealthFlo solutions for hospitals and patients spanning AI EMR automation, denial recovery, concierge, and cashless billing orchestration."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "MedicalBusiness",
+        "name": "HealthFlo Solutions",
+        "url": "https://www.healthflo.ai/solutions",
+        "description": "Solutions for hospitals and patients including AI revenue cycle automation, denial recovery, and concierge services.",
+        "serviceType": [
+          "Hospital Revenue Cycle Automation",
+          "Patient Concierge",
+          "Insurance Claim Management"
+        ],
+        "areaServed": ["India", "South East Asia"],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "Sales",
+          "email": "hello@healthflo.ai"
+        }
+      }
+    </script>
+  </head>
+  <body class="page-solutions" data-page="solutions">
+    <div class="preloader" role="status" aria-live="polite">
+      <div class="preloader-logo" aria-hidden="true">
+        <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="preloaderGradient" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0%" stop-color="#4c6ef5" />
+              <stop offset="100%" stop-color="#2dd4bf" />
+            </linearGradient>
+          </defs>
+          <circle cx="40" cy="40" r="32" fill="rgba(76, 110, 245, 0.08)">
+            <animate attributeName="r" values="24;32;24" dur="2.6s" repeatCount="indefinite" />
+          </circle>
+          <path
+            d="M22 46c6-8 30-8 36 0"
+            stroke="url(#preloaderGradient)"
+            stroke-width="5"
+            stroke-linecap="round"
+            fill="none"
+          >
+            <animate attributeName="stroke-dasharray" values="0 120;120 0;0 120" dur="2.6s" repeatCount="indefinite" />
+          </path>
+          <circle cx="56" cy="26" r="5" fill="url(#preloaderGradient)">
+            <animate attributeName="r" values="3;5;3" dur="2.4s" repeatCount="indefinite" />
+          </circle>
+        </svg>
+      </div>
+      <span class="visually-hidden">Loading HealthFlo solutions</span>
+    </div>
+
+    <header class="header" aria-label="Primary navigation">
+      <nav class="navbar" aria-label="Main">
+        <a href="index.html" class="logo" aria-label="HealthFlo home">
+          <span class="logo-mark" aria-hidden="true">
+            <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+              <defs>
+                <linearGradient id="logoGradient" x1="0" x2="1" y1="0" y2="1">
+                  <stop offset="0%" stop-color="#4c6ef5" />
+                  <stop offset="100%" stop-color="#2dd4bf" />
+                </linearGradient>
+              </defs>
+              <rect x="4" y="4" width="40" height="40" rx="14" fill="rgba(15, 23, 42, 0.85)" />
+              <path
+                d="M14 28c6-8 20-8 26 0"
+                stroke="url(#logoGradient)"
+                stroke-width="4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <animate attributeName="stroke-dashoffset" values="90;0;90" dur="6s" repeatCount="indefinite" />
+              </path>
+              <path
+                d="M16 20c4-4 10-4 14 0"
+                stroke="#2dd4bf"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <animateTransform attributeName="transform" type="rotate" values="0 24 24;5 24 24;0 24 24" dur="6s" repeatCount="indefinite" />
+              </path>
+              <circle cx="34" cy="14" r="4" fill="url(#logoGradient)">
+                <animate attributeName="r" values="3;4;3" dur="4.5s" repeatCount="indefinite" />
+              </circle>
+            </svg>
+          </span>
+          <span class="logo-word">HealthFlo</span>
+        </a>
+        <button class="mobile-nav-toggle" aria-expanded="false" aria-controls="primary-menu" aria-label="Toggle navigation">
+          ☰
+        </button>
+        <div class="nav-links" id="primary-menu" role="menubar">
+          <a href="index.html#features" role="menuitem">Platform</a>
+          <a href="index.html#how-it-works" role="menuitem">How it Works</a>
+          <a href="solutions.html" role="menuitem" aria-current="page">Solutions</a>
+          <a href="products.html" role="menuitem">Products</a>
+          <a href="impact.html" role="menuitem">Impact</a>
+          <a href="contact.html" role="menuitem">Contact</a>
+        </div>
+        <div class="nav-actions">
+          <button class="theme-toggle" type="button" aria-label="Switch to dark mode">🌙</button>
+          <a class="cta-primary" href="contact.html">Book a Demo</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="solutions-hero" aria-labelledby="solutions-hero-title">
+        <div class="container">
+          <div class="stack" role="presentation">
+            <span class="eyebrow">Hospital &amp; Patient Journeys</span>
+            <h1 id="solutions-hero-title" class="headline gsap-reveal">
+              Match the pace of care delivery with revenue intelligence tuned for every stakeholder.
+            </h1>
+            <p class="lead gsap-reveal">
+              Toggle between hospital and patient experiences to see how HealthFlo orchestrates authorizations, billing, and concierge
+              support in one cinematic workflow.
+            </p>
+          </div>
+          <div class="solution-tabs" role="tablist" aria-label="Solution audiences">
+            <button class="solution-tab active" type="button" role="tab" aria-selected="true" data-target="hospitals">Hospitals</button>
+            <button class="solution-tab" type="button" role="tab" aria-selected="false" data-target="patients">Patients</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="hospitals" class="solutions-section" aria-labelledby="hospital-solutions-title">
+        <div class="container">
+          <header class="section-head">
+            <h2 id="hospital-solutions-title">Command the revenue cycle like a performance</h2>
+            <p>Digitize intake, coding, billing, and denial recovery across every facility and specialty.</p>
+          </header>
+          <div class="solutions-grid">
+            <article class="solution-card gsap-stagger">
+              <div class="solution-card-inner">
+                <div class="solution-card-front">
+                  <h3>AI EMR Automation</h3>
+                  <p>Auto-scribe encounters, capture consents, and launch coding drafts from every EMR session.</p>
+                </div>
+                <div class="solution-card-back">
+                  <p>Compatible with HL7/FHIR, bridging HIS gaps with guided prompts, audit trails, and digital signatures.</p>
+                </div>
+              </div>
+            </article>
+            <article class="solution-card gsap-stagger">
+              <div class="solution-card-inner">
+                <div class="solution-card-front">
+                  <h3>RCM Command Cockpit</h3>
+                  <p>Monitor AR, SLAs, and escalations from one glass dashboard with CFO-grade clarity.</p>
+                </div>
+                <div class="solution-card-back">
+                  <p>Predict leakages, automate alerts, and orchestrate interventions with collaborative playbooks.</p>
+                </div>
+              </div>
+            </article>
+            <article class="solution-card gsap-stagger">
+              <div class="solution-card-inner">
+                <div class="solution-card-front">
+                  <h3>Cashless Billing AI</h3>
+                  <p>Trigger eligibility, compile packets, and chase payors automatically within 45 seconds.</p>
+                </div>
+                <div class="solution-card-back">
+                  <p>Digitally assemble diagnostics, narratives, and tariffs with contextual nudges and audit readiness.</p>
+                </div>
+              </div>
+            </article>
+            <article class="solution-card gsap-stagger">
+              <div class="solution-card-inner">
+                <div class="solution-card-front">
+                  <h3>Empanelment Engine</h3>
+                  <p>Track insurers, renewals, and tariffs so your revenue desk never misses an update.</p>
+                </div>
+                <div class="solution-card-back">
+                  <p>Dynamic SLA matrix ensures schemes, TPAs, and corporates stay synchronized with your network terms.</p>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="patients" class="solutions-section hidden" aria-labelledby="patient-solutions-title">
+        <div class="container">
+          <header class="section-head">
+            <h2 id="patient-solutions-title">Concierge-grade experiences that keep families informed</h2>
+            <p>Blend bedside compassion with real-time digital support to delight patients from admission to recovery.</p>
+          </header>
+          <div class="solutions-grid">
+            <article class="solution-card gsap-stagger">
+              <div class="solution-card-inner">
+                <div class="solution-card-front">
+                  <h3>Admissions Concierge</h3>
+                  <p>Multilingual onboarding, ID capture, and status tracking in a single progressive web app.</p>
+                </div>
+                <div class="solution-card-back">
+                  <p>Digital kiosks and bedside tablets sync with revenue desks for transparent updates every hour.</p>
+                </div>
+              </div>
+            </article>
+            <article class="solution-card gsap-stagger">
+              <div class="solution-card-inner">
+                <div class="solution-card-front">
+                  <h3>Zero-Interest Financing</h3>
+                  <p>Offer instant medical credit lines, partner lending, and repayment journeys without paperwork.</p>
+                </div>
+                <div class="solution-card-back">
+                  <p>Credit-scoring AI pairs with hospital policies to ensure compliance and affordability.</p>
+                </div>
+              </div>
+            </article>
+            <article class="solution-card gsap-stagger">
+              <div class="solution-card-inner">
+                <div class="solution-card-front">
+                  <h3>Claim Journey Tracker</h3>
+                  <p>Share every pre-auth milestone, document request, and approval inside WhatsApp or SMS.</p>
+                </div>
+                <div class="solution-card-back">
+                  <p>Interactive timelines empower families with clarity, reducing inbound queries by 38%.</p>
+                </div>
+              </div>
+            </article>
+            <article class="solution-card gsap-stagger">
+              <div class="solution-card-inner">
+                <div class="solution-card-front">
+                  <h3>Care Messaging Studio</h3>
+                  <p>Automate follow-ups, discharge prep, and satisfaction loops with empathetic AI personas.</p>
+                </div>
+                <div class="solution-card-back">
+                  <p>Segmented campaigns ensure compliance-ready communication in any language.</p>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="workflow-section" aria-labelledby="workflow-title">
+        <div class="container">
+          <header class="section-head">
+            <h2 id="workflow-title">One orchestration engine across intake to recovery</h2>
+            <p>Every stage choreographed with AI nudges, process automation, and human oversight when it matters most.</p>
+          </header>
+        </div>
+        <div class="workflow-track" role="list" aria-label="Solution workflow steps">
+          <article class="workflow-step" role="listitem">
+            <h3>Intake Verification</h3>
+            <span>ID capture, policy fetch, triage and coverage validation.</span>
+          </article>
+          <article class="workflow-step" role="listitem">
+            <h3>Clinical Coding</h3>
+            <span>AI-assisted ICD/PCS drafts, medical necessity checks, digital signatures.</span>
+          </article>
+          <article class="workflow-step" role="listitem">
+            <h3>Cashless Claiming</h3>
+            <span>Packet assembly, submissions, SLA radar, and escalation routing.</span>
+          </article>
+          <article class="workflow-step" role="listitem">
+            <h3>Denial Recovery</h3>
+            <span>Predictive appeals, compliance-ready narratives, auto follow-ups.</span>
+          </article>
+          <article class="workflow-step" role="listitem">
+            <h3>Patient Delight</h3>
+            <span>Concierge notifications, financing updates, transparency dashboards.</span>
+          </article>
+        </div>
+      </section>
+
+      <section class="why-grid section" aria-labelledby="why-title">
+        <div class="container">
+          <header class="section-head">
+            <h2 id="why-title">Why HealthFlo becomes your revenue operations co-pilot</h2>
+            <p>Layer automation, analytics, and compassion without re-platforming existing HIS investments.</p>
+          </header>
+          <div class="grid grid-3">
+            <article class="why-card gsap-reveal">
+              <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <defs>
+                  <linearGradient id="whyGrad1" x1="0" x2="1" y1="0" y2="1">
+                    <stop offset="0%" stop-color="#4c6ef5" />
+                    <stop offset="100%" stop-color="#2dd4bf" />
+                  </linearGradient>
+                </defs>
+                <rect x="8" y="8" width="32" height="32" rx="10" fill="rgba(76, 110, 245, 0.12)" />
+                <path d="M16 30l6-8 6 4 4-6" stroke="url(#whyGrad1)" stroke-width="3" stroke-linecap="round" fill="none" />
+              </svg>
+              <h3>Connected to your stack</h3>
+              <p>Interoperability bridges HIS, LIS, RIS, and third-party payor portals through secure APIs.</p>
+            </article>
+            <article class="why-card gsap-reveal">
+              <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <defs>
+                  <linearGradient id="whyGrad2" x1="0" x2="1" y1="0" y2="1">
+                    <stop offset="0%" stop-color="#4c6ef5" />
+                    <stop offset="100%" stop-color="#2dd4bf" />
+                  </linearGradient>
+                </defs>
+                <rect x="8" y="8" width="32" height="32" rx="10" fill="rgba(45, 212, 191, 0.12)" />
+                <path d="M18 32h12v-4h-6v-12" stroke="url(#whyGrad2)" stroke-width="3" stroke-linecap="round" fill="none" />
+              </svg>
+              <h3>Outcomes-first analytics</h3>
+              <p>Revenue leakages, denial probabilities, and collection forecasts surface in real time.</p>
+            </article>
+            <article class="why-card gsap-reveal">
+              <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <defs>
+                  <linearGradient id="whyGrad3" x1="0" x2="1" y1="0" y2="1">
+                    <stop offset="0%" stop-color="#4c6ef5" />
+                    <stop offset="100%" stop-color="#2dd4bf" />
+                  </linearGradient>
+                </defs>
+                <rect x="8" y="8" width="32" height="32" rx="10" fill="rgba(30, 41, 59, 0.08)" />
+                <path d="M24 16v16M16 24h16" stroke="url(#whyGrad3)" stroke-width="3" stroke-linecap="round" />
+              </svg>
+              <h3>People + AI harmony</h3>
+              <p>Blend human expertise with automation guardrails so every case receives empathetic interventions.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="cta-band" aria-labelledby="solutions-cta">
+        <h2 id="solutions-cta">Ready to orchestrate revenue and patient delight together?</h2>
+        <a class="cta-primary" href="contact.html">Book a Demo</a>
+      </section>
+    </main>
+
+    <footer class="footer" aria-label="Footer">
+      <div class="footer-wave" aria-hidden="true">
+        <svg viewBox="0 0 720 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="footerGradient" x1="0" x2="1" y1="0" y2="0.8">
+              <stop offset="0%" stop-color="#7AA3FF" />
+              <stop offset="100%" stop-color="#22D3EE" />
+            </linearGradient>
+          </defs>
+          <path d="M0 48C120 20 240 76 360 48C480 20 600 76 720 48V160H0Z" fill="url(#footerGradient)" opacity="0.32"></path>
+        </svg>
+      </div>
+      <div class="footer-grid">
+        <div>
+          <h3>HealthFlo</h3>
+          <p class="text-muted">AI-first platform that fuses operations, finance, and patient delight.</p>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <ul>
+            <li><a href="about.html">About</a></li>
+            <li><a href="impact.html">Impact</a></li>
+            <li><a href="investors.html">Investors</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Solutions</h4>
+          <ul>
+            <li><a href="#hospitals">For Hospitals</a></li>
+            <li><a href="#patients">For Patients</a></li>
+            <li><a href="products.html">Product Modules</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Connect</h4>
+          <p class="text-muted">hello@healthflo.ai</p>
+          <div class="social-links" role="list">
+            <a href="#" aria-label="Follow on LinkedIn">in</a>
+            <a href="#" aria-label="Follow on Twitter">𝕏</a>
+            <a href="#" aria-label="Follow on YouTube">▶</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">© <span id="year">2024</span> HealthFlo. All rights reserved.</div>
+    </footer>
+
+    <div class="floating-actions" aria-label="Quick actions">
+      <a href="https://wa.me/919999999999" class="whatsapp" aria-label="Chat on WhatsApp">WhatsApp</a>
+      <a href="contact.html" aria-label="Book a HealthFlo demo">Book Demo</a>
+    </div>
+
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+    <script src="assets/js/animations.js" defer></script>
+  </body>
+</html>
