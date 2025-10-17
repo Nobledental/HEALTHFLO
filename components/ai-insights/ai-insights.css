@@ -1,0 +1,236 @@
+/* ============================================================
+📊 HealthFlo AI Insights Drawer Stylesheet
+Version: 1.0 · Author: GPT-5 · 2025
+Purpose: Hybrid tech-luxury visual system with cinematic motion-ready classes
+============================================================ */
+
+/* ---------- Root Variables ---------- */
+:root {
+  --hf-bg: #ffffff;
+  --hf-text: #0b172a;
+  --hf-muted: #5a6b83;
+  --hf-border: #e2e8f0;
+  --hf-surface: #f9fafb;
+  --hf-accent-1: #2dd4bf; /* Aqua Mint */
+  --hf-accent-2: #4c6ef5; /* Indigo */
+  --hf-accent-3: #2e7d6c; /* Emerald */
+  --hf-positive: #16a34a;
+  --hf-negative: #dc2626;
+  --hf-neutral: #64748b;
+  --hf-radius: 16px;
+  --hf-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --hf-transition: 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  --hf-drawer-width: 440px;
+}
+
+/* ---------- Drawer Trigger Button ---------- */
+.hf-ai-insights__trigger {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  padding: 0.9rem 1.8rem;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #fff;
+  background: linear-gradient(135deg, var(--hf-accent-2), var(--hf-accent-1));
+  border: none;
+  border-radius: 50px;
+  box-shadow: 0 8px 20px rgba(76, 110, 245, 0.3);
+  cursor: pointer;
+  z-index: 1000;
+  transition: var(--hf-transition);
+}
+.hf-ai-insights__trigger:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(76, 110, 245, 0.4);
+}
+
+/* ---------- Drawer Panel ---------- */
+.hf-ai-insights__drawer {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: var(--hf-drawer-width);
+  height: 100vh;
+  background: var(--hf-bg);
+  box-shadow: -2px 0 28px rgba(0, 0, 0, 0.08);
+  border-left: 1px solid var(--hf-border);
+  overflow-y: auto;
+  z-index: 1500;
+  transition: right var(--hf-transition);
+  display: flex;
+  flex-direction: column;
+}
+.hf-ai-insights.open .hf-ai-insights__drawer {
+  right: 0;
+}
+
+/* ---------- Header ---------- */
+.hf-ai-insights__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.6rem 2rem;
+  border-bottom: 1px solid var(--hf-border);
+  background: var(--hf-surface);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.hf-ai-insights__header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--hf-text);
+}
+.hf-ai-insights__close {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: var(--hf-muted);
+  transition: color 0.2s;
+}
+.hf-ai-insights__close:hover {
+  color: var(--hf-text);
+}
+
+/* ---------- Tabs ---------- */
+.hf-ai-insights__tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-bottom: 1px solid var(--hf-border);
+  background: var(--hf-bg);
+}
+.hf-tab {
+  padding: 1rem;
+  text-align: center;
+  background: transparent;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  color: var(--hf-muted);
+}
+.hf-tab.active {
+  color: var(--hf-accent-2);
+  border-bottom: 3px solid var(--hf-accent-2);
+}
+.hf-tab:hover {
+  background: var(--hf-surface);
+}
+
+/* ---------- Panels ---------- */
+.hf-ai-insights__panels {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.hf-tabpanel[hidden] {
+  display: none !important;
+}
+
+/* ---------- Insight Cards ---------- */
+.hf-insight-card {
+  background: var(--hf-surface);
+  border: 1px solid var(--hf-border);
+  border-radius: var(--hf-radius);
+  box-shadow: var(--hf-shadow);
+  padding: 1.6rem;
+  transition: transform var(--hf-transition), box-shadow var(--hf-transition);
+  position: relative;
+}
+.hf-insight-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.12);
+}
+.hf-insight-card header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem;
+}
+.hf-insight-card h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--hf-text);
+}
+.hf-insight-card p {
+  font-size: 0.95rem;
+  color: var(--hf-muted);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+/* ---------- KPI Change Tags ---------- */
+.hf-insight-change {
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 0.3rem 0.7rem;
+  border-radius: 50px;
+}
+.hf-insight-change.positive {
+  background: rgba(22, 163, 74, 0.12);
+  color: var(--hf-positive);
+}
+.hf-insight-change.negative {
+  background: rgba(220, 38, 38, 0.12);
+  color: var(--hf-negative);
+}
+.hf-insight-change.neutral {
+  background: rgba(100, 116, 139, 0.12);
+  color: var(--hf-neutral);
+}
+
+/* ---------- Actions List ---------- */
+.hf-actions {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.hf-actions li {
+  position: relative;
+  padding-left: 1.6rem;
+  font-size: 0.92rem;
+  color: var(--hf-text);
+}
+.hf-actions li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--hf-accent-3);
+  font-weight: 700;
+}
+
+/* ---------- Scrollbar ---------- */
+.hf-ai-insights__drawer::-webkit-scrollbar {
+  width: 8px;
+}
+.hf-ai-insights__drawer::-webkit-scrollbar-thumb {
+  background: var(--hf-accent-2);
+  border-radius: 4px;
+}
+.hf-ai-insights__drawer::-webkit-scrollbar-track {
+  background: var(--hf-surface);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+  :root {
+    --hf-drawer-width: 100%;
+  }
+  .hf-ai-insights__trigger {
+    bottom: 1.2rem;
+    right: 1.2rem;
+  }
+  .hf-ai-insights__drawer {
+    width: 100%;
+  }
+  .hf-ai-insights__tabs {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
