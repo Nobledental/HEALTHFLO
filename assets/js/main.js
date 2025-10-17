@@ -1,332 +1,504 @@
-/* ==========================================================================
-   HealthFlo – Main Entry Script (Production)
-   Purpose: Bootstraps UI, theming, navigation, accessibility helpers,
-   config flags, and hands off to feature modules (animations, dashboard,
-   particles, AI insights).
-   ========================================================================== */
+/**
+ * HealthFlo Hospitals – Ultra-Dynamic Cinematic Engine (Part 1A)
+ * Requires:
+ *   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+ *   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+ *   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollSmoother.min.js"></script>
+ *   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/SplitText.min.js"></script>
+ *   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js"></script>
+ *   <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/7.4.0/pixi.min.js"></script>
+ */
 
-(() => {
-  'use strict';
-
-  /* ---------------------------------------
-   * 0) GLOBAL CONFIG (editable & persisted)
-   * ------------------------------------- */
-  const DEFAULT_CONFIG = {
-    // Core UX
-    theme: 'auto',                 // 'light' | 'dark' | 'auto'
-    animationsEnabled: true,       // user can opt-out; respected across modules
-    animationQuality: 'medium',    // 'low' | 'medium' | 'high'
-    narrationSpeed: 7,             // seconds between AI summary refreshes
-    kpiAutoUpdateMs: 7000,         // live KPI update cadence (dashboard.js)
-    // Feature toggles
-    particlesEnabled: true,        // particles.js
-    insightsAutoOpen: true,        // auto-open AI insights on first scroll
-  };
-
-  const STORAGE_KEY = 'hf-config-v1';
-
-  const loadConfig = () => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return { ...DEFAULT_CONFIG };
-      const saved = JSON.parse(raw);
-      return { ...DEFAULT_CONFIG, ...saved };
-    } catch {
-      return { ...DEFAULT_CONFIG };
-    }
-  };
-
-  const saveConfig = (cfg) => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(cfg));
-      window.dispatchEvent(new CustomEvent('hf:configChanged', { detail: cfg }));
-    } catch {/* ignore quota */}
-  };
-
-  const HF = (window.HealthFlo = window.HealthFlo || {});
-  HF.config = loadConfig();
-  HF.updateConfig = (patch) => {
-    HF.config = { ...HF.config, ...patch };
-    saveConfig(HF.config);
-  };
-
-  /* ---------------------------------------
-   * 1) UTILITIES
-   * ------------------------------------- */
-  const $ = (sel, scope = document) => scope.querySelector(sel);
-  const $$ = (sel, scope = document) => Array.from(scope.querySelectorAll(sel));
-  const on = (el, evt, fn, opts) => el && el.addEventListener(evt, fn, opts);
-  const debounce = (fn, ms = 200) => {
-    let t; return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
-  };
-
-  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  /* ---------------------------------------
-   * 2) PRELOADER
-   * ------------------------------------- */
-  const initPreloader = () => {
-    const pre = $('.preloader');
-    if (!pre) return;
+class HealthFloCore {
+  static initPreloader() {
+    const preloader = document.querySelector('.preloader');
+    if (!preloader) return;
     window.addEventListener('load', () => {
-      requestAnimationFrame(() => {
-        pre.classList.add('hidden');
-        setTimeout(() => pre.remove(), 600);
-      });
+      preloader.classList.add('hidden');
+      setTimeout(() => preloader.remove(), 800);
     });
-  };
-
-  /* ---------------------------------------
-   * 3) THEME TOGGLE
-   * - Respects OS preference when 'auto'
-   * ------------------------------------- */
-  const applyTheme = (mode) => {
-    const root = document.documentElement;
-    if (mode === 'auto') {
-      const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      root.setAttribute('data-theme', dark ? 'dark' : 'light');
-    } else {
-      root.setAttribute('data-theme', mode);
-    }
-  };
-
-  const initTheme = () => {
-    applyTheme(HF.config.theme);
-    const btn = $('.theme-toggle');
-    if (!btn) return;
-
-    const nextMode = (cur) => (cur === 'light' ? 'dark' : cur === 'dark' ? 'auto' : 'light');
-
-    const syncLabel = () => {
-      const cur = document.documentElement.getAttribute('data-theme');
-      btn.setAttribute('aria-label', `Switch theme (current: ${cur})`);
-      btn.textContent = cur === 'dark' ? '🌙' : cur === 'light' ? '☀️' : '🌓';
-    };
-
-    on(btn, 'click', () => {
-      HF.updateConfig({ theme: nextMode(HF.config.theme) });
-      applyTheme(HF.config.theme);
-      syncLabel();
-    });
-
-    // Keep in sync if OS changes and user is in 'auto'
-    const media = window.matchMedia('(prefers-color-scheme: dark)');
-    on(media, 'change', () => {
-      if (HF.config.theme === 'auto') applyTheme('auto');
-      syncLabel();
-    });
-
-    syncLabel();
-  };
-
-  /* ---------------------------------------
-   * 4) NAVIGATION (mobile + sticky header)
-   * ------------------------------------- */
-  const initHeader = () => {
-    const header = $('.header');
-    const mobileToggle = $('.mobile-nav-toggle');
-    const navLinks = $('.nav-links');
-
-    // Sticky shadow
-    const onScroll = () => {
-      if (window.scrollY > 10) header?.classList.add('scrolled');
-      else header?.classList.remove('scrolled');
-    };
-    on(window, 'scroll', onScroll, { passive: true }); onScroll();
-
-    // Mobile menu
-    if (mobileToggle && navLinks) {
-      on(mobileToggle, 'click', () => {
-        navLinks.classList.toggle('open');
-        const expanded = mobileToggle.getAttribute('aria-expanded') === 'true';
-        mobileToggle.setAttribute('aria-expanded', String(!expanded));
-      });
-
-      // Close on link click
-      $$('.nav-links a').forEach((a) => on(a, 'click', () => navLinks.classList.remove('open')));
-    }
-  };
-
-  /* ---------------------------------------
-   * 5) SMOOTH ANCHORS (no jump)
-   * ------------------------------------- */
-  const initSmoothAnchors = () => {
-    $$('a[href^="#"]').forEach((a) => {
-      on(a, 'click', (e) => {
-        const id = a.getAttribute('href').slice(1);
-        const target = document.getElementById(id);
-        if (!target) return;
-        e.preventDefault();
-        target.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth', block: 'start' });
-      });
-    });
-  };
-
-  /* ---------------------------------------
-   * 6) YEAR SYNC
-   * ------------------------------------- */
-  const syncYear = () => {
-    const y = $('#year'); if (y) y.textContent = String(new Date().getFullYear());
-  };
-
-  /* ---------------------------------------
-   * 7) GEO MARQUEE (duplicate children once)
-   * ------------------------------------- */
-  const initGeoMarquee = () => {
-    const track = $('.geo-marquee__track');
-    if (!track || track.dataset.duplicated) return;
-    const items = Array.from(track.children);
-    const frag = document.createDocumentFragment();
-    items.forEach((n) => frag.appendChild(n.cloneNode(true)));
-    track.appendChild(frag);
-    track.dataset.duplicated = 'true';
-  };
-
-  /* ---------------------------------------
-   * 8) METRIC HOVER GLOW (pointer-reactive)
-   * ------------------------------------- */
-  const initMetricPointerGlow = () => {
-    $$('.metric').forEach((card) => {
-      on(card, 'pointermove', (ev) => {
-        const rect = card.getBoundingClientRect();
-        const x = ((ev.clientX - rect.left) / rect.width) * 100;
-        const y = ((ev.clientY - rect.top) / rect.height) * 100;
-        card.style.setProperty('--mx', `${x}%`);
-        card.style.setProperty('--my', `${y}%`);
-      });
-      on(card, 'pointerenter', () => card.classList.add('add-glow'));
-      on(card, 'pointerleave', () => card.classList.remove('add-glow'));
-    });
-  };
-
-  /* ---------------------------------------
-   * 9) ACCESSIBILITY: mark current nav link
-   * ------------------------------------- */
-  const markCurrentNav = () => {
-    const page = document.body.dataset.page;
-    $$('.nav-links a').forEach((a) => {
-      const hash = a.getAttribute('href') || '';
-      const matches = (hash.startsWith('#') && document.querySelector(hash)) ||
-                      (page && a.dataset?.page === page);
-      if (matches) a.setAttribute('aria-current', 'page');
-      else a.removeAttribute('aria-current');
-    });
-  };
-
-  /* ---------------------------------------
-   * 10) USER CONTROLS VIA URL (optional)
-   * - ?disableAnimations=1
-   * - ?animationQuality=high|medium|low
-   * - ?particles=0|1
-   * - ?insightsAutoOpen=0|1
-   * ------------------------------------- */
-  const initUrlOverrides = () => {
-    const p = new URLSearchParams(location.search);
-    if (p.has('disableAnimations')) HF.updateConfig({ animationsEnabled: p.get('disableAnimations') !== '1' ? false : false });
-    if (p.has('animationQuality'))  HF.updateConfig({ animationQuality: p.get('animationQuality') });
-    if (p.has('particles'))         HF.updateConfig({ particlesEnabled: p.get('particles') === '1' });
-    if (p.has('insightsAutoOpen'))  HF.updateConfig({ insightsAutoOpen: p.get('insightsAutoOpen') === '1' });
-    if (p.has('narrationSpeed'))    HF.updateConfig({ narrationSpeed: Math.max(3, Number(p.get('narrationSpeed')) || DEFAULT_CONFIG.narrationSpeed) });
-  };
-
-  /* ---------------------------------------
-   * 11) EXPOSE CONFIG TO OTHER MODULES
-   * ------------------------------------- */
-  const bootstrapModules = () => {
-    // Animations (GSAP) – loaded via assets/js/animations.js
-    if (window.HealthFloAnimations && HF.config.animationsEnabled && !prefersReduced) {
-      try { window.HealthFloAnimations.init(); } catch {}
-    }
-
-    // Particles
-    if (window.HealthFloParticles && HF.config.particlesEnabled && !prefersReduced) {
-      try { window.HealthFloParticles.init({ quality: HF.config.animationQuality }); } catch {}
-    }
-
-    // Dashboard (sparklines + live updates)
-    if (window.HealthFloDashboard) {
-      try {
-        window.HealthFloDashboard.init({
-          autoUpdateMs: HF.config.kpiAutoUpdateMs,
-          quality: HF.config.animationQuality
-        });
-      } catch {}
-    }
-
-    // AI Insights (narrative + executive summary)
-    if (window.HealthFloInsights) {
-      try {
-        window.HealthFloInsights.init({
-          autoOpenOnScroll: HF.config.insightsAutoOpen,
-          narrationSpeed: HF.config.narrationSpeed,    // seconds
-          animations: HF.config.animationsEnabled && !prefersReduced
-        });
-      } catch {}
-    }
-  };
-
-  /* ---------------------------------------
-   * 12) SETTINGS PANEL (hidden hook)
-   * - For future: custom UI could bind to these.
-   * ------------------------------------- */
-  const initHiddenKeyboardToggles = () => {
-    // Alt+Shift+A → toggle animations on/off
-    on(document, 'keydown', (e) => {
-      if (e.altKey && e.shiftKey && e.code === 'KeyA') {
-        HF.updateConfig({ animationsEnabled: !HF.config.animationsEnabled });
-        alert(`Animations ${HF.config.animationsEnabled ? 'enabled' : 'disabled'}.`);
-        // Let animations module respond to configChanged event
-      }
-    });
-  };
-
-  /* ---------------------------------------
-   * 13) FALLBACK REVEAL if GSAP missing
-   * ------------------------------------- */
-  const initRevealFallback = () => {
-    const els = $$('.gsap-reveal');
-    if (!els.length) return;
-    if (window.gsap) return; // animations.js will handle
-
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((en) => {
-        if (!en.isIntersecting) return;
-        en.target.classList.add('is-visible');
-        io.unobserve(en.target);
-      });
-    }, { threshold: 0.2 });
-
-    els.forEach((el) => io.observe(el));
-  };
-
-  /* ---------------------------------------
-   * 14) BOOT
-   * ------------------------------------- */
-  const init = () => {
-    initUrlOverrides();
-    initPreloader();
-    initTheme();
-    initHeader();
-    initSmoothAnchors();
-    initGeoMarquee();
-    initMetricPointerGlow();
-    markCurrentNav();
-    syncYear();
-    initHiddenKeyboardToggles();
-    initRevealFallback();
-    bootstrapModules();
-  };
-
-  // DOM Ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init, { once: true });
-  } else {
-    init();
   }
 
-  // Resize helpers (debounced)
-  window.addEventListener('resize', debounce(() => {
-    window.dispatchEvent(new CustomEvent('hf:resize'));
-  }, 150));
+  static initTheme() {
+    const toggle = document.querySelector('.theme-toggle');
+    if (!toggle) return;
+    const setTheme = (theme) => {
+      document.documentElement.dataset.theme = theme;
+      localStorage.setItem('hf-theme', theme);
+      toggle.setAttribute('aria-label', `Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`);
+    };
+    const saved = localStorage.getItem('hf-theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    setTheme(saved || (prefersDark ? 'dark' : 'light'));
+    toggle.addEventListener('click', () => {
+      setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+    });
+  }
 
-})();
+  static initSmoothScroll() {
+    if (typeof ScrollSmoother === 'undefined') return;
+    ScrollSmoother.create({
+      wrapper: '#smooth-wrapper',
+      content: '#smooth-content',
+      smooth: 1.3,
+      effects: true,
+    });
+  }
+
+  static initNav() {
+    const header = document.querySelector('.header');
+    const toggle = document.querySelector('.mobile-nav-toggle');
+    const navLinks = document.querySelector('.nav-links');
+
+    if (header) {
+      window.addEventListener('scroll', () => {
+        header.classList.toggle('scrolled', window.scrollY > 20);
+      });
+    }
+
+    if (toggle && navLinks) {
+      toggle.addEventListener('click', () => {
+        navLinks.classList.toggle('open');
+        toggle.setAttribute(
+          'aria-expanded',
+          navLinks.classList.contains('open').toString()
+        );
+      });
+      navLinks.querySelectorAll('a').forEach((a) =>
+        a.addEventListener('click', () => navLinks.classList.remove('open'))
+      );
+    }
+  }
+}
+
+/* =========================
+   HERO ANIMATION MODULE
+========================= */
+class HeroAnimation {
+  static init() {
+    if (typeof gsap === 'undefined' || typeof SplitText === 'undefined') return;
+
+    const headline = document.querySelector('.hero-content h1');
+    if (headline) {
+      const split = new SplitText(headline, { type: 'chars' });
+      gsap.from(split.chars, {
+        opacity: 0,
+        y: 50,
+        stagger: 0.03,
+        duration: 1.2,
+        ease: 'power3.out',
+      });
+    }
+
+    gsap.from('.hero-content .subtext', {
+      opacity: 0,
+      y: 30,
+      duration: 1,
+      delay: 0.4,
+      ease: 'power2.out',
+    });
+
+    gsap.from('.cta-group a', {
+      opacity: 0,
+      y: 25,
+      stagger: 0.1,
+      duration: 0.8,
+      delay: 0.6,
+      ease: 'back.out(1.7)',
+    });
+
+    // Parallax motion on scroll
+    gsap.to('.hero-visual', {
+      yPercent: -8,
+      scrollTrigger: {
+        trigger: '.hero',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: true,
+      },
+    });
+  }
+}
+
+/* =========================
+   PIXI.JS BACKGROUND ENGINE
+========================= */
+class ParticleScene {
+  constructor(canvasSelector) {
+    this.app = null;
+    this.particles = [];
+    this.container = null;
+    this.selector = canvasSelector;
+  }
+
+  init() {
+    const canvas = document.querySelector(this.selector);
+    if (!canvas || typeof PIXI === 'undefined') return;
+
+    this.app = new PIXI.Application({
+      resizeTo: window,
+      backgroundAlpha: 0,
+      antialias: true,
+      view: canvas,
+    });
+
+    this.container = new PIXI.Container();
+    this.app.stage.addChild(this.container);
+
+    // Create ~120 micro-particles
+    for (let i = 0; i < 120; i++) {
+      const g = new PIXI.Graphics();
+      const radius = Math.random() * 3 + 1.2;
+      g.beginFill(0x4c6ef5, Math.random() * 0.45 + 0.2);
+      g.drawCircle(0, 0, radius);
+      g.endFill();
+
+      g.x = Math.random() * window.innerWidth;
+      g.y = Math.random() * window.innerHeight;
+      g.vx = (Math.random() - 0.5) * 0.4;
+      g.vy = (Math.random() - 0.5) * 0.4;
+
+      this.container.addChild(g);
+      this.particles.push(g);
+    }
+
+    this.app.ticker.add(this.animate.bind(this));
+    window.addEventListener('resize', () => this.onResize());
+  }
+
+  animate() {
+    for (let p of this.particles) {
+      p.x += p.vx;
+      p.y += p.vy;
+
+      if (p.x < 0) p.x = window.innerWidth;
+      if (p.x > window.innerWidth) p.x = 0;
+      if (p.y < 0) p.y = window.innerHeight;
+      if (p.y > window.innerHeight) p.y = 0;
+    }
+  }
+
+  onResize() {
+    this.particles.forEach((p) => {
+      if (p.x > window.innerWidth) p.x = window.innerWidth * Math.random();
+      if (p.y > window.innerHeight) p.y = window.innerHeight * Math.random();
+    });
+  }
+}
+
+/* =========================
+   INITIALIZATION
+========================= */
+document.addEventListener('DOMContentLoaded', () => {
+  HealthFloCore.initPreloader();
+  HealthFloCore.initTheme();
+  HealthFloCore.initSmoothScroll();
+  HealthFloCore.initNav();
+
+  HeroAnimation.init();
+
+  const particleScene = new ParticleScene('#hero-particle-canvas');
+  particleScene.init();
+});
+
+/* ================================================================
+   📊 HealthFloDashboard v1.0 — Part 3-A-1A
+   Config-driven, accessible, API-ready KPI Dashboard Module
+   Author: HealthFlo Engineering
+   ================================================================= */
+
+/**
+ * HealthFloDashboard
+ * - Handles rendering of KPI cards, updating values, formatting, and accessibility
+ * - Works in Demo Mode (simulated data) or Live Mode (ready for API integration)
+ * - Designed for hospitals and patients: 10+6 grouped KPIs with sparklines
+ */
+class HealthFloDashboard {
+  constructor(containerId, options = {}) {
+    this.container = document.getElementById(containerId);
+    if (!this.container) throw new Error("Dashboard container not found.");
+
+    // === Config ===
+    this.options = {
+      refreshInterval: options.refreshInterval || 8000,
+      mode: options.mode || "demo", // 'demo' or 'live'
+      apiEndpoint: options.apiEndpoint || null,
+    };
+
+    // === KPI Configuration ===
+    // Each KPI card is defined with key metadata: id, label, type, unit, format
+    this.kpis = [
+      // 📊 HOSPITAL KPIs
+      { id: "hospitals", label: "Hospitals Automated", type: "count", unit: "", category: "hospital" },
+      { id: "claims", label: "Claims Processed", type: "count", unit: "", category: "hospital" },
+      { id: "approvalTime", label: "Avg. Pre-Auth Time", type: "duration", unit: "s", category: "hospital" },
+      { id: "recoveryRate", label: "Claim Recovery Rate", type: "percentage", unit: "%", category: "hospital" },
+      { id: "denialsPrevented", label: "Denials Prevented", type: "count", unit: "", category: "hospital" },
+      { id: "agingReduction", label: "A/R Aging Reduction", type: "percentage", unit: "%", category: "hospital" },
+      { id: "avgAppealTime", label: "Avg. Appeal Resolution", type: "duration", unit: "days", category: "hospital" },
+      { id: "autoPacket", label: "Packets Auto-Generated", type: "count", unit: "", category: "hospital" },
+      { id: "payorCoverage", label: "Payor Coverage", type: "percentage", unit: "%", category: "hospital" },
+      { id: "roi", label: "RCM ROI Growth", type: "percentage", unit: "%", category: "hospital" },
+
+      // 🧑‍⚕️ PATIENT KPIs
+      { id: "patientsAssisted", label: "Patients Assisted", type: "count", unit: "", category: "patient" },
+      { id: "satisfaction", label: "Patient Satisfaction", type: "percentage", unit: "%", category: "patient" },
+      { id: "chatResponse", label: "Avg. Concierge Response", type: "duration", unit: "min", category: "patient" },
+      { id: "financingUsed", label: "Zero-Interest Plans", type: "count", unit: "", category: "patient" },
+      { id: "multilingualOnboarding", label: "Multilingual Onboardings", type: "count", unit: "", category: "patient" },
+      { id: "claimTrackerUsage", label: "Claim Tracker Engagement", type: "percentage", unit: "%", category: "patient" },
+    ];
+
+    // Internal state
+    this.data = {};
+    this.intervals = [];
+
+    // Initialize dashboard
+    this.renderDashboard();
+    this.loadData();
+    this.startAutoUpdate();
+  }
+
+  /* ------------------------------------------------------------------
+   🧠 Smart Formatters
+   ------------------------------------------------------------------ */
+  formatValue(value, type, unit) {
+    if (value === null || value === undefined || isNaN(value)) return "--";
+
+    switch (type) {
+      case "currency":
+        return `₹${value.toLocaleString("en-IN")}`;
+      case "percentage":
+        return `${value.toFixed(1)}${unit}`;
+      case "duration":
+        return `${value}${unit}`;
+      case "count":
+      default:
+        return value.toLocaleString("en-IN");
+    }
+  }
+
+  formatDelta(delta) {
+    if (delta === 0) return `<span class="delta neutral">↔ 0%</span>`;
+    const sign = delta > 0 ? "▲" : "▼";
+    const cls = delta > 0 ? "positive" : "negative";
+    return `<span class="delta ${cls}">${sign} ${Math.abs(delta).toFixed(1)}%</span>`;
+  }
+
+  /* ------------------------------------------------------------------
+   🏗️ DOM Builder
+   ------------------------------------------------------------------ */
+  renderDashboard() {
+    this.container.innerHTML = `
+      <div class="hf-dashboard__header">
+        <h2 class="hf-dashboard__title">HealthFlo Revenue Intelligence</h2>
+        <div class="hf-dashboard__controls">
+          <button id="modeToggle" aria-pressed="${this.options.mode === "demo"}" aria-label="Toggle Demo Mode">
+            ${this.options.mode === "demo" ? "Demo Mode" : "Live Mode"}
+          </button>
+          <label for="speedControl">⏱️ Speed:</label>
+          <input type="range" id="speedControl" min="4000" max="20000" step="1000" value="${this.options.refreshInterval}">
+        </div>
+      </div>
+
+      <div class="hf-dashboard__groups">
+        <section class="hf-dashboard__group" aria-labelledby="kpi-hospital">
+          <h3 id="kpi-hospital">🏥 Hospital Performance</h3>
+          <div class="hf-dashboard__grid" id="hospital-kpis"></div>
+        </section>
+
+        <section class="hf-dashboard__group" aria-labelledby="kpi-patient">
+          <h3 id="kpi-patient">👨‍👩‍👧‍👦 Patient Experience</h3>
+          <div class="hf-dashboard__grid" id="patient-kpis"></div>
+        </section>
+      </div>
+
+      <div class="hf-dashboard__timestamp" role="status" aria-live="polite"></div>
+    `;
+
+    // Render cards
+    this.kpis.forEach((kpi) => {
+      const card = document.createElement("div");
+      card.className = "hf-kpi-card";
+      card.setAttribute("data-id", kpi.id);
+      card.setAttribute("role", "group");
+      card.setAttribute("aria-label", `${kpi.label} KPI`);
+
+      card.innerHTML = `
+        <div class="hf-kpi-card__label">${kpi.label}</div>
+        <div class="hf-kpi-card__value" id="${kpi.id}-value">--</div>
+        <div class="hf-kpi-card__delta" id="${kpi.id}-delta"></div>
+        <canvas class="hf-kpi-sparkline" id="${kpi.id}-spark"></canvas>
+      `;
+
+      const targetGrid = kpi.category === "hospital" ? "#hospital-kpis" : "#patient-kpis";
+      this.container.querySelector(targetGrid).appendChild(card);
+    });
+
+    // Attach listeners
+    document.getElementById("modeToggle").addEventListener("click", () => this.toggleMode());
+    document.getElementById("speedControl").addEventListener("input", (e) => this.updateSpeed(e.target.value));
+  }
+
+  /* ------------------------------------------------------------------
+   🔄 Demo Data Generator / API Loader
+   ------------------------------------------------------------------ */
+  async loadData() {
+    if (this.options.mode === "live" && this.options.apiEndpoint) {
+      try {
+        const res = await fetch(this.options.apiEndpoint);
+        this.data = await res.json();
+      } catch (e) {
+        console.warn("Live API failed, falling back to demo data.");
+        this.data = this.generateDemoData();
+      }
+    } else {
+      this.data = this.generateDemoData();
+    }
+    this.updateDashboard();
+  }
+
+  generateDemoData() {
+    const data = {};
+    this.kpis.forEach((kpi) => {
+      const base = Math.random() * 1000;
+      const fluctuation = (Math.random() - 0.5) * 0.15;
+      const delta = fluctuation * 100;
+
+      data[kpi.id] = {
+        value: Math.round(base * (1 + fluctuation)),
+        delta: delta,
+        history: Array.from({ length: 12 }, () => Math.round(base * (1 + (Math.random() - 0.5) * 0.2))),
+      };
+    });
+    return data;
+  }
+}
+
+/* ================================================================
+   📊 HealthFloDashboard v1.0 — Part 3-A-1B
+   Live auto-updates, sparklines, timestamp refresh system
+   ================================================================= */
+
+HealthFloDashboard.prototype.updateDashboard = function () {
+  const now = new Date().toLocaleTimeString();
+  const timestamp = this.container.querySelector(".hf-dashboard__timestamp");
+  timestamp.textContent = `📡 Last updated: ${now}`;
+
+  this.kpis.forEach((kpi) => {
+    const { value, delta } = this.data[kpi.id];
+    const valueEl = document.getElementById(`${kpi.id}-value`);
+    const deltaEl = document.getElementById(`${kpi.id}-delta`);
+
+    // Animated number transitions
+    if (typeof gsap !== "undefined") {
+      gsap.to(valueEl, {
+        duration: 1.2,
+        textContent: this.formatValue(value, kpi.type, kpi.unit),
+        snap: { textContent: 1 },
+        ease: "power2.out",
+      });
+    } else {
+      valueEl.textContent = this.formatValue(value, kpi.type, kpi.unit);
+    }
+
+    deltaEl.innerHTML = this.formatDelta(delta);
+
+    // Draw sparkline
+    this.renderSparkline(`${kpi.id}-spark`, this.data[kpi.id].history);
+  });
+};
+
+/* ------------------------------------------------------------------
+ 📈 Sparkline Generator (Canvas)
+------------------------------------------------------------------ */
+HealthFloDashboard.prototype.renderSparkline = function (canvasId, data) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+  const w = (canvas.width = 120);
+  const h = (canvas.height = 40);
+
+  const max = Math.max(...data);
+  const min = Math.min(...data);
+  const scaleX = w / (data.length - 1);
+  const scaleY = (h - 10) / (max - min || 1);
+
+  ctx.clearRect(0, 0, w, h);
+  ctx.beginPath();
+  ctx.moveTo(0, h - (data[0] - min) * scaleY);
+
+  for (let i = 1; i < data.length; i++) {
+    const x = i * scaleX;
+    const y = h - (data[i] - min) * scaleY;
+    ctx.lineTo(x, y);
+  }
+
+  ctx.strokeStyle = "#4c6ef5";
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Fill gradient under line
+  const gradient = ctx.createLinearGradient(0, 0, 0, h);
+  gradient.addColorStop(0, "rgba(76, 110, 245, 0.3)");
+  gradient.addColorStop(1, "rgba(76, 110, 245, 0)");
+  ctx.lineTo(w, h);
+  ctx.lineTo(0, h);
+  ctx.closePath();
+  ctx.fillStyle = gradient;
+  ctx.fill();
+};
+
+/* ------------------------------------------------------------------
+ 🔁 Auto Refresh + Interval Handling
+------------------------------------------------------------------ */
+HealthFloDashboard.prototype.startAutoUpdate = function () {
+  this.stopAutoUpdate();
+  const interval = setInterval(() => this.loadData(), this.options.refreshInterval);
+  this.intervals.push(interval);
+};
+
+HealthFloDashboard.prototype.stopAutoUpdate = function () {
+  this.intervals.forEach(clearInterval);
+  this.intervals = [];
+};
+
+/* ------------------------------------------------------------------
+ 🔀 Mode & Speed Controls
+------------------------------------------------------------------ */
+HealthFloDashboard.prototype.toggleMode = function () {
+  this.options.mode = this.options.mode === "demo" ? "live" : "demo";
+  document.getElementById("modeToggle").textContent =
+    this.options.mode === "demo" ? "Demo Mode" : "Live Mode";
+  this.loadData();
+};
+
+HealthFloDashboard.prototype.updateSpeed = function (newSpeed) {
+  this.options.refreshInterval = parseInt(newSpeed, 10);
+  this.startAutoUpdate();
+};
+
+/* ------------------------------------------------------------------
+ 🧪 Initialization on DOM ready
+------------------------------------------------------------------ */
+document.addEventListener("DOMContentLoaded", () => {
+  // Initialize the dashboard in demo mode by default
+  const dashboard = new HealthFloDashboard("healthflo-dashboard", {
+    mode: "demo",
+    refreshInterval: 8000,
+  });
+
+  // Smooth scroll into view when metrics section is reached
+  if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
+    gsap.from("#healthflo-dashboard", {
+      opacity: 0,
+      y: 40,
+      duration: 1.2,
+      scrollTrigger: {
+        trigger: "#healthflo-dashboard",
+        start: "top 80%",
+      },
+    });
+  }
+});
