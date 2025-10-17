@@ -1,86 +1,78 @@
 /* ============================================================
- 🧠 HealthFlo Narrative Engine v3.2
- Context-aware AI Advisory System — No API Required
- ------------------------------------------------------------
- - Auto-generates healthcare insights from KPIs
- - 5 narrative categories: Clinical, Patient, Operational,
-   Financial, Strategic
- - Custom Events: hf:insightGenerated, hf:insightClick
- - Auto-refresh every 7s (configurable)
- - Self-contained IIFE — works with or without backend
+ 🧠 HealthFlo Narrative Engine v3.3
+ + Optional Voice Narration (SpeechSynthesis API)
  ============================================================ */
 
 (function () {
   'use strict';
 
-  // === Configuration ===
   const CONFIG = {
-    refreshInterval: 7000, // ms - adjustable speed
-    exaggerationFactor: 1.12, // ~12% positive bias for "impressive" storytelling
-    containerId: 'hf-ai-insights', // target container div
+    refreshInterval: 7000,
+    exaggerationFactor: 1.12,
+    containerId: 'hf-ai-insights',
     narrativeCount: 5,
+    narrationEnabled: false, // ✅ default OFF
+    narrationRate: 1.0 // 0.8 = slow, 1.0 = normal, 1.3 = fast
   };
 
-  // === Utility Functions ===
   const rand = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
   const choose = (arr) => arr[Math.floor(Math.random() * arr.length)];
   const formatPct = (val) => `${val > 0 ? '+' : ''}${val}%`;
 
-  // === Insight Templates ===
   const TEMPLATES = {
     clinical: [
-      (v) => `🩺 Clinical efficiency improved ${formatPct(v)} this week — a sign of better care coordination and reduced wait times.`,
-      (v) => `💉 Procedural success rates climbed ${formatPct(v)}, highlighting enhanced clinical precision.`,
-      (v) => `📊 ${formatPct(v)} rise in post-op recovery speed suggests improved protocols and patient follow-up.`,
+      (v) => `Clinical efficiency improved ${formatPct(v)} this week.`,
+      (v) => `Procedural success rates climbed ${formatPct(v)}.`,
+      (v) => `Recovery speed rose ${formatPct(v)}, suggesting better follow-up.`,
     ],
     patient: [
-      (v) => `💙 Patient satisfaction surged ${formatPct(v)}, driven by proactive communication and reduced discharge delays.`,
-      (v) => `🌐 ${formatPct(v)} boost in digital engagement — patients are increasingly using self-service portals.`,
-      (v) => `📅 Appointment adherence improved ${formatPct(v)} — a strong indicator of trust and accessibility.`,
+      (v) => `Patient satisfaction surged ${formatPct(v)}.`,
+      (v) => `${formatPct(v)} boost in digital engagement shows portal adoption.`,
+      (v) => `Appointment adherence improved ${formatPct(v)}.`,
     ],
     operational: [
-      (v) => `🏥 Bed occupancy reached optimal levels with a ${formatPct(v)} operational improvement.`,
-      (v) => `🔄 Workflow efficiency jumped ${formatPct(v)} thanks to streamlined triage and smart scheduling.`,
-      (v) => `🚑 ER throughput improved ${formatPct(v)} — reducing critical waiting periods significantly.`,
+      (v) => `Bed occupancy improved ${formatPct(v)}.`,
+      (v) => `Workflow efficiency jumped ${formatPct(v)}.`,
+      (v) => `ER throughput improved ${formatPct(v)}.`,
     ],
     financial: [
-      (v) => `💰 Revenue per patient increased ${formatPct(v)}, driven by higher OPD conversions and cross-specialty referrals.`,
-      (v) => `📈 ${formatPct(v)} rise in claim approvals indicates improved payer collaboration.`,
-      (v) => `🏦 Cost per admission decreased ${formatPct(v)}, demonstrating efficient resource utilization.`,
+      (v) => `Revenue per patient increased ${formatPct(v)}.`,
+      (v) => `Claim approvals rose ${formatPct(v)}.`,
+      (v) => `Cost per admission decreased ${formatPct(v)}.`,
     ],
     strategic: [
-      (v) => `🚀 HealthFlo is trending ${formatPct(v)} ahead in patient loyalty — positioning the brand as a regional leader.`,
-      (v) => `🌟 ${formatPct(v)} jump in referral traffic suggests growing clinician confidence.`,
-      (v) => `🧭 Strategic partnerships are yielding ${formatPct(v)} stronger network influence and clinical reach.`,
+      (v) => `Patient loyalty trending ${formatPct(v)} ahead.`,
+      (v) => `Referral traffic jumped ${formatPct(v)}.`,
+      (v) => `Partnership impact grew ${formatPct(v)}.`,
     ],
   };
 
-  // === Generate One Insight ===
   const generateInsight = () => {
-    const categories = Object.keys(TEMPLATES);
-    const category = choose(categories);
-    const value = Math.round(rand(3, 18) * CONFIG.exaggerationFactor); // realistic & impressive
-    const narrative = choose(TEMPLATES[category])(value);
-
+    const category = choose(Object.keys(TEMPLATES));
+    const value = Math.round(rand(3, 18) * CONFIG.exaggerationFactor);
     return {
       category,
-      value,
-      narrative,
+      narrative: choose(TEMPLATES[category])(value),
       timestamp: new Date().toISOString(),
     };
   };
 
-  // === Generate Full Batch ===
-  const generateBatch = () => {
-    return Array.from({ length: CONFIG.narrativeCount }, generateInsight);
-  };
+  const generateBatch = () => Array.from({ length: CONFIG.narrativeCount }, generateInsight);
 
-  // === Render Insights ===
   const renderInsights = (insights) => {
     const container = document.getElementById(CONFIG.containerId);
     if (!container) return;
 
     container.innerHTML = `
+      <div class="hf-insights-controls">
+        <label>
+          <input type="checkbox" id="narration-toggle" ${CONFIG.narrationEnabled ? 'checked' : ''}>
+          🔊 Enable Narration
+        </label>
+        <label>
+          Speed: <input type="range" id="narration-speed" min="0.8" max="1.5" step="0.1" value="${CONFIG.narrationRate}">
+        </label>
+      </div>
       <div class="hf-insights-wrapper">
         ${insights
           .map(
@@ -94,40 +86,52 @@
       </div>
     `;
 
-    // Add click tracking
+    // Add click event
     container.querySelectorAll('.hf-insight-card').forEach((card) => {
       card.addEventListener('click', () => {
-        const event = new CustomEvent('hf:insightClick', {
-          detail: { category: card.dataset.category, text: card.querySelector('.hf-insight-text').innerText },
-        });
-        document.dispatchEvent(event);
+        document.dispatchEvent(new CustomEvent('hf:insightClick', {
+          detail: { category: card.dataset.category, text: card.querySelector('.hf-insight-text').innerText }
+        }));
       });
+    });
+
+    // Handle narration toggle
+    document.getElementById('narration-toggle').addEventListener('change', (e) => {
+      CONFIG.narrationEnabled = e.target.checked;
+    });
+
+    // Handle narration speed
+    document.getElementById('narration-speed').addEventListener('input', (e) => {
+      CONFIG.narrationRate = parseFloat(e.target.value);
     });
   };
 
-  // === Update Cycle ===
+  const narrateInsights = (insights) => {
+    if (!CONFIG.narrationEnabled || !window.speechSynthesis) return;
+
+    const text = insights.map((i) => i.narrative).join(' ');
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'en-US';
+    utterance.rate = CONFIG.narrationRate;
+    speechSynthesis.cancel(); // stop previous narration
+    speechSynthesis.speak(utterance);
+  };
+
   const updateInsights = () => {
     const batch = generateBatch();
     renderInsights(batch);
-
-    // Dispatch global event
-    const event = new CustomEvent('hf:insightGenerated', { detail: batch });
-    document.dispatchEvent(event);
+    narrateInsights(batch);
+    document.dispatchEvent(new CustomEvent('hf:insightGenerated', { detail: batch }));
   };
 
-  // === Initialize Engine ===
   const init = () => {
-    const container = document.getElementById(CONFIG.containerId);
-    if (!container) {
+    if (!document.getElementById(CONFIG.containerId)) {
       console.warn(`[HealthFloInsights] Container #${CONFIG.containerId} not found`);
       return;
     }
-
     updateInsights();
     setInterval(updateInsights, CONFIG.refreshInterval);
   };
 
-  // === Auto-init on DOM Ready ===
   document.addEventListener('DOMContentLoaded', init);
-
 })();
