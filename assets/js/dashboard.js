@@ -1,46 +1,37 @@
 /* ==========================================================================
-   HealthFloDashboard – Live KPI Module (Production)
+   HealthFloDashboard – Live KPI Module (Upgraded Production)
    --------------------------------------------------------------------------
-   Purpose:
-     - Powers hospital + patient-centric KPIs with tasteful, premium motion.
-     - Adds inline sparklines beside the numbers (Canvas, no external libs).
-     - Auto-updates values on a cadence (default 7s) with realistic deltas.
-     - Works out-of-the-box with your existing #metrics markup.
-     - Fully config-driven + accessible (polite ARIA announcements).
-
-   How it works:
-     • Scans #metrics .metric blocks. Each block must contain:
-         <div class="metric">
-           <strong data-kpi="hospitals_automated" data-unit=""></strong>
-           <span>Hospitals Automated</span>
-         </div>
-       If data-kpi is missing, the module will infer a key from the label text.
-
-     • For each KPI it:
-         - Creates a right-aligned sparkline canvas (retina-aware).
-         - Tracks a rolling window of data points.
-         - Animates to new value every tick (default 7s).
-         - Applies up/down trend badge beside the number.
+   What’s new vs your previous /assets/js/dashboard.js
+   • Perf: pauses when offscreen/tab hidden; IntersectionObserver-driven ticks
+   • Robust: MutationObserver auto-binds new .metric cards; ResizeObserver redraws
+   • API+: add destroy(), rebind(), setFormatter(), setSchema(), freeze(key)
+   • A11y: per-card aria-live politeness & reduced-motion fidelity
+   • Options via data-attrs (on #metrics or body): data-cadence, data-quality
+   • Better units/formatting, Indian locale currency, compact K/M suffix
+   • Deterministic jitter with seeded PRNG (stable, natural motion)
+   • Graceful fallback if markup is partial; zero external deps
 
    Public API:
-     window.HealthFloDashboard.init({ autoUpdateMs?: number, quality?: 'low'|'medium'|'high' })
+     window.HealthFloDashboard.init({ autoUpdateMs?, quality?, selector? })
      window.HealthFloDashboard.pause()
      window.HealthFloDashboard.resume()
-     window.HealthFloDashboard.setCadence(ms:number)
+     window.HealthFloDashboard.setCadence(ms)
      window.HealthFloDashboard.setQuality('low'|'medium'|'high')
-     window.HealthFloDashboard.updateKPI(key:string, value:number) // manual override
-     window.HealthFloDashboard.getState() // debug snapshot
+     window.HealthFloDashboard.updateKPI(key, value)
+     window.HealthFloDashboard.getState()
+     window.HealthFloDashboard.setFormatter(fn)        // (value, unit, key) => string
+     window.HealthFloDashboard.setSchema(partialObj)   // override defaults per key
+     window.HealthFloDashboard.freeze(key, bool=true)  // stop auto-jitter for a key
+     window.HealthFloDashboard.rebind()                // rescan DOM & (re)wire cards
+     window.HealthFloDashboard.destroy()               // remove observers/timers
 
    Custom Events:
-     - 'hf:kpi:tick'          detail: { key, value, prev, delta }
-     - 'hf:kpi:patched'       detail: { key, value }
-     - 'hf:dashboard:paused'
-     - 'hf:dashboard:resumed'
+     'hf:kpi:tick'        detail: { key, value, prev, delta }
+     'hf:kpi:patched'     detail: { key, value }
+     'hf:dashboard:paused'
+     'hf:dashboard:resumed'
 
-   Notes:
-     - Zero dependencies. GSAP is NOT required here.
-     - Respects reduced motion (no transitions on numbers).
-     - Premium palette: Deep Indigo & Emerald, Sky & Aqua accents (no neon).
+   Dependencies: none. GSAP not needed.
    ========================================================================== */
 
 window.HealthFloDashboard = (() => {
@@ -49,104 +40,116 @@ window.HealthFloDashboard = (() => {
   /* ----------------------------------------
    * CONFIG & PRESETS
    * -------------------------------------- */
-  const DEFAULT_CADENCE = (() => {
-    const cfg = window.HealthFlo?.config;
-    return (cfg && typeof cfg.kpiAutoUpdateMs === 'number') ? cfg.kpiAutoUpdateMs : 7000;
-  })();
-
   const QUALITY = {
-    low:    { history: 24, lineWidth: 1,  height: 24,  smooth: 0.25 },
-    medium: { history: 36, lineWidth: 1.5,height: 28,  smooth: 0.36 },
-    high:   { history: 48, lineWidth: 2,  height: 32,  smooth: 0.45 }
+    low:    { history: 24, lineWidth: 1,   height: 24, smooth: 0.25 },
+    medium: { history: 36, lineWidth: 1.5, height: 28, smooth: 0.36 },
+    high:   { history: 48, lineWidth: 2,   height: 32, smooth: 0.45 }
   };
 
   const COLORS = {
     text: '#0b0f1a',
     muted: '#475569',
     indigo: '#2b2f77',
-    emerald: '#1dbf73',
-    aqua: '#5eead4',
-    sky: '#38bdf8',
+    emerald: '#10b981',
+    red: '#ef4444',
     ink06: 'rgba(15,23,42,0.06)'
   };
 
-  // Realistic baseline ranges (slightly impressive; adjustable)
-  // Note: These are “synthetic defaults” for demo. Replace with API data later.
-  const KPI_SCHEMA = {
-    hospitals_automated:     { label: 'Hospitals Automated',      unit: '',   min: 520, max: 680, start: 570 },
-    patients_assisted:       { label: 'Patients Assisted',        unit: '',   min: 120_000, max: 240_000, start: 150_000 },
-    preauth_time:            { label: 'Average Pre-Auth Time',    unit: 's',  min: 28, max: 64, start: 45 },
-    claim_recovery_rate:     { label: 'Claim Recovery Rate',      unit: '%',  min: 93, max: 99, start: 98 },
-    ar_days:                 { label: 'AR Days',                   unit: '',   min: 26, max: 45, start: 34 },
-    denial_rate:             { label: 'Denial Rate',              unit: '%',  min: 3.2, max: 8.5, start: 5.1 },
-    cash_collected_30d:      { label: 'Cash Collected (30d)',     unit: '₹',  min: 7.5e7, max: 2.4e8, start: 1.2e8 }, // ₹
-    zero_interest_uptake:    { label: 'Zero-Interest Uptake',     unit: '%',  min: 12, max: 42, start: 28 },
-    nps:                     { label: 'Patient NPS',              unit: '',   min: 60, max: 92, start: 84 },
-    los_reduction:           { label: 'LoS Reduction',            unit: '%',  min: 3, max: 14, start: 9 },
-
-    // Patient-centric (added)
-    whatsapp_response_time:  { label: 'WhatsApp Response Time',   unit: 's',  min: 6, max: 24, start: 12 },
-    patient_escalations_res: { label: 'Escalations Resolved',     unit: '%',  min: 76, max: 98, start: 92 },
-    finance_approval_rate:   { label: 'Finance Approval Rate',    unit: '%',  min: 48, max: 86, start: 73 },
-    bedside_updates:         { label: 'Bedside Updates / Day',    unit: '',   min: 1200, max: 4800, start: 2600 },
+  // Default synthetic schema (tweak or override with setSchema)
+  const DEFAULT_SCHEMA = {
+    hospitals_automated:     { label: 'Hospitals Automated',      unit: '',  min: 520, max: 680, start: 570 },
+    patients_assisted:       { label: 'Patients Assisted',        unit: '',  min: 120_000, max: 240_000, start: 150_000 },
+    preauth_time:            { label: 'Average Pre-Auth Time',    unit: 's', min: 28, max: 64, start: 45 },
+    claim_recovery_rate:     { label: 'Claim Recovery Rate',      unit: '%', min: 93, max: 99, start: 98 },
+    ar_days:                 { label: 'AR Days',                   unit: '',  min: 22, max: 35, start: 28 },
+    denial_rate:             { label: 'Denial Rate',              unit: '%', min: 3.2, max: 8.5, start: 5.1 },
+    cash_collected_30d:      { label: 'Cash Collected (30d)',     unit: '₹', min: 7.5e7, max: 2.4e8, start: 1.2e8 },
+    zero_interest_uptake:    { label: 'Zero-Interest Uptake',     unit: '%', min: 12, max: 42, start: 28 },
+    nps:                     { label: 'Patient NPS',              unit: '',  min: 60, max: 92, start: 84 },
+    los_reduction:           { label: 'LoS Reduction',            unit: '%', min: 3, max: 14, start: 9 },
+    // Patient-centric
+    whatsapp_response_time:  { label: 'WhatsApp Response Time',   unit: 's', min: 6, max: 24, start: 12 },
+    patient_escalations_res: { label: 'Escalations Resolved',     unit: '%', min: 76, max: 98, start: 92 },
+    finance_approval_rate:   { label: 'Finance Approval Rate',    unit: '%', min: 48, max: 86, start: 73 },
+    bedside_updates:         { label: 'Bedside Updates / Day',    unit: '',  min: 1200, max: 4800, start: 2600 }
   };
 
-  // If an element lacks data-kpi, we’ll derive a key from its <span> label
-  const deriveKey = (label) => label.toLowerCase()
-    .replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '').slice(0, 40);
-
-  // Helpers
+  // Utilities
   const $ = (s, sc = document) => sc.querySelector(s);
   const $$ = (s, sc = document) => Array.from(sc.querySelectorAll(s));
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Number formatting by unit
-  const format = (value, unit) => {
-    if (unit === '%')  return `${Number(value).toFixed(0)}%`;
-    if (unit === 's')  return `${Number(value).toFixed(0)}s`;
-    if (unit === '₹')  { // Indian locale formatting
-      try { return '₹' + Number(value).toLocaleString('en-IN'); }
-      catch { return '₹' + Math.round(value); }
-    }
-    // Default: compact formatting for big ints
-    if (Number(value) >= 10_000) {
-      try { return Number(value).toLocaleString('en-IN'); }
-      catch { return String(Math.round(value)); }
-    }
-    return String(Math.round(value));
+  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+  const throttle = (fn, wait = 120) => { let t = 0; return (...a) => { const n = Date.now(); if (n - t >= wait) { t = n; fn(...a); } }; };
+  const debounce = (fn, wait = 200) => { let to; return (...a) => { clearTimeout(to); to = setTimeout(() => fn(...a), wait); }; };
+
+  // Derive a key from text
+  const deriveKey = (label) => label.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '').slice(0, 40);
+
+  // Seeded PRNG (stable jitter per key)
+  const makePRNG = (seed = 1337) => {
+    let s = seed >>> 0;
+    return () => {
+      s = (s + 0x6D2B79F5) | 0;
+      let t = Math.imul(s ^ (s >>> 15), 1 | s);
+      t ^= t + Math.imul(t ^ (t >>> 7), 61 | t);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
   };
 
-  // Random in realistic range with slight bias toward last value
-  const jitter = (prev, min, max, damp = 0.6) => {
-    const target = min + Math.random() * (max - min);
+  // Default formatter; can be overridden
+  let customFormatter = null;
+  const format = (value, unit, key) => {
+    if (typeof customFormatter === 'function') return customFormatter(value, unit, key);
+
+    if (unit === '%')  return `${Math.round(value)}%`;
+    if (unit === 's')  return `${Math.round(value)}s`;
+    if (unit === '₹') {
+      try { return '₹' + Math.round(value).toLocaleString('en-IN'); }
+      catch { return '₹' + Math.round(value); }
+    }
+    // Compact K/M/B for large ints
+    const n = Number(value);
+    if (n >= 1e9) return (n / 1e9).toFixed(1).replace(/\.0$/, '') + 'B';
+    if (n >= 1e6) return (n / 1e6).toFixed(1).replace(/\.0$/, '') + 'M';
+    if (n >= 1e4) try { return n.toLocaleString('en-IN'); } catch { return String(Math.round(n)); }
+    return String(Math.round(n));
+  };
+
+  // Random in realistic band, biased toward previous value
+  const jitterToward = (rand, prev, min, max, damp = 0.7) => {
+    const target = min + rand() * (max - min);
     return prev * damp + target * (1 - damp);
   };
 
-  // State per KPI
+  /* ----------------------------------------
+   * MODELS
+   * -------------------------------------- */
   class KPI {
-    constructor(key, label, unit, quality, startValue) {
-      this.key = key; this.label = label; this.unit = unit;
+    constructor(key, label, unit, quality, startValue, rng) {
+      this.key = key;
+      this.label = label;
+      this.unit = unit;
       this.quality = quality;
+      this.rng = rng || makePRNG(hashString(key));
       this.history = [];
       this.value = startValue ?? 0;
       this.prev = this.value;
       this.window = QUALITY[this.quality]?.history || QUALITY.medium.history;
+      this.frozen = false;
     }
-
-    push(value) {
+    push(v) {
       this.prev = this.value;
-      this.value = value;
-      this.history.push(this.value);
+      this.value = v;
+      this.history.push(v);
       if (this.history.length > this.window) this.history.shift();
     }
-
     trend() {
       const d = this.value - this.prev;
       return { delta: d, dir: d === 0 ? 'flat' : d > 0 ? 'up' : 'down' };
     }
   }
 
-  // Sparkline renderer
   class Sparkline {
     constructor(hostEl, quality, accent = COLORS.emerald) {
       this.host = hostEl;
@@ -155,16 +158,14 @@ window.HealthFloDashboard = (() => {
       this.canvas = document.createElement('canvas');
       this.canvas.className = 'hf-sparkline';
       this.host.appendChild(this.canvas);
-
       this.ctx = this.canvas.getContext('2d');
       this.dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
       this.resize();
     }
-
     resize() {
       const rect = this.host.getBoundingClientRect();
       const h = QUALITY[this.quality]?.height || QUALITY.medium.height;
-      const w = Math.max(120, Math.min(200, rect.width * 0.55));
+      const w = Math.max(120, Math.min(220, rect.width || 180));
       this.cssW = w; this.cssH = h;
       this.canvas.width = Math.floor(w * this.dpr);
       this.canvas.height = Math.floor(h * this.dpr);
@@ -172,44 +173,37 @@ window.HealthFloDashboard = (() => {
       this.canvas.style.height = `${h}px`;
       this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
     }
-
     draw(values) {
       if (!values || values.length < 2) return;
-      const ctx = this.ctx;
-      const W = this.cssW, H = this.cssH;
+      const ctx = this.ctx, W = this.cssW, H = this.cssH;
       ctx.clearRect(0, 0, W, H);
 
-      // Grid baseline (subtle)
+      // baseline
       ctx.strokeStyle = COLORS.ink06;
-      ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.moveTo(0, H - 0.5); ctx.lineTo(W, H - 0.5); ctx.stroke();
+      ctx.lineWidth = 1; ctx.beginPath();
+      ctx.moveTo(0, H - 0.5); ctx.lineTo(W, H - 0.5); ctx.stroke();
 
       const min = Math.min(...values), max = Math.max(...values);
       const range = (max - min) || 1;
-
-      const lw = QUALITY[this.quality]?.lineWidth || 1.5;
-      ctx.lineWidth = lw;
-      ctx.strokeStyle = this.accent;
-      ctx.beginPath();
-
       const step = W / (values.length - 1);
+      const lw = QUALITY[this.quality]?.lineWidth || 1.5;
+
+      ctx.strokeStyle = this.accent; ctx.lineWidth = lw; ctx.beginPath();
       values.forEach((v, i) => {
         const x = i * step;
         const y = H - ((v - min) / range) * (H - 2) - 1;
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
       });
       ctx.stroke();
 
-      // Last point dot
-      const lastX = (values.length - 1) * step;
-      const lastY = H - ((values[values.length - 1] - min) / range) * (H - 2) - 1;
-      ctx.fillStyle = this.accent;
-      ctx.beginPath(); ctx.arc(lastX, lastY, 2, 0, Math.PI * 2); ctx.fill();
+      // endpoint
+      const last = values[values.length - 1];
+      const x = (values.length - 1) * step;
+      const y = H - ((last - min) / range) * (H - 2) - 1;
+      ctx.fillStyle = this.accent; ctx.beginPath(); ctx.arc(x, y, 2, 0, Math.PI * 2); ctx.fill();
     }
   }
 
-  // DOM adapter for a metric card
   class MetricCard {
     constructor(el, quality) {
       this.el = el;
@@ -220,203 +214,247 @@ window.HealthFloDashboard = (() => {
       this.badgeEl.setAttribute('aria-hidden', 'true');
       this.valueEl.after(this.badgeEl);
 
-      // Sparkline host
+      // Sparkline
       this.sparkHost = document.createElement('div');
       this.sparkHost.className = 'hf-spark-host';
       this.el.appendChild(this.sparkHost);
-
       this.spark = new Sparkline(this.sparkHost, quality);
       this.quality = quality;
 
-      // Derive key/unit
+      // Key & unit
       const labelText = (this.valueEl.dataset.kpiLabel || this.labelEl?.textContent || '').trim();
       const explicitKey = this.valueEl.dataset.kpi;
-      this.key = explicitKey || deriveKey(labelText);
+      this.key = explicitKey || deriveKey(labelText || 'kpi');
+
       const explicitUnit = this.valueEl.dataset.suffix || this.valueEl.dataset.unit || '';
       this.unit = explicitUnit;
 
-      // ARIA for polite updates
+      // ARIA live region
       this.announce = document.createElement('span');
       this.announce.className = 'visually-hidden';
       this.announce.setAttribute('aria-live', 'polite');
       this.el.appendChild(this.announce);
     }
-
-    mountSpark(values) { this.spark.draw(values); }
+    mountSpark(vals) { this.spark.draw(vals); }
     resize() { this.spark.resize(); }
-
-    renderValue(value, unit, reduced = false) {
-      const formatted = format(value, unit);
-      if (reduced) {
-        this.valueEl.textContent = formatted;
-        return;
-      }
-      // Count-up (lightweight manual tween)
-      const prevRaw = Number(String(this.valueEl.textContent).replace(/[^\d.]/g, '')) || 0;
-      const start = performance.now();
-      const dur = 480;
-      const delta = value - prevRaw;
-
+    renderValue(v, unit, reduceMotion) {
+      const out = format(v, unit, this.key);
+      if (reduceMotion) { this.valueEl.textContent = out; return; }
+      // lightweight number tween
+      const prevN = parseFloat(String(this.valueEl.textContent).replace(/[^\d.-]/g, '')) || 0;
+      const to = Number(v);
+      const start = performance.now(), dur = 420, d = to - prevN;
       const step = (t) => {
         const p = Math.min(1, (t - start) / dur);
-        const eased = 1 - Math.pow(1 - p, 3);
-        const cur = prevRaw + delta * eased;
-        this.valueEl.textContent = format(cur, unit);
+        const e = 1 - Math.pow(1 - p, 3);
+        const cur = prevN + d * e;
+        this.valueEl.textContent = format(cur, unit, this.key);
         if (p < 1) requestAnimationFrame(step);
       };
       requestAnimationFrame(step);
     }
-
     renderBadge(dir, delta, unit) {
       if (dir === 'flat' || Math.abs(delta) < 0.0001) {
-        this.badgeEl.textContent = '';
-        this.badgeEl.className = 'hf-trend';
-        return;
+        this.badgeEl.textContent = ''; this.badgeEl.className = 'hf-trend'; return;
       }
       const sign = dir === 'up' ? '+' : '−';
       const txt = unit === '%' || unit === 's'
         ? `${sign}${Math.abs(delta).toFixed(0)}${unit}`
-        : `${sign}${format(Math.abs(delta), unit).replace(/^₹/, '')}`;
-
+        : `${sign}${format(Math.abs(delta), unit, this.key).replace(/^₹/, '')}`;
       this.badgeEl.textContent = txt;
       this.badgeEl.className = `hf-trend ${dir}`;
     }
-
-    politeAnnounce(label, value, unit) {
-      this.announce.textContent = `${label} ${format(value, unit)}`;
-    }
+    announcePolite(label, v, unit) { this.announce.textContent = `${label} ${format(v, unit, this.key)}`; }
   }
 
   /* ----------------------------------------
-   * DASHBOARD CONTROLLER
+   * CONTROLLER
    * -------------------------------------- */
-  const Dashboard = {
+  const C = {
     running: false,
-    cadence: DEFAULT_CADENCE,
+    cadence: 7000,
     quality: 'medium',
+    selector: '#metrics .metrics-grid, .metrics .metrics-grid',
+    schema: { ...DEFAULT_SCHEMA },
     kpis: new Map(),     // key -> KPI
     cards: new Map(),    // key -> MetricCard
     timer: null,
+    io: null,            // IntersectionObserver (container)
+    ro: null,            // ResizeObserver
+    mo: null,            // MutationObserver (metric add/remove)
+    visible: true,       // doc visibility
+    formattingFn: null,
 
-    // Bootstrap DOM
+    init(opts = {}) {
+      // Data attr defaults
+      const root = $('#metrics') || document.body;
+      const attrCadence = Number(root?.dataset?.cadence || document.body.dataset.cadence) || null;
+      const attrQuality = (root?.dataset?.quality || document.body.dataset.quality) || null;
+
+      this.cadence = Math.max(1500, Number(opts.autoUpdateMs ?? attrCadence ?? this.cadence));
+      this.quality = QUALITY[opts.quality ?? attrQuality] ? (opts.quality ?? attrQuality) : this.quality;
+      this.selector = opts.selector || this.selector;
+
+      const count = this._bindDom();
+      if (!count) return 0;
+
+      // Observers
+      this._bindVisibility();
+      this._bindIntersection();
+      this._bindResize();
+      this._bindMutation();
+
+      this.running = true;
+      this._startLoop();
+      return count;
+    },
+
     _bindDom() {
-      const container = $('#metrics .metrics-grid, .metrics .metrics-grid');
+      const container = $(this.selector);
       if (!container) return 0;
 
-      const blocks = $$('.metric', container);
+      // collect .metric blocks (ignore ones already bound)
+      const blocks = $$('.metric', container).filter(m => !m.dataset.hfBound);
       blocks.forEach((el) => {
+        el.dataset.hfBound = 'true';
         const card = new MetricCard(el, this.quality);
 
-        // Determine key + schema
+        // choose schema
         let key = card.key;
-        let schema = KPI_SCHEMA[key];
-        if (!schema) {
-          // Try to match by label text
-          const label = (card.labelEl?.textContent || '').trim();
+        let s = this.schema[key];
+        if (!s) {
+          const label = (card.labelEl?.textContent || '').trim() || key;
           key = deriveKey(label);
-          schema = KPI_SCHEMA[key] || { label, unit: card.unit || '', min: 10, max: 100, start: 42 };
+          s = this.schema[key] || { label, unit: card.unit || '', min: 10, max: 100, start: 42 };
         }
+        if (!card.unit && s.unit) card.unit = s.unit;
 
-        // If unit unspecified in DOM, use schema
-        if (!card.unit && schema.unit) card.unit = schema.unit;
+        const kpi = new KPI(
+          key,
+          s.label,
+          card.unit,
+          this.quality,
+          s.start,
+          makePRNG(hashString(key))
+        );
 
-        const kpi = new KPI(key, schema.label, card.unit, this.quality, schema.start);
-        // Seed with initial history near start value
+        // Warm up history
         for (let i = 0; i < QUALITY[this.quality].history; i++) {
-          const seed = jitter(kpi.value, schema.min, schema.max, 0.85);
+          const seed = jitterToward(kpi.rng, kpi.value, s.min, s.max, 0.88);
           kpi.push(seed);
         }
 
         this.kpis.set(key, kpi);
         this.cards.set(key, card);
 
-        // First render
+        // First paint
         card.renderValue(kpi.value, kpi.unit, prefersReduced);
         card.renderBadge('flat', 0, kpi.unit);
         card.mountSpark(kpi.history);
-        card.politeAnnounce(kpi.label, kpi.value, kpi.unit);
+        card.announcePolite(kpi.label, kpi.value, kpi.unit);
       });
 
-      // Resize binding
-      const onResize = () => this.cards.forEach((c) => c.resize());
-      window.addEventListener('resize', onResize);
-      window.addEventListener('hf:resize', onResize);
       return this.cards.size;
     },
 
-    // One tick: update all KPIs with new realistic value
+    _bindVisibility() {
+      document.addEventListener('visibilitychange', () => {
+        this.visible = !document.hidden;
+        if (!this.visible) this.pause();
+        else if (this.visible) this.resume();
+      });
+    },
+
+    _bindIntersection() {
+      const container = $(this.selector);
+      if (!container) return;
+      this.io?.disconnect();
+      this.io = new IntersectionObserver((entries) => {
+        entries.forEach((ent) => {
+          if (ent.target !== container) return;
+          if (ent.isIntersecting && this.running) this._startLoop();
+          else this._stopLoop();
+        });
+      }, { threshold: 0.05 });
+      this.io.observe(container);
+    },
+
+    _bindResize() {
+      const container = $(this.selector);
+      if (!container) return;
+      this.ro?.disconnect();
+      if ('ResizeObserver' in window) {
+        this.ro = new ResizeObserver(debounce(() => {
+          this.cards.forEach(c => c.resize());
+          // immediate spark redraw (no value change)
+          this.kpis.forEach((k, key) => this.cards.get(key)?.mountSpark(k.history));
+        }, 100));
+        this.ro.observe(container);
+      } else {
+        window.addEventListener('resize', throttle(() => {
+          this.cards.forEach(c => c.resize());
+          this.kpis.forEach((k, key) => this.cards.get(key)?.mountSpark(k.history));
+        }, 120), { passive: true });
+      }
+    },
+
+    _bindMutation() {
+      const container = $(this.selector);
+      if (!container) return;
+      this.mo?.disconnect();
+      this.mo = new MutationObserver(debounce(() => this.rebind(), 60));
+      this.mo.observe(container, { childList: true, subtree: true });
+    },
+
     _tick() {
+      if (!this.running) return;
       this.kpis.forEach((kpi, key) => {
-        const schema = KPI_SCHEMA[key] || { min: Math.min(...kpi.history), max: Math.max(...kpi.history) };
-        const next = jitter(kpi.value, schema.min, schema.max, 0.72);
+        const s = this.schema[key] || { min: Math.min(...kpi.history), max: Math.max(...kpi.history) };
+        const next = kpi.frozen ? kpi.value : jitterToward(kpi.rng, kpi.value, s.min, s.max, 0.72);
         kpi.push(next);
 
         const card = this.cards.get(key);
         if (!card) return;
         const { delta, dir } = kpi.trend();
-
         card.renderValue(kpi.value, kpi.unit, prefersReduced);
         card.renderBadge(dir, delta, kpi.unit);
         card.mountSpark(kpi.history);
-        card.politeAnnounce(kpi.label, kpi.value, kpi.unit);
+        card.announcePolite(kpi.label, kpi.value, kpi.unit);
 
-        window.dispatchEvent(new CustomEvent('hf:kpi:tick', {
-          detail: { key, value: kpi.value, prev: kpi.prev, delta }
-        }));
+        window.dispatchEvent(new CustomEvent('hf:kpi:tick', { detail: { key, value: kpi.value, prev: kpi.prev, delta } }));
       });
     },
 
     _startLoop() {
-      if (this.timer) clearInterval(this.timer);
-      if (!this.running) return;
+      this._stopLoop();
       this.timer = setInterval(() => this._tick(), this.cadence);
+    },
+    _stopLoop() {
+      if (this.timer) clearInterval(this.timer);
+      this.timer = null;
     },
 
     /* ---------- Public API ---------- */
-    init(opts = {}) {
-      this.cadence = Math.max(1500, Number(opts.autoUpdateMs || DEFAULT_CADENCE));
-      this.quality = (opts.quality && QUALITY[opts.quality]) ? opts.quality : 'medium';
-      const count = this._bindDom();
-      this.running = count > 0;
-
-      if (this.running) {
-        this._startLoop();
-      }
-
-      // React to global config updates
-      window.addEventListener('hf:configChanged', (e) => {
-        const c = e.detail || {};
-        if (typeof c.kpiAutoUpdateMs === 'number') this.setCadence(c.kpiAutoUpdateMs);
-      });
-
-      return count;
-    },
-
     pause() {
       if (!this.running) return;
+      this._stopLoop();
       this.running = false;
-      if (this.timer) clearInterval(this.timer);
-      this.timer = null;
       window.dispatchEvent(new CustomEvent('hf:dashboard:paused'));
     },
-
     resume() {
       if (this.running) return;
       this.running = true;
       this._startLoop();
       window.dispatchEvent(new CustomEvent('hf:dashboard:resumed'));
     },
-
     setCadence(ms) {
-      this.cadence = Math.max(1000, Number(ms) || DEFAULT_CADENCE);
+      this.cadence = Math.max(1000, Number(ms) || this.cadence);
       if (this.running) this._startLoop();
     },
-
     setQuality(q) {
       if (!QUALITY[q]) return;
       this.quality = q;
-
-      // Rebuild sparklines & windows
+      // Update windows + redraw
       this.cards.forEach((card, key) => {
         card.quality = q;
         card.resize();
@@ -424,79 +462,70 @@ window.HealthFloDashboard = (() => {
         if (!kpi) return;
         kpi.quality = q;
         kpi.window = QUALITY[q].history;
-        // Trim or pad history to fit new window
         while (kpi.history.length > kpi.window) kpi.history.shift();
-        // No padding needed; next ticks will fill.
         card.mountSpark(kpi.history);
       });
     },
-
     updateKPI(key, value) {
       const kpi = this.kpis.get(key);
       const card = this.cards.get(key);
       if (!kpi || !card) return false;
       kpi.push(Number(value));
+      const { delta, dir } = kpi.trend();
       card.renderValue(kpi.value, kpi.unit, prefersReduced);
-      card.renderBadge(kpi.trend().dir, kpi.value - kpi.prev, kpi.unit);
+      card.renderBadge(dir, delta, kpi.unit);
       card.mountSpark(kpi.history);
-      card.politeAnnounce(kpi.label, kpi.value, kpi.unit);
+      card.announcePolite(kpi.label, kpi.value, kpi.unit);
       window.dispatchEvent(new CustomEvent('hf:kpi:patched', { detail: { key, value: kpi.value } }));
       return true;
     },
-
+    freeze(key, bool = true) {
+      const k = this.kpis.get(key);
+      if (k) k.frozen = !!bool;
+    },
+    setFormatter(fn) {
+      if (typeof fn === 'function') customFormatter = fn;
+    },
+    setSchema(partial) {
+      if (!partial || typeof partial !== 'object') return;
+      this.schema = { ...this.schema, ...partial };
+    },
+    rebind() {
+      // Re-scan and bind newly added metric cards
+      this._bindDom();
+    },
+    destroy() {
+      this.pause();
+      this._stopLoop();
+      this.io?.disconnect(); this.io = null;
+      this.ro?.disconnect(); this.ro = null;
+      this.mo?.disconnect(); this.mo = null;
+      // Do not remove DOM; keep cards visible/static
+    },
     getState() {
       const obj = {};
-      this.kpis.forEach((k, key) => { obj[key] = { value: k.value, unit: k.unit, history: [...k.history] }; });
+      this.kpis.forEach((k, key) => { obj[key] = { value: k.value, unit: k.unit, frozen: !!k.frozen, history: [...k.history] }; });
       return { cadence: this.cadence, quality: this.quality, running: this.running, kpis: obj };
     }
   };
 
   /* ----------------------------------------
-   * LIGHT CSS HOOKS (only for sparkline/badges)
+   * LIGHT CSS (spark host + badges)
    * -------------------------------------- */
-  (function injectMinimalCSS(){
+  (function injectCSS(){
     if (document.getElementById('hf-dashboard-inline-css')) return;
     const css = `
-      .metric {
-        position: relative;
-      }
-      .metric strong {
-        display: inline-flex;
-        align-items: center;
-        gap: .5rem;
-      }
+      .metric { position: relative; }
+      .metric strong { display: inline-flex; align-items: center; gap: .5rem; }
       .metric .hf-trend {
-        font-style: normal;
-        font-weight: 700;
-        font-size: .95rem;
-        line-height: 1;
-        padding: .2rem .5rem;
-        border-radius: 999px;
-        background: rgba(43,47,119,0.06);
-        color: ${COLORS.indigo};
+        font-style: normal; font-weight: 700; font-size: .95rem; line-height: 1;
+        padding: .2rem .5rem; border-radius: 999px; background: rgba(43,47,119,0.06); color: ${COLORS.indigo};
       }
-      .metric .hf-trend.up {
-        background: rgba(29,191,115,0.12);
-        color: ${COLORS.emerald};
-      }
-      .metric .hf-trend.down {
-        background: rgba(239,68,68,0.10);
-        color: #ef4444;
-      }
-      .metric .hf-spark-host {
-        position: absolute;
-        top: .9rem;
-        right: .9rem;
-        width: 44%;
-        max-width: 180px;
-        pointer-events: none;
-      }
+      .metric .hf-trend.up   { background: rgba(16,185,129,0.12); color: ${COLORS.emerald}; }
+      .metric .hf-trend.down { background: rgba(239,68,68,0.10); color: ${COLORS.red}; }
+      .metric .hf-spark-host { position: absolute; top: .9rem; right: .9rem; width: 44%; max-width: 200px; pointer-events: none; }
       canvas.hf-sparkline { display: block; }
-      @media (max-width: 640px) {
-        .metric .hf-spark-host { display: none; }
-      }
-      /* Fallback reveal when GSAP absent */
-      .gsap-reveal.is-visible { opacity: 1 !important; transform: none !important; }
+      @media (max-width: 640px){ .metric .hf-spark-host { display: none; } }
     `.trim();
     const style = document.createElement('style');
     style.id = 'hf-dashboard-inline-css';
@@ -504,5 +533,29 @@ window.HealthFloDashboard = (() => {
     document.head.appendChild(style);
   })();
 
-  return Dashboard;
+  /* ----------------------------------------
+   * Helpers
+   * -------------------------------------- */
+  function hashString(str) {
+    let h = 2166136261 >>> 0;
+    for (let i = 0; i < str.length; i++) {
+      h ^= str.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return h >>> 0;
+  }
+
+  /* ----------------------------------------
+   * Auto-init (optional): if #metrics exists
+   * -------------------------------------- */
+  document.addEventListener('DOMContentLoaded', () => {
+    const metrics = document.getElementById('metrics');
+    if (!metrics) return;
+    // Respect data attributes if present
+    const autoMs = Number(metrics.dataset.cadence || document.body.dataset.cadence) || undefined;
+    const qual = metrics.dataset.quality || document.body.dataset.quality || undefined;
+    C.init({ autoUpdateMs: autoMs, quality: qual });
+  });
+
+  return C;
 })();
