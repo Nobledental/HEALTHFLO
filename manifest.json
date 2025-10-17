@@ -1,16 +1,20 @@
 {
+  "id": "/?source=pwa",
   "name": "HealthFlo — AI Revenue Cycle & Patient Concierge",
   "short_name": "HealthFlo",
   "description": "AI-powered revenue cycle automation, denial recovery, and patient concierge for hospitals. Cash, care, and coverage as one journey.",
   "lang": "en",
   "dir": "ltr",
-  "start_url": "/index.html",
+
+  "start_url": "/index.html?utm_source=web_app_manifest",
   "scope": "/",
   "display": "standalone",
+  "display_override": ["standalone", "fullscreen", "browser"],
   "orientation": "portrait-primary",
   "background_color": "#ffffff",
   "theme_color": "#2b2f77",
   "categories": ["health", "medical", "business", "productivity"],
+
   "icons": [
     {
       "src": "assets/images/icons/icon-192.png",
@@ -23,40 +27,91 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    },
+    {
+      "src": "assets/images/icons/icon-monochrome.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "monochrome"
     }
   ],
+
   "shortcuts": [
     {
       "name": "Book a Demo",
       "short_name": "Demo",
+      "description": "Talk to our team and see HealthFlo in action.",
       "url": "/contact.html?source=pwa-shortcut",
-      "icons": [{ "src": "assets/images/icons/shortcut-demo.png", "sizes": "96x96", "type": "image/png" }]
+      "icons": [
+        {
+          "src": "assets/images/icons/shortcut-demo.png",
+          "sizes": "96x96",
+          "type": "image/png",
+          "purpose": "any"
+        }
+      ]
     },
     {
       "name": "Hospital KPIs",
       "short_name": "KPIs",
+      "description": "Jump straight to the live KPI dashboard.",
       "url": "/index.html#metrics",
-      "icons": [{ "src": "assets/images/icons/shortcut-kpi.png", "sizes": "96x96", "type": "image/png" }]
+      "icons": [
+        {
+          "src": "assets/images/icons/shortcut-kpi.png",
+          "sizes": "96x96",
+          "type": "image/png",
+          "purpose": "any"
+        }
+      ]
     }
   ],
+
   "screenshots": [
     {
       "src": "assets/images/pwa-screenshot-1.png",
       "sizes": "1080x1920",
       "type": "image/png",
+      "form_factor": "narrow",
       "label": "Hero + Executive Insights"
     },
     {
       "src": "assets/images/pwa-screenshot-2.png",
-      "sizes": "1080x1920",
+      "sizes": "1920x1080",
       "type": "image/png",
+      "form_factor": "wide",
       "label": "KPI Dashboard + Sparklines"
     }
   ],
+
   "protocol_handlers": [
     {
       "protocol": "web+healthflo",
       "url": "/index.html?action=%s"
     }
-  ]
+  ],
+
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
+  "handle_links": "preferred",
+
+  "share_target": {
+    "action": "/share",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url",
+      "files": [
+        {
+          "name": "files",
+          "accept": ["image/*", "text/plain", "application/pdf"]
+        }
+      ]
+    }
+  },
+
+  "prefer_related_applications": false
 }
