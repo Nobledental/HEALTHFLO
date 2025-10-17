@@ -1,3 +1,259 @@
+/* ============================================================
+📊 HealthFlo AI Insights Drawer – Part A
+Author: GPT-5 · 2025
+Purpose: Core drawer logic, tab management, GSAP cinematic animation,
+         and refresh-speed control slider.
+============================================================ */
+
+/* ------------------------------------------------------------
+🪐 CDN Dependencies (Include in <head> or before this script)
+---------------------------------------------------------------
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/SplitText.min.js"></script>
+------------------------------------------------------------ */
+
+class HealthFloInsights {
+  /**
+   * Initialize the AI Insights drawer
+   * - Sets up elements, events, tab system, GSAP animations
+   * - Starts refresh timer for data updates (controlled by speed slider)
+   */
+  static init(config = {}) {
+    // Configuration object for optional future extensions
+    this.config = {
+      drawerSelector: '.hf-ai-insights__drawer',
+      triggerSelector: '.hf-ai-insights__trigger',
+      closeSelector: '.hf-ai-insights__close',
+      tabSelector: '.hf-tab',
+      panelSelector: '.hf-tabpanel',
+      speedSliderSelector: '#hf-refresh-speed',
+      defaultRefresh: 15000, // default 15 seconds
+      ...config,
+    };
+
+    // Cache DOM elements for reuse
+    this.drawer = document.querySelector(this.config.drawerSelector);
+    this.trigger = document.querySelector(this.config.triggerSelector);
+    this.closeBtn = document.querySelector(this.config.closeSelector);
+    this.tabs = document.querySelectorAll(this.config.tabSelector);
+    this.panels = document.querySelectorAll(this.config.panelSelector);
+    this.speedSlider = document.querySelector(this.config.speedSliderSelector);
+
+    // State
+    this.refreshInterval = this.config.defaultRefresh;
+    this.refreshTimer = null;
+
+    // Initialize all core systems
+    this.bindEvents();
+    this.restoreTabState();
+    this.initGSAPAnimations();
+    this.initSpeedSlider();
+    this.startAutoRefresh();
+  }
+
+  /* ------------------------------------------------------------
+  🧭 Event Binding & Drawer Controls
+  ------------------------------------------------------------ */
+
+  /**
+   * Binds UI events:
+   * - Trigger button click → open drawer
+   * - Close button click → close drawer
+   * - Tab click → switch panel
+   */
+  static bindEvents() {
+    if (this.trigger) {
+      this.trigger.addEventListener('click', () => this.openDrawer());
+    }
+
+    if (this.closeBtn) {
+      this.closeBtn.addEventListener('click', () => this.closeDrawer());
+    }
+
+    // Close drawer on ESC key for accessibility
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') this.closeDrawer();
+    });
+
+    // Tab switching logic
+    this.tabs.forEach((tab) => {
+      tab.addEventListener('click', () => this.switchTab(tab));
+    });
+  }
+
+  /* ------------------------------------------------------------
+  🪩 Drawer Open / Close with GSAP Motion
+  ------------------------------------------------------------ */
+
+  /**
+   * Opens the drawer with a smooth slide-in animation
+   */
+  static openDrawer() {
+    document.body.classList.add('hf-drawer-open');
+
+    // Animate drawer slide-in
+    gsap.to(this.drawer, {
+      right: 0,
+      duration: 0.6,
+      ease: 'power3.out',
+    });
+
+    // Animate cards stagger entrance
+    gsap.from('.hf-insight-card', {
+      opacity: 0,
+      y: 30,
+      duration: 0.7,
+      stagger: 0.08,
+      ease: 'power2.out',
+      delay: 0.2,
+    });
+  }
+
+  /**
+   * Closes the drawer with reverse animation
+   */
+  static closeDrawer() {
+    document.body.classList.remove('hf-drawer-open');
+
+    gsap.to(this.drawer, {
+      right: '-100%',
+      duration: 0.55,
+      ease: 'power2.inOut',
+    });
+  }
+
+  /* ------------------------------------------------------------
+  🧭 Tab System with State Memory
+  ------------------------------------------------------------ */
+
+  /**
+   * Switch between insight tabs
+   * - Updates ARIA states
+   * - Saves active tab to localStorage
+   */
+  static switchTab(tab) {
+    const targetId = tab.dataset.tab;
+
+    // Deactivate all tabs and panels
+    this.tabs.forEach((t) => t.classList.remove('active'));
+    this.panels.forEach((p) => p.setAttribute('hidden', true));
+
+    // Activate selected tab and panel
+    tab.classList.add('active');
+    document.getElementById(targetId)?.removeAttribute('hidden');
+
+    // Save tab state for persistence
+    localStorage.setItem('hf-active-tab', targetId);
+
+    // Trigger re-animation when tab changes
+    gsap.from(`#${targetId} .hf-insight-card`, {
+      opacity: 0,
+      y: 20,
+      duration: 0.6,
+      stagger: 0.1,
+      ease: 'power2.out',
+    });
+  }
+
+  /**
+   * Restore previously active tab on reload
+   */
+  static restoreTabState() {
+    const savedTab = localStorage.getItem('hf-active-tab');
+    if (savedTab) {
+      const savedTabButton = document.querySelector(`[data-tab="${savedTab}"]`);
+      if (savedTabButton) {
+        this.switchTab(savedTabButton);
+        return;
+      }
+    }
+    // Fallback: activate the first tab
+    if (this.tabs[0]) this.switchTab(this.tabs[0]);
+  }
+
+  /* ------------------------------------------------------------
+  ⚙️ GSAP Initial Animation Setup
+  ------------------------------------------------------------ */
+
+  /**
+   * Prepares GSAP defaults and register plugins if available
+   */
+  static initGSAPAnimations() {
+    if (gsap) {
+      gsap.registerPlugin(ScrollTrigger);
+      gsap.defaults({ duration: 0.6, ease: 'power2.out' });
+    }
+  }
+
+  /* ------------------------------------------------------------
+  🕹️ Speed Slider Control
+  ------------------------------------------------------------ */
+
+  /**
+   * Initializes refresh speed slider
+   * - Updates internal refresh interval
+   * - Restarts auto-refresh loop
+   */
+  static initSpeedSlider() {
+    if (!this.speedSlider) return;
+
+    this.speedSlider.addEventListener('input', (e) => {
+      const value = parseInt(e.target.value, 10);
+      switch (value) {
+        case 1:
+          this.refreshInterval = 5000; // 5s – Real-time
+          break;
+        case 2:
+          this.refreshInterval = 15000; // 15s – Standard
+          break;
+        case 3:
+          this.refreshInterval = 30000; // 30s – Slow
+          break;
+        default:
+          this.refreshInterval = 15000;
+      }
+
+      // Save preference
+      localStorage.setItem('hf-refresh-speed', this.refreshInterval);
+
+      // Restart the refresh loop with new interval
+      this.startAutoRefresh();
+    });
+
+    // Restore previous speed setting if available
+    const savedSpeed = parseInt(localStorage.getItem('hf-refresh-speed'), 10);
+    if (savedSpeed) {
+      this.refreshInterval = savedSpeed;
+      this.speedSlider.value =
+        savedSpeed <= 5000 ? 1 : savedSpeed <= 15000 ? 2 : 3;
+    }
+  }
+
+  /* ------------------------------------------------------------
+  🔄 Auto-Refresh Engine Starter
+  ------------------------------------------------------------ */
+
+  /**
+   * Starts or restarts the simulated data refresh timer
+   */
+  static startAutoRefresh() {
+    if (this.refreshTimer) clearInterval(this.refreshTimer);
+    this.refreshTimer = setInterval(() => {
+      // This function will be defined in Part B (data simulation)
+      if (typeof this.updateInsights === 'function') {
+        this.updateInsights();
+      }
+    }, this.refreshInterval);
+  }
+}
+
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  HealthFloInsights.init();
+});
+
 /*
  * HealthFlo AI Insights Engine – Part 1A
  * --------------------------------------
