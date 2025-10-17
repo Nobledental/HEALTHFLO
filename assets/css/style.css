@@ -752,3 +752,137 @@ img.logo-img, .logo img, .no-tint { filter: none !important; mix-blend-mode: nor
   -webkit-text-fill-color: transparent;
   color: transparent;
 }
+
+
+/* ===== HealthFlo: Pure Background + Typography Scale Overrides ===== */
+
+/* 1) Pure backgrounds (day: white, night: matte near-black) */
+:root{
+  --bg: #ffffff;                 /* pure white */
+  --surface: #ffffff;            /* match bg */
+  --surface-glass: #ffffff;      /* no glass haze */
+  --card-bg: #ffffff;            /* crisp white cards */
+  --card-border: rgba(15,23,42,.10);
+  --text: #0b0f1a;               /* deep slate text */
+  --heading: #0b0f1a;
+  --text-muted: #475569;
+  /* keep brand gradients */
+}
+
+[data-theme="dark"]{
+  --bg: #0b0e14;                 /* pure matte near-black */
+  --surface: #0b0e14;            /* match bg */
+  --surface-glass: #0b0e14;      /* no glow */
+  --card-bg: #0f1420;            /* very subtle lift above bg */
+  --card-border: rgba(255,255,255,.08);
+  --text: #e8eef6;
+  --heading: #eef2ff;
+  --text-muted: #9fb0c3;
+}
+
+/* 2) Kill ambient voka layers & any section wash backgrounds */
+.voka-bg,
+.voka-layer,
+.audience-showcase,
+.timeline,
+.testimonials {
+  background: transparent !important;
+}
+.voka-bg { display: none !important; }
+
+/* Header strip should be solid, not frosted */
+.header{
+  background: var(--bg) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-bottom: 1px solid var(--card-border);
+}
+.header.scrolled{ box-shadow: 0 6px 24px rgba(0,0,0,.06); }
+
+/* 3) Hero slab & canvas—no milky overlay */
+.hero-slab{
+  background: var(--card-bg) !important;
+  border: 1px solid var(--card-border) !important;
+  box-shadow: 0 24px 60px rgba(15,23,42,.10);
+}
+.hero-slab canvas{
+  background: transparent !important; /* let pure page bg show */
+}
+
+/* 4) Pure page body */
+body{ background: var(--bg) !important; }
+
+/* 5) Card surfaces—keep crisp, remove glass tints */
+.feature-card,
+.audience-panel,
+.audience-card,
+.step,
+.kpi-row .healthflo-kpi,
+.testimonial-carousel{
+  background: var(--card-bg) !important;
+  border: 1px solid var(--card-border) !important;
+  box-shadow: 0 12px 30px rgba(15,23,42,.08);
+}
+
+/* 6) Typography scale (keep the “previous feel”, sharpen sizes) */
+.eyebrow,
+.section-eyebrow{
+  font-size: clamp(.78rem, .6rem + .3vw, .9rem);
+  letter-spacing: .22em;
+}
+
+.headline{
+  /* big, confident hero type—safe across widths */
+  font-size: clamp(2.25rem, 1.6rem + 3.2vw, 4.2rem);
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+}
+
+.hero .subtext{
+  font-size: clamp(1.05rem, .95rem + .6vw, 1.35rem);
+  line-height: 1.65;
+}
+
+.feature-card h3{
+  font-size: clamp(1.2rem, 1.05rem + .6vw, 1.55rem);
+}
+
+.section-head h2{
+  font-size: clamp(1.6rem, 1.2rem + 2vw, 2.4rem);
+  letter-spacing: -0.01em;
+}
+
+.audience-panel h3{ font-size: clamp(1.25rem, 1.05rem + 1vw, 1.7rem); }
+.audience-card h4{ font-size: clamp(1.05rem, .95rem + .6vw, 1.35rem); }
+
+.healthflo-kpi__value{
+  font-size: clamp(1.4rem, 1.1rem + 1.6vw, 2rem) !important;
+}
+
+/* 7) Keep gradient text effect for the hero only */
+.gradient-text{
+  background: linear-gradient(135deg, #2b2f77, #1dbf73) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+}
+
+/* 8) Remove section tint lines */
+.timeline-steps::before{ opacity: .16; }
+
+/* 9) Controls & quick-links—solid backgrounds */
+.kpi-controls{
+  background: var(--bg) !important;
+  backdrop-filter: none !important;
+  border-bottom: 1px solid var(--card-border) !important;
+}
+.quick-page-nav__links a{
+  background: var(--card-bg) !important;
+  box-shadow: inset 0 0 0 1px var(--card-border);
+}
+
+/* 10) Footer—keep solid slabs (no wash) */
+.footer{ background: #0b0e14 !important; }
+[data-theme="light"] .footer{ background: #0f172a !important; } /* dark slab even in light for strong base */
+.footer-wave{ opacity: .12; }
