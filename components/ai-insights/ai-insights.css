@@ -1,76 +1,88 @@
 /* ============================================================
-📊 HealthFlo AI Insights Drawer Stylesheet
-Version: 1.0 · Author: GPT-5 · 2025
-Purpose: Hybrid tech-luxury visual system with cinematic motion-ready classes
+📊 HealthFlo AI Insights Drawer – Compact Styles
+Goal: Keep it ultra-compact and fully overlayed so it never
+      consumes normal page layout space. Zero reflow.
 ============================================================ */
 
-/* ---------- Root Variables ---------- */
+/* ---------- Host takes no layout space ---------- */
+.hf-ai-insights {
+  position: static;           /* don't create a new stacking context */
+  display: contents;          /* host itself occupies no space */
+  pointer-events: none;       /* disable by default; re-enable on children */
+  z-index: initial;
+}
+
+/* ---------- Root Vars (compact tweaks) ---------- */
 :root {
   --hf-bg: #ffffff;
   --hf-text: #0b172a;
   --hf-muted: #5a6b83;
   --hf-border: #e2e8f0;
   --hf-surface: #f9fafb;
-  --hf-accent-1: #2dd4bf; /* Aqua Mint */
-  --hf-accent-2: #4c6ef5; /* Indigo */
-  --hf-accent-3: #2e7d6c; /* Emerald */
+  --hf-accent-1: #2dd4bf;
+  --hf-accent-2: #4c6ef5;
+  --hf-accent-3: #2e7d6c;
   --hf-positive: #16a34a;
   --hf-negative: #dc2626;
   --hf-neutral: #64748b;
-  --hf-radius: 16px;
-  --hf-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-  --hf-transition: 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-  --hf-drawer-width: 440px;
+
+  /* compact sizing */
+  --hf-radius: 14px;
+  --hf-shadow: 0 10px 26px rgba(0, 0, 0, 0.08);
+  --hf-transition: 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  --hf-drawer-width: 360px;        /* narrower than before */
 }
 
-/* ---------- Drawer Trigger Button ---------- */
+/* Ensure only the actual UI is interactive */
+.hf-ai-insights__trigger,
+.hf-ai-insights__drawer { pointer-events: auto; }
+
+/* ---------- Floating Trigger (smaller) ---------- */
 .hf-ai-insights__trigger {
   position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  padding: 0.9rem 1.8rem;
-  font-weight: 600;
-  font-size: 1rem;
+  inset: auto 1rem 1rem auto; /* bottom-right, tighter */
+  padding: 0.6rem 1rem;
+  font: 600 0.95rem/1 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   color: #fff;
   background: linear-gradient(135deg, var(--hf-accent-2), var(--hf-accent-1));
   border: none;
-  border-radius: 50px;
-  box-shadow: 0 8px 20px rgba(76, 110, 245, 0.3);
+  border-radius: 999px;
+  box-shadow: 0 8px 18px rgba(76, 110, 245, 0.28);
   cursor: pointer;
-  z-index: 1000;
-  transition: var(--hf-transition);
+  z-index: 1500;
+  transition: transform var(--hf-transition), box-shadow var(--hf-transition);
 }
 .hf-ai-insights__trigger:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(76, 110, 245, 0.4);
+  transform: translateY(-1px);
+  box-shadow: 0 12px 26px rgba(76, 110, 245, 0.36);
 }
 
-/* ---------- Drawer Panel ---------- */
+/* ---------- Drawer (overlay, no page shift) ---------- */
 .hf-ai-insights__drawer {
   position: fixed;
   top: 0;
-  right: -100%;
+  right: calc(-1 * var(--hf-drawer-width)); /* fully off-canvas by default */
   width: var(--hf-drawer-width);
-  height: 100vh;
+  height: 100dvh;
   background: var(--hf-bg);
-  box-shadow: -2px 0 28px rgba(0, 0, 0, 0.08);
+  box-shadow: -2px 0 24px rgba(0,0,0,0.08);
   border-left: 1px solid var(--hf-border);
   overflow-y: auto;
-  z-index: 1500;
+  z-index: 1600;
   transition: right var(--hf-transition);
   display: flex;
   flex-direction: column;
+  will-change: right;
+  backdrop-filter: saturate(120%) blur(0px); /* subtle polish without heavy cost */
 }
-.hf-ai-insights.open .hf-ai-insights__drawer {
-  right: 0;
-}
+.hf-ai-insights.open .hf-ai-insights__drawer { right: 0; }
 
-/* ---------- Header ---------- */
+/* ---------- Header (condensed) ---------- */
 .hf-ai-insights__header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.6rem 2rem;
+  padding: 0.9rem 1.1rem;
   border-bottom: 1px solid var(--hf-border);
   background: var(--hf-surface);
   position: sticky;
@@ -78,23 +90,27 @@ Purpose: Hybrid tech-luxury visual system with cinematic motion-ready classes
   z-index: 10;
 }
 .hf-ai-insights__header h2 {
-  font-size: 1.5rem;
-  font-weight: 700;
+  margin: 0;
+  font: 700 1.05rem/1.2 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   color: var(--hf-text);
 }
 .hf-ai-insights__close {
   background: none;
   border: none;
-  font-size: 1.8rem;
+  font-size: 1.25rem;
+  line-height: 1;
   cursor: pointer;
   color: var(--hf-muted);
-  transition: color 0.2s;
+  padding: 0.15rem 0.25rem;
+  border-radius: 8px;
+  transition: background 0.16s, color 0.16s;
 }
 .hf-ai-insights__close:hover {
   color: var(--hf-text);
+  background: rgba(2, 6, 23, 0.04);
 }
 
-/* ---------- Tabs ---------- */
+/* ---------- Tabs (compact) ---------- */
 .hf-ai-insights__tabs {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -102,135 +118,131 @@ Purpose: Hybrid tech-luxury visual system with cinematic motion-ready classes
   background: var(--hf-bg);
 }
 .hf-tab {
-  padding: 1rem;
-  text-align: center;
+  padding: 0.6rem 0.5rem;
   background: transparent;
   border: none;
-  font-size: 0.95rem;
-  font-weight: 600;
+  font: 600 0.9rem/1 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
   color: var(--hf-muted);
+  transition: background 0.16s, color 0.16s, border-color 0.16s;
 }
 .hf-tab.active {
   color: var(--hf-accent-2);
-  border-bottom: 3px solid var(--hf-accent-2);
+  border-bottom: 2px solid var(--hf-accent-2);
 }
-.hf-tab:hover {
-  background: var(--hf-surface);
-}
+.hf-tab:hover { background: var(--hf-surface); }
 
-/* ---------- Panels ---------- */
+/* ---------- Panels (tighter paddings & gaps) ---------- */
 .hf-ai-insights__panels {
-  padding: 2rem;
+  padding: 1.1rem;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
 }
-.hf-tabpanel[hidden] {
-  display: none !important;
-}
+.hf-tabpanel[hidden] { display: none !important; }
 
-/* ---------- Insight Cards ---------- */
+/* ---------- Cards (compact) ---------- */
 .hf-insight-card {
   background: var(--hf-surface);
   border: 1px solid var(--hf-border);
   border-radius: var(--hf-radius);
   box-shadow: var(--hf-shadow);
-  padding: 1.6rem;
+  padding: 0.95rem 1rem;
   transition: transform var(--hf-transition), box-shadow var(--hf-transition);
-  position: relative;
 }
 .hf-insight-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.10);
 }
 .hf-insight-card header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.55rem;
+  gap: 0.5rem;
 }
 .hf-insight-card h3 {
-  font-size: 1.2rem;
-  font-weight: 700;
+  margin: 0;
+  font: 700 1rem/1.2 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   color: var(--hf-text);
 }
 .hf-insight-card p {
-  font-size: 0.95rem;
+  margin: 0 0 0.6rem 0;
+  font: 0.92rem/1.5 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   color: var(--hf-muted);
-  line-height: 1.6;
-  margin-bottom: 1rem;
 }
 
-/* ---------- KPI Change Tags ---------- */
+/* ---------- Change tags (compact chips) ---------- */
 .hf-insight-change {
-  font-size: 0.95rem;
-  font-weight: 700;
-  padding: 0.3rem 0.7rem;
-  border-radius: 50px;
+  font: 700 0.85rem/1 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  padding: 0.22rem 0.55rem;
+  border-radius: 999px;
 }
-.hf-insight-change.positive {
-  background: rgba(22, 163, 74, 0.12);
-  color: var(--hf-positive);
-}
-.hf-insight-change.negative {
-  background: rgba(220, 38, 38, 0.12);
-  color: var(--hf-negative);
-}
-.hf-insight-change.neutral {
-  background: rgba(100, 116, 139, 0.12);
-  color: var(--hf-neutral);
-}
+.hf-insight-change.positive { background: rgba(22,163,74,0.12); color: var(--hf-positive); }
+.hf-insight-change.negative { background: rgba(220,38,38,0.12); color: var(--hf-negative); }
+.hf-insight-change.neutral  { background: rgba(100,116,139,0.12); color: var(--hf-neutral); }
 
-/* ---------- Actions List ---------- */
+/* ---------- Actions (denser) ---------- */
 .hf-actions {
   list-style: none;
-  padding: 0;
   margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  padding: 0;
+  display: grid;
+  gap: 0.35rem;
 }
 .hf-actions li {
   position: relative;
-  padding-left: 1.6rem;
-  font-size: 0.92rem;
+  padding-left: 1.2rem;
+  font: 0.9rem/1.4 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   color: var(--hf-text);
 }
 .hf-actions li::before {
   content: "✓";
   position: absolute;
   left: 0;
+  top: 0.1rem;
   color: var(--hf-accent-3);
   font-weight: 700;
+  font-size: 0.85rem;
 }
 
-/* ---------- Scrollbar ---------- */
-.hf-ai-insights__drawer::-webkit-scrollbar {
-  width: 8px;
+/* ---------- Exec speed control (condensed) ---------- */
+.hf-speed-control {
+  display: grid;
+  gap: 0.35rem;
+  margin-bottom: 0.4rem;
 }
-.hf-ai-insights__drawer::-webkit-scrollbar-thumb {
-  background: var(--hf-accent-2);
-  border-radius: 4px;
+.hf-speed-control label {
+  font: 700 0.9rem/1 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  color: var(--hf-text);
 }
-.hf-ai-insights__drawer::-webkit-scrollbar-track {
-  background: var(--hf-surface);
+.hf-speed-labels {
+  display: flex;
+  justify-content: space-between;
+  font: 0.75rem/1 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  color: var(--hf-muted);
 }
 
-/* ---------- Responsive ---------- */
+/* ---------- Scrollbar (minimal) ---------- */
+.hf-ai-insights__drawer::-webkit-scrollbar { width: 8px; }
+.hf-ai-insights__drawer::-webkit-scrollbar-thumb { background: var(--hf-accent-2); border-radius: 4px; }
+.hf-ai-insights__drawer::-webkit-scrollbar-track { background: var(--hf-surface); }
+
+/* ---------- Mobile tweaks ---------- */
 @media (max-width: 768px) {
-  :root {
-    --hf-drawer-width: 100%;
-  }
-  .hf-ai-insights__trigger {
-    bottom: 1.2rem;
-    right: 1.2rem;
-  }
-  .hf-ai-insights__drawer {
-    width: 100%;
-  }
-  .hf-ai-insights__tabs {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  :root { --hf-drawer-width: 92vw; }       /* still off-canvas overlay */
+  .hf-ai-insights__trigger { inset: auto 0.9rem 0.9rem auto; padding: 0.55rem 0.9rem; font-size: 0.9rem; }
+  .hf-ai-insights__header { padding: 0.8rem 0.9rem; }
+  .hf-ai-insights__tabs { grid-template-columns: repeat(2, 1fr); }
+  .hf-ai-insights__panels { padding: 0.9rem; gap: 0.8rem; }
+  .hf-insight-card { padding: 0.85rem 0.9rem; }
+  .hf-insight-card h3 { font-size: 0.95rem; }
+  .hf-insight-card p  { font-size: 0.9rem; }
 }
+
+/* ---------- Optional: ultra-compact variant ---------- */
+/* Add class .hf-ai-insights--mini to <section id="hf-ai-insights"> to shrink further */
+.hf-ai-insights.hf-ai-insights--mini ~ .hf-ai-insights__drawer,
+.hf-ai-insights.hf-ai-insights--mini .hf-ai-insights__drawer { --hf-drawer-width: 320px; }
+.hf-ai-insights.hf-ai-insights--mini .hf-tab { padding: 0.5rem 0.4rem; font-size: 0.85rem; }
+.hf-ai-insights.hf-ai-insights--mini .hf-insight-card { padding: 0.75rem 0.85rem; }
