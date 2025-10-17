@@ -1,11 +1,17 @@
 <!-- ============================================================
-📊 HealthFlo AI Insights Drawer (Standalone Component)
-Version: 1.0 · Author: GPT-5 · 2025
-Purpose: Intelligent, tabbed, event-driven analytics insight drawer
+📊 HealthFlo AI Insights Drawer (Upgraded, static markup)
+Version: 1.1 · 2025
+- A11y-first (roles, aria-*), keyboard-friendly tabs
+- Matches /assets/js/main.js HealthFloInsights expectations:
+  • IDs: hf-ai-drawer, hf-insights-speed, hf-insights-speed-label
+  • Tabs: Executive / Hospital / Patient / Actions
+  • Panel containers: #hf-exec-cards, #hf-hosp-cards, #hf-patient-cards, #hf-actions-cards
+  • Exec summary text target: #hf-exec-text
+- Progressive enhancement: works without JS; JS enriches content
 ============================================================ -->
 
-<section id="hf-ai-insights" class="hf-ai-insights" aria-label="AI-Powered Insights" hidden>
-  <!-- 🧠 JSON-LD: SoftwareApplication + Dashboard Insight Dataset -->
+<section id="hf-ai-insights" class="hf-ai-insights" aria-label="AI-Powered Insights">
+  <!-- 🧠 JSON-LD -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -29,137 +35,101 @@ Purpose: Intelligent, tabbed, event-driven analytics insight drawer
   }
   </script>
 
-  <!-- 📍 Toggle Button -->
-  <button class="hf-ai-insights__trigger" aria-controls="hf-ai-insights-drawer" aria-expanded="false">
+  <!-- 📍 Sticky Trigger -->
+  <button class="hf-ai-insights__trigger" type="button" aria-controls="hf-ai-drawer" aria-expanded="false">
     🤖 AI Insights
   </button>
 
-  <!-- 🪟 Slide-In Drawer -->
-  <aside id="hf-ai-insights-drawer" class="hf-ai-insights__drawer" role="dialog" aria-modal="false" aria-label="AI Insights Panel">
+  <!-- 🪟 Drawer -->
+  <aside id="hf-ai-drawer" class="hf-ai-insights__drawer" role="dialog" aria-modal="false" aria-label="AI Insights Panel" aria-hidden="true">
     <header class="hf-ai-insights__header">
-      <h2>AI-Powered Insights</h2>
-      <button class="hf-ai-insights__close" aria-label="Close insights panel">✕</button>
+      <h2>AI-Powered Healthcare Insights</h2>
+      <button class="hf-ai-insights__close" type="button" aria-label="Close insights panel">✕</button>
     </header>
 
-    <!-- 📊 Tab Navigation -->
+    <!-- 📊 Tabs -->
     <nav class="hf-ai-insights__tabs" role="tablist">
-      <button class="hf-tab active" role="tab" aria-selected="true" aria-controls="hf-tab-overview" id="tab-overview">📈 Overview</button>
-      <button class="hf-tab" role="tab" aria-selected="false" aria-controls="hf-tab-finance" id="tab-finance">💰 Finance</button>
-      <button class="hf-tab" role="tab" aria-selected="false" aria-controls="hf-tab-patient" id="tab-patient">🏥 Patient Experience</button>
-      <button class="hf-tab" role="tab" aria-selected="false" aria-controls="hf-tab-operations" id="tab-operations">⚙️ Operations</button>
+      <button class="hf-tab active" role="tab" aria-selected="true" aria-controls="tab-exec" id="tab-exec-btn">Executive</button>
+      <button class="hf-tab" role="tab" aria-selected="false" aria-controls="tab-hosp" id="tab-hosp-btn">Hospital</button>
+      <button class="hf-tab" role="tab" aria-selected="false" aria-controls="tab-patient" id="tab-patient-btn">Patient</button>
+      <button class="hf-tab" role="tab" aria-selected="false" aria-controls="tab-actions" id="tab-actions-btn">Actions</button>
     </nav>
 
-    <!-- 📂 Tab Panels -->
+    <!-- 📂 Panels -->
     <div class="hf-ai-insights__panels">
-      
-      <!-- 📈 OVERVIEW TAB -->
-      <section id="hf-tab-overview" class="hf-tabpanel active" role="tabpanel" aria-labelledby="tab-overview">
-        <article class="hf-insight-card">
-          <header>
-            <h3>System Performance Summary</h3>
-            <span class="hf-insight-change positive">↑ 12%</span>
-          </header>
-          <p>Overall revenue cycle efficiency increased significantly this quarter, driven by improved eligibility automation and reduced AR leakage.</p>
-          <ul class="hf-actions">
-            <li>Expand auto-preauth workflows to OPD departments.</li>
-            <li>Integrate denial radar with secondary payors for broader coverage.</li>
-          </ul>
-        </article>
+      <!-- EXECUTIVE -->
+      <section id="tab-exec" class="hf-tabpanel" role="tabpanel" aria-labelledby="tab-exec-btn">
+        <div class="hf-executive-summary">
+          <h3>Executive Summary</h3>
+          <p id="hf-exec-text">Loading executive narrative…</p>
+        </div>
 
-        <article class="hf-insight-card">
-          <header>
-            <h3>Claims Turnaround</h3>
-            <span class="hf-insight-change negative">↓ 5.4 Days</span>
-          </header>
-          <p>Average claims processing time fell below 48 h for the first time, indicating effective coordination between clinical coding and billing teams.</p>
-          <ul class="hf-actions">
-            <li>Introduce predictive coding alerts for high-value claims.</li>
-            <li>Automate follow-ups for pending payor responses beyond 24 h.</li>
-          </ul>
-        </article>
+        <!-- Speed control (wired by JS) -->
+        <div class="hf-speed-control">
+          <label for="hf-insights-speed">Update speed <span id="hf-insights-speed-label">7s</span></label>
+          <input type="range" id="hf-insights-speed" min="3000" max="20000" step="500" value="7000" />
+          <div class="hf-speed-labels"><span>Faster</span><span>Slower</span></div>
+        </div>
+
+        <div class="hf-insights-wrapper" id="hf-exec-cards">
+          <!-- JS will inject narrative cards -->
+          <article class="hf-insight-card">
+            <header>
+              <h3>Revenue Lens</h3>
+              <span class="hf-insight-change positive">positive</span>
+            </header>
+            <p class="hf-insight-text">Cash velocity improving; pre-auth cycle times trending down.</p>
+          </article>
+        </div>
       </section>
 
-      <!-- 💰 FINANCE TAB -->
-      <section id="hf-tab-finance" class="hf-tabpanel" role="tabpanel" aria-labelledby="tab-finance" hidden>
-        <article class="hf-insight-card">
-          <header>
-            <h3>Accounts Receivable (AR) Days</h3>
-            <span class="hf-insight-change positive">↓ 7 Days</span>
-          </header>
-          <p>AR days reduced to 51, improving liquidity and negotiation leverage with payors.</p>
-          <ul class="hf-actions">
-            <li>Review denial appeal timelines to maintain downward momentum.</li>
-            <li>Consider implementing automated write-off detection for aged claims.</li>
-          </ul>
-        </article>
-
-        <article class="hf-insight-card">
-          <header>
-            <h3>Cashless Approval Rate</h3>
-            <span class="hf-insight-change positive">↑ 8.3%</span>
-          </header>
-          <p>Approval rate reached 94.2%, largely due to enhanced pre-admission eligibility verification.</p>
-          <ul class="hf-actions">
-            <li>Expand pre-auth eligibility to outpatient procedures.</li>
-            <li>Launch predictive denial alerts for top five payors.</li>
-          </ul>
-        </article>
+      <!-- HOSPITAL -->
+      <section id="tab-hosp" class="hf-tabpanel" role="tabpanel" aria-labelledby="tab-hosp-btn" hidden>
+        <div class="hf-insights-wrapper" id="hf-hosp-cards">
+          <article class="hf-insight-card">
+            <header>
+              <h3>Denial Radar</h3>
+              <span class="hf-insight-change positive">positive</span>
+            </header>
+            <p class="hf-insight-text">High-risk denials trending down; auto-appeals engaged.</p>
+          </article>
+        </div>
       </section>
 
-      <!-- 🏥 PATIENT TAB -->
-      <section id="hf-tab-patient" class="hf-tabpanel" role="tabpanel" aria-labelledby="tab-patient" hidden>
-        <article class="hf-insight-card">
-          <header>
-            <h3>Patient Satisfaction Index</h3>
-            <span class="hf-insight-change positive">↑ 14%</span>
-          </header>
-          <p>Real-time concierge messaging and transparent claim tracking improved satisfaction scores across inpatient units.</p>
-          <ul class="hf-actions">
-            <li>Expand multilingual support across digital channels.</li>
-            <li>Introduce proactive admission-prep checklists for families.</li>
-          </ul>
-        </article>
-
-        <article class="hf-insight-card">
-          <header>
-            <h3>Discharge Readiness</h3>
-            <span class="hf-insight-change neutral">↔ Stable</span>
-          </header>
-          <p>Discharge workflows remain stable but show opportunities for faster pharmacy-billing sync.</p>
-          <ul class="hf-actions">
-            <li>Automate medication availability checks during pre-discharge review.</li>
-            <li>Enable patient-side discharge notifications to reduce delays.</li>
-          </ul>
-        </article>
+      <!-- PATIENT -->
+      <section id="tab-patient" class="hf-tabpanel" role="tabpanel" aria-labelledby="tab-patient-btn" hidden>
+        <div class="hf-insights-wrapper" id="hf-patient-cards">
+          <article class="hf-insight-card">
+            <header>
+              <h3>Concierge Responsiveness</h3>
+              <span class="hf-insight-change positive">positive</span>
+            </header>
+            <p class="hf-insight-text">TTFA improving; multilingual onboarding completion up.</p>
+          </article>
+        </div>
       </section>
 
-      <!-- ⚙️ OPERATIONS TAB -->
-      <section id="hf-tab-operations" class="hf-tabpanel" role="tabpanel" aria-labelledby="tab-operations" hidden>
-        <article class="hf-insight-card">
-          <header>
-            <h3>Denial Prediction Accuracy</h3>
-            <span class="hf-insight-change positive">↑ 6.5%</span>
-          </header>
-          <p>AI prediction model accuracy improved with retraining on recent datasets, reducing false positives by 22%.</p>
-          <ul class="hf-actions">
-            <li>Enable weekly model retraining for continual accuracy improvement.</li>
-            <li>Integrate coding feedback loops from audit team.</li>
-          </ul>
-        </article>
-
-        <article class="hf-insight-card">
-          <header>
-            <h3>Operational Throughput</h3>
-            <span class="hf-insight-change negative">↓ 4%</span>
-          </header>
-          <p>Slight drop in throughput noted due to staffing gaps in the pre-auth verification queue.</p>
-          <ul class="hf-actions">
-            <li>Optimize scheduling or consider RPA triage bots for after-hours verification.</li>
-            <li>Run a root-cause analysis on queue bottlenecks in last 2 weeks.</li>
-          </ul>
-        </article>
+      <!-- ACTIONS -->
+      <section id="tab-actions" class="hf-tabpanel" role="tabpanel" aria-labelledby="tab-actions-btn" hidden>
+        <div class="hf-insights-wrapper" id="hf-actions-cards">
+          <article class="hf-insight-card">
+            <header><h3>Action • Denial Studio</h3></header>
+            <ul class="hf-actions">
+              <li>Auto-launch appeals for top payors (24h).</li>
+              <li>Batch-resubmit clean high-value claims.</li>
+              <li>Escalate LOS outliers with coder hints.</li>
+            </ul>
+          </article>
+        </div>
       </section>
-
     </div>
   </aside>
 </section>
+
+<!--
+Integration notes:
+- If you are using the upgraded /assets/js/main.js provided earlier, instantiate the
+  drawer against this markup to avoid duplicate UI:
+    new HealthFloInsights(document.getElementById('hf-ai-insights'), { intervalMs: 7000, autoOpenOffset: 520 });
+- Remove any previous automatic constructor that created its own DOM if you use this static component.
+-->
