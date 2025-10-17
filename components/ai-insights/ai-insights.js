@@ -1,560 +1,294 @@
-/* ============================================================
-📊 HealthFlo AI Insights Drawer – Part A
-Author: GPT-5 · 2025
-Purpose: Core drawer logic, tab management, GSAP cinematic animation,
-         and refresh-speed control slider.
-============================================================ */
-
-/* ------------------------------------------------------------
-🪐 CDN Dependencies (Include in <head> or before this script)
----------------------------------------------------------------
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/SplitText.min.js"></script>
------------------------------------------------------------- */
-
-class HealthFloInsights {
-  /**
-   * Initialize the AI Insights drawer
-   * - Sets up elements, events, tab system, GSAP animations
-   * - Starts refresh timer for data updates (controlled by speed slider)
-   */
-  static init(config = {}) {
-    // Configuration object for optional future extensions
-    this.config = {
-      drawerSelector: '.hf-ai-insights__drawer',
-      triggerSelector: '.hf-ai-insights__trigger',
-      closeSelector: '.hf-ai-insights__close',
-      tabSelector: '.hf-tab',
-      panelSelector: '.hf-tabpanel',
-      speedSliderSelector: '#hf-refresh-speed',
-      defaultRefresh: 15000, // default 15 seconds
-      ...config,
-    };
-
-    // Cache DOM elements for reuse
-    this.drawer = document.querySelector(this.config.drawerSelector);
-    this.trigger = document.querySelector(this.config.triggerSelector);
-    this.closeBtn = document.querySelector(this.config.closeSelector);
-    this.tabs = document.querySelectorAll(this.config.tabSelector);
-    this.panels = document.querySelectorAll(this.config.panelSelector);
-    this.speedSlider = document.querySelector(this.config.speedSliderSelector);
-
-    // State
-    this.refreshInterval = this.config.defaultRefresh;
-    this.refreshTimer = null;
-
-    // Initialize all core systems
-    this.bindEvents();
-    this.restoreTabState();
-    this.initGSAPAnimations();
-    this.initSpeedSlider();
-    this.startAutoRefresh();
-  }
-
-  /* ------------------------------------------------------------
-  🧭 Event Binding & Drawer Controls
-  ------------------------------------------------------------ */
-
-  /**
-   * Binds UI events:
-   * - Trigger button click → open drawer
-   * - Close button click → close drawer
-   * - Tab click → switch panel
-   */
-  static bindEvents() {
-    if (this.trigger) {
-      this.trigger.addEventListener('click', () => this.openDrawer());
-    }
-
-    if (this.closeBtn) {
-      this.closeBtn.addEventListener('click', () => this.closeDrawer());
-    }
-
-    // Close drawer on ESC key for accessibility
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') this.closeDrawer();
-    });
-
-    // Tab switching logic
-    this.tabs.forEach((tab) => {
-      tab.addEventListener('click', () => this.switchTab(tab));
-    });
-  }
-
-  /* ------------------------------------------------------------
-  🪩 Drawer Open / Close with GSAP Motion
-  ------------------------------------------------------------ */
-
-  /**
-   * Opens the drawer with a smooth slide-in animation
-   */
-  static openDrawer() {
-    document.body.classList.add('hf-drawer-open');
-
-    // Animate drawer slide-in
-    gsap.to(this.drawer, {
-      right: 0,
-      duration: 0.6,
-      ease: 'power3.out',
-    });
-
-    // Animate cards stagger entrance
-    gsap.from('.hf-insight-card', {
-      opacity: 0,
-      y: 30,
-      duration: 0.7,
-      stagger: 0.08,
-      ease: 'power2.out',
-      delay: 0.2,
-    });
-  }
-
-  /**
-   * Closes the drawer with reverse animation
-   */
-  static closeDrawer() {
-    document.body.classList.remove('hf-drawer-open');
-
-    gsap.to(this.drawer, {
-      right: '-100%',
-      duration: 0.55,
-      ease: 'power2.inOut',
-    });
-  }
-
-  /* ------------------------------------------------------------
-  🧭 Tab System with State Memory
-  ------------------------------------------------------------ */
-
-  /**
-   * Switch between insight tabs
-   * - Updates ARIA states
-   * - Saves active tab to localStorage
-   */
-  static switchTab(tab) {
-    const targetId = tab.dataset.tab;
-
-    // Deactivate all tabs and panels
-    this.tabs.forEach((t) => t.classList.remove('active'));
-    this.panels.forEach((p) => p.setAttribute('hidden', true));
-
-    // Activate selected tab and panel
-    tab.classList.add('active');
-    document.getElementById(targetId)?.removeAttribute('hidden');
-
-    // Save tab state for persistence
-    localStorage.setItem('hf-active-tab', targetId);
-
-    // Trigger re-animation when tab changes
-    gsap.from(`#${targetId} .hf-insight-card`, {
-      opacity: 0,
-      y: 20,
-      duration: 0.6,
-      stagger: 0.1,
-      ease: 'power2.out',
-    });
-  }
-
-  /**
-   * Restore previously active tab on reload
-   */
-  static restoreTabState() {
-    const savedTab = localStorage.getItem('hf-active-tab');
-    if (savedTab) {
-      const savedTabButton = document.querySelector(`[data-tab="${savedTab}"]`);
-      if (savedTabButton) {
-        this.switchTab(savedTabButton);
-        return;
-      }
-    }
-    // Fallback: activate the first tab
-    if (this.tabs[0]) this.switchTab(this.tabs[0]);
-  }
-
-  /* ------------------------------------------------------------
-  ⚙️ GSAP Initial Animation Setup
-  ------------------------------------------------------------ */
-
-  /**
-   * Prepares GSAP defaults and register plugins if available
-   */
-  static initGSAPAnimations() {
-    if (gsap) {
-      gsap.registerPlugin(ScrollTrigger);
-      gsap.defaults({ duration: 0.6, ease: 'power2.out' });
-    }
-  }
-
-  /* ------------------------------------------------------------
-  🕹️ Speed Slider Control
-  ------------------------------------------------------------ */
-
-  /**
-   * Initializes refresh speed slider
-   * - Updates internal refresh interval
-   * - Restarts auto-refresh loop
-   */
-  static initSpeedSlider() {
-    if (!this.speedSlider) return;
-
-    this.speedSlider.addEventListener('input', (e) => {
-      const value = parseInt(e.target.value, 10);
-      switch (value) {
-        case 1:
-          this.refreshInterval = 5000; // 5s – Real-time
-          break;
-        case 2:
-          this.refreshInterval = 15000; // 15s – Standard
-          break;
-        case 3:
-          this.refreshInterval = 30000; // 30s – Slow
-          break;
-        default:
-          this.refreshInterval = 15000;
-      }
-
-      // Save preference
-      localStorage.setItem('hf-refresh-speed', this.refreshInterval);
-
-      // Restart the refresh loop with new interval
-      this.startAutoRefresh();
-    });
-
-    // Restore previous speed setting if available
-    const savedSpeed = parseInt(localStorage.getItem('hf-refresh-speed'), 10);
-    if (savedSpeed) {
-      this.refreshInterval = savedSpeed;
-      this.speedSlider.value =
-        savedSpeed <= 5000 ? 1 : savedSpeed <= 15000 ? 2 : 3;
-    }
-  }
-
-  /* ------------------------------------------------------------
-  🔄 Auto-Refresh Engine Starter
-  ------------------------------------------------------------ */
-
-  /**
-   * Starts or restarts the simulated data refresh timer
-   */
-  static startAutoRefresh() {
-    if (this.refreshTimer) clearInterval(this.refreshTimer);
-    this.refreshTimer = setInterval(() => {
-      // This function will be defined in Part B (data simulation)
-      if (typeof this.updateInsights === 'function') {
-        this.updateInsights();
-      }
-    }, this.refreshInterval);
-  }
-}
-
-// Initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-  HealthFloInsights.init();
-});
-
-/*
- * HealthFlo AI Insights Engine – Part 1A
- * --------------------------------------
- * 📊 Core config, data simulation, delta calculation, and custom event dispatcher.
- * Designed for modular integration into the HealthFlo dashboard and AI narrative systems.
- * Author: HealthFlo Engineering
- * Version: 1.0.0
- * 
- * HOW IT WORKS:
- * - Config object defines refresh intervals, KPI names, thresholds, colors, etc.
- * - A simulation engine generates realistic-but-impressive KPI values.
- * - Delta detection calculates percentage change & trend direction.
- * - Custom `hf:kpiUpdate` events are dispatched every cycle with rich payloads.
+/*!
+ * HealthFlo Insights Drawer
+ * ----------------------------------------------------------
+ * Single-file, production-ready controller for the animated
+ * AI Insights drawer + tabs + speed control + auto-open-on-scroll.
+ *
+ * Features:
+ *  - IIFE, zero external deps (optionally uses GSAP if present)
+ *  - Accessible: ARIA tabs, keyboard, focus management, ESC close
+ *  - Sticky trigger button; slide-in drawer
+ *  - Auto-open when #kpis enters viewport (once; can be disabled)
+ *  - Controls KPI engine speed (5s/15s/30s) via HealthFloKPI.setSpeed()
+ *  - “Pause Live” / “Resume Live” button to disable/enable KPI engine
+ *  - Custom events emitted:
+ *      'hf:insightsOpen'      detail:{source}
+ *      'hf:insightsClose'     detail:{source}
+ *      'hf:insightsTab'       detail:{id}
+ *      'hf:insightsSpeed'     detail:{ms,level}
+ *      'hf:insightsPaused'    detail:{enabled:false}  // or true when resumed
+ *
+ * Persisted Preferences (localStorage):
+ *  - hf-ai-autopen-done: 'true' once auto-open has been triggered
+ *  - hf-kpi-speed: '1' | '2' | '3' (levels) OR a custom ms
+ *  - hf-kpi-enabled: 'true' | 'false' (shared with KPI engine)
  */
 
-(function () {
-  "use strict";
+(() => {
+  const DOC = document;
+  const WIN = window;
 
-  /* ============================================================
-     🔧 CONFIGURATION
-     ============================================================ */
-  const CONFIG = {
-    refreshInterval: 7000, // ⏱ Refresh every 7 seconds
-    deltaSensitivity: 5,   // 📊 % change considered significant
-    sparklinePoints: 10,   // 📈 Number of historical points stored for charts
-    narrativeTone: "advisory-strategic",
-    colorPalette: {
-      up: "#16a34a",      // Emerald green
-      down: "#dc2626",    // Red
-      stable: "#64748b",  // Muted slate
-    },
-    hospitalKPIs: [
-      { name: "Admissions", unit: "patients", range: [420, 550] },
-      { name: "Occupancy Rate", unit: "%", range: [78, 96] },
-      { name: "Claim Approval Rate", unit: "%", range: [88, 98] },
-      { name: "Denial Recovery Rate", unit: "%", range: [84, 97] },
-      { name: "Avg Pre-Auth Time", unit: "s", range: [38, 52] },
-    ],
-    patientKPIs: [
-      { name: "Satisfaction Score", unit: "%", range: [82, 96] },
-      { name: "Readmission Rate", unit: "%", range: [4, 11] },
-      { name: "Avg Wait Time", unit: "min", range: [18, 35] },
-      { name: "Net Promoter Score", unit: "NPS", range: [70, 92] },
-      { name: "Engagement Rate", unit: "%", range: [72, 94] },
-    ],
+  // ------------------------ Safe Selectors ------------------------
+  const $ = (sel, ctx = DOC) => ctx.querySelector(sel);
+  const $$ = (sel, ctx = DOC) => Array.from(ctx.querySelectorAll(sel));
+
+  // Elements (created in index.html)
+  const root = $('#hf-ai-insights');
+  if (!root) return; // Guard if section not present
+
+  const triggerBtn = $('.hf-ai-insights__trigger', root);
+  const drawer = $('#hf-ai-insights-drawer');
+  const closeBtn = $('.hf-ai-insights__close', drawer);
+  const tabs = $$('.hf-tab', drawer);
+  const panels = $$('.hf-tabpanel', drawer);
+  const speedSlider = $('#hf-refresh-speed', drawer);
+  const tabsBar = $('.hf-ai-insights__tabs', drawer);
+  const headerBar = $('.hf-ai-insights__header', drawer);
+
+  // State
+  const STATE = {
+    open: false,
+    hasGSAP: typeof WIN.gsap !== 'undefined',
+    autoOpened: false,
+    focusWas: null
   };
 
-  /* ============================================================
-     🧠 KPI REGISTRY
-     - Internal state storing latest and historical KPI values.
-     ============================================================ */
-  const KPI_STATE = [];
+  // Easing helpers for GSAP (optional)
+  const animateOpen = () => {
+    if (!STATE.hasGSAP) {
+      drawer.style.right = '0';
+      return;
+    }
+    WIN.gsap.to(drawer, { right: 0, duration: 0.5, ease: 'power3.out' });
+  };
+  const animateClose = () => {
+    if (!STATE.hasGSAP) {
+      drawer.style.right = '-100%';
+      return;
+    }
+    WIN.gsap.to(drawer, { right: '-100%', duration: 0.45, ease: 'power3.in' });
+  };
 
-  const initKPIState = () => {
-    const now = new Date().toISOString();
-    const categories = [
-      { group: "hospital", items: CONFIG.hospitalKPIs },
-      { group: "patient", items: CONFIG.patientKPIs },
-    ];
+  // ------------------------ Drawer API ------------------------
+  const open = (source = 'user') => {
+    if (STATE.open) return;
+    STATE.open = true;
 
-    categories.forEach(({ group, items }) => {
-      items.forEach((kpi) => {
-        const initialValue = generateRandomValue(kpi.range);
-        KPI_STATE.push({
-          category: group,
-          name: kpi.name,
-          unit: kpi.unit,
-          value: initialValue,
-          previous: initialValue,
-          delta: 0,
-          trend: "stable",
-          sparkline: Array(CONFIG.sparklinePoints).fill(initialValue),
-          timestamp: now,
+    drawer.setAttribute('aria-modal', 'true');
+    triggerBtn.setAttribute('aria-expanded', 'true');
+    drawer.removeAttribute('inert');
+
+    animateOpen();
+
+    // Move focus to first focusable in the drawer
+    const firstFocusable = drawer.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    STATE.focusWas = DOC.activeElement;
+    (firstFocusable || closeBtn || drawer).focus({ preventScroll: true });
+
+    DOC.dispatchEvent(new CustomEvent('hf:insightsOpen', { detail: { source } }));
+  };
+
+  const close = (source = 'user') => {
+    if (!STATE.open) return;
+    STATE.open = false;
+
+    drawer.setAttribute('aria-modal', 'false');
+    triggerBtn.setAttribute('aria-expanded', 'false');
+    drawer.setAttribute('inert', '');
+
+    animateClose();
+
+    // Return focus to original element
+    try { (STATE.focusWas || triggerBtn).focus({ preventScroll: true }); } catch {}
+
+    DOC.dispatchEvent(new CustomEvent('hf:insightsClose', { detail: { source } }));
+  };
+
+  // Expose minimal control for external scripts if needed
+  WIN.HealthFloInsights = { open, close };
+
+  // ------------------------ Tabs ------------------------
+  const activateTab = (tabBtn) => {
+    if (!tabBtn) return;
+    const targetId = tabBtn.getAttribute('data-tab');
+    const panel = $('#' + targetId);
+    if (!panel) return;
+
+    tabs.forEach(t => {
+      const active = t === tabBtn;
+      t.classList.toggle('active', active);
+      t.setAttribute('aria-selected', String(active));
+    });
+
+    panels.forEach(p => {
+      const active = p === panel;
+      p.classList.toggle('active', active);
+      p.toggleAttribute('hidden', !active);
+    });
+
+    DOC.dispatchEvent(new CustomEvent('hf:insightsTab', { detail: { id: targetId } }));
+  };
+
+  // Click + keyboard on tabs
+  tabs.forEach(t => {
+    t.addEventListener('click', () => activateTab(t));
+    t.addEventListener('keydown', (e) => {
+      const idx = tabs.indexOf ? tabs.indexOf(t) : tabs.findIndex(x => x === t);
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        const next = tabs[(idx + 1) % tabs.length];
+        next.focus(); activateTab(next);
+      }
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        const prev = tabs[(idx - 1 + tabs.length) % tabs.length];
+        prev.focus(); activateTab(prev);
+      }
+    });
+  });
+
+  // ------------------------ Speed Control ------------------------
+  const sliderToMs = (level) => {
+    if (String(level) === '1') return 5000;   // Fast
+    if (String(level) === '3') return 30000;  // Slow
+    return 15000;                              // Standard
+  };
+
+  const applySpeed = (level) => {
+    const ms = sliderToMs(level);
+    try { WIN.localStorage.setItem('hf-kpi-speed', String(level)); } catch {}
+    // Drive KPI engine if present
+    if (WIN.HealthFloKPI?.setSpeed) WIN.HealthFloKPI.setSpeed(level);
+    DOC.dispatchEvent(new CustomEvent('hf:insightsSpeed', { detail: { ms, level } }));
+    return ms;
+  };
+
+  if (speedSlider) {
+    // Load saved speed preference
+    const savedLevel = WIN.localStorage.getItem('hf-kpi-speed');
+    if (savedLevel && ['1','2','3'].includes(savedLevel)) {
+      speedSlider.value = savedLevel;
+      applySpeed(savedLevel);
+    }
+    speedSlider.addEventListener('input', (e) => {
+      const level = e.currentTarget.value;
+      applySpeed(level);
+    });
+  }
+
+  // ------------------------ Pause / Resume Control ------------------------
+  // Create a compact "Pause Live" / "Resume Live" button in header
+  const liveBtn = DOC.createElement('button');
+  liveBtn.className = 'hf-tab';
+  liveBtn.style.marginLeft = 'auto';
+  liveBtn.setAttribute('type', 'button');
+  headerBar?.appendChild(liveBtn);
+
+  const updateLiveBtnLabel = (enabled) => {
+    liveBtn.textContent = enabled ? '⏸︎ Pause Live' : '▶︎ Resume Live';
+  };
+
+  const readKpiEnabled = () => {
+    const saved = WIN.localStorage.getItem('hf-kpi-enabled');
+    return saved === null ? true : saved === 'true';
+  };
+
+  const setKpiEnabled = (flag) => {
+    try { WIN.localStorage.setItem('hf-kpi-enabled', String(!!flag)); } catch {}
+    // Notify KPI engine (it listens to this custom event)
+    DOC.dispatchEvent(new CustomEvent('hf:kpiSetEnabled', { detail: { enabled: !!flag } }));
+    updateLiveBtnLabel(!!flag);
+    DOC.dispatchEvent(new CustomEvent('hf:insightsPaused', { detail: { enabled: !!flag } }));
+  };
+
+  updateLiveBtnLabel(readKpiEnabled());
+
+  liveBtn.addEventListener('click', () => {
+    const currentlyEnabled = readKpiEnabled();
+    setKpiEnabled(!currentlyEnabled);
+  });
+
+  // Alt-click on trigger also toggles live state quickly (power user shortcut)
+  triggerBtn?.addEventListener('click', (e) => {
+    if (e.altKey) {
+      e.preventDefault();
+      setKpiEnabled(!readKpiEnabled());
+      return;
+    }
+    toggleDrawer();
+  });
+
+  // ------------------------ Open/Close wiring ------------------------
+  const toggleDrawer = () => (STATE.open ? close('user') : open('user'));
+
+  triggerBtn?.addEventListener('click', (e) => {
+    if (e.defaultPrevented) return; // handled by altKey path above
+    toggleDrawer();
+  });
+
+  closeBtn?.addEventListener('click', () => close('user'));
+
+  // Close on Escape and when clicking outside the drawer (optional)
+  DOC.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && STATE.open) close('esc');
+  });
+
+  // Click outside: if click is on the overlay area (we don't render overlay in HTML),
+  // we can close when click target is outside drawer & not trigger.
+  DOC.addEventListener('click', (e) => {
+    if (!STATE.open) return;
+    const withinDrawer = drawer.contains(e.target);
+    const isTrigger = triggerBtn.contains?.(e.target);
+    if (!withinDrawer && !isTrigger) close('outside');
+  });
+
+  // ------------------------ Auto-open on KPI viewport ------------------------
+  const autopenKey = 'hf-ai-autopen-done';
+  const autoOpenDone = () => WIN.localStorage.getItem(autopenKey) === 'true';
+  const markAutoOpenDone = () => { try { WIN.localStorage.setItem(autopenKey, 'true'); } catch {} };
+
+  const kpiSection = $('#kpis');
+  if (kpiSection && !autoOpenDone()) {
+    // Use IntersectionObserver; fallback to click hint if unsupported
+    if ('IntersectionObserver' in WIN) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (STATE.autoOpened) return;
+          if (entry.isIntersecting && entry.intersectionRatio > 0.4) {
+            open('autoscroll');
+            STATE.autoOpened = true;
+            markAutoOpenDone();
+            io.disconnect();
+          }
         });
-      });
-    });
-  };
-
-  /* ============================================================
-     🔢 RANDOM VALUE GENERATOR
-     - Produces realistic but slightly impressive simulated values.
-     ============================================================ */
-  const generateRandomValue = ([min, max]) => {
-    const base = Math.random() * (max - min) + min;
-    // Add subtle volatility
-    const volatility = (Math.random() - 0.5) * (max - min) * 0.05;
-    return parseFloat((base + volatility).toFixed(1));
-  };
-
-  /* ============================================================
-     📈 DELTA CALCULATION
-     - Determines change %, direction, and trend status.
-     ============================================================ */
-  const calculateDelta = (previous, current) => {
-    const delta = ((current - previous) / previous) * 100;
-    let trend = "stable";
-    if (delta > CONFIG.deltaSensitivity) trend = "up";
-    else if (delta < -CONFIG.deltaSensitivity) trend = "down";
-    return { delta: parseFloat(delta.toFixed(1)), trend };
-  };
-
-  /* ============================================================
-     🔁 KPI UPDATE CYCLE
-     - Generates new KPI values, updates history, computes deltas.
-     ============================================================ */
-  const updateKPIs = () => {
-    const now = new Date().toISOString();
-
-    KPI_STATE.forEach((kpi) => {
-      const newValue = generateRandomValue(
-        getRangeForKPI(kpi.category, kpi.name)
-      );
-      const { delta, trend } = calculateDelta(kpi.value, newValue);
-
-      // Push new value into sparkline history
-      kpi.sparkline.push(newValue);
-      if (kpi.sparkline.length > CONFIG.sparklinePoints)
-        kpi.sparkline.shift();
-
-      // Update state
-      kpi.previous = kpi.value;
-      kpi.value = newValue;
-      kpi.delta = delta;
-      kpi.trend = trend;
-      kpi.timestamp = now;
-
-      // Dispatch event for each KPI
-      dispatchKPIUpdate(kpi);
-    });
-  };
-
-  /* ============================================================
-     🧭 UTILITY – Get Range for KPI by Name
-     ============================================================ */
-  const getRangeForKPI = (category, name) => {
-    const list =
-      category === "hospital" ? CONFIG.hospitalKPIs : CONFIG.patientKPIs;
-    const match = list.find((k) => k.name === name);
-    return match ? match.range : [0, 100];
-  };
-
-  /* ============================================================
-     📣 DISPATCHER – Emit Custom KPI Events
-     ============================================================ */
-  const dispatchKPIUpdate = (kpi) => {
-    const event = new CustomEvent("hf:kpiUpdate", {
-      detail: {
-        category: kpi.category,
-        name: kpi.name,
-        unit: kpi.unit,
-        value: kpi.value,
-        previous: kpi.previous,
-        delta: kpi.delta,
-        trend: kpi.trend,
-        sparkline: [...kpi.sparkline],
-        timestamp: kpi.timestamp,
-      },
-    });
-    window.dispatchEvent(event);
-  };
-
-  /* ============================================================
-     🚀 INITIALIZATION
-     ============================================================ */
-  initKPIState();
-
-  // Expose state for debugging (optional)
-  window.addEventListener("hf:debug", () => console.table(KPI_STATE));
-
-  // Export initial state event for dashboard to load defaults
-  KPI_STATE.forEach(dispatchKPIUpdate);
-
-  // Part 1B (next) → Auto-refresh loop + sparkline generator orchestration
-
-})();
-
-/*
- * HealthFlo AI Insights Engine – Part 1B
- * --------------------------------------
- * 🔁 Auto-refresh loop, sparkline utilities, orchestration layer.
- * Completes the base layer of the AI KPI engine before UI + narrative modules.
- */
-
-(function () {
-  "use strict";
-
-  /* ============================================================
-     🧠 SPARKLINE UTILITY – Generate Seed History
-     ============================================================ */
-  const generateInitialSparkline = (value, points) => {
-    // Builds a gentle slope around the initial value
-    const spark = [];
-    let v = value;
-    for (let i = 0; i < points; i++) {
-      v += (Math.random() - 0.5) * 2; // subtle variation
-      spark.push(parseFloat(v.toFixed(1)));
+      }, { threshold: [0, 0.4, 0.75] });
+      io.observe(kpiSection);
+    } else {
+      // Fallback: open after first KPI refresh if user scrolled a bit
+      let scrolled = false;
+      WIN.addEventListener('scroll', () => { scrolled = true; }, { passive: true });
+      DOC.addEventListener('hf:refreshComplete', () => {
+        if (!scrolled || STATE.autoOpened) return;
+        STATE.autoOpened = true; markAutoOpenDone(); open('refresh-fallback');
+      }, { once: true });
     }
-    return spark;
+  }
+
+  // ------------------------ Focus outline management (UX polish) ------------------------
+  // Add .is-keyboard-user to body when Tab is used so we can show focus rings only then.
+  const onFirstTab = (e) => {
+    if (e.key !== 'Tab') return;
+    DOC.body.classList.add('is-keyboard-user');
+    WIN.removeEventListener('keydown', onFirstTab);
   };
+  WIN.addEventListener('keydown', onFirstTab);
 
-  /* ============================================================
-     🔄 AUTO-REFRESH LOOP
-     - Ticks every CONFIG.refreshInterval ms.
-     - Generates new KPI values, updates sparkline, dispatches events.
-     ============================================================ */
-  const startRefreshCycle = () => {
-    setInterval(() => {
-      // Custom event: refresh starting
-      window.dispatchEvent(
-        new CustomEvent("hf:refreshStart", { detail: { time: Date.now() } })
-      );
+  // ------------------------ Initial Tab Activation ------------------------
+  // Ensure first tab is active if none marked
+  if (!tabs.find?.(t => t.classList.contains('active'))) {
+    activateTab(tabs[0]);
+  }
 
-      // Update KPIs (function from Part 1A)
-      if (typeof updateKPIs === "function") {
-        updateKPIs();
-      } else {
-        console.warn(
-          "[HealthFloInsights] updateKPIs() not found. Ensure Part 1A is loaded."
-        );
-      }
-
-      // Custom event: refresh complete
-      window.dispatchEvent(
-        new CustomEvent("hf:refreshComplete", { detail: { time: Date.now() } })
-      );
-    }, CONFIG.refreshInterval);
-  };
-
-  /* ============================================================
-     🧭 SCROLL-TRIGGERED INITIALIZATION
-     - Ensures simulation only starts when user scrolls near dashboard.
-     ============================================================ */
-  const setupScrollTrigger = () => {
-    let started = false;
-    const startIfNeeded = () => {
-      if (started) return;
-      if (window.scrollY > 300) {
-        started = true;
-        console.info("[HealthFloInsights] KPI simulation started 🚀");
-        startRefreshCycle();
-        window.removeEventListener("scroll", startIfNeeded);
-      }
-    };
-    window.addEventListener("scroll", startIfNeeded, { passive: true });
-  };
-
-  /* ============================================================
-     📣 ADDITIONAL EVENTS
-     - Allows other modules to request state or force refresh.
-     ============================================================ */
-  window.addEventListener("hf:forceRefresh", () => {
-    console.info("[HealthFloInsights] Manual refresh triggered 🔁");
-    if (typeof updateKPIs === "function") updateKPIs();
-  });
-
-  window.addEventListener("hf:getKPIState", () => {
-    window.dispatchEvent(
-      new CustomEvent("hf:kpiState", { detail: KPI_STATE || [] })
-    );
-  });
-
-  /* ============================================================
-     🧪 DIAGNOSTICS – Useful for development & testing
-     ============================================================ */
-  const diagnosticLog = () => {
-    console.groupCollapsed("📊 [HealthFloInsights] KPI Snapshot");
-    console.table(KPI_STATE);
-    console.groupEnd();
-  };
-  window.addEventListener("hf:log", diagnosticLog);
-
-  /* ============================================================
-     🚀 BOOT SEQUENCE
-     - Seeds sparkline history
-     - Registers scroll-triggered refresh
-     ============================================================ */
-  const boot = () => {
-    if (Array.isArray(KPI_STATE)) {
-      KPI_STATE.forEach((kpi) => {
-        if (!kpi.sparkline || kpi.sparkline.length === 0) {
-          kpi.sparkline = generateInitialSparkline(
-            kpi.value,
-            CONFIG.sparklinePoints
-          );
-        }
-      });
-    }
-
-    // Dispatch initial snapshot
-    KPI_STATE.forEach((kpi) => dispatchKPIUpdate(kpi));
-
-    // Wait for scroll to start simulation
-    setupScrollTrigger();
-
-    console.info(
-      "[HealthFloInsights] Engine initialized ✅ – waiting for scroll to start simulation"
-    );
-  };
-
-  // Fire boot sequence on DOM ready
-  if (document.readyState !== "loading") boot();
-  else document.addEventListener("DOMContentLoaded", boot);
-
+  // ------------------------ Announce ready ------------------------
+  DOC.dispatchEvent(new CustomEvent('hf:insightsReady'));
 })();
