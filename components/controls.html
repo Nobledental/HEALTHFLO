@@ -1,0 +1,116 @@
+<!-- ============================================================
+ 📊 HealthFlo Control Panel Component
+ Sticky Hero Control Bar for Dashboard Analytics
+ Context: SoftwareApplication + Dashboard (AI-powered insights)
+============================================================ -->
+
+<section id="hf-controls" class="hf-controls" role="region" aria-label="Analytics Control Panel">
+  <!-- 🧠 JSON-LD for AI & SEO: SoftwareApplication + Dashboard -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "HealthFlo Analytics",
+    "applicationCategory": "MedicalBusinessApplication",
+    "operatingSystem": "Web",
+    "url": "https://healthflo.ai",
+    "description": "AI-powered healthcare insights platform providing hospital and patient-centric KPI dashboards with interactive analytics.",
+    "softwareVersion": "1.0",
+    "publisher": {
+      "@type": "Organization",
+      "name": "HealthFlo",
+      "url": "https://healthflo.ai"
+    },
+    "featureList": [
+      "Real-time hospital performance KPIs",
+      "Patient engagement metrics",
+      "AI-guided operational insights",
+      "Interactive analytics dashboard"
+    ],
+    "hasPart": {
+      "@type": "Dataset",
+      "name": "Healthcare KPI Dashboard",
+      "description": "Live analytics dashboard with operational, clinical, and patient outcome metrics."
+    }
+  }
+  </script>
+
+  <!-- 🔧 Compact Toggle -->
+  <button class="hf-controls__compact-toggle" aria-expanded="true" aria-controls="hf-controls-panel">
+    <span class="toggle-label">⚙️ Controls</span>
+  </button>
+
+  <div id="hf-controls-panel" class="hf-controls__panel" role="toolbar" aria-label="Dashboard Controls">
+
+    <!-- 🔌 Data Source Status -->
+    <div class="hf-status" aria-live="polite">
+      <div class="hf-status__mode">
+        <span class="hf-status__label">Mode:</span>
+        <strong id="hf-mode-label">Demo Mode</strong>
+      </div>
+      <div class="hf-status__state">
+        <span class="hf-status__label">Status:</span>
+        <span id="hf-connection-status" class="hf-status__indicator hf-status--ok">✅ Connected</span>
+      </div>
+      <div class="hf-status__time">
+        <span class="hf-status__label">Last Sync:</span>
+        <time id="hf-last-sync">--:--:--</time>
+      </div>
+    </div>
+
+    <!-- 📅 Date Range Selector -->
+    <fieldset class="hf-control hf-date-range" role="group" aria-label="Date Range Selector">
+      <legend>Date Range</legend>
+      <select id="hf-date-range-select" aria-label="Select date range">
+        <option value="1d">Today</option>
+        <option value="7d" selected>Last 7 Days</option>
+        <option value="30d">Last 30 Days</option>
+      </select>
+    </fieldset>
+
+    <!-- 🏥 Scope Switcher -->
+    <fieldset class="hf-control hf-scope" role="group" aria-label="Scope Switcher">
+      <legend>Scope</legend>
+      <div class="hf-scope__options">
+        <label>
+          <input type="radio" name="hf-scope" value="hospital" checked />
+          <span>This Hospital</span>
+        </label>
+        <label>
+          <input type="radio" name="hf-scope" value="network" />
+          <span>Entire Network</span>
+        </label>
+      </div>
+    </fieldset>
+
+    <!-- 📊 KPI Filters -->
+    <fieldset class="hf-control hf-filters" role="group" aria-label="KPI Filter Menu">
+      <legend>Show Metrics</legend>
+      <div class="hf-filters__grid">
+        <label>
+          <input type="checkbox" name="kpi-filter" value="clinical" checked />
+          <span>Clinical</span>
+        </label>
+        <label>
+          <input type="checkbox" name="kpi-filter" value="financial" checked />
+          <span>Financial</span>
+        </label>
+        <label>
+          <input type="checkbox" name="kpi-filter" value="patient" checked />
+          <span>Patient</span>
+        </label>
+        <label>
+          <input type="checkbox" name="kpi-filter" value="operational" checked />
+          <span>Operational</span>
+        </label>
+      </div>
+    </fieldset>
+
+    <!-- ⚡ Refresh Speed Control -->
+    <fieldset class="hf-control hf-speed" role="group" aria-label="Refresh Interval">
+      <legend>Refresh Speed</legend>
+      <input type="range" id="hf-refresh-speed" min="3000" max="20000" step="1000" value="8000" />
+      <span id="hf-refresh-label" aria-live="polite">8s</span>
+    </fieldset>
+  </div>
+</section>
