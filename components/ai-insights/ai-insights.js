@@ -1,294 +1,198 @@
-/*!
- * HealthFlo Insights Drawer
- * ----------------------------------------------------------
- * Single-file, production-ready controller for the animated
- * AI Insights drawer + tabs + speed control + auto-open-on-scroll.
- *
- * Features:
- *  - IIFE, zero external deps (optionally uses GSAP if present)
- *  - Accessible: ARIA tabs, keyboard, focus management, ESC close
- *  - Sticky trigger button; slide-in drawer
- *  - Auto-open when #kpis enters viewport (once; can be disabled)
- *  - Controls KPI engine speed (5s/15s/30s) via HealthFloKPI.setSpeed()
- *  - “Pause Live” / “Resume Live” button to disable/enable KPI engine
- *  - Custom events emitted:
- *      'hf:insightsOpen'      detail:{source}
- *      'hf:insightsClose'     detail:{source}
- *      'hf:insightsTab'       detail:{id}
- *      'hf:insightsSpeed'     detail:{ms,level}
- *      'hf:insightsPaused'    detail:{enabled:false}  // or true when resumed
- *
- * Persisted Preferences (localStorage):
- *  - hf-ai-autopen-done: 'true' once auto-open has been triggered
- *  - hf-kpi-speed: '1' | '2' | '3' (levels) OR a custom ms
- *  - hf-kpi-enabled: 'true' | 'false' (shared with KPI engine)
+/*
+ * HealthFlo AI Insights Engine – Combined (Part 1A + 1B)
+ * ------------------------------------------------------
+ * - Config, KPI simulation, delta calc, custom events
+ * - Auto-refresh, sparkline history
+ * - Auto-open drawer when user scrolls near insights
  */
 
-(() => {
-  const DOC = document;
-  const WIN = window;
+(function () {
+  "use strict";
 
-  // ------------------------ Safe Selectors ------------------------
-  const $ = (sel, ctx = DOC) => ctx.querySelector(sel);
-  const $$ = (sel, ctx = DOC) => Array.from(ctx.querySelectorAll(sel));
-
-  // Elements (created in index.html)
-  const root = $('#hf-ai-insights');
-  if (!root) return; // Guard if section not present
-
-  const triggerBtn = $('.hf-ai-insights__trigger', root);
-  const drawer = $('#hf-ai-insights-drawer');
-  const closeBtn = $('.hf-ai-insights__close', drawer);
-  const tabs = $$('.hf-tab', drawer);
-  const panels = $$('.hf-tabpanel', drawer);
-  const speedSlider = $('#hf-refresh-speed', drawer);
-  const tabsBar = $('.hf-ai-insights__tabs', drawer);
-  const headerBar = $('.hf-ai-insights__header', drawer);
-
-  // State
-  const STATE = {
-    open: false,
-    hasGSAP: typeof WIN.gsap !== 'undefined',
-    autoOpened: false,
-    focusWas: null
+  /* ==================== CONFIG ==================== */
+  const CONFIG = {
+    refreshInterval: 7000, // 7s default; user can change with slider in drawer
+    deltaSensitivity: 5,   // % change considered significant
+    sparklinePoints: 10,
+    narrativeTone: "advisory-strategic",
+    colorPalette: { up: "#16a34a", down: "#dc2626", stable: "#64748b" },
+    hospitalKPIs: [
+      { name: "Admissions", unit: "patients", range: [420, 550] },
+      { name: "Occupancy Rate", unit: "%", range: [78, 96] },
+      { name: "Claim Approval Rate", unit: "%", range: [88, 98] },
+      { name: "Denial Recovery Rate", unit: "%", range: [84, 97] },
+      { name: "Avg Pre-Auth Time", unit: "s", range: [38, 52] }
+    ],
+    patientKPIs: [
+      { name: "Satisfaction Score", unit: "%", range: [82, 96] },
+      { name: "Readmission Rate", unit: "%", range: [4, 11] },
+      { name: "Avg Wait Time", unit: "min", range: [18, 35] },
+      { name: "Net Promoter Score", unit: "NPS", range: [70, 92] },
+      { name: "Engagement Rate", unit: "%", range: [72, 94] }
+    ]
   };
 
-  // Easing helpers for GSAP (optional)
-  const animateOpen = () => {
-    if (!STATE.hasGSAP) {
-      drawer.style.right = '0';
-      return;
-    }
-    WIN.gsap.to(drawer, { right: 0, duration: 0.5, ease: 'power3.out' });
-  };
-  const animateClose = () => {
-    if (!STATE.hasGSAP) {
-      drawer.style.right = '-100%';
-      return;
-    }
-    WIN.gsap.to(drawer, { right: '-100%', duration: 0.45, ease: 'power3.in' });
-  };
-
-  // ------------------------ Drawer API ------------------------
-  const open = (source = 'user') => {
-    if (STATE.open) return;
-    STATE.open = true;
-
-    drawer.setAttribute('aria-modal', 'true');
-    triggerBtn.setAttribute('aria-expanded', 'true');
-    drawer.removeAttribute('inert');
-
-    animateOpen();
-
-    // Move focus to first focusable in the drawer
-    const firstFocusable = drawer.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-    STATE.focusWas = DOC.activeElement;
-    (firstFocusable || closeBtn || drawer).focus({ preventScroll: true });
-
-    DOC.dispatchEvent(new CustomEvent('hf:insightsOpen', { detail: { source } }));
-  };
-
-  const close = (source = 'user') => {
-    if (!STATE.open) return;
-    STATE.open = false;
-
-    drawer.setAttribute('aria-modal', 'false');
-    triggerBtn.setAttribute('aria-expanded', 'false');
-    drawer.setAttribute('inert', '');
-
-    animateClose();
-
-    // Return focus to original element
-    try { (STATE.focusWas || triggerBtn).focus({ preventScroll: true }); } catch {}
-
-    DOC.dispatchEvent(new CustomEvent('hf:insightsClose', { detail: { source } }));
-  };
-
-  // Expose minimal control for external scripts if needed
-  WIN.HealthFloInsights = { open, close };
-
-  // ------------------------ Tabs ------------------------
-  const activateTab = (tabBtn) => {
-    if (!tabBtn) return;
-    const targetId = tabBtn.getAttribute('data-tab');
-    const panel = $('#' + targetId);
-    if (!panel) return;
-
-    tabs.forEach(t => {
-      const active = t === tabBtn;
-      t.classList.toggle('active', active);
-      t.setAttribute('aria-selected', String(active));
-    });
-
-    panels.forEach(p => {
-      const active = p === panel;
-      p.classList.toggle('active', active);
-      p.toggleAttribute('hidden', !active);
-    });
-
-    DOC.dispatchEvent(new CustomEvent('hf:insightsTab', { detail: { id: targetId } }));
-  };
-
-  // Click + keyboard on tabs
-  tabs.forEach(t => {
-    t.addEventListener('click', () => activateTab(t));
-    t.addEventListener('keydown', (e) => {
-      const idx = tabs.indexOf ? tabs.indexOf(t) : tabs.findIndex(x => x === t);
-      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-        e.preventDefault();
-        const next = tabs[(idx + 1) % tabs.length];
-        next.focus(); activateTab(next);
-      }
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-        e.preventDefault();
-        const prev = tabs[(idx - 1 + tabs.length) % tabs.length];
-        prev.focus(); activateTab(prev);
-      }
-    });
-  });
-
-  // ------------------------ Speed Control ------------------------
-  const sliderToMs = (level) => {
-    if (String(level) === '1') return 5000;   // Fast
-    if (String(level) === '3') return 30000;  // Slow
-    return 15000;                              // Standard
-  };
-
-  const applySpeed = (level) => {
-    const ms = sliderToMs(level);
-    try { WIN.localStorage.setItem('hf-kpi-speed', String(level)); } catch {}
-    // Drive KPI engine if present
-    if (WIN.HealthFloKPI?.setSpeed) WIN.HealthFloKPI.setSpeed(level);
-    DOC.dispatchEvent(new CustomEvent('hf:insightsSpeed', { detail: { ms, level } }));
-    return ms;
-  };
-
-  if (speedSlider) {
-    // Load saved speed preference
-    const savedLevel = WIN.localStorage.getItem('hf-kpi-speed');
-    if (savedLevel && ['1','2','3'].includes(savedLevel)) {
-      speedSlider.value = savedLevel;
-      applySpeed(savedLevel);
-    }
-    speedSlider.addEventListener('input', (e) => {
-      const level = e.currentTarget.value;
-      applySpeed(level);
-    });
-  }
-
-  // ------------------------ Pause / Resume Control ------------------------
-  // Create a compact "Pause Live" / "Resume Live" button in header
-  const liveBtn = DOC.createElement('button');
-  liveBtn.className = 'hf-tab';
-  liveBtn.style.marginLeft = 'auto';
-  liveBtn.setAttribute('type', 'button');
-  headerBar?.appendChild(liveBtn);
-
-  const updateLiveBtnLabel = (enabled) => {
-    liveBtn.textContent = enabled ? '⏸︎ Pause Live' : '▶︎ Resume Live';
-  };
-
-  const readKpiEnabled = () => {
-    const saved = WIN.localStorage.getItem('hf-kpi-enabled');
-    return saved === null ? true : saved === 'true';
-  };
-
-  const setKpiEnabled = (flag) => {
-    try { WIN.localStorage.setItem('hf-kpi-enabled', String(!!flag)); } catch {}
-    // Notify KPI engine (it listens to this custom event)
-    DOC.dispatchEvent(new CustomEvent('hf:kpiSetEnabled', { detail: { enabled: !!flag } }));
-    updateLiveBtnLabel(!!flag);
-    DOC.dispatchEvent(new CustomEvent('hf:insightsPaused', { detail: { enabled: !!flag } }));
-  };
-
-  updateLiveBtnLabel(readKpiEnabled());
-
-  liveBtn.addEventListener('click', () => {
-    const currentlyEnabled = readKpiEnabled();
-    setKpiEnabled(!currentlyEnabled);
-  });
-
-  // Alt-click on trigger also toggles live state quickly (power user shortcut)
-  triggerBtn?.addEventListener('click', (e) => {
-    if (e.altKey) {
-      e.preventDefault();
-      setKpiEnabled(!readKpiEnabled());
-      return;
-    }
-    toggleDrawer();
-  });
-
-  // ------------------------ Open/Close wiring ------------------------
-  const toggleDrawer = () => (STATE.open ? close('user') : open('user'));
-
-  triggerBtn?.addEventListener('click', (e) => {
-    if (e.defaultPrevented) return; // handled by altKey path above
-    toggleDrawer();
-  });
-
-  closeBtn?.addEventListener('click', () => close('user'));
-
-  // Close on Escape and when clicking outside the drawer (optional)
-  DOC.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && STATE.open) close('esc');
-  });
-
-  // Click outside: if click is on the overlay area (we don't render overlay in HTML),
-  // we can close when click target is outside drawer & not trigger.
-  DOC.addEventListener('click', (e) => {
-    if (!STATE.open) return;
-    const withinDrawer = drawer.contains(e.target);
-    const isTrigger = triggerBtn.contains?.(e.target);
-    if (!withinDrawer && !isTrigger) close('outside');
-  });
-
-  // ------------------------ Auto-open on KPI viewport ------------------------
-  const autopenKey = 'hf-ai-autopen-done';
-  const autoOpenDone = () => WIN.localStorage.getItem(autopenKey) === 'true';
-  const markAutoOpenDone = () => { try { WIN.localStorage.setItem(autopenKey, 'true'); } catch {} };
-
-  const kpiSection = $('#kpis');
-  if (kpiSection && !autoOpenDone()) {
-    // Use IntersectionObserver; fallback to click hint if unsupported
-    if ('IntersectionObserver' in WIN) {
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (STATE.autoOpened) return;
-          if (entry.isIntersecting && entry.intersectionRatio > 0.4) {
-            open('autoscroll');
-            STATE.autoOpened = true;
-            markAutoOpenDone();
-            io.disconnect();
-          }
+  /* ==================== STATE ==================== */
+  const KPI_STATE = [];
+  const initKPIState = () => {
+    const now = new Date().toISOString();
+    [
+      { group: "hospital", items: CONFIG.hospitalKPIs },
+      { group: "patient", items: CONFIG.patientKPIs },
+    ].forEach(({ group, items }) => {
+      items.forEach((kpi) => {
+        const initialValue = generateRandomValue(kpi.range);
+        KPI_STATE.push({
+          category: group,
+          name: kpi.name,
+          unit: kpi.unit,
+          value: initialValue,
+          previous: initialValue,
+          delta: 0,
+          trend: "stable",
+          sparkline: Array(CONFIG.sparklinePoints).fill(initialValue),
+          timestamp: now,
         });
-      }, { threshold: [0, 0.4, 0.75] });
-      io.observe(kpiSection);
-    } else {
-      // Fallback: open after first KPI refresh if user scrolled a bit
-      let scrolled = false;
-      WIN.addEventListener('scroll', () => { scrolled = true; }, { passive: true });
-      DOC.addEventListener('hf:refreshComplete', () => {
-        if (!scrolled || STATE.autoOpened) return;
-        STATE.autoOpened = true; markAutoOpenDone(); open('refresh-fallback');
-      }, { once: true });
-    }
-  }
-
-  // ------------------------ Focus outline management (UX polish) ------------------------
-  // Add .is-keyboard-user to body when Tab is used so we can show focus rings only then.
-  const onFirstTab = (e) => {
-    if (e.key !== 'Tab') return;
-    DOC.body.classList.add('is-keyboard-user');
-    WIN.removeEventListener('keydown', onFirstTab);
+      });
+    });
   };
-  WIN.addEventListener('keydown', onFirstTab);
 
-  // ------------------------ Initial Tab Activation ------------------------
-  // Ensure first tab is active if none marked
-  if (!tabs.find?.(t => t.classList.contains('active'))) {
-    activateTab(tabs[0]);
-  }
+  const generateRandomValue = ([min, max]) => {
+    const base = Math.random() * (max - min) + min;
+    const volatility = (Math.random() - 0.5) * (max - min) * 0.05;
+    return parseFloat((base + volatility).toFixed(1));
+  };
 
-  // ------------------------ Announce ready ------------------------
-  DOC.dispatchEvent(new CustomEvent('hf:insightsReady'));
+  const calculateDelta = (previous, current) => {
+    const delta = ((current - previous) / previous) * 100;
+    let trend = "stable";
+    if (delta > CONFIG.deltaSensitivity) trend = "up";
+    else if (delta < -CONFIG.deltaSensitivity) trend = "down";
+    return { delta: parseFloat(delta.toFixed(1)), trend };
+  };
+
+  const getRangeForKPI = (category, name) => {
+    const list = category === "hospital" ? CONFIG.hospitalKPIs : CONFIG.patientKPIs;
+    const match = list.find((k) => k.name === name);
+    return match ? match.range : [0, 100];
+  };
+
+  const dispatchKPIUpdate = (kpi) => {
+    window.dispatchEvent(new CustomEvent("hf:kpiUpdate", {
+      detail: {
+        category: kpi.category,
+        name: kpi.name,
+        unit: kpi.unit,
+        value: kpi.value,
+        previous: kpi.previous,
+        delta: kpi.delta,
+        trend: kpi.trend,
+        sparkline: [...kpi.sparkline],
+        timestamp: kpi.timestamp,
+      },
+    }));
+  };
+
+  const updateKPIs = () => {
+    const now = new Date().toISOString();
+    KPI_STATE.forEach((kpi) => {
+      const newValue = generateRandomValue(getRangeForKPI(kpi.category, kpi.name));
+      const { delta, trend } = calculateDelta(kpi.value, newValue);
+
+      kpi.sparkline.push(newValue);
+      if (kpi.sparkline.length > CONFIG.sparklinePoints) kpi.sparkline.shift();
+
+      kpi.previous = kpi.value;
+      kpi.value = newValue;
+      kpi.delta = delta;
+      kpi.trend = trend;
+      kpi.timestamp = now;
+
+      dispatchKPIUpdate(kpi);
+    });
+  };
+
+  /* ==================== LOOP & BOOT ==================== */
+  const generateInitialSparkline = (value, points) => {
+    const spark = []; let v = value;
+    for (let i = 0; i < points; i++) { v += (Math.random() - 0.5) * 2; spark.push(parseFloat(v.toFixed(1))); }
+    return spark;
+  };
+
+  const startRefreshCycle = () => {
+    setInterval(() => {
+      window.dispatchEvent(new CustomEvent("hf:refreshStart", { detail: { time: Date.now() } }));
+      updateKPIs();
+      window.dispatchEvent(new CustomEvent("hf:refreshComplete", { detail: { time: Date.now() } }));
+    }, CONFIG.refreshInterval);
+  };
+
+  const setupScrollTrigger = () => {
+    let started = false;
+    const openDrawerOnce = () => {
+      const drawerEl = document.querySelector('.hf-ai-insights__drawer');
+      const host = document.querySelector('.hf-ai-insights');
+      if (!drawerEl || !host) return;
+      host.classList.add('open');
+      // animate in
+      if (window.gsap) {
+        gsap.to(drawerEl, { right: 0, duration: 0.6, ease: 'power3.out' });
+        gsap.from('.hf-insight-card', { opacity: 0, y: 30, duration: 0.7, stagger: 0.08, ease: 'power2.out', delay: 0.15 });
+      } else {
+        drawerEl.style.right = '0';
+      }
+    };
+
+    const startIfNeeded = () => {
+      if (started) return;
+      if (window.scrollY > 300) {
+        started = true;
+        console.info("[HealthFloInsights] KPI simulation started 🚀");
+        startRefreshCycle();
+        openDrawerOnce();
+        window.removeEventListener("scroll", startIfNeeded);
+      }
+    };
+    window.addEventListener("scroll", startIfNeeded, { passive: true });
+  };
+
+  window.addEventListener("hf:forceRefresh", () => updateKPIs());
+  window.addEventListener("hf:getKPIState", () => {
+    window.dispatchEvent(new CustomEvent("hf:kpiState", { detail: KPI_STATE || [] }));
+  });
+
+  const boot = () => {
+    initKPIState();
+
+    // seed sparkline and dispatch initial snapshot
+    KPI_STATE.forEach((kpi) => {
+      if (!kpi.sparkline || kpi.sparkline.length === 0) {
+        kpi.sparkline = generateInitialSparkline(kpi.value, CONFIG.sparklinePoints);
+      }
+      dispatchKPIUpdate(kpi);
+    });
+
+    // speed slider sync
+    const speedSlider = document.getElementById('hf-refresh-speed');
+    if (speedSlider) {
+      const saved = parseInt(localStorage.getItem('hf-refresh-speed'), 10);
+      if (saved) {
+        CONFIG.refreshInterval = saved;
+        speedSlider.value = saved <= 5000 ? 1 : saved <= 15000 ? 2 : 3;
+      }
+      speedSlider.addEventListener('input', (e) => {
+        const val = parseInt(e.target.value, 10);
+        CONFIG.refreshInterval = (val === 1) ? 5000 : (val === 2) ? 15000 : 30000;
+        localStorage.setItem('hf-refresh-speed', CONFIG.refreshInterval);
+        window.dispatchEvent(new CustomEvent('hf:refreshSpeedChanged', { detail: CONFIG.refreshInterval }));
+      });
+    }
+
+    setupScrollTrigger();
+
+    console.info("[HealthFloInsights] Engine initialized ✅ – waiting for scroll to start simulation");
+  };
+
+  if (document.readyState !== "loading") boot();
+  else document.addEventListener("DOMContentLoaded", boot);
 })();
