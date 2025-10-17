@@ -3,17 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
     <title>HealthFlo | AI Revenue Cycle Automation & Patient Concierge</title>
-    <meta
-      name="description"
-      content="HealthFlo is the AI-powered revenue cycle and patient concierge platform built for hospitals to accelerate cashless approvals, recover denials, and delight patients."
-    />
+    <meta name="description" content="HealthFlo is the AI-powered revenue cycle and patient concierge platform built for hospitals to accelerate cashless approvals, recover denials, and delight patients." />
     <link rel="canonical" href="https://www.healthflo.ai/" />
 
     <!-- Open Graph -->
     <meta property="og:title" content="HealthFlo | AI Revenue Cycle Automation & Patient Concierge" />
-    <meta property="og:description" content="AI-first platform that fuses operations, finance, and patient delight." />
+    <meta property="og:description" content="AI-first platform that fuses RCM operations, finance, and patient delight." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.healthflo.ai/" />
     <meta property="og:image" content="assets/images/og-cover.jpg" />
@@ -21,69 +17,35 @@
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="HealthFlo | AI Revenue Cycle Automation & Patient Concierge" />
-    <meta name="twitter:description" content="AI-first platform that fuses operations, finance, and patient delight." />
+    <meta name="twitter:description" content="AI-first platform that fuses RCM operations, finance, and patient delight." />
     <meta name="twitter:image" content="assets/images/og-cover.jpg" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
 
-    <!-- App Styles -->
+    <!-- Styles -->
     <link rel="stylesheet" href="assets/css/style.css" />
 
-    <!-- Favicon → flow-first animated mark -->
+    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="assets/images/healthflo-flowmark.svg" />
 
-    <!-- Structured Data: MedicalBusiness -->
+    <!-- Structured Data -->
     <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "MedicalBusiness",
-        "name": "HealthFlo",
-        "url": "https://www.healthflo.ai",
-        "logo": "https://www.healthflo.ai/assets/images/healthflo-flowmark.svg",
-        "description": "AI-powered revenue cycle automation, denial recovery, and patient concierge services for hospitals and health systems.",
-        "foundingDate": "2024",
-        "areaServed": ["India", "South East Asia"],
-        "serviceType": [
-          "Hospital Revenue Cycle Automation",
-          "Patient Concierge",
-          "Insurance Claim Management"
-        ],
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Bengaluru",
-          "addressRegion": "Karnataka",
-          "addressCountry": "IN"
-        },
-        "contactPoint": {
-          "@type": "ContactPoint",
-          "contactType": "Sales",
-          "email": "hello@healthflo.ai"
-        }
-      }
-    </script>
-
-    <!-- Structured Data: SoftwareApplication + Dashboard hybrid -->
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "HealthFlo Revenue Intelligence",
-        "applicationCategory": "BusinessApplication",
-        "operatingSystem": "Web",
-        "description": "Hybrid revenue intelligence and patient concierge application with live KPI dashboard and advisory AI insights.",
-        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.8",
-          "reviewCount": "127"
-        }
-      }
+    {
+      "@context":"https://schema.org",
+      "@type":"MedicalBusiness",
+      "name":"HealthFlo",
+      "url":"https://www.healthflo.ai",
+      "logo":"https://www.healthflo.ai/assets/images/healthflo-flowmark.svg",
+      "description":"AI-powered revenue cycle automation, denial recovery, and patient concierge for hospitals and health systems.",
+      "foundingDate":"2024",
+      "areaServed":["India","South East Asia"],
+      "serviceType":["Hospital Revenue Cycle Automation","Patient Concierge","Insurance Claim Management"],
+      "address":{"@type":"PostalAddress","addressLocality":"Bengaluru","addressRegion":"Karnataka","addressCountry":"IN"},
+      "contactPoint":{"@type":"ContactPoint","contactType":"Sales","email":"hello@healthflo.ai"}
+    }
     </script>
   </head>
 
@@ -91,27 +53,23 @@
     <!-- Preloader -->
     <div class="preloader" role="status" aria-live="polite">
       <div class="preloader-logo" aria-hidden="true">
-        <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 92 92" xmlns="http://www.w3.org/2000/svg" class="logo-svg">
           <defs>
-            <linearGradient id="preloaderGradient" x1="0" x2="1" y1="0" y2="1">
-              <stop offset="0%" stop-color="#4c6ef5" />
-              <stop offset="100%" stop-color="#2dd4bf" />
+            <linearGradient id="hfSheen" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#2b2f77"/>
+              <stop offset="100%" stop-color="#1dbf73"/>
             </linearGradient>
           </defs>
-          <circle cx="40" cy="40" r="32" fill="rgba(76, 110, 245, 0.08)">
-            <animate attributeName="r" values="24;32;24" dur="2.6s" repeatCount="indefinite" />
-          </circle>
-          <path
-            d="M22 46c6-8 30-8 36 0"
-            stroke="url(#preloaderGradient)"
-            stroke-width="5"
-            stroke-linecap="round"
-            fill="none"
-          >
-            <animate attributeName="stroke-dasharray" values="0 120;120 0;0 120" dur="2.6s" repeatCount="indefinite" />
-          </path>
-          <circle cx="56" cy="26" r="5" fill="url(#preloaderGradient)">
-            <animate attributeName="r" values="3;5;3" dur="2.4s" repeatCount="indefinite" />
+          <g fill="none" stroke="url(#hfSheen)" stroke-width="6" stroke-linecap="round">
+            <path d="M14,60 C32,36 60,36 78,60">
+              <animate attributeName="stroke-dasharray" values="0 300; 220 80; 0 300" dur="2.2s" repeatCount="indefinite"/>
+            </path>
+            <path d="M22,42 C40,22 52,22 70,42" opacity=".55">
+              <animate attributeName="stroke-dashoffset" values="160;0;160" dur="2.2s" repeatCount="indefinite"/>
+            </path>
+          </g>
+          <circle cx="70" cy="24" r="5" fill="url(#hfSheen)">
+            <animate attributeName="r" values="4;6;4" dur="2s" repeatCount="indefinite"/>
           </circle>
         </svg>
       </div>
@@ -119,51 +77,68 @@
     </div>
 
     <!-- Header -->
-    <header class="header" aria-label="Primary navigation">
+    <header class="header" aria-label="Primary">
       <nav class="navbar" aria-label="Main">
-        <a href="index.html" class="logo" aria-label="HealthFlo home">
-          <!-- New flow-first animated mark (no circle/plus) -->
-          <img
-            src="assets/images/healthflo-flowmark.svg"
-            alt="HealthFlo — AI Revenue Intelligence"
-            width="120"
-            height="60"
-            class="logo-img"
-          />
+        <a href="#" class="logo" aria-label="HealthFlo home">
+          <!-- Inline animated logo (visible even if image asset fails) -->
+          <svg class="logo-svg" viewBox="0 0 120 38" role="img" aria-label="HealthFlo">
+            <defs>
+              <linearGradient id="hfMark" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#2b2f77"/>
+                <stop offset="100%" stop-color="#1dbf73"/>
+              </linearGradient>
+              <linearGradient id="hfStroke" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#38bdf8"/>
+                <stop offset="100%" stop-color="#5eead4"/>
+              </linearGradient>
+              <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="2.5" result="blur" />
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <!-- Flowmark -->
+            <g transform="translate(0,2)" filter="url(#glow)">
+              <path d="M6 26 C18 10, 30 10, 42 26" fill="none" stroke="url(#hfStroke)" stroke-width="5" stroke-linecap="round">
+                <animate attributeName="stroke-dasharray" values="0 150; 120 30; 0 150" dur="3s" repeatCount="indefinite"/>
+              </path>
+              <circle cx="42" cy="12" r="3.6" fill="url(#hfMark)">
+                <animate attributeName="r" values="3.6;5;3.6" dur="3s" repeatCount="indefinite"/>
+              </circle>
+            </g>
+            <!-- Wordmark -->
+            <text x="54" y="26" font-family="Space Grotesk, Manrope, system-ui, sans-serif" font-size="18" font-weight="700" fill="url(#hfMark)">
+              HealthFlo
+            </text>
+          </svg>
         </a>
 
-        <button class="mobile-nav-toggle" aria-expanded="false" aria-controls="primary-menu" aria-label="Toggle navigation">
-          ☰
-        </button>
+        <button class="mobile-nav-toggle" aria-expanded="false" aria-controls="primary-menu" aria-label="Toggle navigation">☰</button>
 
         <div class="nav-links" id="primary-menu" role="menubar">
-          <a href="#features" role="menuitem" class="nav-link">Platform</a>
+          <a href="#solutions" role="menuitem" class="nav-link">Platform</a>
           <a href="#how-it-works" role="menuitem" class="nav-link">How it Works</a>
-          <a href="solutions.html" role="menuitem" class="nav-link">Solutions</a>
-          <a href="products.html" role="menuitem" class="nav-link">Products</a>
-          <a href="impact.html" role="menuitem" class="nav-link">Impact</a>
-          <a href="contact.html" role="menuitem" class="nav-link">Contact</a>
+          <a href="#metrics" role="menuitem" class="nav-link">Impact</a>
+          <a href="#testimonials" role="menuitem" class="nav-link">Customers</a>
+          <a href="#final-cta" role="menuitem" class="nav-link">Contact</a>
         </div>
 
         <div class="nav-actions">
-          <button class="theme-toggle" type="button" aria-label="Switch to dark mode">🌙</button>
-          <a class="cta-primary" href="contact.html">Book a Demo</a>
+          <button class="theme-toggle" type="button" aria-label="Toggle theme">🌗</button>
+          <a class="cta-primary" href="#final-cta">Book a Demo</a>
         </div>
       </nav>
     </header>
 
-    <!-- Quick Page Nav -->
+    <!-- Quick Links (smaller) -->
     <nav class="quick-page-nav glass-card" aria-label="Quick page navigator">
-      <button class="quick-page-nav__toggle" type="button" aria-expanded="false">
-        Quick Links
-        <span aria-hidden="true">▾</span>
-      </button>
+      <button class="quick-page-nav__toggle" type="button" aria-expanded="false">Quick Links <span aria-hidden="true">▾</span></button>
       <div class="quick-page-nav__links" role="list">
-        <a href="index.html" role="listitem" data-page="home">Home</a>
-        <a href="solutions.html" role="listitem" data-page="solutions">Solutions</a>
-        <a href="products.html" role="listitem" data-page="products">Products</a>
-        <a href="impact.html" role="listitem" data-page="impact">Impact</a>
-        <a href="contact.html" role="listitem" data-page="contact">Contact</a>
+        <a href="#hero" role="listitem">Overview</a>
+        <a href="#solutions" role="listitem">Platform</a>
+        <a href="#audiences" role="listitem">Journeys</a>
+        <a href="#how-it-works" role="listitem">How it Works</a>
+        <a href="#metrics" role="listitem">KPIs</a>
+        <a href="#final-cta" role="listitem">Talk to Us</a>
       </div>
     </nav>
 
@@ -172,59 +147,35 @@
       <section id="hero" class="hero full-height" aria-labelledby="hero-title">
         <div class="hero-content">
           <span class="eyebrow">Revenue Intelligence Platform</span>
-          <h1 id="hero-title" class="headline">HealthFlo choreographs cash, care, and coverage as one journey.</h1>
-          <p class="subtext">
-            Precision automation meets concierge-grade communication. HealthFlo unifies pre-auth, billing, denial recovery, and patient concierge in a single narrative designed for modern hospitals.
-          </p>
+          <h1 id="hero-title" class="headline gradient-text">HealthFlo choreographs cash, care, and coverage as one journey.</h1>
+          <p class="subtext">Precision automation meets concierge-grade communication. HealthFlo unifies cashless pre-auth, medical coding, denial recovery, and patient concierge—built for hospital-scale operations.</p>
           <div class="cta-group" role="group" aria-label="Primary calls to action">
-            <a href="contact.html" class="cta-primary">Book a Demo</a>
-            <a href="#solutions" class="cta-secondary">See Solutions</a>
+            <a href="#final-cta" class="cta-primary">Book a Demo</a>
+            <a href="#solutions" class="button-ghost">See the Platform</a>
           </div>
           <dl class="hero-metrics" aria-label="Hero performance metrics">
-            <div>
-              <dt>Hospitals orchestrated</dt>
-              <dd>570+</dd>
-            </div>
-            <div>
-              <dt>Claims accelerated</dt>
-              <dd>150K+</dd>
-            </div>
+            <div><dt>Hospitals orchestrated</dt><dd>570+</dd></div>
+            <div><dt>Claims accelerated</dt><dd>150K+</dd></div>
           </dl>
         </div>
 
-        <!-- Hero Visual + Canvas Particles (Micro-Cell / Nebula / Data Stream) -->
         <div class="hero-visual parallax" aria-hidden="true">
           <div class="hero-slab">
             <svg viewBox="0 0 460 360" role="img" aria-label="AI revenue orchestration visuals">
               <defs>
-                <linearGradient id="heroGradient" x1="0" x2="1" y1="0" y2="1">
-                  <stop offset="0%" stop-color="#e2e8f0" />
-                  <stop offset="100%" stop-color="#c7d2fe" />
-                </linearGradient>
                 <linearGradient id="heroAccent" x1="0" x2="1" y1="0" y2="1">
-                  <stop offset="0%" stop-color="#4c6ef5" />
-                  <stop offset="100%" stop-color="#2dd4bf" />
+                  <stop offset="0%" stop-color="#2b2f77" />
+                  <stop offset="100%" stop-color="#1dbf73" />
                 </linearGradient>
               </defs>
-              <rect x="24" y="28" width="412" height="304" rx="28" fill="url(#heroGradient)" opacity="0.55" />
-              <rect x="60" y="66" width="340" height="124" rx="22" fill="#ffffff" opacity="0.9" />
-              <rect x="60" y="210" width="156" height="98" rx="18" fill="#ffffff" opacity="0.85" />
-              <rect x="236" y="210" width="164" height="98" rx="18" fill="#f8fafc" opacity="0.95" />
+              <rect x="24" y="28" width="412" height="304" rx="28" fill="rgba(148,163,184,.22)" />
               <g stroke="url(#heroAccent)" stroke-width="4" stroke-linecap="round">
-                <path d="M112 118h120" opacity="0.6" />
-                <path d="M112 138h160" opacity="0.4" />
-                <path d="M112 158h102" opacity="0.25" />
+                <path d="M112 118h120" opacity="0.8"/>
+                <path d="M112 138h160" opacity="0.5"/>
+                <path d="M112 158h102" opacity="0.3"/>
               </g>
-              <g fill="#4c6ef5">
-                <circle cx="110" cy="110" r="8" />
-                <circle cx="142" cy="110" r="8" />
-                <circle cx="174" cy="110" r="8" />
-              </g>
-              <g fill="#2dd4bf">
-                <rect x="256" y="232" width="120" height="16" rx="8" opacity="0.85" />
-                <rect x="256" y="262" width="96" height="16" rx="8" opacity="0.65" />
-                <rect x="256" y="292" width="138" height="16" rx="8" opacity="0.45" />
-              </g>
+              <g fill="#38bdf8"><circle cx="110" cy="110" r="8"/><circle cx="142" cy="110" r="8"/><circle cx="174" cy="110" r="8"/></g>
+              <g fill="#5eead4"><rect x="256" y="232" width="120" height="16" rx="8"/><rect x="256" y="262" width="96" height="16" rx="8"/><rect x="256" y="292" width="138" height="16" rx="8"/></g>
             </svg>
             <canvas id="hero-animation" aria-hidden="true"></canvas>
           </div>
@@ -234,163 +185,123 @@
       <!-- Geo marquee -->
       <section class="geo-marquee" aria-label="HealthFlo operating cities" data-animate>
         <div class="geo-marquee__track">
-          <span>Chennai HQ</span>
-          <span>Bengaluru Command Hub</span>
-          <span>Hyderabad RCM Lab</span>
-          <span>Mumbai Network Desk</span>
-          <span>Delhi NCR Advocacy</span>
-          <span>Pune Cashless Pod</span>
-          <span>Goa Clinical Partners</span>
-          <span>Kerala Care Grid</span>
-          <span>Andhra Empanelment Team</span>
-          <span>Telangana Recovery Wing</span>
-          <span>Chhattisgarh Outreach</span>
-          <span>Tamil Nadu Specialist Desk</span>
+          <span>Chennai HQ</span><span>Bengaluru Command Hub</span><span>Hyderabad RCM Lab</span><span>Mumbai Network Desk</span>
+          <span>Delhi NCR Advocacy</span><span>Pune Cashless Pod</span><span>Goa Clinical Partners</span><span>Kerala Care Grid</span>
+          <span>Andhra Empanelment Team</span><span>Telangana Recovery Wing</span><span>Chhattisgarh Outreach</span><span>Tamil Nadu Specialist Desk</span>
         </div>
       </section>
 
-      <!-- Features -->
+      <!-- Platform -->
       <section id="solutions" class="features section" aria-labelledby="features-title">
         <header class="section-head">
-          <span class="section-eyebrow">Platform chapters</span>
+          <span class="section-eyebrow">Platform Chapters</span>
           <h2 id="features-title" class="gsap-reveal">Healthcare revenue cycle superpowers</h2>
-          <p class="gsap-reveal">
-            Each module advances the storyline from admission to discharge, pairing intelligent workflows with human-grade updates.
-          </p>
+          <p class="gsap-reveal">Advance the storyline from intake to discharge with explainable AI, payer-grade compliance, and patient-first messaging.</p>
         </header>
         <div class="feature-grid" role="list">
-          <article class="feature-card hover-tilt gsap-stagger" role="listitem">
-            <h3>AI EMR Co-Pilot</h3>
-            <p>Auto-scribe encounters, pre-fill insurance packets, and close clinical loops with explainable AI built on HL7/FHIR pipes.</p>
+          <article class="feature-card hover-tilt" role="listitem">
+            <span class="tag">EMR Co-Pilot</span>
+            <h3>AI Clinical & Coding Co-Pilot</h3>
+            <p>Auto-scribe encounters, map ICD-10/HCPCS, and validate medical necessity with HL7/FHIR pipes and audit trails.</p>
           </article>
-          <article class="feature-card hover-tilt gsap-stagger" role="listitem">
-            <h3>Cashless Billing Engine</h3>
-            <p>Trigger eligibility, compile documents, and secure approvals in <strong>45 seconds</strong>—with transparent checkpoints for patients.</p>
+          <article class="feature-card hover-tilt" role="listitem">
+            <span class="tag">Cashless</span>
+            <h3>Pre-Auth & Cashless Automation</h3>
+            <p>Trigger eligibility, compile packets, and secure approvals in under a minute with payer SLA radar.</p>
           </article>
-          <article class="feature-card hover-tilt gsap-stagger" role="listitem">
+          <article class="feature-card hover-tilt" role="listitem">
+            <span class="tag">Denials</span>
             <h3>Denial Recovery Studio</h3>
-            <p>Predict denials, automate appeals, and unlock <strong>98% claim recovery</strong> across payors with cinematic clarity.</p>
+            <p>Predict denials, launch auto-appeals, and improve yield with root-cause analytics and evidence kits.</p>
           </article>
-          <article class="feature-card hover-tilt gsap-stagger" role="listitem">
+          <article class="feature-card hover-tilt" role="listitem">
+            <span class="tag">Concierge</span>
             <h3>Patient Concierge</h3>
-            <p>Concierge, financing, and WhatsApp updates that keep families calm, informed, and ready for every hospital milestone.</p>
+            <p>WhatsApp updates, multilingual onboarding, and zero-interest financing to lift CSAT and reduce LOS.</p>
           </article>
         </div>
       </section>
 
-      <!-- Audience Showcase -->
+      <!-- Audiences -->
       <section id="audiences" class="audience-showcase section" aria-labelledby="audiences-title">
         <header class="section-head">
-          <span class="section-eyebrow">Dual-view storytelling</span>
+          <span class="section-eyebrow">Dual-view Storytelling</span>
           <h2 id="audiences-title" class="gsap-reveal">Tailored journeys for hospitals & patients</h2>
           <p class="gsap-reveal">Switch between leadership control rooms and bedside guidance with cinematic previews of each orbit.</p>
         </header>
 
         <div class="audience-toggle" role="tablist">
           <button class="audience-tab active" type="button" role="tab" aria-selected="true" aria-controls="audience-hospitals" data-target="audience-hospitals">
-            <span class="audience-tab__icon" aria-hidden="true">
-              <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <linearGradient id="audienceHospitalsGradient" x1="0" x2="1" y1="0" y2="1">
-                    <stop offset="0%" stop-color="#4c6ef5" />
-                    <stop offset="100%" stop-color="#2dd4bf" />
-                  </linearGradient>
-                </defs>
-                <rect x="6" y="8" width="20" height="18" rx="4" fill="rgba(15,23,42,0.78)" />
-                <path d="M16 12v6" stroke="url(#audienceHospitalsGradient)" stroke-width="2" stroke-linecap="round" />
-                <path d="M13 15h6" stroke="url(#audienceHospitalsGradient)" stroke-width="2" stroke-linecap="round" />
-                <path d="M8 24h16" stroke="rgba(100,116,139,0.6)" stroke-width="1.5" stroke-linecap="round" />
-              </svg>
-            </span>
-            <span class="audience-tab__label">Hospitals</span>
+            <span class="audience-tab__icon" aria-hidden="true"></span><span>Hospitals</span>
           </button>
-
           <button class="audience-tab" type="button" role="tab" aria-selected="false" aria-controls="audience-patients" data-target="audience-patients">
-            <span class="audience-tab__icon" aria-hidden="true">
-              <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <linearGradient id="audiencePatientsGradient" x1="0" x2="1" y1="0" y2="1">
-                    <stop offset="0%" stop-color="#2dd4bf" />
-                    <stop offset="100%" stop-color="#4c6ef5" />
-                  </linearGradient>
-                </defs>
-                <circle cx="16" cy="12" r="6" fill="rgba(45,212,191,0.22)" />
-                <path d="M12 12c0-2.2 1.8-4 4-4s4 1.8 4 4" stroke="url(#audiencePatientsGradient)" stroke-width="2" stroke-linecap="round" />
-                <path d="M8 25c1.6-4.4 5.4-7 8-7s6.4 2.6 8 7" stroke="rgba(148,163,184,0.6)" stroke-width="1.5" stroke-linecap="round" />
-                <path d="M11 26h10" stroke="url(#audiencePatientsGradient)" stroke-width="2" stroke-linecap="round" />
-              </svg>
-            </span>
-            <span class="audience-tab__label">Patients</span>
+            <span class="audience-tab__icon" aria-hidden="true"></span><span>Patients</span>
           </button>
         </div>
 
         <div class="audience-panels">
           <article id="audience-hospitals" class="audience-panel active" role="tabpanel">
             <div class="audience-panel__content">
-              <h3>For Hospital CFOs & Operations Chiefs</h3>
-              <p>Launch an AI revenue command center with denial predictions, automation studios, and compliance co-pilots.</p>
+              <h3>For CFOs & Operations</h3>
+              <p>Spin up an AI revenue command center with autonomous workflows and governance baked in.</p>
               <ul class="audience-list">
-                <li>Unified RCM cockpit and AR intelligence layers.</li>
-                <li>Predictive denial studio with autonomous appeals.</li>
-                <li>Cashless packet automation and payor SLA radar.</li>
+                <li>Unified RCM cockpit with AR intelligence and cash forecasting.</li>
+                <li>Predictive denial radar with auto-appeal playbooks.</li>
+                <li>Cashless packet builder and payer SLA telemetry.</li>
               </ul>
               <div class="audience-ctas">
-                <a href="solutions.html#hospitals" class="cta-primary">Explore Hospital Solutions</a>
-                <a href="products.html#hospital-modules" class="cta-secondary">View Hospital Modules</a>
+                <a href="#final-cta" class="cta-primary">Explore Hospital Solutions</a>
+                <a href="#solutions" class="button-ghost">View Product Modules</a>
               </div>
             </div>
             <div class="audience-panel__media">
-              <div class="audience-track">
-                <div class="audience-card glass-card" data-motion="left">
-                  <span class="audience-card__tag">Command Center</span>
-                  <h4>RCM Control Hub</h4>
-                  <p>Real-time AR, escalations, and cash projections with cinematic dashboards.</p>
-                </div>
-                <div class="audience-card glass-card" data-motion="center">
-                  <span class="audience-card__tag">Automation</span>
-                  <h4>Auto Packet Builder</h4>
-                  <p>Compile eligibility, diagnostics, and narratives with one swipe.</p>
-                </div>
-                <div class="audience-card glass-card" data-motion="right">
-                  <span class="audience-card__tag">AI Insight</span>
-                  <h4>Denial Radar</h4>
-                  <p>Surface high-risk claims and auto-launch appeal workflows instantly.</p>
-                </div>
+              <div class="audience-card">
+                <span class="tag">Command</span>
+                <h4>RCM Control Hub</h4>
+                <p>Real-time AR, escalations, and cash projections with variance alerts.</p>
+              </div>
+              <div class="audience-card">
+                <span class="tag">Automation</span>
+                <h4>Auto Packet Builder</h4>
+                <p>Compile eligibility, diagnostics, narratives, and e-signs in one sweep.</p>
+              </div>
+              <div class="audience-card">
+                <span class="tag">Insights</span>
+                <h4>Denial Radar</h4>
+                <p>Surface high-risk claims and auto-launch appeal workflows instantly.</p>
               </div>
             </div>
           </article>
 
           <article id="audience-patients" class="audience-panel" role="tabpanel" hidden>
             <div class="audience-panel__content">
-              <h3>For Patients & Family Experience Teams</h3>
+              <h3>For Patient Experience</h3>
               <p>Deliver concierge-grade support with transparent claims, live chat, and compassionate financing.</p>
               <ul class="audience-list">
                 <li>Guided admissions with multilingual onboarding.</li>
                 <li>WhatsApp concierge, notifications, and escalations.</li>
-                <li>Embedded zero-interest financing and claim journey tracker.</li>
+                <li>Zero-interest financing and a real-time claim tracker.</li>
               </ul>
               <div class="audience-ctas">
-                <a href="solutions.html#patients" class="cta-primary">Explore Patient Solutions</a>
-                <a href="products.html#patient-modules" class="cta-secondary">View Patient Modules</a>
+                <a href="#final-cta" class="cta-primary">Explore Patient Solutions</a>
+                <a href="#solutions" class="button-ghost">Patient Modules</a>
               </div>
             </div>
             <div class="audience-panel__media">
-              <div class="audience-track">
-                <div class="audience-card glass-card" data-motion="left">
-                  <span class="audience-card__tag">Concierge</span>
-                  <h4>24/7 Guidance</h4>
-                  <p>Live chat, bedside coordinators, and digital kiosks syncing every update.</p>
-                </div>
-                <div class="audience-card glass-card" data-motion="center">
-                  <span class="audience-card__tag">Financing</span>
-                  <h4>Zero-Interest Plans</h4>
-                  <p>Pre-approved medical credit lines with transparent repayment journeys.</p>
-                </div>
-                <div class="audience-card glass-card" data-motion="right">
-                  <span class="audience-card__tag">Transparency</span>
-                  <h4>Claim Tracker</h4>
-                  <p>Swipe-through claims, docs, and SLA timers for every caregiver.</p>
-                </div>
+              <div class="audience-card">
+                <span class="tag">Concierge</span>
+                <h4>24/7 Guidance</h4>
+                <p>Live chat, bedside coordinators, and kiosk updates—always in sync.</p>
+              </div>
+              <div class="audience-card">
+                <span class="tag">Finance</span>
+                <h4>Zero-Interest Plans</h4>
+                <p>Pre-approved medical lines with transparent repayment journeys.</p>
+              </div>
+              <div class="audience-card">
+                <span class="tag">Transparency</span>
+                <h4>Claim Tracker</h4>
+                <p>Swipe-through docs and timers for every payer checkpoint.</p>
               </div>
             </div>
           </article>
@@ -398,76 +309,79 @@
       </section>
 
       <!-- How it Works -->
-      <section id="how-it-works" class="timeline section parallax-bg" aria-labelledby="how-title">
+      <section id="how-it-works" class="timeline section" aria-labelledby="how-title">
         <header class="section-head">
-          <span class="section-eyebrow">Four-beat sequence</span>
+          <span class="section-eyebrow">Four-beat Sequence</span>
           <h2 id="how-title" class="gsap-reveal">How HealthFlo Works</h2>
-          <p class="gsap-reveal">A four-step orchestration engine woven into your HIS, payors, and patient journeys.</p>
+          <p class="gsap-reveal">A four-step orchestration engine woven into your HIS, payers, and patient journeys.</p>
         </header>
         <div class="timeline-steps" role="list">
-          <div class="step gsap-scroll" role="listitem">
-            <h3>Intake & Verification</h3>
-            <p>Digitize admissions with ID capture, policy fetch, and AI-powered triage.</p>
-          </div>
-          <div class="step gsap-scroll" role="listitem">
-            <h3>Automated Coding</h3>
-            <p>Unified coding cockpit with medical necessity checks and audit-ready packets.</p>
-          </div>
-          <div class="step gsap-scroll" role="listitem">
-            <h3>Cashless Claiming</h3>
-            <p>Pre-auth autopilot that compiles docs, submits to payors, and tracks SLAs.</p>
-          </div>
-          <div class="step gsap-scroll" role="listitem">
-            <h3>Revenue Insights</h3>
-            <p>Dynamic dashboards spotlight leakages, AR aging, and CFO-ready forecasts.</p>
-          </div>
+          <div class="step" role="listitem"><h3>Intake & Verification</h3><p>Digitize admissions with ID capture, policy fetch, and AI triage.</p></div>
+          <div class="step" role="listitem"><h3>Automated Coding</h3><p>ICD-10/HCPCS mapping, medical necessity checks, and audit-ready packets.</p></div>
+          <div class="step" role="listitem"><h3>Cashless Claiming</h3><p>Pre-auth autopilot compiles docs, submits to payers, and tracks SLAs.</p></div>
+          <div class="step" role="listitem"><h3>Revenue Intelligence</h3><p>Dashboards for leakage, AR aging, yield, and CFO-grade forecasts.</p></div>
         </div>
       </section>
 
-      <!-- KPI Controls (Sticky, above dashboard) -->
+      <!-- KPI Controls -->
       <aside class="kpi-controls kpi-controls--sticky" aria-label="KPI auto-update controls">
         <div class="kpi-controls__row">
           <div class="kpi-controls__group">
-            <label for="hf-speed-range">Update speed: <span id="hf-speed-label" aria-live="polite"></span></label>
-            <input id="hf-speed-range" type="range" min="3000" max="20000" step="500" aria-describedby="hf-speed-help" />
-            <small id="hf-speed-help" class="sr-only">Adjust how frequently KPI values auto-update.</small>
+            <label for="hf-speed-range">Update speed: <span id="hf-speed-label" aria-live="polite">6s</span></label>
+            <input id="hf-speed-range" type="range" min="3000" max="20000" step="500" value="6000" />
           </div>
           <div class="kpi-controls__group kpi-controls__group--toggle">
-            <input type="checkbox" id="hf-auto-toggle" aria-describedby="hf-auto-help" checked />
+            <input type="checkbox" id="hf-auto-toggle" checked />
             <label for="hf-auto-toggle">Auto-update</label>
-            <small id="hf-auto-help" class="sr-only">Turn KPI auto-updates on or off.</small>
           </div>
         </div>
       </aside>
 
-      <!-- KPI Metrics Dashboard Host -->
+      <!-- KPI Metrics -->
       <section id="metrics" class="metrics section" aria-label="Key metrics">
-        <!-- Host element detected by JS (HealthFloDashboard) -->
         <div class="kpi-strip glass-card" data-hf-kpi-host>
-          <div class="kpi-row" role="list" aria-label="Live KPI dashboard"></div>
+          <div class="kpi-row" role="list" aria-label="Live KPI dashboard">
+            <!-- Example cards (host your component here) -->
+            <div class="healthflo-kpi" role="listitem">
+              <div class="healthflo-kpi__label">Cashless Turnaround</div>
+              <div class="healthflo-kpi__value-row">
+                <div class="healthflo-kpi__value">00:47</div><span class="healthflo-kpi__unit">min</span>
+                <span class="healthflo-kpi__delta --up">+12%</span>
+              </div>
+              <div class="healthflo-kpi__spark"></div>
+            </div>
+            <div class="healthflo-kpi" role="listitem">
+              <div class="healthflo-kpi__label">Denial Recovery</div>
+              <div class="healthflo-kpi__value-row">
+                <div class="healthflo-kpi__value">98%</div><span class="healthflo-kpi__unit">yield</span>
+                <span class="healthflo-kpi__delta --up">+4.2%</span>
+              </div>
+              <div class="healthflo-kpi__spark"></div>
+            </div>
+            <div class="healthflo-kpi" role="listitem">
+              <div class="healthflo-kpi__label">DSO</div>
+              <div class="healthflo-kpi__value-row">
+                <div class="healthflo-kpi__value">23</div><span class="healthflo-kpi__unit">days</span>
+                <span class="healthflo-kpi__delta --down">-3d</span>
+              </div>
+              <div class="healthflo-kpi__spark"></div>
+            </div>
+          </div>
         </div>
       </section>
 
       <!-- Testimonials -->
       <section id="testimonials" class="testimonials section" aria-labelledby="testimonial-title">
         <header class="section-head">
-          <span class="section-eyebrow">Proof in the field</span>
+          <span class="section-eyebrow">Proof in the Field</span>
           <h2 id="testimonial-title" class="gsap-reveal">Trusted across India</h2>
-          <p class="gsap-reveal">Leading hospital groups rely on HealthFlo to run revenue cycle as a growth engine.</p>
+          <p class="gsap-reveal">Hospital groups rely on HealthFlo to run RCM as a growth engine.</p>
         </header>
         <div class="testimonial-carousel" aria-live="polite">
-          <blockquote>
-            “HealthFlo reduced our pre-auth cycle from 6 hours to minutes, unlocking faster discharges.”
-            <div class="testimonial-author">Dr. Kavya Rao · COO, NovaCare Hospitals</div>
-          </blockquote>
-          <blockquote>
-            “With the denial studio we recovered ₹12 Cr in aged claims and improved CFO confidence in projections.”
-            <div class="testimonial-author">Sanjay Patel · CFO, Harmony Health</div>
-          </blockquote>
-          <blockquote>
-            “Patients now receive real-time WhatsApp updates and zero-interest financing — satisfaction scores are up 34%.”
-            <div class="testimonial-author">Meera Joshi · Head of Patient Experience, MedAxis</div>
-          </blockquote>
+          <blockquote class="active">“HealthFlo reduced our pre-auth cycle from 6 hours to minutes.”<div class="testimonial-author">Dr. Kavya Rao · COO, NovaCare</div></blockquote>
+          <blockquote>“We recovered ₹12 Cr in aged claims—forecasts are now board-ready.”<div class="testimonial-author">Sanjay Patel · CFO, Harmony Health</div></blockquote>
+          <blockquote>“Live WhatsApp updates and zero-interest plans lifted PX by 34%.”<div class="testimonial-author">Meera Joshi · Head, Patient Experience</div></blockquote>
+          <div class="carousel-controls"><button class="carousel-dot active"></button><button class="carousel-dot"></button><button class="carousel-dot"></button></div>
         </div>
       </section>
 
@@ -475,9 +389,9 @@
       <section id="final-cta" class="cta-band" aria-labelledby="cta-title">
         <div class="cta-band__content">
           <h2 id="cta-title">Ready to transform your revenue cycle?</h2>
-          <p>See how HealthFlo rewrites the revenue cycle story for your network.</p>
+          <p>See how HealthFlo rewrites the revenue story for your network.</p>
         </div>
-        <a class="cta-primary" href="contact.html">Schedule a Demo</a>
+        <a class="cta-primary" href="#hero">Schedule a Demo</a>
       </section>
     </main>
 
@@ -487,11 +401,11 @@
         <svg viewBox="0 0 720 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
           <defs>
             <linearGradient id="footerGradient" x1="0" x2="1" y1="0" y2="0.8">
-              <stop offset="0%" stop-color="#4c6ef5" />
-              <stop offset="100%" stop-color="#2dd4bf" />
+              <stop offset="0%" stop-color="#38bdf8" />
+              <stop offset="100%" stop-color="#5eead4" />
             </linearGradient>
           </defs>
-          <path d="M0 48C120 20 240 76 360 48C480 20 600 76 720 48V160H0Z" fill="url(#footerGradient)" opacity="0.32"></path>
+          <path d="M0 48C120 20 240 76 360 48C480 20 600 76 720 48V160H0Z" fill="url(#footerGradient)" opacity="0.28"></path>
         </svg>
       </div>
       <div class="footer-grid">
@@ -501,59 +415,104 @@
         </div>
         <div>
           <h4>Company</h4>
-          <ul>
-            <li><a href="about.html">About</a></li>
-            <li><a href="impact.html">Impact</a></li>
-            <li><a href="investors.html">Investors</a></li>
-          </ul>
+          <ul><li><a href="#">About</a></li><li><a href="#">Impact</a></li><li><a href="#">Investors</a></li></ul>
         </div>
         <div>
           <h4>Solutions</h4>
-          <ul>
-            <li><a href="solutions.html#hospitals">For Hospitals</a></li>
-            <li><a href="solutions.html#patients">For Patients</a></li>
-            <li><a href="products.html">Product Modules</a></li>
-          </ul>
+          <ul><li><a href="#solutions">For Hospitals</a></li><li><a href="#audiences">For Patients</a></li><li><a href="#solutions">Product Modules</a></li></ul>
         </div>
         <div>
           <h4>Connect</h4>
-          <p class="text-muted">hello@healthflo.ai</p>
+          <p class="text-muted"><a href="mailto:hello@healthflo.ai">hello@healthflo.ai</a></p>
           <div class="social-links" role="list">
-            <a href="#" aria-label="Follow on LinkedIn">in</a>
-            <a href="#" aria-label="Follow on Twitter">𝕏</a>
-            <a href="#" aria-label="Follow on YouTube">▶</a>
+            <a href="#" aria-label="LinkedIn">in</a><a href="#" aria-label="X">𝕏</a><a href="#" aria-label="YouTube">▶</a>
           </div>
         </div>
       </div>
-      <div class="footer-bottom">© <span id="year">2024</span> HealthFlo. All rights reserved.</div>
+      <div class="footer-bottom">© <span id="year"></span> HealthFlo. All rights reserved.</div>
     </footer>
 
-    <!-- Floating Actions -->
+    <!-- Floating Actions (downsized) -->
     <div class="floating-actions" aria-label="Quick actions">
       <a href="https://wa.me/919999999999" class="whatsapp" aria-label="Chat on WhatsApp">WhatsApp</a>
-      <a href="contact.html" aria-label="Book a HealthFlo demo">Book Demo</a>
+      <a href="#final-cta" aria-label="Book a HealthFlo demo">Book Demo</a>
     </div>
 
-    <!-- Year -->
+    <!-- Minimal JS so it works even without main.js -->
     <script>
+      // Year
       document.getElementById('year').textContent = new Date().getFullYear();
+
+      // Preloader hide
+      window.addEventListener('load', () => {
+        document.querySelector('.preloader')?.classList.add('hidden');
+      });
+
+      // Theme toggle (persist)
+      const root = document.documentElement;
+      const savedTheme = localStorage.getItem('hf-theme');
+      if (savedTheme) root.setAttribute('data-theme', savedTheme);
+      document.querySelector('.theme-toggle')?.addEventListener('click', () => {
+        const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        localStorage.setItem('hf-theme', next);
+      });
+
+      // Mobile nav
+      const toggle = document.querySelector('.mobile-nav-toggle');
+      const links = document.querySelector('.nav-links');
+      toggle?.addEventListener('click', () => {
+        const open = links.classList.toggle('open');
+        toggle.setAttribute('aria-expanded', open);
+      });
+
+      // Quick links
+      const qToggle = document.querySelector('.quick-page-nav__toggle');
+      const qLinks  = document.querySelector('.quick-page-nav__links');
+      qToggle?.addEventListener('click', () => {
+        const open = qLinks.style.maxHeight && qLinks.style.maxHeight !== '0px';
+        qLinks.style.maxHeight = open ? '0' : '420px';
+        qLinks.style.opacity   = open ? '0' : '1';
+        qToggle.setAttribute('aria-expanded', (!open).toString());
+      });
+
+      // Audience tabs
+      document.querySelectorAll('.audience-tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.audience-tab').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const id = btn.dataset.target;
+          document.querySelectorAll('.audience-panel').forEach(p => {
+            const match = p.id === id;
+            p.toggleAttribute('hidden', !match);
+            p.classList.toggle('active', match);
+          });
+        });
+      });
+
+      // KPI speed label
+      const speed = document.getElementById('hf-speed-range');
+      const label = document.getElementById('hf-speed-label');
+      const setLabel = v => label.textContent = Math.round(v/1000) + 's';
+      speed && (setLabel(speed.value), speed.addEventListener('input', e => setLabel(e.target.value)));
+
+      // Tiny hero canvas twinkles
+      const cvs = document.getElementById('hero-animation');
+      if (cvs && cvs.getContext) {
+        const ctx = cvs.getContext('2d');
+        const stars = Array.from({length: 32}, () => ({x: Math.random(), y: Math.random(), r: Math.random()*1.6+0.4}));
+        const resize = () => { cvs.width = cvs.clientWidth; cvs.height = 160; };
+        const draw = () => {
+          ctx.clearRect(0,0,cvs.width,cvs.height);
+          stars.forEach(s => {
+            const x = s.x*cvs.width, y = s.y*cvs.height;
+            ctx.globalAlpha = 0.5 + Math.sin((Date.now()/600)+(x+y))*0.5;
+            ctx.beginPath(); ctx.arc(x,y,s.r,0,Math.PI*2); ctx.fillStyle = '#5eead4'; ctx.fill();
+          });
+          requestAnimationFrame(draw);
+        };
+        resize(); window.addEventListener('resize', resize, {passive:true}); draw();
+      }
     </script>
-
-    <!-- ===================== JS CDNs (Inline Comments) ===================== -->
-    <!-- GSAP Core (free) – animations engine -->
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
-    <!-- GSAP ScrollTrigger (free) – scroll-based triggers -->
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
-    <!-- GSAP MotionPath (free) – motion along paths (used lightly / optional) -->
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/MotionPathPlugin.min.js" defer></script>
-    <!-- Optional GSAP Premium plugins (SplitText, Flip, ScrollSmoother)
-         NOTE: These are paid. Our JS guards against their absence.
-         If you have a license, include them below and remove comments. -->
-    <!-- <script src="https://assets.your-gsap-cdn/SplitText.min.js" defer></script> -->
-    <!-- <script src="https://assets.your-gsap-cdn/Flip.min.js" defer></script> -->
-    <!-- <script src="https://assets.your-gsap-cdn/ScrollSmoother.min.js" defer></script> -->
-
-    <!-- App Bundle (single-file) -->
-    <script src="assets/js/main.js" defer></script>
   </body>
 </html>
