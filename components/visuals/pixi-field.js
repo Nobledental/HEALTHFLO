@@ -1,15 +1,20 @@
 /*!
- * HealthFlo Pixi Field (Micro-Cell, Nebula Flow, Data Stream)
- * -----------------------------------------------------------
- * Option B – GSAP + Pixi.js decorative system
- * - Zero hard dependency at runtime: safely no-op if PIXI is missing
- * - Auto-inits on <canvas id="pixi-field"> when present
- * - 3 visual modes (configurable): 'microCell' | 'nebulaFlow' | 'dataStream'
- * - Adaptive resolution & low-power throttling (page hidden / low FPS)
- * - Public API on window.HealthFloPixi:
- *      enable(), disable(), setMode('microCell'|'nebulaFlow'|'dataStream'),
- *      setDensity(0.2..1.5), setSpeed(0.2..2), resize()
- * - Respects prefers-reduced-motion (disables)
+ * HealthFlo Pixi Field (Micro-Cell • Nebula Flow • Data Stream)
+ * UPGRADED — theme-aware, battery-friendly, defensive, buttery smooth.
+ * -------------------------------------------------------------------
+ * Option B – GSAP + Pixi.js decorative system (still zero hard dependency)
+ *
+ * Highlights:
+ *  • Graceful no-op if PIXI is missing or user prefers reduced motion
+ *  • Theme-aware tints (auto reacts to [data-theme="dark"])
+ *  • Visibility & intersection-aware pausing (tab hidden or off-screen)
+ *  • Auto-throttle on low FPS; adaptive resolution to save battery
+ *  • Pointer attractor (subtle) + click-to-cycle modes
+ *  • Public API:
+ *        enable(), disable(), destroy(),
+ *        setMode('microCell'|'nebulaFlow'|'dataStream'),
+ *        setDensity(0.2..1.5), setSpeed(0.2..2), setResolution(0.75..2),
+ *        resize()
  *
  * CDN (add near end of <body> before this file if you want visuals):
  *   <!-- PixiJS v7 -->
@@ -20,341 +25,458 @@
   const DOC = document;
   const WIN = window;
 
-  // Guard: user may choose not to load Pixi to keep site free/lean
+  // Guards
   const hasPIXI = () => typeof WIN.PIXI !== 'undefined';
-  const hasGSAP = () => typeof WIN.gsap !== 'undefined';
-  const prefersReducedMotion = WIN.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  const hasGSAP  = () => typeof WIN.gsap  !== 'undefined';
+  const prefersReduced = WIN.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
-  // Early exit if user prefers less motion
-  if (prefersReducedMotion) {
-    WIN.HealthFloPixi = {
-      enable(){}, disable(){}, setMode(){}, setDensity(){}, setSpeed(){}, resize(){}
-    };
+  // No-op API (exported even when disabled) so other modules won’t break
+  const noopAPI = {
+    enable(){}, disable(){}, destroy(){},
+    setMode(){}, setDensity(){}, setSpeed(){}, setResolution(){},
+    resize(){},
+  };
+
+  if (prefersReduced) {
+    WIN.HealthFloPixi = noopAPI;
     return;
   }
 
-  // Find canvas
+  // Canvas host (optional; safe if absent)
   const canvas = DOC.getElementById('pixi-field');
   if (!canvas) {
-    // Expose noop API so other modules don’t fail if canvas missing
-    WIN.HealthFloPixi = {
-      enable(){}, disable(){}, setMode(){}, setDensity(){}, setSpeed(){}, resize(){}
-    };
+    WIN.HealthFloPixi = noopAPI;
     return;
   }
 
-  // Runtime config (safe defaults)
+  // Runtime config
   const CFG = {
     enabled: true,
-    mode: 'microCell',  // 'microCell' | 'nebulaFlow' | 'dataStream'
-    // Density/speed are multipliers that scale per-mode baselines
-    density: 1.0,       // 0.2..1.5
-    speed: 1.0,         // 0.2..2
-    maxParticles: 260,  // hard cap (per mode baseline scaled by density)
-    // Rendering scale for HiDPI without burning GPU
-    resolution: Math.min(1.5, WIN.devicePixelRatio || 1),
-    // Auto-throttle if FPS drops below this for a while
-    minFPS: 28,
+    mode: 'microCell',         // 'microCell' | 'nebulaFlow' | 'dataStream'
+    density: 1.0,              // 0.2..1.5
+    speed: 1.0,                // 0.2..2
+    maxParticles: 280,         // hard cap per mode
+    resolution: Math.min(1.75, Math.max(0.75, WIN.devicePixelRatio || 1)),
+    minFPS: 28,                // low-FPS guard threshold
+    fpsWindowMs: 1200,         // how often to assess FPS
+    lowFpsStrikesForThrottle: 3,
+    attractorStrength: 0.015,  // pointer attractor (microCell only)
   };
 
   // Internal state
   const STATE = {
     app: null,
     container: null,
-    ticker: null,
+    linkLayer: null,
     particles: [],
+    ticker: null,
     lastFpsCheck: performance.now(),
-    lowFpsSamples: 0,
+    lowFpsStrikes: 0,
+    visible: true,
+    observer: null,
+    resizeObs: null,
+    themeObs: null,
+    pointer: { active:false, x:0, y:0 },
+    dpRatio: WIN.devicePixelRatio || 1,
   };
 
-  // Utilities
-  const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
-  const rnd = (min, max) => Math.random() * (max - min) + min;
-  const rgba = (r,g,b,a=1)=>`rgba(${r},${g},${b},${a})`;
-
-  // Palette (Hybrid Tech-Luxury)
-  const palette = {
-    indigo: 0x4c6ef5, // primary
-    mint:   0x2dd4bf, // secondary
-    slate:  0x94a3b8,
-    sky:    0x38bdf8,
-    emerald:0x10b981,
-    // subtle white glints
-    frost:  0xf1f5f9
+  // Palette (light/dark aware)
+  const isDark = () => DOC.documentElement.getAttribute('data-theme') === 'dark';
+  const colors = {
+    get indigo() { return 0x4c6ef5; },
+    get mint()   { return 0x2dd4bf; },
+    get sky()    { return 0x38bdf8; },
+    get emerald(){ return 0x10b981; },
+    get slate()  { return isDark() ? 0x94a3b8 : 0x64748b; },
+    get frost()  { return isDark() ? 0x334155 : 0xf1f5f9; },
   };
 
-  // Initialize PIXI app
+  // Utils
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const rnd = (a, b) => Math.random() * (b - a) + a;
+  const debounce = (fn, ms) => {
+    let t; return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
+  };
+
+  /* ---------------------------------------
+   * Boot / Destroy
+   * ------------------------------------- */
   const boot = () => {
-    if (!hasPIXI()) return; // no-op if Pixi not loaded
-    const PIXI = WIN.PIXI;
+    if (!hasPIXI()) return;
 
+    const PIXI = WIN.PIXI;
     STATE.app = new PIXI.Application({
       view: canvas,
-      resizeTo: canvas.parentElement || WIN, // responsive
+      resizeTo: canvas.parentElement || WIN,
       antialias: true,
       backgroundAlpha: 0,
       resolution: CFG.resolution,
       powerPreference: 'high-performance',
       autoDensity: true,
+      sharedTicker: false,
     });
 
     STATE.container = new PIXI.Container();
     STATE.app.stage.addChild(STATE.container);
 
-    // Start with current mode
+    // Interactivity
+    canvas.addEventListener('pointermove', onPointerMove);
+    canvas.addEventListener('pointerleave', onPointerLeave);
+    canvas.addEventListener('click', cycleMode);
+
+    // Lifecycle
+    DOC.addEventListener('visibilitychange', onVisibility);
+    WIN.addEventListener('resize', onWindowResize, { passive: true });
+
+    // Off-screen pause (IntersectionObserver)
+    if ('IntersectionObserver' in WIN) {
+      STATE.observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => { STATE.visible = e.isIntersecting; });
+      }, { root: null, threshold: 0.01 });
+      STATE.observer.observe(canvas);
+    }
+
+    // ResizeObserver for precision bounds
+    if ('ResizeObserver' in WIN) {
+      STATE.resizeObs = new ResizeObserver(debounce(resize, 80));
+      STATE.resizeObs.observe(canvas);
+    }
+
+    // Watch theme flips
+    STATE.themeObs = new MutationObserver(() => {
+      // Nudge visuals to adapt (rebuild lightweight)
+      buildMode(CFG.mode, /*preservePositions*/ true);
+    });
+    STATE.themeObs.observe(DOC.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+    // DevicePixelRatio changes (zoom / screens)
+    WIN.matchMedia?.(`(resolution: ${STATE.dpRatio}dppx)`)?.addEventListener?.('change', () => {
+      // Force a resolution update on next tick
+      setResolution(WIN.devicePixelRatio || 1);
+    });
+
+    // Populate + start
     buildMode(CFG.mode);
-
-    // Per-frame loop
-    STATE.app.ticker.add(update);
+    STATE.app.ticker.add(tick);
     STATE.ticker = STATE.app.ticker;
-
-    // Handle visibility (pause to save battery)
-    DOC.addEventListener('visibilitychange', handleVisibility);
-    WIN.addEventListener('resize', debounce(resize, 120));
   };
 
   const destroy = () => {
     if (!STATE.app) return;
-    DOC.removeEventListener('visibilitychange', handleVisibility);
-    WIN.removeEventListener('resize', debounce(resize, 120));
+    // Unbind listeners
+    canvas.removeEventListener('pointermove', onPointerMove);
+    canvas.removeEventListener('pointerleave', onPointerLeave);
+    canvas.removeEventListener('click', cycleMode);
+    DOC.removeEventListener('visibilitychange', onVisibility);
+    WIN.removeEventListener('resize', onWindowResize);
+    STATE.observer?.disconnect(); STATE.observer = null;
+    STATE.resizeObs?.disconnect(); STATE.resizeObs = null;
+    STATE.themeObs?.disconnect(); STATE.themeObs = null;
+
+    // Tear down Pixi
     STATE.app.destroy(true, { children: true, texture: true, baseTexture: true });
     STATE.app = null;
     STATE.container = null;
-    STATE.particles = [];
+    STATE.linkLayer = null;
+    STATE.particles.length = 0;
+    STATE.ticker = null;
   };
 
-  const enable = () => {
-    if (CFG.enabled) return;
-    CFG.enabled = true;
-    if (!STATE.app && hasPIXI()) boot();
-    if (STATE.ticker) STATE.ticker.start();
-  };
-
-  const disable = () => {
-    CFG.enabled = false;
-    if (STATE.ticker) STATE.ticker.stop();
-  };
-
-  const setMode = (mode) => {
-    if (!hasPIXI()) return CFG.mode;
-    const next = ['microCell','nebulaFlow','dataStream'].includes(mode) ? mode : CFG.mode;
-    CFG.mode = next;
-    buildMode(next);
-    return CFG.mode;
-  };
-
-  const setDensity = (d) => {
-    CFG.density = clamp(Number(d) || 1, 0.2, 1.5);
-    buildMode(CFG.mode); // rebuild population
-    return CFG.density;
-  };
-
-  const setSpeed = (s) => {
-    CFG.speed = clamp(Number(s) || 1, 0.2, 2);
-    // speed influences update step, no rebuild needed
-    return CFG.speed;
-  };
-
-  const resize = () => {
+  /* ---------------------------------------
+   * Build Modes
+   * ------------------------------------- */
+  function buildMode(mode, preservePositions = false) {
     if (!STATE.app) return;
-    // Pixi auto-resizes due to resizeTo, but we may tweak particle bounds
-    const { width, height } = STATE.app.renderer;
-    STATE.particles.forEach(p => {
-      // Keep within viewport bounds
-      p.x = (p.x + width) % width;
-      p.y = (p.y + height) % height;
-    });
-  };
-
-  const handleVisibility = () => {
-    if (DOC.hidden) disable(); else enable();
-  };
-
-  const debounce = (fn, ms) => {
-    let t; return (...args)=>{ clearTimeout(t); t=setTimeout(()=>fn(...args), ms); };
-  };
-
-  // Build a mode (clears and repopulates particles)
-  const buildMode = (mode) => {
-    if (!STATE.container) return;
     const PIXI = WIN.PIXI;
+    const { renderer } = STATE.app;
 
-    // Clear
+    // Clear stage
     STATE.container.removeChildren();
     STATE.particles.length = 0;
+    STATE.linkLayer = null;
 
-    const { renderer } = STATE.app;
     const W = renderer.width;
     const H = renderer.height;
 
     if (mode === 'microCell') {
-      // Glowing micro-cells drifting & repelling each other softly
-      const baseCount = Math.min(CFG.maxParticles, Math.floor(90 * CFG.density));
-      for (let i = 0; i < baseCount; i++) {
+      // Glowing micro-cells with optional pointer attraction and soft link layer
+      const count = Math.min(CFG.maxParticles, Math.floor(100 * CFG.density));
+      for (let i = 0; i < count; i++) {
         const g = new PIXI.Graphics();
-        const r = rnd(1.2, 2.4);
-        const c = (i % 3 === 0) ? palette.mint : (i % 5 === 0 ? palette.sky : palette.indigo);
-        g.beginFill(c, 0.8).drawCircle(0,0,r).endFill();
-        g.filters = [];
+        const r = rnd(1.1, 2.2);
+        const c = (i % 5 === 0) ? colors.sky : (i % 3 === 0 ? colors.mint : colors.indigo);
+        g.beginFill(c, 0.85).drawCircle(0, 0, r).endFill();
         const s = new PIXI.Sprite(renderer.generateTexture(g));
-        s.x = rnd(0, W);
-        s.y = rnd(0, H);
-        s.alpha = rnd(0.3, 0.9);
-        s.vx = rnd(-0.15, 0.15);
-        s.vy = rnd(-0.15, 0.15);
-        s.twinkle = rnd(0.3, 1);
+        if (!preservePositions) {
+          s.x = rnd(0, W); s.y = rnd(0, H);
+        } else {
+          s.x = (s.x || rnd(0, W)) % W; s.y = (s.y || rnd(0, H)) % H;
+        }
+        s.alpha = rnd(0.35, 0.9);
+        s.vx = rnd(-0.18, 0.18);
+        s.vy = rnd(-0.18, 0.18);
+        s.tw = rnd(0.35, 1.1); // twinkle
         STATE.container.addChild(s);
         STATE.particles.push(s);
       }
-      // Subtle linkage lines layer (using Graphics once per frame)
       STATE.linkLayer = new PIXI.Graphics();
       STATE.container.addChild(STATE.linkLayer);
+    }
 
-    } else if (mode === 'nebulaFlow') {
-      // Soft foggy blobs drifting (premium, no neon)
-      const baseCount = Math.min(CFG.maxParticles, Math.floor(22 * CFG.density));
-      for (let i = 0; i < baseCount; i++) {
+    else if (mode === 'nebulaFlow') {
+      // Soft ellipses, slow drift & subtle rotation (luxury ambience)
+      const count = Math.min(CFG.maxParticles, Math.floor(26 * CFG.density));
+      for (let i = 0; i < count; i++) {
         const g = new PIXI.Graphics();
         const rx = rnd(60, 160), ry = rnd(40, 120);
-        const color = (i % 2 === 0) ? palette.indigo : palette.mint;
-        g.beginFill(color, 0.14).drawEllipse(0,0,rx,ry).endFill();
+        const col = (i % 2 === 0) ? colors.indigo : colors.mint;
+        g.beginFill(col, 0.14).drawEllipse(0, 0, rx, ry).endFill();
         const s = new PIXI.Sprite(renderer.generateTexture(g));
-        s.x = rnd(0, W);
-        s.y = rnd(0, H);
-        s.alpha = rnd(0.18, 0.35);
+        s.x = rnd(0, W); s.y = rnd(0, H);
+        s.alpha = rnd(0.16, 0.32);
         s.vx = rnd(-0.12, 0.12);
         s.vy = rnd(-0.08, 0.08);
         s.rot = rnd(-0.001, 0.001);
         STATE.container.addChild(s);
         STATE.particles.push(s);
       }
+    }
 
-    } else { // dataStream
-      // Thin streams flowing diagonally (data vibe)
-      const baseCount = Math.min(CFG.maxParticles, Math.floor(120 * CFG.density));
-      for (let i = 0; i < baseCount; i++) {
+    else { // dataStream
+      // Thin diagonal telemetry lines (data-forward vibe)
+      const count = Math.min(CFG.maxParticles, Math.floor(140 * CFG.density));
+      for (let i = 0; i < count; i++) {
         const g = new PIXI.Graphics();
-        const len = rnd(18, 42);
-        g.lineStyle(rnd(0.6, 1.2), (i % 4 === 0) ? palette.sky : palette.slate, rnd(0.35, 0.65))
-         .moveTo(0,0).lineTo(len, 0);
+        const len = rnd(16, 44);
+        g.lineStyle(rnd(0.6, 1.2), (i % 4 === 0) ? colors.sky : colors.slate, rnd(0.35, 0.65))
+         .moveTo(0, 0).lineTo(len, 0);
         const s = new PIXI.Sprite(renderer.generateTexture(g));
-        s.x = rnd(0, W);
-        s.y = rnd(0, H);
+        s.x = rnd(0, W); s.y = rnd(0, H);
+        const sp = rnd(0.5, 1.25);
+        s.vx = sp; s.vy = -sp * rnd(0.35, 0.9);
+        s.rotation = rnd(-0.38, -0.22);
         s.alpha = rnd(0.45, 0.85);
-        const sp = rnd(0.4, 1.2);
-        s.vx = sp; s.vy = -sp * rnd(0.35, 0.85);
-        s.rotation = rnd(-0.25, -0.4); // tilt up-left
         STATE.container.addChild(s);
         STATE.particles.push(s);
       }
     }
-  };
+  }
 
-  // Per-frame update
-  const update = (delta) => {
-    if (!CFG.enabled) return;
+  /* ---------------------------------------
+   * Tick / Update
+   * ------------------------------------- */
+  function tick(delta=1) {
+    if (!CFG.enabled || !STATE.visible) return;
+    if (!STATE.app) return;
+
     const { renderer } = STATE.app;
-    const W = renderer.width;
-    const H = renderer.height;
+    const W = renderer.width, H = renderer.height;
 
-    // FPS monitoring & auto-throttle
+    // FPS monitor → throttle density when sustained low FPS
     const now = performance.now();
-    if (now - STATE.lastFpsCheck > 1200) {
+    if (now - STATE.lastFpsCheck > CFG.fpsWindowMs) {
       const fps = STATE.app.ticker.FPS || 60;
-      if (fps < CFG.minFPS) STATE.lowFpsSamples++;
-      else STATE.lowFpsSamples = Math.max(0, STATE.lowFpsSamples - 1);
-      // If sustained low FPS, reduce density (softly) and rebuild
-      if (STATE.lowFpsSamples >= 3) {
+      if (fps < CFG.minFPS) STATE.lowFpsStrikes++;
+      else STATE.lowFpsStrikes = Math.max(0, STATE.lowFpsStrikes - 1);
+
+      if (STATE.lowFpsStrikes >= CFG.lowFpsStrikesForThrottle) {
         CFG.density = clamp(CFG.density * 0.85, 0.25, 1.0);
-        buildMode(CFG.mode);
-        STATE.lowFpsSamples = 0;
+        buildMode(CFG.mode, /*preserve*/ true);
+        STATE.lowFpsStrikes = 0;
       }
       STATE.lastFpsCheck = now;
     }
 
-    const speedScale = CFG.speed * (delta || 1);
+    const scale = CFG.speed * delta;
 
     if (CFG.mode === 'microCell') {
-      // drift + soft wrap + twinkle
-      const link = STATE.linkLayer;
-      link?.clear();
-      const pts = [];
-      STATE.particles.forEach(p => {
-        p.x += p.vx * speedScale;
-        p.y += p.vy * speedScale;
-        if (p.x < -5) p.x = W + 5; else if (p.x > W + 5) p.x = -5;
-        if (p.y < -5) p.y = H + 5; else if (p.y > H + 5) p.y = -5;
+      const L = STATE.linkLayer;
+      L?.clear();
+      // link color based on theme
+      const linkColor = colors.slate;
+      L?.lineStyle(0.6, linkColor, isDark() ? 0.22 : 0.15);
+
+      const pts = STATE.particles;
+      for (let i = 0; i < pts.length; i++) {
+        const p = pts[i];
+        // Pointer attractor (very subtle)
+        if (STATE.pointer.active) {
+          const dx = STATE.pointer.x - p.x;
+          const dy = STATE.pointer.y - p.y;
+          const dist = Math.hypot(dx, dy) || 1;
+          const pull = CFG.attractorStrength * (1 - Math.min(1, dist / 180));
+          p.vx += (dx / dist) * pull;
+          p.vy += (dy / dist) * pull;
+        }
+
+        p.x += p.vx * scale;
+        p.y += p.vy * scale;
+        if (p.x < -6) p.x = W + 6; else if (p.x > W + 6) p.x = -6;
+        if (p.y < -6) p.y = H + 6; else if (p.y > H + 6) p.y = -6;
         // twinkle
-        p.alpha += Math.sin(now * 0.001 * p.twinkle) * 0.003;
-        p.alpha = clamp(p.alpha, 0.22, 0.95);
-        pts.push(p);
-      });
-      // draw sparse connections
-      if (link) {
-        link.lineStyle(0.6, palette.slate, 0.15);
+        p.alpha = clamp(p.alpha + Math.sin(now * 0.001 * p.tw) * 0.002, 0.22, 0.95);
+      }
+
+      // Sparse connections (every few points)
+      if (L) {
         for (let i = 0; i < pts.length; i += 3) {
           const a = pts[i], b = pts[(i + 9) % pts.length];
           if (!a || !b) continue;
           const dx = a.x - b.x, dy = a.y - b.y;
-          const dist2 = dx*dx + dy*dy;
-          if (dist2 < 120*120) {
-            link.moveTo(a.x, a.y); link.lineTo(b.x, b.y);
+          if (dx*dx + dy*dy < 120*120) {
+            L.moveTo(a.x, a.y); L.lineTo(b.x, b.y);
           }
         }
       }
+    }
 
-    } else if (CFG.mode === 'nebulaFlow') {
-      // slow float + rotate
+    else if (CFG.mode === 'nebulaFlow') {
       STATE.particles.forEach(p => {
-        p.x += p.vx * speedScale * 0.6;
-        p.y += p.vy * speedScale * 0.6;
-        p.rotation += p.rot * speedScale;
-        // wrap softly
-        if (p.x < -180) p.x = W + 180; else if (p.x > W + 180) p.x = -180;
-        if (p.y < -140) p.y = H + 140; else if (p.y > H + 140) p.y = -140;
-      });
-
-    } else { // dataStream
-      STATE.particles.forEach(p => {
-        p.x += p.vx * speedScale * 1.2;
-        p.y += p.vy * speedScale * 1.2;
-        // wrap diagonally
-        if (p.x > W + 40) { p.x = -40; p.y = rnd(0, H); }
-        if (p.y < -40) { p.y = H + 40; p.x = rnd(0, W); }
+        p.x += p.vx * scale * 0.6;
+        p.y += p.vy * scale * 0.6;
+        p.rotation += p.rot * scale;
+        // soft wrap
+        if (p.x < -200) p.x = W + 200; else if (p.x > W + 200) p.x = -200;
+        if (p.y < -160) p.y = H + 160; else if (p.y > H + 160) p.y = -160;
       });
     }
-  };
 
-  // Public API
-  const API = { enable, disable, setMode, setDensity, setSpeed, resize };
+    else { // dataStream
+      STATE.particles.forEach(p => {
+        p.x += p.vx * scale * 1.2;
+        p.y += p.vy * scale * 1.2;
+        if (p.x > W + 50) { p.x = -50; p.y = rnd(0, H); }
+        if (p.y < -50) { p.y = H + 50; p.x = rnd(0, W); }
+      });
+    }
+  }
 
-  // Expose immediately (even before boot) so callers can configure first
-  WIN.HealthFloPixi = API;
+  /* ---------------------------------------
+   * Interactions / Events
+   * ------------------------------------- */
+  function onPointerMove(e) {
+    const r = canvas.getBoundingClientRect();
+    STATE.pointer.x = (e.clientX - r.left) * (STATE.app?.renderer?.resolution || 1);
+    STATE.pointer.y = (e.clientY - r.top)  * (STATE.app?.renderer?.resolution || 1);
+    STATE.pointer.active = true;
+  }
+  function onPointerLeave() { STATE.pointer.active = false; }
 
-  // Boot if PIXI available now; otherwise wait a bit (defer attr)
-  const tryBoot = () => { if (hasPIXI()) boot(); };
-  if (DOC.readyState === 'loading') {
-    DOC.addEventListener('DOMContentLoaded', tryBoot);
-  } else { tryBoot(); }
+  function cycleMode() {
+    const order = ['microCell','nebulaFlow','dataStream'];
+    const i = order.indexOf(CFG.mode);
+    setMode(order[(i + 1) % order.length]);
+    // micro pulse on change (if GSAP present)
+    if (hasGSAP() && STATE.container) {
+      WIN.gsap.fromTo(STATE.container.scale, { x: 1, y: 1 }, { x: 1.02, y: 1.02, duration: 0.35, yoyo: true, repeat: 1, ease: 'sine.inOut' });
+    }
+  }
 
-  // If PIXI loads later (defer), poll briefly for readiness
-  let pixiPolls = 0;
-  const poll = setInterval(() => {
-    if (STATE.app || !CFG.enabled) { clearInterval(poll); return; }
-    if (hasPIXI()) { clearInterval(poll); boot(); }
-    if (++pixiPolls > 20) clearInterval(poll); // stop after ~2s
-  }, 100);
+  function onVisibility() {
+    DOC.hidden ? disable() : enable();
+  }
 
-  // Convenience: allow quick switches using custom events
+  const onWindowResize = debounce(() => {
+    resize();
+  }, 80);
+
+  /* ---------------------------------------
+   * Public API
+   * ------------------------------------- */
+  function enable() {
+    if (CFG.enabled) return;
+    CFG.enabled = true;
+    if (!STATE.app && hasPIXI()) boot();
+    STATE.ticker?.start();
+  }
+
+  function disable() {
+    if (!CFG.enabled) return;
+    CFG.enabled = false;
+    STATE.ticker?.stop();
+  }
+
+  function setMode(mode) {
+    const next = ['microCell','nebulaFlow','dataStream'].includes(mode) ? mode : CFG.mode;
+    if (next === CFG.mode) return CFG.mode;
+    CFG.mode = next;
+    buildMode(next);
+    return CFG.mode;
+  }
+
+  function setDensity(d) {
+    CFG.density = clamp(Number(d) || 1, 0.2, 1.5);
+    buildMode(CFG.mode, /*preserve*/ true);
+    return CFG.density;
+  }
+
+  function setSpeed(s) {
+    CFG.speed = clamp(Number(s) || 1, 0.2, 2);
+    return CFG.speed;
+  }
+
+  function setResolution(r) {
+    const next = clamp(Number(r) || 1, 0.75, 2);
+    if (!STATE.app) { CFG.resolution = next; return next; }
+    const renderer = STATE.app.renderer;
+    if (renderer.resolution === next) return next;
+    CFG.resolution = next;
+    renderer.resolution = next;
+    renderer.resize(renderer.width, renderer.height); // force reflow
+    buildMode(CFG.mode, /*preserve*/ true);
+    return next;
+  }
+
+  function resize() {
+    if (!STATE.app) return;
+    // Pixi auto-resizes due to resizeTo; keep particles within bounds
+    const { width:W, height:H } = STATE.app.renderer;
+    STATE.particles.forEach(p => {
+      p.x = (p.x + W) % W;
+      p.y = (p.y + H) % H;
+    });
+  }
+
+  // Hook custom events (optional external control)
   DOC.addEventListener('hf:pixiSetMode', (e) => setMode(e.detail?.mode));
   DOC.addEventListener('hf:pixiToggle', () => (CFG.enabled ? disable() : enable()));
-
-  // Optional: integrate with KPI cadence (slightly pulse on refresh)
-  DOC.addEventListener('hf:refreshComplete', () => {
-    if (!hasGSAP() || !STATE.container) return;
-    WIN.gsap.fromTo(STATE.container.scale, { x: 1.0, y: 1.0 }, {
-      x: 1.015, y: 1.015, duration: 0.5, yoyo: true, repeat: 1, ease: 'sine.inOut'
-    });
+  DOC.addEventListener('hf:particlesEnable', enable);
+  DOC.addEventListener('hf:particlesDisable', disable);
+  DOC.addEventListener('hf:configChanged', (e) => {
+    const next = e.detail || {};
+    if (typeof next.animationQuality === 'string') {
+      // map quality → density/resolution suggestion
+      if (next.animationQuality === 'low')  { setDensity(0.6); setResolution(1.0); }
+      if (next.animationQuality === 'medium') { setDensity(1.0); setResolution(Math.min(1.5, WIN.devicePixelRatio||1)); }
+      if (next.animationQuality === 'high') { setDensity(1.25); setResolution(Math.min(1.75, WIN.devicePixelRatio||1.25)); }
+    }
+    if (typeof next.particlesEnabled === 'boolean') next.particlesEnabled ? enable() : disable();
   });
 
+  // KPI pulse integration (optional)
+  DOC.addEventListener('hf:refreshComplete', () => {
+    if (!hasGSAP() || !STATE.container) return;
+    WIN.gsap.fromTo(STATE.container.scale, { x: 1, y: 1 }, { x: 1.015, y: 1.015, duration: 0.45, yoyo: true, repeat: 1, ease: 'sine.inOut' });
+  });
+
+  // Export API
+  WIN.HealthFloPixi = {
+    enable, disable, destroy, setMode, setDensity, setSpeed, setResolution, resize
+  };
+
+  // Boot now (or shortly after if PIXI deferred)
+  const tryBoot = () => { if (!STATE.app && hasPIXI() && CFG.enabled) boot(); };
+  if (DOC.readyState === 'loading') {
+    DOC.addEventListener('DOMContentLoaded', tryBoot);
+  } else {
+    tryBoot();
+  }
+
+  // If Pixi is deferred, poll briefly
+  let polls = 0;
+  const poll = setInterval(() => {
+    if (STATE.app || !CFG.enabled) return clearInterval(poll);
+    if (hasPIXI()) { clearInterval(poll); boot(); }
+    if (++polls > 25) clearInterval(poll); // ~2.5s
+  }, 100);
 })();
