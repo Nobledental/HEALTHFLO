@@ -1,11 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" dir="ltr" data-theme="light">
   <head>
+    <!-- Primary Meta -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>HealthFlo | AI Revenue Cycle Automation & Patient Concierge</title>
     <meta name="description" content="HealthFlo is the AI-powered revenue cycle and patient concierge platform built for hospitals to accelerate cashless approvals, recover denials, and delight patients." />
+    <meta name="application-name" content="HealthFlo" />
+    <meta name="theme-color" content="#040d21" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#040d21" media="(prefers-color-scheme: light)">
+    <meta name="color-scheme" content="light only">
     <link rel="canonical" href="https://www.healthflo.ai/" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
 
     <!-- Open Graph -->
     <meta property="og:title" content="HealthFlo | AI Revenue Cycle Automation & Patient Concierge" />
@@ -13,6 +19,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.healthflo.ai/" />
     <meta property="og:image" content="assets/images/og-cover.jpg" />
+    <meta property="og:site_name" content="HealthFlo" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -20,18 +27,30 @@
     <meta name="twitter:description" content="AI-first platform that fuses RCM operations, finance, and patient delight." />
     <meta name="twitter:image" content="assets/images/og-cover.jpg" />
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <!-- PWA (lightweight) -->
+    <link rel="manifest" href="assets/manifest.webmanifest" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="apple-touch-icon" href="assets/images/icons/icon-192.png" />
+
+    <!-- Performance Hints -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Fonts (display=swap to avoid FOIT) -->
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
 
-    <!-- Styles -->
+    <!-- Styles (safe blocking) -->
     <link rel="stylesheet" href="assets/css/style.css" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="assets/images/healthflo-flowmark.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16.png" />
 
-    <!-- Structured Data -->
+    <!-- Structured Data: MedicalBusiness (as requested) -->
     <script type="application/ld+json">
     {
       "@context":"https://schema.org",
@@ -47,13 +66,45 @@
       "contactPoint":{"@type":"ContactPoint","contactType":"Sales","email":"hello@healthflo.ai"}
     }
     </script>
+
+    <!-- Structured Data: WebSite + SearchAction -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "url": "https://www.healthflo.ai/",
+      "name": "HealthFlo",
+      "inLanguage": "en-IN",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://www.healthflo.ai/search?q={query}",
+        "query-input": "required name=query"
+      }
+    }
+    </script>
+
+    <!-- Structured Data: Breadcrumbs (SEO nicety) -->
+    <script type="application/ld+json">
+    {
+      "@context":"https://schema.org",
+      "@type":"BreadcrumbList",
+      "itemListElement":[
+        {"@type":"ListItem","position":1,"name":"Home","item":"https://www.healthflo.ai/"},
+        {"@type":"ListItem","position":2,"name":"Platform","item":"https://www.healthflo.ai/#solutions"},
+        {"@type":"ListItem","position":3,"name":"Contact","item":"https://www.healthflo.ai/#final-cta"}
+      ]
+    }
+    </script>
   </head>
 
   <body class="page-landing" data-page="home">
-    <!-- Preloader -->
+    <!-- Accessibility: Skip -->
+    <a class="visually-hidden-focusable" href="#main">Skip to main content</a>
+
+    <!-- Preloader (kept minimal; noscript fallback hides it) -->
     <div class="preloader" role="status" aria-live="polite">
       <div class="preloader-logo" aria-hidden="true">
-        <svg viewBox="0 0 92 92" xmlns="http://www.w3.org/2000/svg" class="logo-svg">
+        <svg viewBox="0 0 92 92" xmlns="http://www.w3.org/2000/svg" class="logo-svg" aria-label="HealthFlo preloader">
           <defs>
             <linearGradient id="hfSheen" x1="0" y1="0" x2="1" y2="1">
               <stop offset="0%" stop-color="#2b2f77"/>
@@ -75,13 +126,17 @@
       </div>
       <span class="visually-hidden">Loading HealthFlo experience</span>
     </div>
+    <noscript><style>.preloader{display:none!important}</style></noscript>
+
+    <!-- Background Canvas -->
+    <canvas class="hero__nebula" aria-hidden="true"></canvas>
 
     <!-- Header -->
     <header class="header" aria-label="Primary">
-      <nav class="navbar" aria-label="Main">
-        <a href="#" class="logo" aria-label="HealthFlo home">
-          <!-- Inline animated logo (visible even if image asset fails) -->
-          <svg class="logo-svg" viewBox="0 0 120 38" role="img" aria-label="HealthFlo">
+      <nav class="navbar" aria-label="Main Navigation">
+        <a href="#hero" class="logo" aria-label="HealthFlo home">
+          <!-- Inline logo (kept) -->
+          <svg class="logo-svg" viewBox="0 0 220 44" role="img" aria-label="HealthFlo">
             <defs>
               <linearGradient id="hfMark" x1="0" y1="0" x2="1" y2="1">
                 <stop offset="0%" stop-color="#2b2f77"/>
@@ -91,28 +146,24 @@
                 <stop offset="0%" stop-color="#38bdf8"/>
                 <stop offset="100%" stop-color="#5eead4"/>
               </linearGradient>
-              <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="2.5" result="blur" />
-                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              <filter id="hfGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="2.2" result="b" />
+                <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
               </filter>
             </defs>
-            <!-- Flowmark -->
-            <g transform="translate(0,2)" filter="url(#glow)">
-              <path d="M6 26 C18 10, 30 10, 42 26" fill="none" stroke="url(#hfStroke)" stroke-width="5" stroke-linecap="round">
-                <animate attributeName="stroke-dasharray" values="0 150; 120 30; 0 150" dur="3s" repeatCount="indefinite"/>
+            <g transform="translate(0,6)" filter="url(#hfGlow)">
+              <path d="M8 28 C 22 10, 44 10, 58 28" fill="none" stroke="url(#hfStroke)" stroke-width="5" stroke-linecap="round">
+                <animate attributeName="stroke-dasharray" values="0 160; 120 40; 0 160" dur="3s" repeatCount="indefinite"/>
               </path>
-              <circle cx="42" cy="12" r="3.6" fill="url(#hfMark)">
-                <animate attributeName="r" values="3.6;5;3.6" dur="3s" repeatCount="indefinite"/>
+              <circle cx="58" cy="14" r="3.8" fill="url(#hfMark)">
+                <animate attributeName="r" values="3.8;5;3.8" dur="3s" repeatCount="indefinite"/>
               </circle>
             </g>
-            <!-- Wordmark -->
-            <text x="54" y="26" font-family="Space Grotesk, Manrope, system-ui, sans-serif" font-size="18" font-weight="700" fill="url(#hfMark)">
-              HealthFlo
-            </text>
+            <text x="78" y="30" font-family="Space Grotesk, Manrope, system-ui, sans-serif" font-size="18" font-weight="700" fill="url(#hfMark)">HealthFlo</text>
           </svg>
         </a>
 
-        <button class="mobile-nav-toggle" aria-expanded="false" aria-controls="primary-menu" aria-label="Toggle navigation">☰</button>
+        <button class="mobile-nav-toggle" aria-expanded="false" aria-controls="primary-menu" aria-label="Toggle navigation" data-nav-toggle>☰</button>
 
         <div class="nav-links" id="primary-menu" role="menubar">
           <a href="#solutions" role="menuitem" class="nav-link">Platform</a>
@@ -123,29 +174,25 @@
         </div>
 
         <div class="nav-actions">
-          <button class="theme-toggle" type="button" aria-label="Toggle theme">🌗</button>
+          <button class="theme-toggle" type="button" aria-label="Toggle theme" title="Toggle theme">🌗</button>
           <a class="cta-primary" href="#final-cta">Book a Demo</a>
         </div>
       </nav>
+
+      <!-- Announcement (optional; uses your color tokens) -->
+      <div class="announcement" role="note" aria-live="polite">
+        <div class="announcement__inner container">
+          <span class="announcement__pulse" aria-hidden="true"></span>
+          <span>Need urgent support? Care manager in &lt; 2 minutes.</span>
+          <a class="announcement__link" href="tel:+919940207670">Call +91 99402 07670</a>
+        </div>
+      </div>
     </header>
 
-    <!-- Quick Links (smaller) -->
-    <nav class="quick-page-nav glass-card" aria-label="Quick page navigator">
-      <button class="quick-page-nav__toggle" type="button" aria-expanded="false">Quick Links <span aria-hidden="true">▾</span></button>
-      <div class="quick-page-nav__links" role="list">
-        <a href="#hero" role="listitem">Overview</a>
-        <a href="#solutions" role="listitem">Platform</a>
-        <a href="#audiences" role="listitem">Journeys</a>
-        <a href="#how-it-works" role="listitem">How it Works</a>
-        <a href="#metrics" role="listitem">KPIs</a>
-        <a href="#final-cta" role="listitem">Talk to Us</a>
-      </div>
-    </nav>
-
-    <main id="main-content">
+    <main id="main" tabindex="-1">
       <!-- Hero -->
       <section id="hero" class="hero full-height" aria-labelledby="hero-title">
-        <div class="hero-content">
+        <div class="hero-content" data-animate="fade-up">
           <span class="eyebrow">Revenue Intelligence Platform</span>
           <h1 id="hero-title" class="headline gradient-text">HealthFlo choreographs cash, care, and coverage as one journey.</h1>
           <p class="subtext">Precision automation meets concierge-grade communication. HealthFlo unifies cashless pre-auth, medical coding, denial recovery, and patient concierge—built for hospital-scale operations.</p>
@@ -159,9 +206,9 @@
           </dl>
         </div>
 
-        <div class="hero-visual parallax" aria-hidden="true">
+        <div class="hero-visual parallax" aria-hidden="true" data-animate="fade-left">
           <div class="hero-slab">
-            <svg viewBox="0 0 460 360" role="img" aria-label="AI revenue orchestration visuals">
+            <svg viewBox="0 0 460 360" role="img" aria-label="AI revenue orchestration visuals" width="460" height="360">
               <defs>
                 <linearGradient id="heroAccent" x1="0" x2="1" y1="0" y2="1">
                   <stop offset="0%" stop-color="#2b2f77" />
@@ -177,14 +224,14 @@
               <g fill="#38bdf8"><circle cx="110" cy="110" r="8"/><circle cx="142" cy="110" r="8"/><circle cx="174" cy="110" r="8"/></g>
               <g fill="#5eead4"><rect x="256" y="232" width="120" height="16" rx="8"/><rect x="256" y="262" width="96" height="16" rx="8"/><rect x="256" y="292" width="138" height="16" rx="8"/></g>
             </svg>
-            <canvas id="hero-animation" aria-hidden="true"></canvas>
+            <canvas id="hero-animation" width="360" height="160" aria-hidden="true"></canvas>
           </div>
         </div>
       </section>
 
-      <!-- Geo marquee -->
-      <section class="geo-marquee" aria-label="HealthFlo operating cities" data-animate>
-        <div class="geo-marquee__track">
+      <!-- Operating Cities Marquee (seamless JS clones) -->
+      <section class="geo-marquee" aria-label="HealthFlo operating cities" data-animate="fade-up">
+        <div class="geo-marquee__track" data-marquee>
           <span>Chennai HQ</span><span>Bengaluru Command Hub</span><span>Hyderabad RCM Lab</span><span>Mumbai Network Desk</span>
           <span>Delhi NCR Advocacy</span><span>Pune Cashless Pod</span><span>Goa Clinical Partners</span><span>Kerala Care Grid</span>
           <span>Andhra Empanelment Team</span><span>Telangana Recovery Wing</span><span>Chhattisgarh Outreach</span><span>Tamil Nadu Specialist Desk</span>
@@ -193,28 +240,28 @@
 
       <!-- Platform -->
       <section id="solutions" class="features section" aria-labelledby="features-title">
-        <header class="section-head">
+        <header class="section-head" data-animate="fade-up">
           <span class="section-eyebrow">Platform Chapters</span>
-          <h2 id="features-title" class="gsap-reveal">Healthcare revenue cycle superpowers</h2>
-          <p class="gsap-reveal">Advance the storyline from intake to discharge with explainable AI, payer-grade compliance, and patient-first messaging.</p>
+          <h2 id="features-title">Healthcare revenue cycle superpowers</h2>
+          <p>Advance the storyline from intake to discharge with explainable AI, payer-grade compliance, and patient-first messaging.</p>
         </header>
         <div class="feature-grid" role="list">
-          <article class="feature-card hover-tilt" role="listitem">
+          <article class="feature-card hover-tilt" role="listitem" data-animate="scale-in">
             <span class="tag">EMR Co-Pilot</span>
             <h3>AI Clinical & Coding Co-Pilot</h3>
             <p>Auto-scribe encounters, map ICD-10/HCPCS, and validate medical necessity with HL7/FHIR pipes and audit trails.</p>
           </article>
-          <article class="feature-card hover-tilt" role="listitem">
+          <article class="feature-card hover-tilt" role="listitem" data-animate="scale-in" data-animate-delay="80">
             <span class="tag">Cashless</span>
             <h3>Pre-Auth & Cashless Automation</h3>
             <p>Trigger eligibility, compile packets, and secure approvals in under a minute with payer SLA radar.</p>
           </article>
-          <article class="feature-card hover-tilt" role="listitem">
+          <article class="feature-card hover-tilt" role="listitem" data-animate="scale-in" data-animate-delay="160">
             <span class="tag">Denials</span>
             <h3>Denial Recovery Studio</h3>
             <p>Predict denials, launch auto-appeals, and improve yield with root-cause analytics and evidence kits.</p>
           </article>
-          <article class="feature-card hover-tilt" role="listitem">
+          <article class="feature-card hover-tilt" role="listitem" data-animate="scale-in" data-animate-delay="240">
             <span class="tag">Concierge</span>
             <h3>Patient Concierge</h3>
             <p>WhatsApp updates, multilingual onboarding, and zero-interest financing to lift CSAT and reduce LOS.</p>
@@ -222,25 +269,25 @@
         </div>
       </section>
 
-      <!-- Audiences -->
+      <!-- Audience Tabs -->
       <section id="audiences" class="audience-showcase section" aria-labelledby="audiences-title">
-        <header class="section-head">
+        <header class="section-head" data-animate="fade-up">
           <span class="section-eyebrow">Dual-view Storytelling</span>
-          <h2 id="audiences-title" class="gsap-reveal">Tailored journeys for hospitals & patients</h2>
-          <p class="gsap-reveal">Switch between leadership control rooms and bedside guidance with cinematic previews of each orbit.</p>
+          <h2 id="audiences-title">Tailored journeys for hospitals & patients</h2>
+          <p>Switch between leadership control rooms and bedside guidance with cinematic previews of each orbit.</p>
         </header>
 
         <div class="audience-toggle" role="tablist">
-          <button class="audience-tab active" type="button" role="tab" aria-selected="true" aria-controls="audience-hospitals" data-target="audience-hospitals">
+          <button class="audience-tab active" type="button" role="tab" aria-selected="true" aria-controls="audience-hospitals" id="tab-hospitals" data-target="audience-hospitals">
             <span class="audience-tab__icon" aria-hidden="true"></span><span>Hospitals</span>
           </button>
-          <button class="audience-tab" type="button" role="tab" aria-selected="false" aria-controls="audience-patients" data-target="audience-patients">
+          <button class="audience-tab" type="button" role="tab" aria-selected="false" aria-controls="audience-patients" id="tab-patients" data-target="audience-patients">
             <span class="audience-tab__icon" aria-hidden="true"></span><span>Patients</span>
           </button>
         </div>
 
         <div class="audience-panels">
-          <article id="audience-hospitals" class="audience-panel active" role="tabpanel">
+          <article id="audience-hospitals" class="audience-panel active" role="tabpanel" aria-labelledby="tab-hospitals">
             <div class="audience-panel__content">
               <h3>For CFOs & Operations</h3>
               <p>Spin up an AI revenue command center with autonomous workflows and governance baked in.</p>
@@ -254,26 +301,14 @@
                 <a href="#solutions" class="button-ghost">View Product Modules</a>
               </div>
             </div>
-            <div class="audience-panel__media">
-              <div class="audience-card">
-                <span class="tag">Command</span>
-                <h4>RCM Control Hub</h4>
-                <p>Real-time AR, escalations, and cash projections with variance alerts.</p>
-              </div>
-              <div class="audience-card">
-                <span class="tag">Automation</span>
-                <h4>Auto Packet Builder</h4>
-                <p>Compile eligibility, diagnostics, narratives, and e-signs in one sweep.</p>
-              </div>
-              <div class="audience-card">
-                <span class="tag">Insights</span>
-                <h4>Denial Radar</h4>
-                <p>Surface high-risk claims and auto-launch appeal workflows instantly.</p>
-              </div>
+            <div class="audience-panel__media" aria-hidden="true">
+              <div class="audience-card"><span class="tag">Command</span><h4>RCM Control Hub</h4><p>Real-time AR, escalations, and cash projections with variance alerts.</p></div>
+              <div class="audience-card"><span class="tag">Automation</span><h4>Auto Packet Builder</h4><p>Compile eligibility, diagnostics, narratives, and e-signs in one sweep.</p></div>
+              <div class="audience-card"><span class="tag">Insights</span><h4>Denial Radar</h4><p>Surface high-risk claims and auto-launch appeal workflows instantly.</p></div>
             </div>
           </article>
 
-          <article id="audience-patients" class="audience-panel" role="tabpanel" hidden>
+          <article id="audience-patients" class="audience-panel" role="tabpanel" aria-labelledby="tab-patients" hidden>
             <div class="audience-panel__content">
               <h3>For Patient Experience</h3>
               <p>Deliver concierge-grade support with transparent claims, live chat, and compassionate financing.</p>
@@ -287,22 +322,10 @@
                 <a href="#solutions" class="button-ghost">Patient Modules</a>
               </div>
             </div>
-            <div class="audience-panel__media">
-              <div class="audience-card">
-                <span class="tag">Concierge</span>
-                <h4>24/7 Guidance</h4>
-                <p>Live chat, bedside coordinators, and kiosk updates—always in sync.</p>
-              </div>
-              <div class="audience-card">
-                <span class="tag">Finance</span>
-                <h4>Zero-Interest Plans</h4>
-                <p>Pre-approved medical lines with transparent repayment journeys.</p>
-              </div>
-              <div class="audience-card">
-                <span class="tag">Transparency</span>
-                <h4>Claim Tracker</h4>
-                <p>Swipe-through docs and timers for every payer checkpoint.</p>
-              </div>
+            <div class="audience-panel__media" aria-hidden="true">
+              <div class="audience-card"><span class="tag">Concierge</span><h4>24/7 Guidance</h4><p>Live chat, bedside coordinators, and kiosk updates—always in sync.</p></div>
+              <div class="audience-card"><span class="tag">Finance</span><h4>Zero-Interest Plans</h4><p>Pre-approved medical lines with transparent repayment journeys.</p></div>
+              <div class="audience-card"><span class="tag">Transparency</span><h4>Claim Tracker</h4><p>Swipe-through docs and timers for every payer checkpoint.</p></div>
             </div>
           </article>
         </div>
@@ -310,16 +333,16 @@
 
       <!-- How it Works -->
       <section id="how-it-works" class="timeline section" aria-labelledby="how-title">
-        <header class="section-head">
+        <header class="section-head" data-animate="fade-up">
           <span class="section-eyebrow">Four-beat Sequence</span>
-          <h2 id="how-title" class="gsap-reveal">How HealthFlo Works</h2>
-          <p class="gsap-reveal">A four-step orchestration engine woven into your HIS, payers, and patient journeys.</p>
+          <h2 id="how-title">How HealthFlo Works</h2>
+          <p>A four-step orchestration engine woven into your HIS, payers, and patient journeys.</p>
         </header>
         <div class="timeline-steps" role="list">
-          <div class="step" role="listitem"><h3>Intake & Verification</h3><p>Digitize admissions with ID capture, policy fetch, and AI triage.</p></div>
-          <div class="step" role="listitem"><h3>Automated Coding</h3><p>ICD-10/HCPCS mapping, medical necessity checks, and audit-ready packets.</p></div>
-          <div class="step" role="listitem"><h3>Cashless Claiming</h3><p>Pre-auth autopilot compiles docs, submits to payers, and tracks SLAs.</p></div>
-          <div class="step" role="listitem"><h3>Revenue Intelligence</h3><p>Dashboards for leakage, AR aging, yield, and CFO-grade forecasts.</p></div>
+          <div class="step" role="listitem" data-animate="slide-up"><h3>Intake & Verification</h3><p>Digitize admissions with ID capture, policy fetch, and AI triage.</p></div>
+          <div class="step" role="listitem" data-animate="slide-up" data-animate-delay="80"><h3>Automated Coding</h3><p>ICD-10/HCPCS mapping, medical necessity checks, and audit-ready packets.</p></div>
+          <div class="step" role="listitem" data-animate="slide-up" data-animate-delay="160"><h3>Cashless Claiming</h3><p>Pre-auth autopilot compiles docs, submits to payers, and tracks SLAs.</p></div>
+          <div class="step" role="listitem" data-animate="slide-up" data-animate-delay="240"><h3>Revenue Intelligence</h3><p>Dashboards for leakage, AR aging, yield, and CFO-grade forecasts.</p></div>
         </div>
       </section>
 
@@ -341,7 +364,6 @@
       <section id="metrics" class="metrics section" aria-label="Key metrics">
         <div class="kpi-strip glass-card" data-hf-kpi-host>
           <div class="kpi-row" role="list" aria-label="Live KPI dashboard">
-            <!-- Example cards (host your component here) -->
             <div class="healthflo-kpi" role="listitem">
               <div class="healthflo-kpi__label">Cashless Turnaround</div>
               <div class="healthflo-kpi__value-row">
@@ -372,22 +394,26 @@
 
       <!-- Testimonials -->
       <section id="testimonials" class="testimonials section" aria-labelledby="testimonial-title">
-        <header class="section-head">
+        <header class="section-head" data-animate="fade-up">
           <span class="section-eyebrow">Proof in the Field</span>
-          <h2 id="testimonial-title" class="gsap-reveal">Trusted across India</h2>
-          <p class="gsap-reveal">Hospital groups rely on HealthFlo to run RCM as a growth engine.</p>
+          <h2 id="testimonial-title">Trusted across India</h2>
+          <p>Hospital groups rely on HealthFlo to run RCM as a growth engine.</p>
         </header>
         <div class="testimonial-carousel" aria-live="polite">
           <blockquote class="active">“HealthFlo reduced our pre-auth cycle from 6 hours to minutes.”<div class="testimonial-author">Dr. Kavya Rao · COO, NovaCare</div></blockquote>
           <blockquote>“We recovered ₹12 Cr in aged claims—forecasts are now board-ready.”<div class="testimonial-author">Sanjay Patel · CFO, Harmony Health</div></blockquote>
           <blockquote>“Live WhatsApp updates and zero-interest plans lifted PX by 34%.”<div class="testimonial-author">Meera Joshi · Head, Patient Experience</div></blockquote>
-          <div class="carousel-controls"><button class="carousel-dot active"></button><button class="carousel-dot"></button><button class="carousel-dot"></button></div>
+          <div class="carousel-controls" role="tablist" aria-label="testimonial selector">
+            <button class="carousel-dot active" role="tab" aria-selected="true" aria-controls="t1"></button>
+            <button class="carousel-dot" role="tab" aria-selected="false" aria-controls="t2"></button>
+            <button class="carousel-dot" role="tab" aria-selected="false" aria-controls="t3"></button>
+          </div>
         </div>
       </section>
 
       <!-- Final CTA -->
       <section id="final-cta" class="cta-band" aria-labelledby="cta-title">
-        <div class="cta-band__content">
+        <div class="cta-band__content" data-animate="fade-up">
           <h2 id="cta-title">Ready to transform your revenue cycle?</h2>
           <p>See how HealthFlo rewrites the revenue story for your network.</p>
         </div>
@@ -398,7 +424,7 @@
     <!-- Footer -->
     <footer class="footer" aria-label="Footer">
       <div class="footer-wave" aria-hidden="true">
-        <svg viewBox="0 0 720 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <svg viewBox="0 0 720 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" width="700" height="160">
           <defs>
             <linearGradient id="footerGradient" x1="0" x2="1" y1="0" y2="0.8">
               <stop offset="0%" stop-color="#38bdf8" />
@@ -415,104 +441,40 @@
         </div>
         <div>
           <h4>Company</h4>
-          <ul><li><a href="#">About</a></li><li><a href="#">Impact</a></li><li><a href="#">Investors</a></li></ul>
+          <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="#metrics">Impact</a></li>
+            <li><a href="#">Investors</a></li>
+          </ul>
         </div>
         <div>
           <h4>Solutions</h4>
-          <ul><li><a href="#solutions">For Hospitals</a></li><li><a href="#audiences">For Patients</a></li><li><a href="#solutions">Product Modules</a></li></ul>
+          <ul>
+            <li><a href="#solutions">For Hospitals</a></li>
+            <li><a href="#audiences">For Patients</a></li>
+            <li><a href="#solutions">Product Modules</a></li>
+          </ul>
         </div>
         <div>
           <h4>Connect</h4>
           <p class="text-muted"><a href="mailto:hello@healthflo.ai">hello@healthflo.ai</a></p>
           <div class="social-links" role="list">
-            <a href="#" aria-label="LinkedIn">in</a><a href="#" aria-label="X">𝕏</a><a href="#" aria-label="YouTube">▶</a>
+            <a href="#" aria-label="LinkedIn" rel="noopener">in</a>
+            <a href="#" aria-label="X" rel="noopener">𝕏</a>
+            <a href="#" aria-label="YouTube" rel="noopener">▶</a>
           </div>
         </div>
       </div>
-      <div class="footer-bottom">© <span id="year"></span> HealthFlo. All rights reserved.</div>
+      <div class="footer-bottom">© <span id="year">2025</span> HealthFlo. All rights reserved.</div>
     </footer>
 
-    <!-- Floating Actions (downsized) -->
+    <!-- Floating Actions -->
     <div class="floating-actions" aria-label="Quick actions">
-      <a href="https://wa.me/919999999999" class="whatsapp" aria-label="Chat on WhatsApp">WhatsApp</a>
+      <a href="https://wa.me/919999999999" class="whatsapp" aria-label="Chat on WhatsApp" rel="noopener">WhatsApp</a>
       <a href="#final-cta" aria-label="Book a HealthFlo demo">Book Demo</a>
     </div>
 
-    <!-- Minimal JS so it works even without main.js -->
-    <script>
-      // Year
-      document.getElementById('year').textContent = new Date().getFullYear();
-
-      // Preloader hide
-      window.addEventListener('load', () => {
-        document.querySelector('.preloader')?.classList.add('hidden');
-      });
-
-      // Theme toggle (persist)
-      const root = document.documentElement;
-      const savedTheme = localStorage.getItem('hf-theme');
-      if (savedTheme) root.setAttribute('data-theme', savedTheme);
-      document.querySelector('.theme-toggle')?.addEventListener('click', () => {
-        const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-        root.setAttribute('data-theme', next);
-        localStorage.setItem('hf-theme', next);
-      });
-
-      // Mobile nav
-      const toggle = document.querySelector('.mobile-nav-toggle');
-      const links = document.querySelector('.nav-links');
-      toggle?.addEventListener('click', () => {
-        const open = links.classList.toggle('open');
-        toggle.setAttribute('aria-expanded', open);
-      });
-
-      // Quick links
-      const qToggle = document.querySelector('.quick-page-nav__toggle');
-      const qLinks  = document.querySelector('.quick-page-nav__links');
-      qToggle?.addEventListener('click', () => {
-        const open = qLinks.style.maxHeight && qLinks.style.maxHeight !== '0px';
-        qLinks.style.maxHeight = open ? '0' : '420px';
-        qLinks.style.opacity   = open ? '0' : '1';
-        qToggle.setAttribute('aria-expanded', (!open).toString());
-      });
-
-      // Audience tabs
-      document.querySelectorAll('.audience-tab').forEach(btn => {
-        btn.addEventListener('click', () => {
-          document.querySelectorAll('.audience-tab').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          const id = btn.dataset.target;
-          document.querySelectorAll('.audience-panel').forEach(p => {
-            const match = p.id === id;
-            p.toggleAttribute('hidden', !match);
-            p.classList.toggle('active', match);
-          });
-        });
-      });
-
-      // KPI speed label
-      const speed = document.getElementById('hf-speed-range');
-      const label = document.getElementById('hf-speed-label');
-      const setLabel = v => label.textContent = Math.round(v/1000) + 's';
-      speed && (setLabel(speed.value), speed.addEventListener('input', e => setLabel(e.target.value)));
-
-      // Tiny hero canvas twinkles
-      const cvs = document.getElementById('hero-animation');
-      if (cvs && cvs.getContext) {
-        const ctx = cvs.getContext('2d');
-        const stars = Array.from({length: 32}, () => ({x: Math.random(), y: Math.random(), r: Math.random()*1.6+0.4}));
-        const resize = () => { cvs.width = cvs.clientWidth; cvs.height = 160; };
-        const draw = () => {
-          ctx.clearRect(0,0,cvs.width,cvs.height);
-          stars.forEach(s => {
-            const x = s.x*cvs.width, y = s.y*cvs.height;
-            ctx.globalAlpha = 0.5 + Math.sin((Date.now()/600)+(x+y))*0.5;
-            ctx.beginPath(); ctx.arc(x,y,s.r,0,Math.PI*2); ctx.fillStyle = '#5eead4'; ctx.fill();
-          });
-          requestAnimationFrame(draw);
-        };
-        resize(); window.addEventListener('resize', resize, {passive:true}); draw();
-      }
-    </script>
+    <!-- Main JS (deferred) -->
+    <script defer src="assets/js/app.js"></script>
   </body>
 </html>
