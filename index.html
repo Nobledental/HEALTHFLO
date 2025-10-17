@@ -3,20 +3,41 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>HealthFlo | AI Revenue Cycle Automation & Patient Concierge</title>
-    <meta name="description" content="HealthFlo is the AI-powered revenue cycle and patient concierge platform built for hospitals to accelerate cashless approvals, recover denials, and delight patients.">
 
-    <!-- Google Font (Manrope) -->
+    <title>HealthFlo | AI Revenue Cycle Automation & Patient Concierge</title>
+    <meta
+      name="description"
+      content="HealthFlo is the AI-powered revenue cycle and patient concierge platform built for hospitals to accelerate cashless approvals, recover denials, and delight patients."
+    />
+    <link rel="canonical" href="https://www.healthflo.ai/" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="HealthFlo | AI Revenue Cycle Automation & Patient Concierge" />
+    <meta property="og:description" content="AI-first platform that fuses operations, finance, and patient delight." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.healthflo.ai/" />
+    <meta property="og:image" content="assets/images/og-cover.jpg" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="HealthFlo | AI Revenue Cycle Automation & Patient Concierge" />
+    <meta name="twitter:description" content="AI-first platform that fuses operations, finance, and patient delight." />
+    <meta name="twitter:image" content="assets/images/og-cover.jpg" />
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
-    <!-- Single main stylesheet -->
+    <!-- App Styles -->
     <link rel="stylesheet" href="assets/css/style.css" />
 
     <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg" />
 
-    <!-- Structured Data (SEO) -->
+    <!-- Structured Data: MedicalBusiness -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -46,17 +67,26 @@
       }
     </script>
 
-    <!-- ================== Motion (GSAP) ================== -->
-    <!-- GSAP Core (animations) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-    <!-- GSAP ScrollTrigger (scroll-based reveals) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-    <!-- GSAP Helpers (optional) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/SplitText.min.js" defer></script>
+    <!-- Structured Data: SoftwareApplication + Dashboard hybrid -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "HealthFlo Revenue Intelligence",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "description": "Hybrid revenue intelligence and patient concierge application with live KPI dashboard and advisory AI insights.",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.8",
+          "reviewCount": "127"
+        }
+      }
+    </script>
   </head>
 
-  <body class="page-landing a11y" data-page="home">
+  <body class="page-landing" data-page="home">
     <!-- Preloader -->
     <div class="preloader" role="status" aria-live="polite">
       <div class="preloader-logo" aria-hidden="true">
@@ -70,7 +100,13 @@
           <circle cx="40" cy="40" r="32" fill="rgba(76, 110, 245, 0.08)">
             <animate attributeName="r" values="24;32;24" dur="2.6s" repeatCount="indefinite" />
           </circle>
-          <path d="M22 46c6-8 30-8 36 0" stroke="url(#preloaderGradient)" stroke-width="5" stroke-linecap="round" fill="none">
+          <path
+            d="M22 46c6-8 30-8 36 0"
+            stroke="url(#preloaderGradient)"
+            stroke-width="5"
+            stroke-linecap="round"
+            fill="none"
+          >
             <animate attributeName="stroke-dasharray" values="0 120;120 0;0 120" dur="2.6s" repeatCount="indefinite" />
           </path>
           <circle cx="56" cy="26" r="5" fill="url(#preloaderGradient)">
@@ -81,7 +117,7 @@
       <span class="visually-hidden">Loading HealthFlo experience</span>
     </div>
 
-    <!-- Header / Nav -->
+    <!-- Header -->
     <header class="header" aria-label="Primary navigation">
       <nav class="navbar" aria-label="Main">
         <a href="index.html" class="logo" aria-label="HealthFlo home">
@@ -94,10 +130,22 @@
                 </linearGradient>
               </defs>
               <rect x="4" y="4" width="40" height="40" rx="14" fill="rgba(15, 23, 42, 0.85)" />
-              <path d="M14 28c6-8 20-8 26 0" stroke="url(#logoGradient)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M14 28c6-8 20-8 26 0"
+                stroke="url(#logoGradient)"
+                stroke-width="4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
                 <animate attributeName="stroke-dashoffset" values="90;0;90" dur="6s" repeatCount="indefinite" />
               </path>
-              <path d="M16 20c4-4 10-4 14 0" stroke="#2dd4bf" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M16 20c4-4 10-4 14 0"
+                stroke="#2dd4bf"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
                 <animateTransform attributeName="transform" type="rotate" values="0 24 24;5 24 24;0 24 24" dur="6s" repeatCount="indefinite" />
               </path>
               <circle cx="34" cy="14" r="4" fill="url(#logoGradient)">
@@ -108,15 +156,17 @@
           <span class="logo-word">HealthFlo</span>
         </a>
 
-        <button class="mobile-nav-toggle" aria-expanded="false" aria-controls="primary-menu" aria-label="Toggle navigation">☰</button>
+        <button class="mobile-nav-toggle" aria-expanded="false" aria-controls="primary-menu" aria-label="Toggle navigation">
+          ☰
+        </button>
 
         <div class="nav-links" id="primary-menu" role="menubar">
-          <a href="#features" role="menuitem" class="seo-link">Platform</a>
-          <a href="#how-it-works" role="menuitem" class="seo-link">How it Works</a>
-          <a href="solutions.html" role="menuitem" class="seo-link">Solutions</a>
-          <a href="products.html" role="menuitem" class="seo-link">Products</a>
-          <a href="impact.html" role="menuitem" class="seo-link">Impact</a>
-          <a href="contact.html" role="menuitem" class="seo-link">Contact</a>
+          <a href="#features" role="menuitem" class="nav-link">Platform</a>
+          <a href="#how-it-works" role="menuitem" class="nav-link">How it Works</a>
+          <a href="solutions.html" role="menuitem" class="nav-link">Solutions</a>
+          <a href="products.html" role="menuitem" class="nav-link">Products</a>
+          <a href="impact.html" role="menuitem" class="nav-link">Impact</a>
+          <a href="contact.html" role="menuitem" class="nav-link">Contact</a>
         </div>
 
         <div class="nav-actions">
@@ -126,9 +176,12 @@
       </nav>
     </header>
 
-    <!-- Quick page nav -->
+    <!-- Quick Page Nav -->
     <nav class="quick-page-nav glass-card" aria-label="Quick page navigator">
-      <button class="quick-page-nav__toggle" type="button" aria-expanded="false">Quick Links <span aria-hidden="true">▾</span></button>
+      <button class="quick-page-nav__toggle" type="button" aria-expanded="false">
+        Quick Links
+        <span aria-hidden="true">▾</span>
+      </button>
       <div class="quick-page-nav__links" role="list">
         <a href="index.html" role="listitem" data-page="home">Home</a>
         <a href="solutions.html" role="listitem" data-page="solutions">Solutions</a>
@@ -138,8 +191,8 @@
       </div>
     </nav>
 
-    <main>
-      <!-- HERO -->
+    <main id="main-content">
+      <!-- Hero -->
       <section id="hero" class="hero full-height" aria-labelledby="hero-title">
         <div class="hero-content">
           <span class="eyebrow">Revenue Intelligence Platform</span>
@@ -152,14 +205,20 @@
             <a href="#solutions" class="cta-secondary">See Solutions</a>
           </div>
           <dl class="hero-metrics" aria-label="Hero performance metrics">
-            <div><dt>Hospitals orchestrated</dt><dd>570+</dd></div>
-            <div><dt>Claims accelerated</dt><dd>150K+</dd></div>
+            <div>
+              <dt>Hospitals orchestrated</dt>
+              <dd>570+</dd>
+            </div>
+            <div>
+              <dt>Claims accelerated</dt>
+              <dd>150K+</dd>
+            </div>
           </dl>
         </div>
 
+        <!-- Hero Visual + Canvas Particles (Micro-Cell / Nebula / Data Stream) -->
         <div class="hero-visual parallax" aria-hidden="true">
           <div class="hero-slab">
-            <!-- Visualization Slab -->
             <svg viewBox="0 0 460 360" role="img" aria-label="AI revenue orchestration visuals">
               <defs>
                 <linearGradient id="heroGradient" x1="0" x2="1" y1="0" y2="1">
@@ -191,29 +250,37 @@
                 <rect x="256" y="292" width="138" height="16" rx="8" opacity="0.45" />
               </g>
             </svg>
-
-            <!-- Particles: Micro-Cell / Nebula / Data-Stream -->
             <canvas id="hero-animation" aria-hidden="true"></canvas>
           </div>
         </div>
       </section>
 
-      <!-- GEO MARQUEE -->
+      <!-- Geo marquee -->
       <section class="geo-marquee" aria-label="HealthFlo operating cities" data-animate>
         <div class="geo-marquee__track">
-          <span>Chennai HQ</span><span>Bengaluru Command Hub</span><span>Hyderabad RCM Lab</span>
-          <span>Mumbai Network Desk</span><span>Delhi NCR Advocacy</span><span>Pune Cashless Pod</span>
-          <span>Goa Clinical Partners</span><span>Kerala Care Grid</span><span>Andhra Empanelment Team</span>
-          <span>Telangana Recovery Wing</span><span>Chhattisgarh Outreach</span><span>Tamil Nadu Specialist Desk</span>
+          <span>Chennai HQ</span>
+          <span>Bengaluru Command Hub</span>
+          <span>Hyderabad RCM Lab</span>
+          <span>Mumbai Network Desk</span>
+          <span>Delhi NCR Advocacy</span>
+          <span>Pune Cashless Pod</span>
+          <span>Goa Clinical Partners</span>
+          <span>Kerala Care Grid</span>
+          <span>Andhra Empanelment Team</span>
+          <span>Telangana Recovery Wing</span>
+          <span>Chhattisgarh Outreach</span>
+          <span>Tamil Nadu Specialist Desk</span>
         </div>
       </section>
 
-      <!-- FEATURES -->
+      <!-- Features -->
       <section id="solutions" class="features section" aria-labelledby="features-title">
         <header class="section-head">
           <span class="section-eyebrow">Platform chapters</span>
           <h2 id="features-title" class="gsap-reveal">Healthcare revenue cycle superpowers</h2>
-          <p class="gsap-reveal">Each module advances the storyline from admission to discharge, pairing intelligent workflows with human-grade updates.</p>
+          <p class="gsap-reveal">
+            Each module advances the storyline from admission to discharge, pairing intelligent workflows with human-grade updates.
+          </p>
         </header>
         <div class="feature-grid" role="list">
           <article class="feature-card hover-tilt gsap-stagger" role="listitem">
@@ -235,7 +302,7 @@
         </div>
       </section>
 
-      <!-- AUDIENCE SHOWCASE (tabbed) -->
+      <!-- Audience Showcase -->
       <section id="audiences" class="audience-showcase section" aria-labelledby="audiences-title">
         <header class="section-head">
           <span class="section-eyebrow">Dual-view storytelling</span>
@@ -244,12 +311,39 @@
         </header>
 
         <div class="audience-toggle" role="tablist">
-          <button class="audience-tab active" role="tab" aria-selected="true" aria-controls="audience-hospitals" data-target="audience-hospitals">
-            <span class="audience-tab__icon" aria-hidden="true">🏥</span>
+          <button class="audience-tab active" type="button" role="tab" aria-selected="true" aria-controls="audience-hospitals" data-target="audience-hospitals">
+            <span class="audience-tab__icon" aria-hidden="true">
+              <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="audienceHospitalsGradient" x1="0" x2="1" y1="0" y2="1">
+                    <stop offset="0%" stop-color="#4c6ef5" />
+                    <stop offset="100%" stop-color="#2dd4bf" />
+                  </linearGradient>
+                </defs>
+                <rect x="6" y="8" width="20" height="18" rx="4" fill="rgba(15,23,42,0.78)" />
+                <path d="M16 12v6" stroke="url(#audienceHospitalsGradient)" stroke-width="2" stroke-linecap="round" />
+                <path d="M13 15h6" stroke="url(#audienceHospitalsGradient)" stroke-width="2" stroke-linecap="round" />
+                <path d="M8 24h16" stroke="rgba(100,116,139,0.6)" stroke-width="1.5" stroke-linecap="round" />
+              </svg>
+            </span>
             <span class="audience-tab__label">Hospitals</span>
           </button>
-          <button class="audience-tab" role="tab" aria-selected="false" aria-controls="audience-patients" data-target="audience-patients">
-            <span class="audience-tab__icon" aria-hidden="true">👨‍👩‍👧‍👦</span>
+
+          <button class="audience-tab" type="button" role="tab" aria-selected="false" aria-controls="audience-patients" data-target="audience-patients">
+            <span class="audience-tab__icon" aria-hidden="true">
+              <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="audiencePatientsGradient" x1="0" x2="1" y1="0" y2="1">
+                    <stop offset="0%" stop-color="#2dd4bf" />
+                    <stop offset="100%" stop-color="#4c6ef5" />
+                  </linearGradient>
+                </defs>
+                <circle cx="16" cy="12" r="6" fill="rgba(45,212,191,0.22)" />
+                <path d="M12 12c0-2.2 1.8-4 4-4s4 1.8 4 4" stroke="url(#audiencePatientsGradient)" stroke-width="2" stroke-linecap="round" />
+                <path d="M8 25c1.6-4.4 5.4-7 8-7s6.4 2.6 8 7" stroke="rgba(148,163,184,0.6)" stroke-width="1.5" stroke-linecap="round" />
+                <path d="M11 26h10" stroke="url(#audiencePatientsGradient)" stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </span>
             <span class="audience-tab__label">Patients</span>
           </button>
         </div>
@@ -327,7 +421,7 @@
         </div>
       </section>
 
-      <!-- HOW IT WORKS -->
+      <!-- How it Works -->
       <section id="how-it-works" class="timeline section parallax-bg" aria-labelledby="how-title">
         <header class="section-head">
           <span class="section-eyebrow">Four-beat sequence</span>
@@ -335,145 +429,50 @@
           <p class="gsap-reveal">A four-step orchestration engine woven into your HIS, payors, and patient journeys.</p>
         </header>
         <div class="timeline-steps" role="list">
-          <div class="step gsap-scroll" role="listitem"><h3>Intake & Verification</h3><p>Digitize admissions with ID capture, policy fetch, and AI-powered triage.</p></div>
-          <div class="step gsap-scroll" role="listitem"><h3>Automated Coding</h3><p>Unified coding cockpit with medical necessity checks and audit-ready packets.</p></div>
-          <div class="step gsap-scroll" role="listitem"><h3>Cashless Claiming</h3><p>Pre-auth autopilot that compiles docs, submits to payors, and tracks SLAs.</p></div>
-          <div class="step gsap-scroll" role="listitem"><h3>Revenue Insights</h3><p>Dynamic dashboards spotlight leakages, AR aging, and CFO-ready forecasts.</p></div>
-        </div>
-      </section>
-
-      <!-- 🔥 KPI STRIP (Reusable Widgets) — “Beside the number” deltas + spark -->
-      <section class="kpi-strip section" aria-label="Live KPIs">
-        <div class="kpi-row">
-          <healthflo-kpi kpi-name="Claim Approval Rate" unit="%" label="Claim Approval Rate"></healthflo-kpi>
-          <healthflo-kpi kpi-name="Avg Pre-Auth Time" unit="s" label="Avg Pre-Auth Time"></healthflo-kpi>
-          <healthflo-kpi kpi-name="Satisfaction Score" unit="%" label="Patient Satisfaction"></healthflo-kpi>
-        </div>
-      </section>
-
-      <!-- 🧲 Insights Drawer (sticky trigger; auto-opens on first scroll) -->
-      <section id="hf-ai-insights" class="hf-ai-insights" aria-label="AI-Powered Insights" hidden>
-        <button class="hf-ai-insights__trigger" aria-controls="hf-ai-insights-drawer" aria-expanded="false">🤖 AI Insights</button>
-        <aside id="hf-ai-insights-drawer" class="hf-ai-insights__drawer" role="dialog" aria-modal="false" aria-label="AI Insights Panel">
-          <header class="hf-ai-insights__header">
-            <h2>AI-Powered Insights</h2>
-            <button class="hf-ai-insights__close" aria-label="Close insights panel">✕</button>
-          </header>
-
-          <nav class="hf-ai-insights__tabs" role="tablist">
-            <button class="hf-tab active" role="tab" aria-selected="true" aria-controls="hf-tab-overview" id="tab-overview" data-tab="hf-tab-overview">📈 Overview</button>
-            <button class="hf-tab" role="tab" aria-selected="false" aria-controls="hf-tab-finance" id="tab-finance" data-tab="hf-tab-finance">💰 Finance</button>
-            <button class="hf-tab" role="tab" aria-selected="false" aria-controls="hf-tab-patient" id="tab-patient" data-tab="hf-tab-patient">🏥 Patient Experience</button>
-            <button class="hf-tab" role="tab" aria-selected="false" aria-controls="hf-tab-operations" id="tab-operations" data-tab="hf-tab-operations">⚙️ Operations</button>
-          </nav>
-
-          <div class="hf-ai-insights__panels">
-            <section id="hf-tab-overview" class="hf-tabpanel active" role="tabpanel" aria-labelledby="tab-overview">
-              <div class="hf-speed-control">
-                <label for="hf-refresh-speed">Update Speed</label>
-                <input id="hf-refresh-speed" type="range" min="1" max="3" step="1" value="2" />
-                <div class="hf-speed-labels"><span>Real-Time (5s)</span><span>Standard (15s)</span><span>Slow (30s)</span></div>
-              </div>
-
-              <article class="hf-insight-card">
-                <header><h3>System Performance Summary</h3><span class="hf-insight-change positive">↑ 12%</span></header>
-                <p>Overall revenue cycle efficiency increased significantly this quarter, driven by improved eligibility automation and reduced AR leakage.</p>
-                <ul class="hf-actions">
-                  <li>Expand auto-preauth workflows to OPD departments.</li>
-                  <li>Integrate denial radar with secondary payors for broader coverage.</li>
-                </ul>
-              </article>
-
-              <article class="hf-insight-card">
-                <header><h3>Claims Turnaround</h3><span class="hf-insight-change negative">↓ 5.4 Days</span></header>
-                <p>Average claims processing time fell below 48 h for the first time, indicating effective coordination between clinical coding and billing teams.</p>
-                <ul class="hf-actions">
-                  <li>Introduce predictive coding alerts for high-value claims.</li>
-                  <li>Automate follow-ups for pending payor responses beyond 24 h.</li>
-                </ul>
-              </article>
-            </section>
-
-            <section id="hf-tab-finance" class="hf-tabpanel" role="tabpanel" aria-labelledby="tab-finance" hidden>
-              <article class="hf-insight-card">
-                <header><h3>Accounts Receivable (AR) Days</h3><span class="hf-insight-change positive">↓ 7 Days</span></header>
-                <p>AR days reduced to 51, improving liquidity and negotiation leverage with payors.</p>
-                <ul class="hf-actions">
-                  <li>Review denial appeal timelines to maintain downward momentum.</li>
-                  <li>Implement automated write-off detection for aged claims.</li>
-                </ul>
-              </article>
-
-              <article class="hf-insight-card">
-                <header><h3>Cashless Approval Rate</h3><span class="hf-insight-change positive">↑ 8.3%</span></header>
-                <p>Approval rate reached 94.2%, largely due to enhanced pre-admission eligibility verification.</p>
-                <ul class="hf-actions">
-                  <li>Expand pre-auth eligibility to outpatient procedures.</li>
-                  <li>Launch predictive denial alerts for top five payors.</li>
-                </ul>
-              </article>
-            </section>
-
-            <section id="hf-tab-patient" class="hf-tabpanel" role="tabpanel" aria-labelledby="tab-patient" hidden>
-              <article class="hf-insight-card">
-                <header><h3>Patient Satisfaction Index</h3><span class="hf-insight-change positive">↑ 14%</span></header>
-                <p>Real-time concierge messaging and transparent claim tracking improved satisfaction scores across inpatient units.</p>
-                <ul class="hf-actions">
-                  <li>Expand multilingual support across digital channels.</li>
-                  <li>Introduce proactive admission-prep checklists for families.</li>
-                </ul>
-              </article>
-
-              <article class="hf-insight-card">
-                <header><h3>Discharge Readiness</h3><span class="hf-insight-change neutral">↔ Stable</span></header>
-                <p>Discharge workflows remain stable but show opportunities for faster pharmacy-billing sync.</p>
-                <ul class="hf-actions">
-                  <li>Automate medication availability checks during pre-discharge review.</li>
-                  <li>Enable patient-side discharge notifications to reduce delays.</li>
-                </ul>
-              </article>
-            </section>
-
-            <section id="hf-tab-operations" class="hf-tabpanel" role="tabpanel" aria-labelledby="tab-operations" hidden>
-              <article class="hf-insight-card">
-                <header><h3>Denial Prediction Accuracy</h3><span class="hf-insight-change positive">↑ 6.5%</span></header>
-                <p>AI prediction model accuracy improved with retraining on recent datasets, reducing false positives by 22%.</p>
-                <ul class="hf-actions">
-                  <li>Enable weekly model retraining for continual accuracy improvement.</li>
-                  <li>Integrate coding feedback loops from audit team.</li>
-                </ul>
-              </article>
-
-              <article class="hf-insight-card">
-                <header><h3>Operational Throughput</h3><span class="hf-insight-change negative">↓ 4%</span></header>
-                <p>Slight drop in throughput noted due to staffing gaps in the pre-auth verification queue.</p>
-                <ul class="hf-actions">
-                  <li>Optimize scheduling or consider RPA triage bots for after-hours verification.</li>
-                  <li>Run a root-cause analysis on queue bottlenecks in last 2 weeks.</li>
-                </ul>
-              </article>
-            </section>
+          <div class="step gsap-scroll" role="listitem">
+            <h3>Intake & Verification</h3>
+            <p>Digitize admissions with ID capture, policy fetch, and AI-powered triage.</p>
           </div>
-        </aside>
-      </section>
-
-      <!-- AI Advisory Narratives (Exec Summary + Insights + Narration) -->
-      <section id="hf-ai-insights-narrative" class="ai-insights-section" aria-labelledby="insights-title">
-        <h2 id="insights-title" class="visually-hidden">AI-Powered Healthcare Insights</h2>
-        <div id="hf-ai-insights"></div>
-      </section>
-
-      <!-- METRICS -->
-      <section id="metrics" class="metrics section" aria-label="Key metrics">
-        <div class="metrics-grid">
-          <div class="metric gsap-counter"><strong data-target="570">570</strong><span>Hospitals Automated</span></div>
-          <div class="metric gsap-counter"><strong data-target="150000">150,000</strong><span>Patients Assisted</span></div>
-          <div class="metric gsap-counter"><strong data-prefix="" data-target="45" data-suffix="s">45s</strong><span>Average Pre-Auth Time</span></div>
-          <div class="metric gsap-counter"><strong data-target="98" data-suffix="%">98%</strong><span>Claim Recovery Rate</span></div>
+          <div class="step gsap-scroll" role="listitem">
+            <h3>Automated Coding</h3>
+            <p>Unified coding cockpit with medical necessity checks and audit-ready packets.</p>
+          </div>
+          <div class="step gsap-scroll" role="listitem">
+            <h3>Cashless Claiming</h3>
+            <p>Pre-auth autopilot that compiles docs, submits to payors, and tracks SLAs.</p>
+          </div>
+          <div class="step gsap-scroll" role="listitem">
+            <h3>Revenue Insights</h3>
+            <p>Dynamic dashboards spotlight leakages, AR aging, and CFO-ready forecasts.</p>
+          </div>
         </div>
       </section>
 
-      <!-- TESTIMONIALS -->
+      <!-- KPI Controls (Sticky, above dashboard) -->
+      <aside class="kpi-controls kpi-controls--sticky" aria-label="KPI auto-update controls">
+        <div class="kpi-controls__row">
+          <div class="kpi-controls__group">
+            <label for="hf-speed-range">Update speed: <span id="hf-speed-label" aria-live="polite"></span></label>
+            <input id="hf-speed-range" type="range" min="3000" max="20000" step="500" aria-describedby="hf-speed-help" />
+            <small id="hf-speed-help" class="sr-only">Adjust how frequently KPI values auto-update.</small>
+          </div>
+          <div class="kpi-controls__group kpi-controls__group--toggle">
+            <input type="checkbox" id="hf-auto-toggle" aria-describedby="hf-auto-help" checked />
+            <label for="hf-auto-toggle">Auto-update</label>
+            <small id="hf-auto-help" class="sr-only">Turn KPI auto-updates on or off.</small>
+          </div>
+        </div>
+      </aside>
+
+      <!-- KPI Metrics Dashboard Host -->
+      <section id="metrics" class="metrics section" aria-label="Key metrics">
+        <!-- Host element detected by JS (HealthFloDashboard) -->
+        <div class="kpi-strip glass-card" data-hf-kpi-host>
+          <div class="kpi-row" role="list" aria-label="Live KPI dashboard"></div>
+        </div>
+      </section>
+
+      <!-- Testimonials -->
       <section id="testimonials" class="testimonials section" aria-labelledby="testimonial-title">
         <header class="section-head">
           <span class="section-eyebrow">Proof in the field</span>
@@ -481,13 +480,22 @@
           <p class="gsap-reveal">Leading hospital groups rely on HealthFlo to run revenue cycle as a growth engine.</p>
         </header>
         <div class="testimonial-carousel" aria-live="polite">
-          <blockquote>“HealthFlo reduced our pre-auth cycle from 6 hours to minutes, unlocking faster discharges.”<div class="testimonial-author">Dr. Kavya Rao · COO, NovaCare Hospitals</div></blockquote>
-          <blockquote>“With the denial studio we recovered ₹12 Cr in aged claims and improved CFO confidence in projections.”<div class="testimonial-author">Sanjay Patel · CFO, Harmony Health</div></blockquote>
-          <blockquote>“Patients now receive real-time WhatsApp updates and zero-interest financing — satisfaction scores are up 34%.”<div class="testimonial-author">Meera Joshi · Head of Patient Experience, MedAxis</div></blockquote>
+          <blockquote>
+            “HealthFlo reduced our pre-auth cycle from 6 hours to minutes, unlocking faster discharges.”
+            <div class="testimonial-author">Dr. Kavya Rao · COO, NovaCare Hospitals</div>
+          </blockquote>
+          <blockquote>
+            “With the denial studio we recovered ₹12 Cr in aged claims and improved CFO confidence in projections.”
+            <div class="testimonial-author">Sanjay Patel · CFO, Harmony Health</div>
+          </blockquote>
+          <blockquote>
+            “Patients now receive real-time WhatsApp updates and zero-interest financing — satisfaction scores are up 34%.”
+            <div class="testimonial-author">Meera Joshi · Head of Patient Experience, MedAxis</div>
+          </blockquote>
         </div>
       </section>
 
-      <!-- CTA -->
+      <!-- Final CTA -->
       <section id="final-cta" class="cta-band" aria-labelledby="cta-title">
         <div class="cta-band__content">
           <h2 id="cta-title">Ready to transform your revenue cycle?</h2>
@@ -550,22 +558,26 @@
       <a href="contact.html" aria-label="Book a HealthFlo demo">Book Demo</a>
     </div>
 
-    <!-- Current year -->
-    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+    <!-- Year -->
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
 
-    <!-- Motion System (your base animations) -->
-    <script src="assets/js/animations.js" defer></script>
+    <!-- ===================== JS CDNs (Inline Comments) ===================== -->
+    <!-- GSAP Core (free) – animations engine -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+    <!-- GSAP ScrollTrigger (free) – scroll-based triggers -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+    <!-- GSAP MotionPath (free) – motion along paths (used lightly / optional) -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/MotionPathPlugin.min.js" defer></script>
+    <!-- Optional GSAP Premium plugins (SplitText, Flip, ScrollSmoother)
+         NOTE: These are paid. Our JS guards against their absence.
+         If you have a license, include them below and remove comments. -->
+    <!-- <script src="https://assets.your-gsap-cdn/SplitText.min.js" defer></script> -->
+    <!-- <script src="https://assets.your-gsap-cdn/Flip.min.js" defer></script> -->
+    <!-- <script src="https://assets.your-gsap-cdn/ScrollSmoother.min.js" defer></script> -->
 
-    <!-- Particles (Hero) -->
-    <script src="assets/js/particles.js" defer></script>
-
-    <!-- KPI Engine (events + auto-open) -->
-    <script src="components/ai-insights/ai-insights.js" defer></script>
-
-    <!-- KPI Widget (reusable, “beside the number”) -->
-    <script src="assets/js/kpi-widget.js" defer></script>
-
-    <!-- AI Narrative (Exec Summary + Narration) -->
-    <script src="components/ai-insights/ai-narrative.js" defer></script>
+    <!-- App Bundle (single-file) -->
+    <script src="assets/js/main.js" defer></script>
   </body>
 </html>
