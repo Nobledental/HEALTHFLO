@@ -1,10 +1,13 @@
 <!-- ============================================================
- 📊 HealthFlo Control Panel Component
+ 📊 HealthFlo Control Panel (Upgraded)
  Sticky Hero Control Bar for Dashboard Analytics
  Context: SoftwareApplication + Dashboard (AI-powered insights)
+ - Progressive enhancement (JS optional)
+ - A11y-first: roles, labels, live regions, keyboardable controls
+ - Data hooks for /assets/js/main.js & /assets/js/dashboard.js
 ============================================================ -->
 
-<section id="hf-controls" class="hf-controls" role="region" aria-label="Analytics Control Panel">
+<section id="hf-controls" class="hf-controls a11y" role="region" aria-label="Analytics Control Panel" data-module="hf-controls">
   <!-- 🧠 JSON-LD for AI & SEO: SoftwareApplication + Dashboard -->
   <script type="application/ld+json">
   {
@@ -15,7 +18,7 @@
     "operatingSystem": "Web",
     "url": "https://healthflo.ai",
     "description": "AI-powered healthcare insights platform providing hospital and patient-centric KPI dashboards with interactive analytics.",
-    "softwareVersion": "1.0",
+    "softwareVersion": "1.0.1",
     "publisher": {
       "@type": "Organization",
       "name": "HealthFlo",
@@ -35,82 +38,268 @@
   }
   </script>
 
-  <!-- 🔧 Compact Toggle -->
-  <button class="hf-controls__compact-toggle" aria-expanded="true" aria-controls="hf-controls-panel">
-    <span class="toggle-label">⚙️ Controls</span>
+  <!-- 🔧 Compact Toggle (sticky) -->
+  <button
+    class="hf-controls__compact-toggle"
+    aria-expanded="true"
+    aria-controls="hf-controls-panel"
+    id="hf-controls-toggle"
+  >
+    <span class="toggle-icon" aria-hidden="true">⚙️</span>
+    <span class="toggle-label">Controls</span>
   </button>
 
-  <div id="hf-controls-panel" class="hf-controls__panel" role="toolbar" aria-label="Dashboard Controls">
-
-    <!-- 🔌 Data Source Status -->
+  <!-- ==================== PANEL ==================== -->
+  <div
+    id="hf-controls-panel"
+    class="hf-controls__panel"
+    role="toolbar"
+    aria-label="Dashboard Controls"
+    data-collapsible="true"
+  >
+    <!-- 🔌 Data Source / System Status -->
     <div class="hf-status" aria-live="polite">
       <div class="hf-status__mode">
         <span class="hf-status__label">Mode:</span>
-        <strong id="hf-mode-label">Demo Mode</strong>
+        <strong id="hf-mode-label" data-bind="mode">Demo Mode</strong>
       </div>
       <div class="hf-status__state">
         <span class="hf-status__label">Status:</span>
-        <span id="hf-connection-status" class="hf-status__indicator hf-status--ok">✅ Connected</span>
+        <span id="hf-connection-status" class="hf-status__indicator hf-status--ok" data-bind="connection">✅ Connected</span>
       </div>
       <div class="hf-status__time">
         <span class="hf-status__label">Last Sync:</span>
-        <time id="hf-last-sync">--:--:--</time>
+        <time id="hf-last-sync" data-bind="lastSync">--:--:--</time>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="hf-status__actions">
+        <button id="hf-pause" class="btn btn--ghost" type="button" aria-pressed="false" data-action="pause">
+          ⏸️ <span>Pause KPIs</span>
+        </button>
+        <button id="hf-resume" class="btn btn--ghost" type="button" aria-pressed="false" data-action="resume">
+          ▶️ <span>Resume</span>
+        </button>
+        <button id="hf-refresh-now" class="btn btn--ghost" type="button" data-action="refresh">
+          🔄 <span>Refresh Now</span>
+        </button>
       </div>
     </div>
 
-    <!-- 📅 Date Range Selector -->
-    <fieldset class="hf-control hf-date-range" role="group" aria-label="Date Range Selector">
-      <legend>Date Range</legend>
-      <select id="hf-date-range-select" aria-label="Select date range">
-        <option value="1d">Today</option>
-        <option value="7d" selected>Last 7 Days</option>
-        <option value="30d">Last 30 Days</option>
-      </select>
-    </fieldset>
+    <div class="hf-controls__grid" role="group" aria-label="Filters and Settings">
+      <!-- 📅 Date Range -->
+      <fieldset class="hf-control hf-date-range" role="group" aria-label="Date Range Selector">
+        <legend>Date Range</legend>
+        <label class="visually-hidden" for="hf-date-range-select">Select date range</label>
+        <select id="hf-date-range-select" data-filter="dateRange" aria-label="Select date range">
+          <option value="1d">Today</option>
+          <option value="7d" selected>Last 7 Days</option>
+          <option value="30d">Last 30 Days</option>
+          <option value="90d">Last 90 Days</option>
+        </select>
+      </fieldset>
 
-    <!-- 🏥 Scope Switcher -->
-    <fieldset class="hf-control hf-scope" role="group" aria-label="Scope Switcher">
-      <legend>Scope</legend>
-      <div class="hf-scope__options">
-        <label>
-          <input type="radio" name="hf-scope" value="hospital" checked />
-          <span>This Hospital</span>
-        </label>
-        <label>
-          <input type="radio" name="hf-scope" value="network" />
-          <span>Entire Network</span>
-        </label>
-      </div>
-    </fieldset>
+      <!-- 🏥 Scope Switcher -->
+      <fieldset class="hf-control hf-scope" role="group" aria-label="Scope Switcher">
+        <legend>Scope</legend>
+        <div class="hf-scope__options">
+          <label>
+            <input type="radio" name="hf-scope" value="hospital" checked data-filter="scope" />
+            <span>This Hospital</span>
+          </label>
+          <label>
+            <input type="radio" name="hf-scope" value="network" data-filter="scope" />
+            <span>Entire Network</span>
+          </label>
+        </div>
+      </fieldset>
 
-    <!-- 📊 KPI Filters -->
-    <fieldset class="hf-control hf-filters" role="group" aria-label="KPI Filter Menu">
-      <legend>Show Metrics</legend>
-      <div class="hf-filters__grid">
-        <label>
-          <input type="checkbox" name="kpi-filter" value="clinical" checked />
-          <span>Clinical</span>
-        </label>
-        <label>
-          <input type="checkbox" name="kpi-filter" value="financial" checked />
-          <span>Financial</span>
-        </label>
-        <label>
-          <input type="checkbox" name="kpi-filter" value="patient" checked />
-          <span>Patient</span>
-        </label>
-        <label>
-          <input type="checkbox" name="kpi-filter" value="operational" checked />
-          <span>Operational</span>
-        </label>
-      </div>
-    </fieldset>
+      <!-- 📊 KPI Filters -->
+      <fieldset class="hf-control hf-filters" role="group" aria-label="KPI Filter Menu">
+        <legend>Show Metrics</legend>
+        <div class="hf-filters__grid">
+          <label>
+            <input type="checkbox" name="kpi-filter" value="clinical" checked data-filter="kpi" />
+            <span>Clinical</span>
+          </label>
+          <label>
+            <input type="checkbox" name="kpi-filter" value="financial" checked data-filter="kpi" />
+            <span>Financial</span>
+          </label>
+          <label>
+            <input type="checkbox" name="kpi-filter" value="patient" checked data-filter="kpi" />
+            <span>Patient</span>
+          </label>
+          <label>
+            <input type="checkbox" name="kpi-filter" value="operational" checked data-filter="kpi" />
+            <span>Operational</span>
+          </label>
+        </div>
+      </fieldset>
 
-    <!-- ⚡ Refresh Speed Control -->
-    <fieldset class="hf-control hf-speed" role="group" aria-label="Refresh Interval">
-      <legend>Refresh Speed</legend>
-      <input type="range" id="hf-refresh-speed" min="3000" max="20000" step="1000" value="8000" />
-      <span id="hf-refresh-label" aria-live="polite">8s</span>
-    </fieldset>
+      <!-- ⚡ Refresh Speed -->
+      <fieldset class="hf-control hf-speed" role="group" aria-label="Refresh Interval">
+        <legend>Refresh Speed</legend>
+        <label class="visually-hidden" for="hf-refresh-speed">Refresh interval in seconds</label>
+        <input
+          type="range"
+          id="hf-refresh-speed"
+          min="3000"
+          max="20000"
+          step="500"
+          value="7000"
+          data-action="cadence"
+          aria-describedby="hf-refresh-label"
+        />
+        <span id="hf-refresh-label" aria-live="polite">7s</span>
+      </fieldset>
+
+      <!-- 🎛️ Visuals & Theme (Optional) -->
+      <fieldset class="hf-control hf-visuals" role="group" aria-label="Visual Settings">
+        <legend>Visuals</legend>
+        <div class="hf-visuals__row">
+          <label>
+            <input type="checkbox" id="hf-particles-toggle" data-action="particles" checked />
+            <span>Hero Particles</span>
+          </label>
+          <label class="hf-select">
+            <span class="visually-hidden">Particles Mode</span>
+            <select id="hf-particles-mode" data-action="particlesMode" aria-label="Particles Mode">
+              <option value="micro-cell" selected>Micro-Cell</option>
+              <option value="nebula-flow">Nebula Flow</option>
+              <option value="data-stream">Data Stream</option>
+            </select>
+          </label>
+          <button id="hf-theme-toggle" class="btn btn--ghost" type="button" data-action="theme">
+            🌓 <span>Theme</span>
+          </button>
+        </div>
+      </fieldset>
+    </div>
+
+    <!-- 🔔 Live announcement region (screen readers) -->
+    <div class="visually-hidden" aria-live="polite" id="hf-controls-announcer"></div>
   </div>
+
+  <!-- No-JS fallback -->
+  <noscript>
+    <div class="hf-controls__noscript">
+      JavaScript is required for live KPIs and controls. Please enable it.
+    </div>
+  </noscript>
 </section>
+
+<!-- ======= Inline init hooks (optional; remove if handled elsewhere) ======= -->
+<script>
+  (function () {
+    const root = document.querySelector('#hf-controls');
+    if (!root) return;
+
+    const panel   = document.getElementById('hf-controls-panel');
+    const toggle  = document.getElementById('hf-controls-toggle');
+    const label   = document.getElementById('hf-refresh-label');
+    const speed   = document.getElementById('hf-refresh-speed');
+    const pause   = document.getElementById('hf-pause');
+    const resume  = document.getElementById('hf-resume');
+    const refresh = document.getElementById('hf-refresh-now');
+    const dateSel = document.getElementById('hf-date-range-select');
+    const particlesToggle = document.getElementById('hf-particles-toggle');
+    const particlesMode   = document.getElementById('hf-particles-mode');
+    const themeBtn = document.getElementById('hf-theme-toggle');
+    const announcer = document.getElementById('hf-controls-announcer');
+
+    // Compact toggle
+    if (toggle && panel) {
+      toggle.addEventListener('click', () => {
+        const open = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!open));
+        panel.dataset.collapsed = open ? 'true' : 'false';
+      });
+    }
+
+    // Speed label + cadence sync (HealthFloDashboard if present)
+    if (speed && label) {
+      const setLbl = (ms) => label.textContent = Math.round(ms / 1000) + 's';
+      setLbl(speed.value);
+      speed.addEventListener('input', () => {
+        const ms = parseInt(speed.value, 10) || 7000;
+        setLbl(ms);
+        if (window.HealthFloDashboard?.setCadence) {
+          window.HealthFloDashboard.setCadence(ms);
+        }
+        announcer.textContent = 'Refresh interval set to ' + label.textContent;
+      });
+    }
+
+    // Pause/Resume/Refresh
+    pause?.addEventListener('click', () => {
+      window.HealthFloDashboard?.pause?.();
+      announcer.textContent = 'Dashboard paused';
+    });
+    resume?.addEventListener('click', () => {
+      window.HealthFloDashboard?.resume?.();
+      announcer.textContent = 'Dashboard resumed';
+    });
+    refresh?.addEventListener('click', () => {
+      // Soft manual tick if API available
+      try { window.HealthFloDashboard?._tick?.(); } catch {}
+      announcer.textContent = 'Dashboard refreshed';
+      document.dispatchEvent(new CustomEvent('hf:refreshComplete'));
+    });
+
+    // Date range & scope & filters → broadcast one consolidated event
+    const broadcastFilters = () => {
+      const scope = (document.querySelector('input[name="hf-scope"]:checked') || {}).value || 'hospital';
+      const ranges = dateSel?.value || '7d';
+      const kpis = Array.from(document.querySelectorAll('input[name="kpi-filter"]:checked')).map(i => i.value);
+      document.dispatchEvent(new CustomEvent('hf:filtersChanged', {
+        detail: { scope, range: ranges, groups: kpis }
+      }));
+      announcer.textContent = 'Filters updated';
+    };
+    dateSel?.addEventListener('change', broadcastFilters);
+    document.querySelectorAll('input[name="hf-scope"]').forEach(r => r.addEventListener('change', broadcastFilters));
+    document.querySelectorAll('input[name="kpi-filter"]').forEach(c => c.addEventListener('change', broadcastFilters));
+
+    // Particles visibility + mode (Canvas engine or Pixi fallback)
+    particlesToggle?.addEventListener('change', () => {
+      const on = particlesToggle.checked;
+      if (on) {
+        document.dispatchEvent(new Event('hf:particlesEnable'));
+        window.HealthFloParticles?.resume?.();
+        window.HealthFloPixi?.enable?.();
+        announcer.textContent = 'Particles enabled';
+      } else {
+        document.dispatchEvent(new Event('hf:particlesDisable'));
+        window.HealthFloParticles?.pause?.();
+        window.HealthFloPixi?.disable?.();
+        announcer.textContent = 'Particles disabled';
+      }
+    });
+    particlesMode?.addEventListener('change', () => {
+      const v = particlesMode.value;
+      // Try both engines; whichever is present will react
+      if (window.HealthFloParticles?.setMode) {
+        const map = { 'micro-cell':'micro-cell', 'nebula-flow':'nebula-flow', 'data-stream':'data-stream' };
+        window.HealthFloParticles.setMode(map[v] || 'micro-cell');
+      }
+      if (window.HealthFloPixi?.setMode) {
+        const map2 = { 'micro-cell':'microCell', 'nebula-flow':'nebulaFlow', 'data-stream':'dataStream' };
+        window.HealthFloPixi.setMode(map2[v] || 'microCell');
+      }
+      announcer.textContent = 'Particles mode set to ' + particlesMode.options[particlesMode.selectedIndex].textContent;
+    });
+
+    // Theme toggle (bridges to main theme system if present)
+    themeBtn?.addEventListener('click', () => {
+      const html = document.documentElement;
+      const cur = html.getAttribute('data-theme') || 'light';
+      const next = cur === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      document.dispatchEvent(new CustomEvent('hf:configChanged', { detail: { theme: next } }));
+      announcer.textContent = 'Theme switched to ' + next;
+      // Persist if your app uses localStorage (optional)
+      try { localStorage.setItem('hf-theme', JSON.stringify(next)); } catch {}
+    });
+  })();
+</script>
