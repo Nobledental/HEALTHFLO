@@ -108,7 +108,7 @@ class HeroAnimation {
     });
 
     // Parallax motion on scroll
-    gsap.to('.hero-visual', {
+    gsap.to('.hero-showcase', {
       yPercent: -8,
       scrollTrigger: {
         trigger: '.hero',
@@ -376,6 +376,59 @@ class HealthFloDashboard {
 }
 
 /* ================================================================
+   🧭 Experience Hub — handles tab state & demo toggles
+   ================================================================ */
+class ExperienceHub {
+  static init(dashboardInstance) {
+    this.dashboard = dashboardInstance;
+    this.toggleButton = null;
+    this.bindTabs();
+    this.bindDemoToggle();
+  }
+
+  static bindTabs() {
+    const tabs = document.querySelectorAll('.experience-tab');
+    const panels = document.querySelectorAll('.experience-panel');
+    if (!tabs.length || !panels.length) return;
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const target = tab.dataset.experienceTarget;
+        tabs.forEach((btn) => {
+          btn.classList.toggle('active', btn === tab);
+          btn.setAttribute('aria-selected', (btn === tab).toString());
+        });
+
+        panels.forEach((panel) => {
+          const isMatch = panel.dataset.experience === target;
+          panel.classList.toggle('active', isMatch);
+          panel.toggleAttribute('hidden', !isMatch);
+        });
+      });
+    });
+  }
+
+  static bindDemoToggle() {
+    this.toggleButton = document.querySelector('[data-action="toggle-demo"]');
+    if (!this.toggleButton || !this.dashboard) return;
+
+    this.refreshDemoToggle();
+
+    this.toggleButton.addEventListener('click', () => {
+      this.dashboard.toggleMode();
+      this.refreshDemoToggle();
+    });
+  }
+
+  static refreshDemoToggle() {
+    if (!this.toggleButton || !this.dashboard) return;
+    const isDemo = this.dashboard.options.mode === 'demo';
+    this.toggleButton.textContent = isDemo ? 'Switch to Live Preview' : 'Switch back to Demo Mode';
+    this.toggleButton.setAttribute('aria-pressed', isDemo.toString());
+  }
+}
+
+/* ================================================================
    📊 HealthFloDashboard v1.0 — Part 3-A-1B
    Live auto-updates, sparklines, timestamp refresh system
    ================================================================= */
@@ -472,6 +525,9 @@ HealthFloDashboard.prototype.toggleMode = function () {
   document.getElementById("modeToggle").textContent =
     this.options.mode === "demo" ? "Demo Mode" : "Live Mode";
   this.loadData();
+  if (typeof ExperienceHub !== "undefined" && ExperienceHub.refreshDemoToggle) {
+    ExperienceHub.refreshDemoToggle();
+  }
 };
 
 HealthFloDashboard.prototype.updateSpeed = function (newSpeed) {
@@ -483,13 +539,16 @@ HealthFloDashboard.prototype.updateSpeed = function (newSpeed) {
  🧪 Initialization on DOM ready
 ------------------------------------------------------------------ */
 document.addEventListener("DOMContentLoaded", () => {
-  // Initialize the dashboard in demo mode by default
+  const dashboardContainer = document.getElementById("healthflo-dashboard");
+  if (!dashboardContainer) return;
+  
   const dashboard = new HealthFloDashboard("healthflo-dashboard", {
     mode: "demo",
     refreshInterval: 8000,
   });
 
-  // Smooth scroll into view when metrics section is reached
+  window.healthFloDashboard = dashboard;
+  ExperienceHub.init(dashboard);
   if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
     gsap.from("#healthflo-dashboard", {
       opacity: 0,
