@@ -1,676 +1,465 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HealthFlo – AI-Powered Revenue Cycle & Patient Experience Platform</title>
-  <meta name="description" content="HealthFlo is the AI-powered revenue cycle automation and patient concierge platform for hospitals. Automate pre-auth, accelerate cashless approvals, recover denials, and delight patients." />
-  <meta name="robots" content="index,follow" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>HealthFlo | AI Revenue Cycle Automation & Patient Concierge</title>
+    <meta
+      name="description"
+      content="HealthFlo is the AI-powered revenue cycle and patient concierge platform for hospitals to accelerate cashless approvals, recover denials, and delight patients."
+    />
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg" />
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Single global stylesheet -->
+    <link rel="stylesheet" href="assets/css/style.css" />
 
-  <!-- Styles -->
-  <link rel="stylesheet" href="assets/css/style.css" />
+    <!-- Favicon (optional) -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg" />
 
-  <!-- Schema.org -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "MedicalBusiness",
-    "name": "HealthFlo",
-    "url": "https://www.healthflo.ai",
-    "description": "AI-powered revenue cycle automation, denial recovery, and patient concierge services for hospitals and health systems.",
-    "logo": "https://www.healthflo.ai/assets/logo.svg",
-    "foundingDate": "2024",
-    "areaServed": ["India", "South East Asia"],
-    "serviceType": ["Revenue Cycle Automation","Patient Concierge","Insurance Claim Management"],
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Bengaluru",
-      "addressRegion": "Karnataka",
-      "addressCountry": "IN"
-    },
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "contactType": "Sales",
-      "email": "hello@healthflo.ai"
-    }
-  }
-  </script>
-</head>
+    <!-- JSON-LD (SoftwareApplication + Business hybrid) -->
+    <script type="application/ld+json">
+      {
+        "@context":"https://schema.org",
+        "@type":"SoftwareApplication",
+        "name":"HealthFlo",
+        "applicationCategory":"MedicalBusinessApplication",
+        "operatingSystem":"Web",
+        "description":"AI-powered revenue cycle automation, denial recovery, and patient concierge for hospitals.",
+        "url":"https://www.healthflo.ai",
+        "publisher": {
+          "@type": "Organization",
+          "name": "HealthFlo"
+        }
+      }
+    </script>
 
-<body class="page-landing" data-page="home">
+    <!-- GSAP Core + Plugins (CDN) -->
+    <!-- Core -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+    <!-- ScrollTrigger (auto-open drawer, subtle effects) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+    <!-- ScrollTo (optional smooth scroll) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js" defer></script>
+    <!-- SplitText (optional headline effect; safe to include) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/SplitText.min.js" defer></script>
+  </head>
 
-  <!-- ==================== 🔄 Preloader ==================== -->
-  <div class="preloader" role="status" aria-live="polite">
-    <div class="preloader-logo">
-      <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="preloaderGradient" x1="0" x2="1" y1="0" y2="1">
-            <stop offset="0%" stop-color="#4c6ef5" />
-            <stop offset="100%" stop-color="#2dd4bf" />
-          </linearGradient>
-        </defs>
-        <circle cx="40" cy="40" r="32" fill="rgba(76, 110, 245, 0.08)">
-          <animate attributeName="r" values="24;32;24" dur="2.6s" repeatCount="indefinite" />
-        </circle>
-        <path d="M22 46c6-8 30-8 36 0"
-              stroke="url(#preloaderGradient)" stroke-width="5" stroke-linecap="round" fill="none">
-          <animate attributeName="stroke-dasharray" values="0 120;120 0;0 120" dur="2.6s" repeatCount="indefinite" />
-        </path>
-        <circle cx="56" cy="26" r="5" fill="url(#preloaderGradient)">
-          <animate attributeName="r" values="3;5;3" dur="2.4s" repeatCount="indefinite" />
-        </circle>
-      </svg>
-    </div>
-    <span class="visually-hidden">Loading HealthFlo experience...</span>
-  </div>
+  <body class="page-landing" data-page="home">
+    <!-- ========================= Header ========================= -->
+    <header class="header" aria-label="Primary navigation">
+      <nav class="navbar" aria-label="Main">
+        <a href="#hero" class="logo" aria-label="HealthFlo home">
+          <span class="logo-mark" aria-hidden="true"></span>
+          <span class="logo-word">HealthFlo</span>
+        </a>
 
-  <!-- ==================== 🧭 Header Navigation ==================== -->
-  <header class="header">
-    <nav class="navbar">
-      <a href="index.html" class="logo" aria-label="HealthFlo home">
-        <span class="logo-mark">
-          <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+        <button
+          class="mobile-nav-toggle"
+          aria-expanded="false"
+          aria-controls="primary-menu"
+          aria-label="Toggle navigation"
+        >
+          ☰
+        </button>
+
+        <div class="nav-links" id="primary-menu" role="menubar">
+          <a href="#features" role="menuitem">Platform</a>
+          <a href="#audiences" role="menuitem">Hospitals ⇄ Patients</a>
+          <a href="#kpis" role="menuitem">KPIs</a>
+          <a href="#insights" role="menuitem">AI Insights</a>
+          <a href="#contact" role="menuitem">Contact</a>
+        </div>
+
+        <div class="nav-actions">
+          <button class="theme-toggle" type="button" aria-label="Switch theme">
+            🌙
+          </button>
+          <a class="cta-primary" href="#contact">Book a Demo</a>
+        </div>
+      </nav>
+    </header>
+
+    <!-- ========================= Hero ========================= -->
+    <section id="hero" class="hero full-height" aria-labelledby="hero-title">
+      <div class="hero-content">
+        <span class="eyebrow">Revenue Intelligence Platform</span>
+        <h1 id="hero-title" class="headline">
+          HealthFlo choreographs cash, care, and coverage as one journey.
+        </h1>
+        <p class="subtext">
+          Precision automation meets concierge-grade communication. HealthFlo
+          unifies pre-auth, billing, denial recovery, and patient concierge in a
+          single narrative designed for modern hospitals.
+        </p>
+        <div class="cta-group" role="group" aria-label="Primary calls to action">
+          <a href="#audiences" class="cta-primary">Explore Solutions</a>
+          <a href="#kpis" class="cta-secondary">View Live KPIs</a>
+        </div>
+        <dl class="hero-metrics" aria-label="Hero performance metrics">
+          <div>
+            <dt>Hospitals orchestrated</dt>
+            <dd>570+</dd>
+          </div>
+          <div>
+            <dt>Claims accelerated</dt>
+            <dd>150K+</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="hero-visual" aria-hidden="true">
+        <div class="hero-slab">
+          <svg viewBox="0 0 460 360" role="img" aria-label="AI visuals">
             <defs>
-              <linearGradient id="logoGradient" x1="0" x2="1" y1="0" y2="1">
+              <linearGradient id="heroGradient" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0%" stop-color="#e2e8f0" />
+                <stop offset="100%" stop-color="#c7d2fe" />
+              </linearGradient>
+              <linearGradient id="heroAccent" x1="0" x2="1" y1="0" y2="1">
                 <stop offset="0%" stop-color="#4c6ef5" />
                 <stop offset="100%" stop-color="#2dd4bf" />
               </linearGradient>
             </defs>
-            <rect x="4" y="4" width="40" height="40" rx="14" fill="rgba(15,23,42,0.85)" />
-            <path d="M14 28c6-8 20-8 26 0" stroke="url(#logoGradient)" stroke-width="4" stroke-linecap="round" />
-            <circle cx="34" cy="14" r="4" fill="url(#logoGradient)" />
+            <rect x="24" y="28" width="412" height="304" rx="28" fill="url(#heroGradient)" opacity="0.55" />
+            <rect x="60" y="66" width="340" height="124" rx="22" fill="#ffffff" opacity="0.9" />
+            <rect x="60" y="210" width="156" height="98" rx="18" fill="#ffffff" opacity="0.85" />
+            <rect x="236" y="210" width="164" height="98" rx="18" fill="#f8fafc" opacity="0.95" />
+            <g stroke="url(#heroAccent)" stroke-width="4" stroke-linecap="round">
+              <path d="M112 118h120" opacity="0.6" />
+              <path d="M112 138h160" opacity="0.4" />
+              <path d="M112 158h102" opacity="0.25" />
+            </g>
+            <g fill="#4c6ef5">
+              <circle cx="110" cy="110" r="8" />
+              <circle cx="142" cy="110" r="8" />
+              <circle cx="174" cy="110" r="8" />
+            </g>
+            <g fill="#2dd4bf">
+              <rect x="256" y="232" width="120" height="16" rx="8" opacity="0.85" />
+              <rect x="256" y="262" width="96" height="16" rx="8" opacity="0.65" />
+              <rect x="256" y="292" width="138" height="16" rx="8" opacity="0.45" />
+            </g>
           </svg>
-        </span>
-        <span class="logo-word">HealthFlo</span>
-      </a>
-
-      <button class="mobile-nav-toggle" aria-expanded="false" aria-controls="primary-menu" aria-label="Toggle navigation">☰</button>
-
-      <div class="nav-links" id="primary-menu">
-        <a href="#hero">Overview</a>
-        <a href="#command-center">Command Center</a>
-        <a href="#hospital-suite">Hospitals</a>
-        <a href="#patient-suite">Patients</a>
-        <a href="#metrics">Impact</a>
-        <a href="#cta">Contact</a>
-      </div>
-
-      <div class="nav-actions">
-        <button class="theme-toggle" type="button" aria-label="Switch theme">🌙</button>
-        <a class="cta-primary" href="#cta">Book a Demo</a>
-      </div>
-    </nav>
-  </header>
-
-  <!-- ==================== 🌌 HERO SECTION ==================== -->
-  <section id="hero" class="hero full-height" aria-labelledby="hero-title">
-    <canvas id="hero-particle-canvas" aria-hidden="true"></canvas>
-
-    <div class="hero-inner">
-      <div class="hero-content">
-        <span class="eyebrow">Unified Healthcare Revenue Cloud</span>
-        <h1 id="hero-title" class="headline">
-          Build an intelligent command center for <strong>every</strong> hospital and patient journey.
-        </h1>
-        <p class="subtext">
-          HealthFlo Structures your pre-auth automation, denial recovery, patient concierge, and financial insights inside a single, AI-directed workspace.        </p>
-
-        <div class="cta-group">
-          <a href="#command-center" class="cta-primary">🚀 Launch Interactive Dashboard</a>
-          <a href="#hospital-suite" class="cta-secondary">Browse Hospital Solutions</a>
-        </div>
-
-        <dl class="hero-metrics">
-          <div>
-            <dt>Hospitals Automated</dt>
-            <dd>570+</dd>
-          </div>
-          <div>
-            <dt>Patient Journeys Guided</dt>
-            <dd>150K+</dd>
-          </div>
-        </dl>
-        </dl>
-
-        <div class="hero-badges" role="list">
-          <span role="listitem">⚡ Instant demo access</span>
-          <span role="listitem">🔒 Enterprise-ready security</span>
-          <span role="listitem">🌐 Multilingual concierge</span>
         </div>
       </div>
+    </section>
 
-      <div class="hero-showcase" aria-labelledby="hero-showcase-title">
-        <div class="hero-showcase__badge">New in 2025</div>
-        <h2 id="hero-showcase-title">Hospital demo cockpit</h2>
-        <p>Preview live KPIs, admission pipelines, and denial radar in HealthFlo’s cinematic dashboard — built for CFOs, ops leaders, and patient teams.</p>
-        <ul class="hero-showcase__list">
-          <li>📈 Dual views for hospital & patient operations</li>
-          <li>🤖 Automation recipes with explainable AI</li>
-          <li>🎯 Guided tasks for cash, claims, and care teams</li>
-        </ul>
-        <a class="cta-ghost" href="#demo-lab">View the demo program</a>
+    <!-- ========================= Platform Features ========================= -->
+    <section id="features" class="features section" aria-labelledby="features-title">
+      <header class="section-head">
+        <span class="section-eyebrow">Platform chapters</span>
+        <h2 id="features-title">Healthcare revenue cycle superpowers</h2>
+        <p>
+          Each module advances the storyline from admission to discharge,
+          pairing intelligent workflows with human-grade updates.
+        </p>
+      </header>
+      <div class="feature-grid" role="list">
+        <article class="feature-card hover-tilt" role="listitem">
+          <h3>AI EMR Co-Pilot</h3>
+          <p>Auto-scribe encounters, pre-fill insurance packets, and close clinical loops with explainable AI built on HL7/FHIR pipes.</p>
+        </article>
+        <article class="feature-card hover-tilt" role="listitem">
+          <h3>Cashless Billing Engine</h3>
+          <p>Trigger eligibility, compile documents, and secure approvals in <strong>45 seconds</strong>—with transparent checkpoints for patients.</p>
+        </article>
+        <article class="feature-card hover-tilt" role="listitem">
+          <h3>Denial Recovery Studio</h3>
+          <p>Predict denials, automate appeals, and unlock <strong>98% claim recovery</strong> across payors with cinematic clarity.</p>
+        </article>
+        <article class="feature-card hover-tilt" role="listitem">
+          <h3>Patient Concierge</h3>
+          <p>Concierge, financing, and WhatsApp updates that keep families calm, informed, and ready for every milestone.</p>
+        </article>
       </div>
-    </div>
-  </section>
-  <!-- ==================== 🧠 Command Center Experience ==================== -->
-  <section id="command-center" class="command-center section" aria-labelledby="command-title">
-    <header class="section-head">
-      <span class="section-eyebrow">Interactive Demo Workspace</span>
-      <h2 id="command-title">Explore the HealthFlo Command Center</h2>
-      <p>Switch between hospital and patient operations, monitor AI-generated KPIs, and experience the guided workflows available in demo mode.</p>
-    </header>
+    </section>
 
-    <div class="command-layout">
-      <div class="command-intro">
-        <div class="experience-toggle" role="tablist" aria-label="Switch dashboard perspective">
-          <button class="experience-tab active" role="tab" aria-selected="true" data-experience-target="hospital">🏥 Hospital View</button>
-          <button class="experience-tab" role="tab" aria-selected="false" data-experience-target="patient">💙 Patient View</button>
-        </div>
+    <!-- ========================= Audience Toggle: Hospitals ⇄ Patients ========================= -->
+    <section id="audiences" class="audience section" aria-labelledby="audiences-title">
+      <header class="section-head">
+        <span class="section-eyebrow">Dual-view storytelling</span>
+        <h2 id="audiences-title">Tailored journeys for Hospitals & Patients</h2>
+        <p>Toggle personas to see the most relevant Products & Services.</p>
+      </header>
 
-        <div class="experience-copy">
-          <article class="experience-panel active" data-experience="hospital" role="tabpanel">
-            <h3>Hospital automation blueprint</h3>
-            <p>Spot revenue leakages in real-time, orchestrate denial recovery, and trigger autopilot admission packets with embedded compliance narratives.</p>
-            <ul>
-              <li>📦 Instant pre-auth packets with AI narratives</li>
-              <li>📊 Live AR aging & cashflow heatmaps</li>
-              <li>🤝 Payor collaboration console with SLA radar</li>
-            </ul>
-          </article>
-
-          <article class="experience-panel" data-experience="patient" role="tabpanel" hidden>
-            <h3>Patient concierge experience</h3>
-            <p>Provide multilingual onboarding, financing, and progress updates — all synchronised with hospital coordinators for zero-delay care moments.</p>
-            <ul>
-              <li>💬 WhatsApp, SMS, and kiosk updates</li>
-              <li>💳 Embedded zero-interest medical financing</li>
-              <li>🌈 Accessibility-ready guidance in 7 languages</li>
-            </ul>
-          </article>
-        </div>
-
-        <aside id="demo-lab" class="demo-banner" aria-label="Demo mode availability">
-          <h3>Instant Demo Mode for Hospitals</h3>
-          <p>Activate a sandbox within minutes to experience automated workflows using anonymised sample data curated by the HealthFlo team.</p>
-          <div class="demo-banner__actions">
-            <a href="#cta" class="cta-primary">Request full demo access</a>
-            <button type="button" class="cta-secondary" data-action="toggle-demo" aria-pressed="true">Switch to Live Preview</button>
-          </div>
-          <p class="demo-banner__note">No integrations required — explore automation recipes, KPI playbooks, and patient concierge flows immediately.</p>
-        </aside>
+      <!-- Persona Toggle -->
+      <div class="audience-toggle" role="tablist" aria-label="Persona toggle">
+        <button class="audience-tab active" role="tab" aria-selected="true" aria-controls="pane-hospitals" id="tab-hospitals" data-target="pane-hospitals">🏥 Hospitals</button>
+        <button class="audience-tab" role="tab" aria-selected="false" aria-controls="pane-patients" id="tab-patients" data-target="pane-patients">👨‍👩‍👧 Patients</button>
       </div>
 
-      <div class="command-dashboard" aria-live="polite">
-        <div class="command-dashboard__label">Live Preview</div>
-        <div id="healthflo-dashboard" class="command-dashboard__canvas" role="region" aria-label="HealthFlo KPI dashboard demo"></div>
-      </div>
-    </div>
-  </section>
-  
-  <!-- ==================== 🧭 Dual Journey Choice Layer ==================== -->
-  <section id="journey-selector" class="journey-section" aria-labelledby="journey-title">
-    <header class="section-head">
-      <span class="section-eyebrow">Personalized Entry</span>
-      <h2 id="journey-title">Choose Your HealthFlo Journey</h2>
-      <p>Whether you're a hospital optimizing revenue or a patient seeking seamless care — HealthFlo choreographs the path ahead.</p>
-    </header>
+      <!-- Panels -->
+      <div class="audience-panels">
+        <!-- HOSPITALS -->
+        <article id="pane-hospitals" class="audience-panel active" role="tabpanel" aria-labelledby="tab-hospitals">
+          <div class="audience-panel__content">
+            <h3>For Hospital CFOs & Operations Chiefs</h3>
+            <p>Launch an AI revenue command center with denial predictions, automation studios, and compliance co-pilots.</p>
 
-    <div class="journey-grid">
-      <!-- Hospital Card -->
-      <article class="journey-card hover-3d" id="journey-hospital">
-        <div class="journey-visual">
-          <svg viewBox="0 0 64 64" aria-hidden="true">
-            <rect x="8" y="20" width="48" height="36" rx="8" fill="rgba(76,110,245,0.12)"/>
-            <path d="M32 28v12M26 34h12" stroke="url(#logoGradient)" stroke-width="3" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <h3>For Hospitals</h3>
-        <p>Unify billing, pre-auth, denial recovery, and revenue forecasting into a single AI command center.</p>
-        <ul class="journey-list">
-          <li>⚙️ Predictive denial prevention</li>
-          <li>📊 Intelligent AR dashboards</li>
-          <li>🚀 Automated cashless approvals</li>
-        </ul>
-        <a href="#hospital-suite" class="cta-secondary">Explore Hospital Journey</a>
-      </article>
+            <div class="audience-columns">
+              <!-- Products -->
+              <section aria-labelledby="h-products-title">
+                <h4 id="h-products-title">Products (Modules)</h4>
+                <ul class="audience-list">
+                  <li><strong>RCM Control Hub:</strong> Unified AR, escalations, and cash projections.</li>
+                  <li><strong>Auto Packet Builder:</strong> Compile eligibility, diagnostics, and narratives with one swipe.</li>
+                  <li><strong>Denial Radar:</strong> Flag high-risk claims and auto-launch appeal workflows.</li>
+                  <li><strong>EMR Co-Pilot:</strong> Explainable AI scribing and coding assist.</li>
+                </ul>
+              </section>
 
-      <!-- Patient Card -->
-      <article class="journey-card hover-3d" id="journey-patient">
-        <div class="journey-visual">
-          <svg viewBox="0 0 64 64" aria-hidden="true">
-            <circle cx="32" cy="20" r="12" fill="rgba(45,212,191,0.18)" />
-            <path d="M16 52c2-12 28-12 32 0" stroke="url(#logoGradient)" stroke-width="3" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <h3>For Patients</h3>
-        <p>Receive live updates, multilingual support, and compassionate concierge care — from admission to recovery.</p>
-        <ul class="journey-list">
-          <li>📱 WhatsApp updates & chat</li>
-          <li>💳 Zero-interest financing</li>
-          <li>📂 Transparent claim tracking</li>
-        </ul>
-        <a href="#patient-suite" class="cta-secondary">Explore Patient Journey</a>
-      </article>
-    </div>
-  </section>
-
-  <!-- ==================== 🏥 Hospital Solution Explorer ==================== -->
-  <section id="hospital-suite" class="suite section" aria-labelledby="hospital-suite-title">
-    <header class="section-head">
-      <span class="section-eyebrow">Built for hospital operators</span>
-      <h2 id="hospital-suite-title">HealthFlo Solutions for Hospitals</h2>
-      <p>Navigate ready-to-deploy modules that cover every revenue and operations milestone from admission to discharge.</p>
-    </header>
-
-    <div class="suite-grid">
-      <article class="suite-card">
-        <h3>Revenue Command Tower</h3>
-        <p>Centralise AR, denial analytics, and SLA escalations with AI-powered forecast visualisations.</p>
-        <ul class="suite-list">
-          <li>📊 CFO-grade dashboards & drill downs</li>
-          <li>🎯 Predictive denial radar with risk scoring</li>
-          <li>🔁 Automated appeal launchers</li>
-        </ul>
-        <a class="suite-link" href="#command-center">Open in demo</a>
-      </article>
-
-      <article class="suite-card">
-        <h3>Admission Automation</h3>
-        <p>Accelerate cashless approvals with document orchestration, eligibility checks, and AI narratives.</p>
-        <ul class="suite-list">
-          <li>⚙️ Smart packet builder</li>
-          <li>🕒 45-second pre-auth workflows</li>
-          <li>📂 Digital audit trails</li>
-        </ul>
-        <a class="suite-link" href="#cta">Talk to implementation</a>
-      </article>
-
-      <article class="suite-card">
-        <h3>Finance & Recovery</h3>
-        <p>Strengthen cash positions with automated reminders, payor collaboration, and AR ageing playbooks.</p>
-        <ul class="suite-list">
-          <li>🤝 Payor collaboration cockpit</li>
-          <li>💡 Aging reduction automations</li>
-          <li>📈 ROI benchmarking</li>
-        </ul>
-        <a class="suite-link" href="#metrics">View impact</a>
-      </article>
-
-      <article class="suite-card">
-        <h3>Operational Intelligence</h3>
-        <p>Integrate HIS, EMR, and third-party tools to surface real-time staffing, bed occupancy, and ticket escalations.</p>
-        <ul class="suite-list">
-          <li>🔗 40+ integrations ready</li>
-          <li>🛰️ Live command-center alerts</li>
-          <li>🛡️ Compliance posture snapshots</li>
-        </ul>
-        <a class="suite-link" href="mailto:hello@healthflo.ai">Request integration map</a>
-      </article>
-    </div>
-  </section>
-
-  <!-- ==================== 🧑‍⚕️ Patient Experience Explorer ==================== -->
-  <section id="patient-suite" class="suite suite--patient section" aria-labelledby="patient-suite-title">
-    <header class="section-head">
-      <span class="section-eyebrow">Delighting patients & caregivers</span>
-      <h2 id="patient-suite-title">HealthFlo Services for Patients</h2>
-      <p>Blend concierge services, financial clarity, and empathetic communication across every touchpoint.</p>
-    </header>
-
-    <div class="suite-grid">
-      <article class="suite-card">
-        <h3>Concierge & Coordination</h3>
-        <p>Deploy bedside coordinators, chatbots, and omni-channel updates that keep families informed.</p>
-        <ul class="suite-list">
-          <li>💬 Multilingual WhatsApp concierge</li>
-          <li>🛎️ Bedside & kiosk check-ins</li>
-          <li>📆 Real-time appointment guidance</li>
-        </ul>
-        <a class="suite-link" href="#audiences">See experience flow</a>
-      </article>
-
-      <article class="suite-card">
-        <h3>Financial Wellness</h3>
-        <p>Offer transparent estimates, zero-interest EMIs, and benefits advisory tailored to each policy.</p>
-        <ul class="suite-list">
-          <li>💳 Instant EMI offers</li>
-          <li>📃 Policy decoding in 7 languages</li>
-          <li>🔔 Claim milestone alerts</li>
-        </ul>
-        <a class="suite-link" href="#metrics">Measure patient impact</a>
-      </article>
-
-      <article class="suite-card">
-        <h3>Recovery Engagement</h3>
-        <p>Guide patients beyond discharge with remote monitoring, medication nudges, and escalation workflows.</p>
-        <ul class="suite-list">
-          <li>📲 Mobile and kiosk follow-ups</li>
-          <li>🧑‍⚕️ Care-team coordination</li>
-          <li>💡 Personalized health nudges</li>
-        </ul>
-        <a class="suite-link" href="#cta">Book a patient services demo</a>
-      </article>
-
-      <article class="suite-card">
-        <h3>Experience Analytics</h3>
-        <p>Capture sentiment, NPS, and service recovery triggers to continuously elevate experience scores.</p>
-        <ul class="suite-list">
-          <li>📈 Experience KPIs & alerts</li>
-          <li>🧠 Voice of patient AI insights</li>
-          <li>🛰️ Escalation handoffs to ops</li>
-        </ul>
-        <a class="suite-link" href="#command-center">Monitor in dashboard</a>
-      </article>
-    </div>
-  </section>
-
-  <!-- ==================== 🧠 Platform Chapters ==================== -->
-  <section id="features" class="features section" aria-labelledby="features-title">
-    <header class="section-head">
-      <span class="section-eyebrow">Platform Chapters</span>
-      <h2 id="features-title">Intelligent Modules That Power Every Stage</h2>
-      <p>HealthFlo's modular AI engines work together to accelerate revenue, automate operations, and elevate patient experience.</p>
-    </header>
-
-    <div class="feature-grid">
-      <!-- EMR Co-Pilot -->
-      <article class="feature-card hover-tilt gsap-stagger">
-        <div class="feature-icon">
-          <svg viewBox="0 0 64 64">
-            <rect x="12" y="12" width="40" height="40" rx="8" fill="rgba(76,110,245,0.08)"/>
-            <path d="M24 32h16M24 24h16M24 40h12" stroke="url(#logoGradient)" stroke-width="3" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <h3>AI EMR Co-Pilot</h3>
-        <p>Auto-scribe encounters, pre-fill insurance packets, and close clinical loops with explainable AI built on HL7/FHIR pipelines.</p>
-      </article>
-
-      <!-- Cashless Billing Engine -->
-      <article class="feature-card hover-tilt gsap-stagger">
-        <div class="feature-icon">
-          <svg viewBox="0 0 64 64">
-            <circle cx="32" cy="32" r="28" fill="rgba(45,212,191,0.08)" />
-            <path d="M20 32h24M20 24h24M20 40h18" stroke="url(#logoGradient)" stroke-width="3" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <h3>Cashless Billing Engine</h3>
-        <p>Trigger eligibility, compile documents, and secure approvals in <strong>45 seconds</strong> — with transparent checkpoints for patients.</p>
-      </article>
-
-      <!-- Denial Recovery Studio -->
-      <article class="feature-card hover-tilt gsap-stagger">
-        <div class="feature-icon">
-          <svg viewBox="0 0 64 64">
-            <rect x="10" y="20" width="44" height="24" rx="6" fill="rgba(76,110,245,0.08)" />
-            <path d="M20 32l8 8 16-16" stroke="url(#logoGradient)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <h3>Denial Recovery Studio</h3>
-        <p>Predict denials, automate appeals, and unlock <strong>98% claim recovery</strong> across payors with cinematic clarity.</p>
-      </article>
-
-      <!-- Patient Concierge -->
-      <article class="feature-card hover-tilt gsap-stagger">
-        <div class="feature-icon">
-          <svg viewBox="0 0 64 64">
-            <circle cx="32" cy="24" r="12" fill="rgba(45,212,191,0.12)" />
-            <path d="M16 52c2-12 28-12 32 0" stroke="url(#logoGradient)" stroke-width="3" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <h3>Patient Concierge</h3>
-        <p>Concierge, financing, and WhatsApp updates that keep families calm, informed, and ready for every hospital milestone.</p>
-      </article>
-    </div>
-  </section>
-  <!-- ==================== 🪐 Dual Audience Showcase ==================== -->
-  <section id="audiences" class="audience-showcase section" aria-labelledby="audience-title">
-    <header class="section-head">
-      <span class="section-eyebrow">Dual-View Storytelling</span>
-      <h2 id="audience-title">Tailored Journeys for Hospitals & Patients</h2>
-      <p>Switch perspectives to see how HealthFlo choreographs automation and empathy for every stakeholder.</p>
-    </header>
-
-    <div class="audience-toggle" role="tablist">
-      <button class="audience-tab active" role="tab" aria-selected="true" data-target="audience-hospitals">🏥 Hospitals</button>
-      <button class="audience-tab" role="tab" aria-selected="false" data-target="audience-patients">🧑‍⚕️ Patients</button>
-    </div>
-
-    <div class="audience-panels">
-      <!-- Hospital Panel -->
-      <article id="audience-hospitals" class="audience-panel active" role="tabpanel">
-        <div class="audience-panel__content">
-          <h3>For CFOs & Ops Leaders</h3>
-          <p>Launch an AI revenue command center with predictive denial prevention, automation studios, and SLA tracking.</p>
-          <ul class="audience-list">
-            <li>📊 Unified RCM cockpit and AR intelligence layers</li>
-            <li>🤖 Predictive denial studio with autonomous appeals</li>
-            <li>🚀 Cashless packet automation and payor SLA radar</li>
-          </ul>
-          <div class="audience-ctas">
-            <a href="#hospital-suite" class="cta-primary">Explore Hospital Solutions</a>
-            <a href="#command-center" class="cta-secondary">Launch Command Center</a>
-        </div>
-        <div class="audience-panel__media">
-          <div class="audience-track">
-            <div class="audience-card glass-card" data-motion="left">
-              <span class="audience-card__tag">RCM Hub</span>
-              <h4>Command Center</h4>
-              <p>Real-time AR, escalations, and cash projections with cinematic dashboards.</p>
+              <!-- Services -->
+              <section aria-labelledby="h-services-title">
+                <h4 id="h-services-title">Services</h4>
+                <ul class="audience-list">
+                  <li>Cashless & Pre-Auth Desk</li>
+                  <li>Denials Recovery & Appeals</li>
+                  <li>Compliance & Audit Support</li>
+                  <li>Payor Empanelment Advisory</li>
+                </ul>
+              </section>
             </div>
-            <div class="audience-card glass-card" data-motion="center">
-              <span class="audience-card__tag">Automation</span>
-              <h4>Auto Packet Builder</h4>
-              <p>Compile eligibility, diagnostics, and narratives with one swipe.</p>
-            </div>
-            <div class="audience-card glass-card" data-motion="right">
-              <span class="audience-card__tag">AI Radar</span>
-              <h4>Denial Predictor</h4>
-              <p>Surface high-risk claims and auto-launch appeal workflows instantly.</p>
+
+            <div class="audience-ctas">
+              <a href="#insights" class="cta-primary">See AI Insights</a>
+              <a href="#contact" class="cta-secondary">Talk to Sales</a>
             </div>
           </div>
-        </div>
-      </article>
+        </article>
 
-      <!-- Patient Panel -->
-      <article id="audience-patients" class="audience-panel" role="tabpanel" hidden>
-        <div class="audience-panel__content">
-          <h3>For Patient Experience Teams</h3>
-          <p>Deliver concierge-grade support with transparent claims, multilingual onboarding, and compassionate financing.</p>
-          <ul class="audience-list">
-            <li>📱 Guided admissions with multilingual onboarding</li>
-            <li>💬 WhatsApp concierge, notifications, and escalations</li>
-            <li>💳 Embedded zero-interest financing and claim tracker</li>
-          </ul>
-          <div class="audience-ctas">
-            <a href="#patient-suite" class="cta-primary">Explore Patient Solutions</a>
-            <a href="#command-center" class="cta-secondary">Preview Demo Mode</a>
+        <!-- PATIENTS -->
+        <article id="pane-patients" class="audience-panel" role="tabpanel" aria-labelledby="tab-patients" hidden>
+          <div class="audience-panel__content">
+            <h3>For Patients & Family Experience Teams</h3>
+            <p>Deliver concierge-grade support with transparent claims, live chat, and compassionate financing.</p>
+
+            <div class="audience-columns">
+              <!-- Products -->
+              <section aria-labelledby="p-products-title">
+                <h4 id="p-products-title">Products (Modules)</h4>
+                <ul class="audience-list">
+                  <li><strong>Claim Journey Tracker:</strong> Swipe-through claims, docs, and SLA timers.</li>
+                  <li><strong>Concierge Chat:</strong> 24/7 WhatsApp & kiosk guidance.</li>
+                  <li><strong>Zero-Interest Financing:</strong> Embedded pre-approved medical lines.</li>
+                  <li><strong>Smart Admissions:</strong> Multilingual digital onboarding.</li>
+                </ul>
+              </section>
+
+              <!-- Services -->
+              <section aria-labelledby="p-services-title">
+                <h4 id="p-services-title">Services</h4>
+                <ul class="audience-list">
+                  <li>Bedside Coordination</li>
+                  <li>Discharge Acceleration</li>
+                  <li>Consent & Documentation Help</li>
+                  <li>Financial Counseling</li>
+                </ul>
+              </section>
+            </div>
+
+            <div class="audience-ctas">
+              <a href="#insights" class="cta-primary">See AI Insights</a>
+              <a href="#contact" class="cta-secondary">Contact Us</a>
+            </div>
           </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========================= KPIs (anchor for auto-open drawer) ========================= -->
+    <section id="kpis" class="metrics section" aria-labelledby="kpi-title">
+      <header class="section-head">
+        <span class="section-eyebrow">Live performance</span>
+        <h2 id="kpi-title">Hospital & Patient KPIs</h2>
+        <p>Data refreshes every few seconds (simulated). Toggle speed in the AI drawer.</p>
+      </header>
+
+      <div class="metrics-grid">
+        <div class="metric">
+          <strong id="kpi-admissions">482</strong>
+          <span>Admissions <em class="hf-delta-badge hf-delta-up" id="kpi-admissions-delta">▲ +4.7%</em></span>
         </div>
-        <div class="audience-panel__media">
-          <div class="audience-track">
-            <div class="audience-card glass-card" data-motion="left">
-              <span class="audience-card__tag">Concierge</span>
-              <h4>24/7 Care Support</h4>
-              <p>Live chat, bedside coordinators, and digital kiosks syncing every update.</p>
-            </div>
-            <div class="audience-card glass-card" data-motion="center">
-              <span class="audience-card__tag">Financing</span>
-              <h4>Zero-Interest Plans</h4>
-              <p>Pre-approved medical credit lines with transparent repayment journeys.</p>
-            </div>
-            <div class="audience-card glass-card" data-motion="right">
-              <span class="audience-card__tag">Transparency</span>
-              <h4>Claim Tracker</h4>
-              <p>Swipe-through claims, docs, and SLA timers for every caregiver.</p>
-            </div>
-          </div>
+        <div class="metric">
+          <strong id="kpi-approval">92%</strong>
+          <span>Claim Approval <em class="hf-delta-badge hf-delta-up" id="kpi-approval-delta">▲ +1.3%</em></span>
         </div>
-      </article>
-    </div>
-  </section>
-
-  <!-- ==================== 📊 KPI Metrics Dashboard ==================== -->
-  <section id="metrics" class="metrics section" aria-label="Key Metrics">
-    <header class="section-head">
-      <span class="section-eyebrow">By The Numbers</span>
-      <h2>Impact That Speaks For Itself</h2>
-      <p>HealthFlo drives measurable outcomes that translate directly into revenue growth and patient satisfaction.</p>
-    </header>
-
-    <div class="metrics-grid futuristic">
-      <div class="metric gsap-counter">
-        <strong data-target="570">570</strong>
-        <span>Hospitals Automated</span>
-        <div class="metric-bar"><div class="fill" style="width:95%"></div></div>
-      </div>
-      <div class="metric gsap-counter">
-        <strong data-target="150000">150,000</strong>
-        <span>Patients Assisted</span>
-        <div class="metric-bar"><div class="fill" style="width:90%"></div></div>
-      </div>
-      <div class="metric gsap-counter">
-        <strong data-prefix="" data-target="45" data-suffix="s">45s</strong>
-        <span>Avg Pre-Auth Time</span>
-        <div class="metric-bar"><div class="fill" style="width:88%"></div></div>
-      </div>
-      <div class="metric gsap-counter">
-        <strong data-target="98" data-suffix="%">98%</strong>
-        <span>Claim Recovery Rate</span>
-        <div class="metric-bar"><div class="fill" style="width:98%"></div></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ==================== 🔄 How It Works Timeline ==================== -->
-  <section id="how-it-works" class="timeline section parallax-bg" aria-labelledby="how-title">
-    <header class="section-head">
-      <span class="section-eyebrow">Four-Beat Sequence</span>
-      <h2 id="how-title">How HealthFlo Works</h2>
-      <p>A four-step orchestration engine woven into your HIS, payors, and patient journeys — guided by AI every step of the way.</p>
-    </header>
-
-    <div class="timeline-steps">
-      <div class="step gsap-scroll">
-        <h3>1. Intake & Verification</h3>
-        <p>Digitize admissions with ID capture, policy fetch, and AI-powered triage.</p>
-      </div>
-      <div class="step gsap-scroll">
-        <h3>2. Automated Coding</h3>
-        <p>Unified coding cockpit with medical necessity checks and audit-ready packets.</p>
-      </div>
-      <div class="step gsap-scroll">
-        <h3>3. Cashless Claiming</h3>
-        <p>Pre-auth autopilot compiles docs, submits to payors, and tracks SLAs.</p>
-      </div>
-      <div class="step gsap-scroll">
-        <h3>4. Revenue Insights</h3>
-        <p>Dynamic dashboards spotlight leakages, AR aging, and CFO-ready forecasts.</p>
-      </div>
-    </div>
-  </section>
-  <!-- ==================== 💬 Testimonials ==================== -->
-  <section id="testimonials" class="testimonials section" aria-labelledby="testimonials-title">
-    <header class="section-head">
-      <span class="section-eyebrow">Trusted by Leaders</span>
-      <h2 id="testimonials-title">What Our Partners Say</h2>
-      <p>Hospitals, CFOs, and care coordinators rely on HealthFlo to transform their revenue cycle and patient experience.</p>
-    </header>
-
-    <div class="testimonial-carousel gsap-reveal">
-      <blockquote>
-        “HealthFlo reduced our average pre-auth time from 3 hours to just 45 seconds. Our patients now get admitted without the usual insurance delays.”  
-        <div class="testimonial-author">— Dr. Meena R., Apollo Hospitals</div>
-      </blockquote>
-
-      <blockquote>
-        “We recovered ₹4.2 Cr in previously denied claims — all automated by HealthFlo’s AI. It’s like having a revenue operations team on autopilot.”  
-        <div class="testimonial-author">— CFO, Sunrise Multi-Specialty</div>
-      </blockquote>
-
-      <blockquote>
-        “Our coordinators love it. Patients receive claim updates directly on WhatsApp — and we haven’t missed an SLA in 6 months.”  
-        <div class="testimonial-author">— Head of Patient Experience, Aster Clinics</div>
-      </blockquote>
-    </div>
-  </section>
-
-  <!-- ==================== 🚀 Final CTA Band ==================== -->
-  <section id="cta" class="cta-band gsap-reveal">
-    <div class="cta-band__content">
-      <h2>Transform Your Hospital’s Revenue Cycle — Today</h2>
-      <p>Deploy HealthFlo in <strong>under 14 days</strong> and automate pre-auth, denial recovery, and patient communication at scale.</p>
-    </div>
-
-    <div class="cta-actions">
-      <a href="#cta" class="cta-primary">🚀 Book a Demo</a>
-      <a href="mailto:hello@healthflo.ai" class="cta-secondary">📧 Talk to Sales</a>
-    </div>
-  </section>
-
-  <!-- ==================== 🦶 Footer ==================== -->
-  <footer class="footer">
-    <svg class="footer-wave" viewBox="0 0 1200 200" preserveAspectRatio="none" aria-hidden="true">
-      <path d="M0,0 C300,120 900,120 1200,0 L1200,200 L0,200 Z" fill="rgba(76,110,245,0.15)" />
-    </svg>
-
-    <div class="footer-grid">
-      <div>
-        <h4>About HealthFlo</h4>
-        <p>HealthFlo is the AI-powered revenue automation and patient concierge platform that helps hospitals automate pre-auth, recover denials, and delight patients.</p>
-      </div>
-
-      <div>
-        <h4>Solutions</h4>
-        <ul>
-          <li><a href="#hospital-suite">Hospital Automation</a></li>
-          <li><a href="#command-center">Command Center Demo</a></li>
-          <li><a href="#patient-suite">Patient Services</a></li>
-          <li><a href="#metrics">Impact & Outcomes</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <h4>Resources</h4>
-        <ul>
-          <li><a href="#features">Platform Modules</a></li>
-          <li><a href="#how-it-works">Implementation Playbook</a></li>
-          <li><a href="#audiences">Experience Journeys</a></li>
-          <li><a href="#testimonials">Partner Stories</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <h4>Contact</h4>
-        <ul>
-          <li><a href="mailto:hello@healthflo.ai">hello@healthflo.ai</a></li>
-          <li><a href="tel:+918610425342">+91 86104 25342</a></li>
-          <li>Bengaluru, India</li>
-        </ul>
-        <div class="social-links">
-          <a href="#" aria-label="LinkedIn"><i class="ri-linkedin-fill"></i></a>
-          <a href="#" aria-label="Twitter"><i class="ri-twitter-fill"></i></a>
-          <a href="#" aria-label="YouTube"><i class="ri-youtube-fill"></i></a>
+        <div class="metric">
+          <strong id="kpi-preauth">45s</strong>
+          <span>Avg Pre-Auth Time <em class="hf-delta-badge hf-delta-down" id="kpi-preauth-delta">▼ 2.2%</em></span>
+        </div>
+        <div class="metric">
+          <strong id="kpi-satisfaction">86%</strong>
+          <span>Patient Satisfaction <em class="hf-delta-badge hf-delta-up" id="kpi-satisfaction-delta">▲ +3.1%</em></span>
         </div>
       </div>
-    </div>
+    </section>
 
-    <div class="footer-bottom">
-      © 2025 HealthFlo Technologies. All rights reserved.
-    </div>
-  </footer>
+    <!-- ========================= AI Insights Drawer ========================= -->
+    <section id="hf-ai-insights" class="hf-ai-insights" aria-label="AI-Powered Insights" hidden>
+      <button class="hf-ai-insights__trigger" aria-controls="hf-ai-insights-drawer" aria-expanded="false">🤖 AI Insights</button>
 
-  <!-- ==================== 📜 Scripts ==================== -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/7.2.4/pixi.min.js"></script>
-  <script src="assets/js/main.js"></script>
-</body>
+      <aside id="hf-ai-insights-drawer" class="hf-ai-insights__drawer" role="dialog" aria-modal="false" aria-label="AI Insights Panel">
+        <header class="hf-ai-insights__header">
+          <h2>AI-Powered Insights</h2>
+          <button class="hf-ai-insights__close" aria-label="Close insights panel">✕</button>
+        </header>
+
+        <nav class="hf-ai-insights__tabs" role="tablist">
+          <button class="hf-tab active" role="tab" aria-selected="true" aria-controls="hf-tab-overview" id="tab-overview" data-tab="hf-tab-overview">📈 Overview</button>
+          <button class="hf-tab" role="tab" aria-selected="false" aria-controls="hf-tab-finance" id="tab-finance" data-tab="hf-tab-finance">💰 Finance</button>
+          <button class="hf-tab" role="tab" aria-selected="false" aria-controls="hf-tab-patient" id="tab-patient" data-tab="hf-tab-patient">🏥 Patient</button>
+          <button class="hf-tab" role="tab" aria-selected="false" aria-controls="hf-tab-operations" id="tab-operations" data-tab="hf-tab-operations">⚙️ Operations</button>
+        </nav>
+
+        <div class="hf-ai-insights__panels">
+          <section id="hf-tab-overview" class="hf-tabpanel active" role="tabpanel" aria-labelledby="tab-overview">
+            <div class="hf-insights-controls" style="margin-bottom:1rem;">
+              <label for="hf-refresh-speed">Update Speed</label>
+              <input id="hf-refresh-speed" type="range" min="1" max="3" step="1" value="2" />
+              <small>1=Real-Time (5s), 2=Standard (15s), 3=Slow (30s)</small>
+            </div>
+            <article class="hf-insight-card">
+              <header><h3>System Performance Summary</h3><span class="hf-insight-change positive">↑ 12%</span></header>
+              <p>Overall revenue cycle efficiency increased this cycle, driven by improved eligibility automation and reduced AR leakage.</p>
+              <ul class="hf-actions">
+                <li>Expand auto-preauth workflows to OPD departments.</li>
+                <li>Integrate denial radar with secondary payors.</li>
+              </ul>
+            </article>
+            <article class="hf-insight-card">
+              <header><h3>Claims Turnaround</h3><span class="hf-insight-change negative">↓ 5.4 Days</span></header>
+              <p>Average claims processing time fell below 48 h, indicating effective coding-billing coordination.</p>
+              <ul class="hf-actions">
+                <li>Introduce predictive coding alerts.</li>
+                <li>Automate follow-ups for payor responses beyond 24 h.</li>
+              </ul>
+            </article>
+          </section>
+
+          <section id="hf-tab-finance" class="hf-tabpanel" role="tabpanel" aria-labelledby="tab-finance" hidden>
+            <article class="hf-insight-card">
+              <header><h3>AR Days</h3><span class="hf-insight-change positive">↓ 7 Days</span></header>
+              <p>AR days reduced to 51, improving liquidity and leverage with payors.</p>
+              <ul class="hf-actions">
+                <li>Review denial appeal timelines.</li>
+                <li>Automate write-off detection for aged claims.</li>
+              </ul>
+            </article>
+          </section>
+
+          <section id="hf-tab-patient" class="hf-tabpanel" role="tabpanel" aria-labelledby="tab-patient" hidden>
+            <article class="hf-insight-card">
+              <header><h3>Patient Satisfaction</h3><span class="hf-insight-change positive">↑ 14%</span></header>
+              <p>Real-time concierge messaging and claim tracking are lifting patient satisfaction across inpatient units.</p>
+              <ul class="hf-actions">
+                <li>Expand multilingual support.</li>
+                <li>Introduce proactive admission-prep checklists.</li>
+              </ul>
+            </article>
+          </section>
+
+          <section id="hf-tab-operations" class="hf-tabpanel" role="tabpanel" aria-labelledby="tab-operations" hidden>
+            <article class="hf-insight-card">
+              <header><h3>Denial Prediction Accuracy</h3><span class="hf-insight-change positive">↑ 6.5%</span></header>
+              <p>Model retraining reduced false positives by 22%.</p>
+              <ul class="hf-actions">
+                <li>Enable weekly model retraining.</li>
+                <li>Integrate coding feedback loops from audit.</li>
+              </ul>
+            </article>
+          </section>
+        </div>
+      </aside>
+    </section>
+
+    <!-- ========================= AI Narrative (Exec Summary + Insights) ========================= -->
+    <section id="insights" class="ai-insights-section" aria-labelledby="insights-title">
+      <h2 id="insights-title" class="visually-hidden">AI-Powered Healthcare Insights</h2>
+      <!-- Narrative engine renders summary + insights here -->
+    </section>
+
+    <!-- ========================= Contact ========================= -->
+    <section id="contact" class="section" aria-labelledby="contact-title">
+      <header class="section-head">
+        <span class="section-eyebrow">Talk to us</span>
+        <h2 id="contact-title">Ready to transform your revenue cycle?</h2>
+        <p>See how HealthFlo rewrites revenue and patient experience for your network.</p>
+      </header>
+      <div class="cta-band">
+        <div class="cta-band__content">
+          <h3>Book a Demo</h3>
+          <p>We’ll map your current operations and show the fastest path to measurable ROI.</p>
+        </div>
+        <a class="cta-primary" href="mailto:hello@healthflo.ai">hello@healthflo.ai</a>
+      </div>
+    </section>
+
+    <!-- ========================= Minimal inline persona toggle (no external dep) ========================= -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const tabs = document.querySelectorAll('.audience-tab');
+        const panels = {
+          'pane-hospitals': document.getElementById('pane-hospitals'),
+          'pane-patients': document.getElementById('pane-patients')
+        };
+        tabs.forEach(btn => {
+          btn.addEventListener('click', () => {
+            if (btn.classList.contains('active')) return;
+            tabs.forEach(b => {
+              b.classList.toggle('active', b===btn);
+              b.setAttribute('aria-selected', String(b===btn));
+            });
+            Object.keys(panels).forEach(id => {
+              const show = id === btn.dataset.target;
+              panels[id].classList.toggle('active', show);
+              panels[id].toggleAttribute('hidden', !show);
+            });
+          });
+        });
+
+        // Mobile menu
+        const toggle = document.querySelector('.mobile-nav-toggle');
+        const nav = document.getElementById('primary-menu');
+        if (toggle && nav) {
+          toggle.addEventListener('click', () => {
+            const open = nav.classList.toggle('open');
+            toggle.setAttribute('aria-expanded', String(open));
+          });
+          nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+            nav.classList.remove('open'); toggle.setAttribute('aria-expanded','false');
+          }));
+        }
+
+        // Theme toggle (persist)
+        const themeBtn = document.querySelector('.theme-toggle');
+        const setTheme = (t) => { document.documentElement.setAttribute('data-theme', t); localStorage.setItem('hf-theme', t); };
+        const saved = localStorage.getItem('hf-theme');
+        setTheme(saved || 'light');
+        themeBtn?.addEventListener('click', () => {
+          const cur = document.documentElement.getAttribute('data-theme') || 'light';
+          setTheme(cur === 'light' ? 'dark' : 'light');
+        });
+      });
+    </script>
+
+    <!-- ========================= App Scripts ========================= -->
+    <!-- KPI simulator (events: hf:kpiUpdate, hf:refreshStart, hf:refreshComplete) -->
+    <script src="components/ai-insights/kpi-engine.js" defer></script>
+
+    <!-- AI Insights Drawer (tabs + speed + auto-open on scroll) -->
+    <script src="components/ai-insights/ai-insights.js" defer></script>
+
+    <!-- AI Narrative (Executive Summary + insights + narration + vs last cycle delta) -->
+    <script src="components/ai-insights/ai-narrative.js" defer></script>
+  </body>
 </html>
