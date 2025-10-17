@@ -35,7 +35,8 @@
     <!-- App Styles -->
     <link rel="stylesheet" href="assets/css/style.css" />
 
-    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg" />
+    <!-- Favicon → flow-first animated mark -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/healthflo-flowmark.svg" />
 
     <!-- Structured Data: MedicalBusiness -->
     <script type="application/ld+json">
@@ -44,7 +45,7 @@
         "@type": "MedicalBusiness",
         "name": "HealthFlo",
         "url": "https://www.healthflo.ai",
-        "logo": "https://www.healthflo.ai/assets/logo.svg",
+        "logo": "https://www.healthflo.ai/assets/images/healthflo-flowmark.svg",
         "description": "AI-powered revenue cycle automation, denial recovery, and patient concierge services for hospitals and health systems.",
         "foundingDate": "2024",
         "areaServed": ["India", "South East Asia"],
@@ -121,39 +122,14 @@
     <header class="header" aria-label="Primary navigation">
       <nav class="navbar" aria-label="Main">
         <a href="index.html" class="logo" aria-label="HealthFlo home">
-          <span class="logo-mark" aria-hidden="true">
-            <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
-              <defs>
-                <linearGradient id="logoGradient" x1="0" x2="1" y1="0" y2="1">
-                  <stop offset="0%" stop-color="#4c6ef5" />
-                  <stop offset="100%" stop-color="#2dd4bf" />
-                </linearGradient>
-              </defs>
-              <rect x="4" y="4" width="40" height="40" rx="14" fill="rgba(15, 23, 42, 0.85)" />
-              <path
-                d="M14 28c6-8 20-8 26 0"
-                stroke="url(#logoGradient)"
-                stroke-width="4"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <animate attributeName="stroke-dashoffset" values="90;0;90" dur="6s" repeatCount="indefinite" />
-              </path>
-              <path
-                d="M16 20c4-4 10-4 14 0"
-                stroke="#2dd4bf"
-                stroke-width="3"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <animateTransform attributeName="transform" type="rotate" values="0 24 24;5 24 24;0 24 24" dur="6s" repeatCount="indefinite" />
-              </path>
-              <circle cx="34" cy="14" r="4" fill="url(#logoGradient)">
-                <animate attributeName="r" values="3;4;3" dur="4.5s" repeatCount="indefinite" />
-              </circle>
-            </svg>
-          </span>
-          <span class="logo-word">HealthFlo</span>
+          <!-- New flow-first animated mark (no circle/plus) -->
+          <img
+            src="assets/images/healthflo-flowmark.svg"
+            alt="HealthFlo — AI Revenue Intelligence"
+            width="120"
+            height="60"
+            class="logo-img"
+          />
         </a>
 
         <button class="mobile-nav-toggle" aria-expanded="false" aria-controls="primary-menu" aria-label="Toggle navigation">
