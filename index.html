@@ -2,27 +2,21 @@
 <html lang="en" data-theme="light">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>HealthFlo | AI Revenue Cycle Automation & Patient Concierge</title>
-    <meta
-      name="description"
-      content="HealthFlo is the AI-powered revenue cycle and patient concierge platform built for hospitals to accelerate cashless approvals, recover denials, and delight patients."
-    />
+    <meta name="description" content="HealthFlo is the AI-powered revenue cycle and patient concierge platform built for hospitals to accelerate cashless approvals, recover denials, and delight patients.">
 
-    <!-- Google Font -->
+    <!-- Google Font (Manrope) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
     <!-- Single main stylesheet -->
     <link rel="stylesheet" href="assets/css/style.css" />
 
     <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg" />
 
-    <!-- Structured Data -->
+    <!-- Structured Data (SEO) -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -52,21 +46,20 @@
       }
     </script>
 
-    <!-- GSAP + Plugins (CDN) — used by animations & insights drawer -->
-    <!-- Core -->
+    <!-- ================== Motion (GSAP) ================== -->
+    <!-- GSAP Core (animations) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-    <!-- ScrollTrigger for auto-open on scroll & sequencing -->
+    <!-- GSAP ScrollTrigger (scroll-based reveals) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-    <!-- Optional sugar -->
+    <!-- GSAP Helpers (optional) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/SplitText.min.js" defer></script>
   </head>
 
-  <body class="page-landing" data-page="home">
+  <body class="page-landing a11y" data-page="home">
     <!-- Preloader -->
     <div class="preloader" role="status" aria-live="polite">
       <div class="preloader-logo" aria-hidden="true">
-        <!-- (same SVG from your original) -->
         <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="preloaderGradient" x1="0" x2="1" y1="0" y2="1">
@@ -93,7 +86,6 @@
       <nav class="navbar" aria-label="Main">
         <a href="index.html" class="logo" aria-label="HealthFlo home">
           <span class="logo-mark" aria-hidden="true">
-            <!-- (same logo SVG) -->
             <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
               <defs>
                 <linearGradient id="logoGradient" x1="0" x2="1" y1="0" y2="1">
@@ -119,12 +111,12 @@
         <button class="mobile-nav-toggle" aria-expanded="false" aria-controls="primary-menu" aria-label="Toggle navigation">☰</button>
 
         <div class="nav-links" id="primary-menu" role="menubar">
-          <a href="#features" role="menuitem">Platform</a>
-          <a href="#how-it-works" role="menuitem">How it Works</a>
-          <a href="solutions.html" role="menuitem">Solutions</a>
-          <a href="products.html" role="menuitem">Products</a>
-          <a href="impact.html" role="menuitem">Impact</a>
-          <a href="contact.html" role="menuitem">Contact</a>
+          <a href="#features" role="menuitem" class="seo-link">Platform</a>
+          <a href="#how-it-works" role="menuitem" class="seo-link">How it Works</a>
+          <a href="solutions.html" role="menuitem" class="seo-link">Solutions</a>
+          <a href="products.html" role="menuitem" class="seo-link">Products</a>
+          <a href="impact.html" role="menuitem" class="seo-link">Impact</a>
+          <a href="contact.html" role="menuitem" class="seo-link">Contact</a>
         </div>
 
         <div class="nav-actions">
@@ -160,20 +152,14 @@
             <a href="#solutions" class="cta-secondary">See Solutions</a>
           </div>
           <dl class="hero-metrics" aria-label="Hero performance metrics">
-            <div>
-              <dt>Hospitals orchestrated</dt>
-              <dd>570+</dd>
-            </div>
-            <div>
-              <dt>Claims accelerated</dt>
-              <dd>150K+</dd>
-            </div>
+            <div><dt>Hospitals orchestrated</dt><dd>570+</dd></div>
+            <div><dt>Claims accelerated</dt><dd>150K+</dd></div>
           </dl>
         </div>
 
         <div class="hero-visual parallax" aria-hidden="true">
           <div class="hero-slab">
-            <!-- (same SVG slab) -->
+            <!-- Visualization Slab -->
             <svg viewBox="0 0 460 360" role="img" aria-label="AI revenue orchestration visuals">
               <defs>
                 <linearGradient id="heroGradient" x1="0" x2="1" y1="0" y2="1">
@@ -205,6 +191,8 @@
                 <rect x="256" y="292" width="138" height="16" rx="8" opacity="0.45" />
               </g>
             </svg>
+
+            <!-- Particles: Micro-Cell / Nebula / Data-Stream -->
             <canvas id="hero-animation" aria-hidden="true"></canvas>
           </div>
         </div>
@@ -247,7 +235,7 @@
         </div>
       </section>
 
-      <!-- AUDIENCE SHOWCASE (unchanged structure) -->
+      <!-- AUDIENCE SHOWCASE (tabbed) -->
       <section id="audiences" class="audience-showcase section" aria-labelledby="audiences-title">
         <header class="section-head">
           <span class="section-eyebrow">Dual-view storytelling</span>
@@ -256,32 +244,90 @@
         </header>
 
         <div class="audience-toggle" role="tablist">
-          <!-- NOTE: added data-tab attrs to match JS -->
-          <button class="audience-tab active" type="button" role="tab" aria-selected="true"
-                  aria-controls="audience-hospitals" data-target="audience-hospitals">
+          <button class="audience-tab active" role="tab" aria-selected="true" aria-controls="audience-hospitals" data-target="audience-hospitals">
             <span class="audience-tab__icon" aria-hidden="true">🏥</span>
             <span class="audience-tab__label">Hospitals</span>
           </button>
-          <button class="audience-tab" type="button" role="tab" aria-selected="false"
-                  aria-controls="audience-patients" data-target="audience-patients">
+          <button class="audience-tab" role="tab" aria-selected="false" aria-controls="audience-patients" data-target="audience-patients">
             <span class="audience-tab__icon" aria-hidden="true">👨‍👩‍👧‍👦</span>
             <span class="audience-tab__label">Patients</span>
           </button>
         </div>
 
         <div class="audience-panels">
-          <!-- (same content blocks you shared) -->
           <article id="audience-hospitals" class="audience-panel active" role="tabpanel">
-            <!-- ... -->
+            <div class="audience-panel__content">
+              <h3>For Hospital CFOs & Operations Chiefs</h3>
+              <p>Launch an AI revenue command center with denial predictions, automation studios, and compliance co-pilots.</p>
+              <ul class="audience-list">
+                <li>Unified RCM cockpit and AR intelligence layers.</li>
+                <li>Predictive denial studio with autonomous appeals.</li>
+                <li>Cashless packet automation and payor SLA radar.</li>
+              </ul>
+              <div class="audience-ctas">
+                <a href="solutions.html#hospitals" class="cta-primary">Explore Hospital Solutions</a>
+                <a href="products.html#hospital-modules" class="cta-secondary">View Hospital Modules</a>
+              </div>
+            </div>
+            <div class="audience-panel__media">
+              <div class="audience-track">
+                <div class="audience-card glass-card" data-motion="left">
+                  <span class="audience-card__tag">Command Center</span>
+                  <h4>RCM Control Hub</h4>
+                  <p>Real-time AR, escalations, and cash projections with cinematic dashboards.</p>
+                </div>
+                <div class="audience-card glass-card" data-motion="center">
+                  <span class="audience-card__tag">Automation</span>
+                  <h4>Auto Packet Builder</h4>
+                  <p>Compile eligibility, diagnostics, and narratives with one swipe.</p>
+                </div>
+                <div class="audience-card glass-card" data-motion="right">
+                  <span class="audience-card__tag">AI Insight</span>
+                  <h4>Denial Radar</h4>
+                  <p>Surface high-risk claims and auto-launch appeal workflows instantly.</p>
+                </div>
+              </div>
+            </div>
           </article>
 
           <article id="audience-patients" class="audience-panel" role="tabpanel" hidden>
-            <!-- ... -->
+            <div class="audience-panel__content">
+              <h3>For Patients & Family Experience Teams</h3>
+              <p>Deliver concierge-grade support with transparent claims, live chat, and compassionate financing.</p>
+              <ul class="audience-list">
+                <li>Guided admissions with multilingual onboarding.</li>
+                <li>WhatsApp concierge, notifications, and escalations.</li>
+                <li>Embedded zero-interest financing and claim journey tracker.</li>
+              </ul>
+              <div class="audience-ctas">
+                <a href="solutions.html#patients" class="cta-primary">Explore Patient Solutions</a>
+                <a href="products.html#patient-modules" class="cta-secondary">View Patient Modules</a>
+              </div>
+            </div>
+            <div class="audience-panel__media">
+              <div class="audience-track">
+                <div class="audience-card glass-card" data-motion="left">
+                  <span class="audience-card__tag">Concierge</span>
+                  <h4>24/7 Guidance</h4>
+                  <p>Live chat, bedside coordinators, and digital kiosks syncing every update.</p>
+                </div>
+                <div class="audience-card glass-card" data-motion="center">
+                  <span class="audience-card__tag">Financing</span>
+                  <h4>Zero-Interest Plans</h4>
+                  <p>Pre-approved medical credit lines with transparent repayment journeys.</p>
+                </div>
+                <div class="audience-card glass-card" data-motion="right">
+                  <span class="audience-card__tag">Transparency</span>
+                  <h4>Claim Tracker</h4>
+                  <p>Swipe-through claims, docs, and SLA timers for every caregiver.</p>
+                </div>
+              </div>
+            </div>
           </article>
         </div>
       </section>
 
-      <!-- HOW IT WORKS / TIMELINE -->
+      <!-- HOW IT WORKS -->
       <section id="how-it-works" class="timeline section parallax-bg" aria-labelledby="how-title">
         <header class="section-head">
           <span class="section-eyebrow">Four-beat sequence</span>
@@ -289,61 +335,44 @@
           <p class="gsap-reveal">A four-step orchestration engine woven into your HIS, payors, and patient journeys.</p>
         </header>
         <div class="timeline-steps" role="list">
-          <div class="step gsap-scroll" role="listitem">
-            <h3>Intake & Verification</h3>
-            <p>Digitize admissions with ID capture, policy fetch, and AI-powered triage.</p>
-          </div>
-          <div class="step gsap-scroll" role="listitem">
-            <h3>Automated Coding</h3>
-            <p>Unified coding cockpit with medical necessity checks and audit-ready packets.</p>
-          </div>
-          <div class="step gsap-scroll" role="listitem">
-            <h3>Cashless Claiming</h3>
-            <p>Pre-auth autopilot that compiles docs, submits to payors, and tracks SLAs.</p>
-          </div>
-          <div class="step gsap-scroll" role="listitem">
-            <h3>Revenue Insights</h3>
-            <p>Dynamic dashboards spotlight leakages, AR aging, and CFO-ready forecasts.</p>
-          </div>
+          <div class="step gsap-scroll" role="listitem"><h3>Intake & Verification</h3><p>Digitize admissions with ID capture, policy fetch, and AI-powered triage.</p></div>
+          <div class="step gsap-scroll" role="listitem"><h3>Automated Coding</h3><p>Unified coding cockpit with medical necessity checks and audit-ready packets.</p></div>
+          <div class="step gsap-scroll" role="listitem"><h3>Cashless Claiming</h3><p>Pre-auth autopilot that compiles docs, submits to payors, and tracks SLAs.</p></div>
+          <div class="step gsap-scroll" role="listitem"><h3>Revenue Insights</h3><p>Dynamic dashboards spotlight leakages, AR aging, and CFO-ready forecasts.</p></div>
         </div>
       </section>
 
-      <!-- KPI / INSIGHTS AREA -->
-      <!-- 🔥 Drawer Trigger + Drawer Markup (Standalone Component) -->
-      <!-- Updated to include speed slider control inside Overview tab -->
-      <section id="hf-ai-insights" class="hf-ai-insights" aria-label="AI-Powered Insights" hidden>
-        <!-- Toggle btn -->
-        <button class="hf-ai-insights__trigger" aria-controls="hf-ai-insights-drawer" aria-expanded="false">
-          🤖 AI Insights
-        </button>
+      <!-- 🔥 KPI STRIP (Reusable Widgets) — “Beside the number” deltas + spark -->
+      <section class="kpi-strip section" aria-label="Live KPIs">
+        <div class="kpi-row">
+          <healthflo-kpi kpi-name="Claim Approval Rate" unit="%" label="Claim Approval Rate"></healthflo-kpi>
+          <healthflo-kpi kpi-name="Avg Pre-Auth Time" unit="s" label="Avg Pre-Auth Time"></healthflo-kpi>
+          <healthflo-kpi kpi-name="Satisfaction Score" unit="%" label="Patient Satisfaction"></healthflo-kpi>
+        </div>
+      </section>
 
-        <!-- Drawer -->
+      <!-- 🧲 Insights Drawer (sticky trigger; auto-opens on first scroll) -->
+      <section id="hf-ai-insights" class="hf-ai-insights" aria-label="AI-Powered Insights" hidden>
+        <button class="hf-ai-insights__trigger" aria-controls="hf-ai-insights-drawer" aria-expanded="false">🤖 AI Insights</button>
         <aside id="hf-ai-insights-drawer" class="hf-ai-insights__drawer" role="dialog" aria-modal="false" aria-label="AI Insights Panel">
           <header class="hf-ai-insights__header">
             <h2>AI-Powered Insights</h2>
             <button class="hf-ai-insights__close" aria-label="Close insights panel">✕</button>
           </header>
 
-          <!-- Tabs -->
           <nav class="hf-ai-insights__tabs" role="tablist">
-            <!-- NOTE: added data-tab to wire JS correctly -->
             <button class="hf-tab active" role="tab" aria-selected="true" aria-controls="hf-tab-overview" id="tab-overview" data-tab="hf-tab-overview">📈 Overview</button>
             <button class="hf-tab" role="tab" aria-selected="false" aria-controls="hf-tab-finance" id="tab-finance" data-tab="hf-tab-finance">💰 Finance</button>
             <button class="hf-tab" role="tab" aria-selected="false" aria-controls="hf-tab-patient" id="tab-patient" data-tab="hf-tab-patient">🏥 Patient Experience</button>
             <button class="hf-tab" role="tab" aria-selected="false" aria-controls="hf-tab-operations" id="tab-operations" data-tab="hf-tab-operations">⚙️ Operations</button>
           </nav>
 
-          <!-- Panels -->
           <div class="hf-ai-insights__panels">
-            <!-- OVERVIEW -->
             <section id="hf-tab-overview" class="hf-tabpanel active" role="tabpanel" aria-labelledby="tab-overview">
-              <!-- 🔧 Speed Control (slider) – wires to JS -->
               <div class="hf-speed-control">
                 <label for="hf-refresh-speed">Update Speed</label>
                 <input id="hf-refresh-speed" type="range" min="1" max="3" step="1" value="2" />
-                <div class="hf-speed-labels">
-                  <span>Real-Time (5s)</span><span>Standard (15s)</span><span>Slow (30s)</span>
-                </div>
+                <div class="hf-speed-labels"><span>Real-Time (5s)</span><span>Standard (15s)</span><span>Slow (30s)</span></div>
               </div>
 
               <article class="hf-insight-card">
@@ -365,14 +394,13 @@
               </article>
             </section>
 
-            <!-- FINANCE -->
             <section id="hf-tab-finance" class="hf-tabpanel" role="tabpanel" aria-labelledby="tab-finance" hidden>
               <article class="hf-insight-card">
                 <header><h3>Accounts Receivable (AR) Days</h3><span class="hf-insight-change positive">↓ 7 Days</span></header>
                 <p>AR days reduced to 51, improving liquidity and negotiation leverage with payors.</p>
                 <ul class="hf-actions">
                   <li>Review denial appeal timelines to maintain downward momentum.</li>
-                  <li>Consider implementing automated write-off detection for aged claims.</li>
+                  <li>Implement automated write-off detection for aged claims.</li>
                 </ul>
               </article>
 
@@ -386,7 +414,6 @@
               </article>
             </section>
 
-            <!-- PATIENT -->
             <section id="hf-tab-patient" class="hf-tabpanel" role="tabpanel" aria-labelledby="tab-patient" hidden>
               <article class="hf-insight-card">
                 <header><h3>Patient Satisfaction Index</h3><span class="hf-insight-change positive">↑ 14%</span></header>
@@ -407,7 +434,6 @@
               </article>
             </section>
 
-            <!-- OPERATIONS -->
             <section id="hf-tab-operations" class="hf-tabpanel" role="tabpanel" aria-labelledby="tab-operations" hidden>
               <article class="hf-insight-card">
                 <header><h3>Denial Prediction Accuracy</h3><span class="hf-insight-change positive">↑ 6.5%</span></header>
@@ -431,14 +457,13 @@
         </aside>
       </section>
 
-      <!-- AI Advisory Narratives (executive summary + insights) -->
+      <!-- AI Advisory Narratives (Exec Summary + Insights + Narration) -->
       <section id="hf-ai-insights-narrative" class="ai-insights-section" aria-labelledby="insights-title">
         <h2 id="insights-title" class="visually-hidden">AI-Powered Healthcare Insights</h2>
-        <!-- JS renders summary + insight cards here -->
         <div id="hf-ai-insights"></div>
       </section>
 
-      <!-- METRICS / TESTIMONIALS / CTA (unchanged) -->
+      <!-- METRICS -->
       <section id="metrics" class="metrics section" aria-label="Key metrics">
         <div class="metrics-grid">
           <div class="metric gsap-counter"><strong data-target="570">570</strong><span>Hospitals Automated</span></div>
@@ -448,6 +473,7 @@
         </div>
       </section>
 
+      <!-- TESTIMONIALS -->
       <section id="testimonials" class="testimonials section" aria-labelledby="testimonial-title">
         <header class="section-head">
           <span class="section-eyebrow">Proof in the field</span>
@@ -461,6 +487,7 @@
         </div>
       </section>
 
+      <!-- CTA -->
       <section id="final-cta" class="cta-band" aria-labelledby="cta-title">
         <div class="cta-band__content">
           <h2 id="cta-title">Ready to transform your revenue cycle?</h2>
@@ -523,16 +550,22 @@
       <a href="contact.html" aria-label="Book a HealthFlo demo">Book Demo</a>
     </div>
 
-    <!-- Year -->
+    <!-- Current year -->
     <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 
-    <!-- HealthFlo Motion System (your original) -->
+    <!-- Motion System (your base animations) -->
     <script src="assets/js/animations.js" defer></script>
 
-    <!-- KPI Engine (Part 1A+1B combined earlier) -->
+    <!-- Particles (Hero) -->
+    <script src="assets/js/particles.js" defer></script>
+
+    <!-- KPI Engine (events + auto-open) -->
     <script src="components/ai-insights/ai-insights.js" defer></script>
 
-    <!-- AI Narrative + Executive Summary + Narration -->
+    <!-- KPI Widget (reusable, “beside the number”) -->
+    <script src="assets/js/kpi-widget.js" defer></script>
+
+    <!-- AI Narrative (Exec Summary + Narration) -->
     <script src="components/ai-insights/ai-narrative.js" defer></script>
   </body>
 </html>
