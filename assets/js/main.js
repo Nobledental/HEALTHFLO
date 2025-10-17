@@ -1,20 +1,17 @@
 /**
- * HealthFlo — Main Application Bundle
+ * HealthFlo — Main Application Bundle (Upgraded)
  * Single-file, production-ready. Hybrid Tech-Luxury tone.
  *
- * Includes:
- * - Core UX: preloader, sticky header, nav, theme, quick page nav, smooth anchors
- * - GSAP cinematic motion (ScrollTrigger, MotionPath, with guards for SplitText/Flip/ScrollSmoother)
- * - Hero Particles (Micro-Cell Field, Nebula Flow, Data Stream)
- * - KPI Dashboard (config-driven, hospital + patient KPIs, sparklines, live auto-update)
- * - Speed control + pause, localStorage persistence
- * - AI Insights Drawer (tabs, narratives, custom events, auto-open on scroll)
- * - Testimonials carousel, counters, audience showcase float, parallax tilts
+ * Adds in this upgrade:
+ * - Perf: requestIdleCallback guards, visibility/pause, resize-aware sparklines, offscreen particle pausing
+ * - A11y: keyboardable tabs/drawer, ARIA sync, focus traps
+ * - UX: saved last-active insight tab, user-disable AI Insights, persisted KPI auto/speed
+ * - Config: data-* flags on <body> or host elements (kpi speed/autostart; disable insights)
+ * - GSAP: safer plugin registration + ScrollTrigger refresh, hover parallax refinements
+ * - Carousel: autoplay pause on hover/focus
  *
- * Notes:
- * - GSAP CDNs should be included in HTML; this file gracefully degrades if missing.
- * - All selectors are defensive; modules only init when corresponding DOM exists.
- * - No external APIs required (simulated data generators). Swap providers later.
+ * Zero external API calls; simulated data generators only.
+ * Works without GSAP (graceful degrade), and respects reduced motion.
  */
 
 (() => {
@@ -27,7 +24,22 @@
   const $ = (sel, scope = document) => scope.querySelector(sel);
   const on = (el, evt, fn, opts) => el && el.addEventListener(evt, fn, opts || false);
   const raf = (fn) => window.requestAnimationFrame(fn);
+  const idle = (fn) =>
+    (window.requestIdleCallback
+      ? window.requestIdleCallback(fn, { timeout: 500 })
+      : setTimeout(fn, 1));
   const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+  const throttle = (fn, wait = 120) => {
+    let t = 0;
+    return (...args) => {
+      const now = Date.now();
+      if (now - t >= wait) { t = now; fn(...args); }
+    };
+  };
+  const debounce = (fn, wait = 200) => {
+    let to;
+    return (...args) => { clearTimeout(to); to = setTimeout(() => fn(...args), wait); };
+  };
   const ls = {
     get(key, fallback) {
       try { const v = localStorage.getItem(key); return v === null ? fallback : JSON.parse(v); }
@@ -61,10 +73,9 @@
     const toggle = $('.mobile-nav-toggle');
     const links = $('.nav-links');
 
-    const onScroll = () => {
-      if (window.scrollY > 10) header.classList.add('scrolled');
-      else header.classList.remove('scrolled');
-    };
+    const onScroll = throttle(() => {
+      header.classList.toggle('scrolled', window.scrollY > 10);
+    }, 80);
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
 
@@ -89,6 +100,8 @@
       document.documentElement.setAttribute('data-theme', t);
       ls.set('hf-theme', t);
       btn.setAttribute('aria-label', `Switch to ${t === 'dark' ? 'light' : 'dark'} mode`);
+      // optional GSAP refresh for color-based triggers
+      if (hasGSAP && gsap.ScrollTrigger) gsap.ScrollTrigger.refresh(true);
     };
 
     const saved = ls.get('hf-theme', null);
@@ -170,11 +183,12 @@
   const initGSAP = () => {
     if (!hasGSAP || prefersReduced) return;
 
-    // Safely register plugins that may or may not exist (SplitText/Flip/ScrollSmoother are premium)
-    const plugins = ['ScrollTrigger', 'MotionPathPlugin', 'Flip', 'ScrollSmoother', 'SplitText'];
-    plugins.forEach(p => { try { if (gsap[p]) gsap.registerPlugin(gsap[p]); } catch {} });
+    // Safely register plugins that may or may not exist
+    ['ScrollTrigger', 'MotionPathPlugin', 'Flip', 'ScrollSmoother', 'SplitText'].forEach(p => {
+      try { if (gsap[p]) gsap.registerPlugin(gsap[p]); } catch {}
+    });
 
-    // Hero Intro
+    // Intro
     const tl = gsap.timeline({ defaults: { ease: 'power2.out' } });
     tl.from('.eyebrow', { y: 16, opacity: 0, duration: 0.5 })
       .from('.headline', { y: 28, opacity: 0, duration: 0.7 }, '-=0.2')
@@ -236,11 +250,11 @@
   };
 
   /* -------------------------------------------------------------
-   * Parallax Tilt (subtle 3D hover)
+   * Parallax Tilt (subtle 3D hover) with inertia reset
    * ------------------------------------------------------------- */
   const initParallaxTilt = () => {
     const tiltable = $$('.hover-tilt, .feature-card, .audience-card');
-    if (!tiltable.length) return;
+    if (!tiltable.length || prefersReduced) return;
 
     const move = (e) => {
       const el = e.currentTarget;
@@ -249,9 +263,14 @@
       const y = e.clientY - r.top;
       const rx = ((y - r.height / 2) / r.height) * -4;
       const ry = ((x - r.width / 2) / r.width) * 4;
-      el.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+      el.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;
     };
-    const reset = (e) => { e.currentTarget.style.transform = ''; };
+    const reset = (e) => {
+      const el = e.currentTarget;
+      el.style.transition = 'transform 320ms ease';
+      el.style.transform = '';
+      setTimeout(() => (el.style.transition = ''), 340);
+    };
 
     tiltable.forEach(el => {
       on(el, 'pointermove', move);
@@ -260,7 +279,7 @@
   };
 
   /* -------------------------------------------------------------
-   * Geo Marquee (fallback CSS if GSAP not present)
+   * Geo Marquee
    * ------------------------------------------------------------- */
   const initGeoMarquee = () => {
     const track = $('.geo-marquee__track');
@@ -280,7 +299,7 @@
   };
 
   /* -------------------------------------------------------------
-   * Testimonials carousel (lightweight)
+   * Testimonials carousel (pause on hover/focus)
    * ------------------------------------------------------------- */
   const initTestimonials = () => {
     const wrap = $('.testimonial-carousel');
@@ -308,69 +327,29 @@
     wrap.after(dotsWrap);
     show(cur);
 
-    setInterval(() => { cur = (cur + 1) % slides.length; show(cur); }, 6000);
-  };
+    let interval = setInterval(() => { cur = (cur + 1) % slides.length; show(cur); }, 6000);
+    const pause = () => { clearInterval(interval); interval = null; };
+    const resume = () => { if (!interval) interval = setInterval(() => { cur = (cur + 1) % slides.length; show(cur); }, 6000); };
 
-  /* -------------------------------------------------------------
-   * Counters
-   * ------------------------------------------------------------- */
-  const initCounters = () => {
-    const counters = $$('.gsap-counter strong');
-    if (!counters.length) return;
-
-    const parseNum = (t) => {
-      const n = parseFloat(t.replace(/[^\d.]/g, ''));
-      return Number.isFinite(n) ? n : 0;
-    };
-
-    const io = new IntersectionObserver((ents) => {
-      ents.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        const el = entry.target;
-        if (el.dataset.animated) return;
-        el.dataset.animated = 'true';
-
-        const raw = el.textContent.trim();
-        const prefix = raw.match(/^[^\d]*/)?.[0] ?? '';
-        const suffix = raw.match(/[^\d]*$/)?.[0] ?? '';
-        const target = parseNum(el.dataset.target || raw);
-
-        if (hasGSAP && !prefersReduced) {
-          gsap.fromTo(el, { innerText: 0 }, {
-            innerText: target, duration: 1.6, ease: 'power1.out', snap: { innerText: 1 },
-            onUpdate() { el.textContent = `${prefix}${Math.floor(el.innerText).toLocaleString()}${suffix}`; }
-          });
-        } else {
-          el.textContent = `${prefix}${target.toLocaleString()}${suffix}`;
-        }
-      });
-    }, { threshold: 0.4 });
-
-    counters.forEach(el => {
-      const raw = el.textContent.trim();
-      el.dataset.prefix = raw.match(/^[^\d]*/)?.[0] ?? '';
-      el.dataset.suffix = raw.match(/[^\d]*$/)?.[0] ?? '';
-      el.dataset.target = parseNum(raw);
-      el.textContent = `${el.dataset.prefix}0${el.dataset.suffix}`;
-      io.observe(el);
-    });
+    on(wrap, 'mouseenter', pause);
+    on(wrap, 'mouseleave', resume);
+    on(wrap, 'focusin', pause);
+    on(wrap, 'focusout', resume);
+    document.addEventListener('visibilitychange', () => (document.hidden ? pause() : resume()));
   };
 
   /* -------------------------------------------------------------
    * HERO Particles — Micro-Cell Field / Nebula Flow / Data Stream
+   * Paused when not visible or tab hidden.
    * ------------------------------------------------------------- */
   const initHeroParticles = () => {
     const c = document.getElementById('hero-animation');
     if (!c) return;
     const ctx = c.getContext('2d');
-    let w, h, dpr, rafId, modeIdx = 0;
+    let w, h, dpr, rafId, running = false, modeIdx = 0;
     const modes = ['microcell', 'nebula', 'datastream'];
 
-    const state = {
-      particles: [],
-      t: 0,
-      hue: 208, // blue-indigo base
-    };
+    const state = { particles: [], t: 0, hue: 208 };
 
     const resize = () => {
       dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
@@ -385,7 +364,8 @@
     const rand = (min, max) => Math.random() * (max - min) + min;
 
     const seed = () => {
-      const count = Math.floor(Math.min(120, (w * h) / 5000));
+      const density = prefersReduced ? 0.5 : 1;
+      const count = Math.floor(Math.min(120, (w * h) / 5000) * density);
       state.particles = Array.from({ length: count }).map(() => ({
         x: rand(0, w), y: rand(0, h),
         vx: rand(-0.5, 0.5), vy: rand(-0.4, 0.4),
@@ -395,7 +375,7 @@
 
     const drawMicroCells = () => {
       ctx.clearRect(0, 0, w, h);
-      ctx.fillStyle = `hsla(${state.hue}, 85%, 60%, 0.08)`;
+      ctx.fillStyle = `hsla(${state.hue},85%,60%,0.08)`;
       ctx.fillRect(0, 0, w, h);
 
       state.particles.forEach(p => {
@@ -404,12 +384,11 @@
         if (p.y < 0 || p.y > h) p.vy *= -1;
 
         ctx.beginPath();
-        ctx.fillStyle = `hsla(${state.hue}, 70%, 45%, ${p.a})`;
+        ctx.fillStyle = `hsla(${state.hue},70%,45%,${p.a})`;
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fill();
       });
 
-      // connection lines
       ctx.lineWidth = 1;
       for (let i = 0; i < state.particles.length; i++) {
         for (let j = i + 1; j < state.particles.length; j++) {
@@ -417,7 +396,7 @@
           const dx = a.x - b.x, dy = a.y - b.y;
           const dist = Math.hypot(dx, dy);
           if (dist < 60) {
-            ctx.strokeStyle = `hsla(${state.hue}, 80%, 50%, ${0.12 * (1 - dist / 60)})`;
+            ctx.strokeStyle = `hsla(${state.hue},80%,50%,${0.12 * (1 - dist / 60)})`;
             ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
           }
         }
@@ -426,10 +405,10 @@
 
     const drawNebula = () => {
       ctx.globalCompositeOperation = 'source-over';
-      ctx.fillStyle = `hsla(${state.hue}, 85%, 98%, 0.5)`;
+      ctx.fillStyle = 'rgba(255,255,255,0.5)';
       ctx.fillRect(0, 0, w, h);
-
       ctx.globalCompositeOperation = 'lighter';
+
       state.particles.forEach((p, idx) => {
         const angle = Math.sin((state.t + idx) * 0.002) * Math.PI;
         p.x += Math.cos(angle) * 0.4 + p.vx * 0.5;
@@ -438,11 +417,12 @@
         if (p.y < 0) p.y = h; if (p.y > h) p.y = 0;
 
         const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 24);
-        g.addColorStop(0, `hsla(${state.hue}, 80%, 55%, 0.25)`);
+        g.addColorStop(0, `hsla(${state.hue},80%,55%,0.25)`);
         g.addColorStop(1, 'transparent');
         ctx.fillStyle = g;
         ctx.beginPath(); ctx.arc(p.x, p.y, 24, 0, Math.PI * 2); ctx.fill();
       });
+
       ctx.globalCompositeOperation = 'source-over';
     };
 
@@ -466,27 +446,46 @@
     };
 
     const loop = () => {
+      if (!running) return;
       state.t += 1;
-      if (modes[modeIdx] === 'microcell') drawMicroCells();
-      else if (modes[modeIdx] === 'nebula') drawNebula();
+      const mode = modes[modeIdx];
+      if (mode === 'microcell') drawMicroCells();
+      else if (mode === 'nebula') drawNebula();
       else drawDataStream();
       rafId = requestAnimationFrame(loop);
     };
 
-    const rotateMode = () => {
-      modeIdx = (modeIdx + 1) % modes.length;
+    const rotateMode = () => { modeIdx = (modeIdx + 1) % modes.length; };
+
+    const start = () => {
+      if (running) return;
+      running = true;
+      rafId = requestAnimationFrame(loop);
+    };
+    const stop = () => {
+      running = false;
+      if (rafId) cancelAnimationFrame(rafId);
     };
 
     on(c, 'click', rotateMode);
-    window.addEventListener('resize', resize);
+    window.addEventListener('resize', debounce(resize, 120));
+
+    // Pause when offscreen
+    const io = new IntersectionObserver((ents) => {
+      ents.forEach(ent => ent.isIntersecting ? start() : stop());
+    }, { threshold: 0.1 });
+    io.observe(c);
+
+    // Pause on hidden tab
+    document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
+
     resize();
-    loop();
   };
 
   /* -------------------------------------------------------------
    * KPI Dashboard Module (config-driven, grouped)
    * - 10 KPIs + patient-centric
-   * - Sparklines beside numbers
+   * - Sparklines beside numbers (ResizeObserver-aware)
    * - Live auto update w/ speed slider (every 7s default)
    * - Custom events: hf:kpiUpdate
    * ------------------------------------------------------------- */
@@ -498,18 +497,20 @@
     constructor(host, options = {}) {
       this.host = host;
       this.row = $('.kpi-row', host) || host;
-      this.speedMs = ls.get('hf-kpi-speed', options.speedMs ?? 7000);
-      this.auto = ls.get('hf-kpi-auto', options.auto ?? true);
+      const bodySpeed = parseInt(document.body.dataset.kpiSpeed || '', 10);
+      const bodyAuto = document.body.dataset.kpiAutostart;
+      this.speedMs = ls.get('hf-kpi-speed', options.speedMs ?? (Number.isFinite(bodySpeed) ? bodySpeed : 7000));
+      this.auto = ls.get('hf-kpi-auto', options.auto ?? (bodyAuto !== 'false'));
       this.storageKey = options.storageKey || 'hf-kpi';
       this.timer = null;
       this.cards = [];
+      this.ro = null;
 
       this.config = options.data || this.defaultConfig();
       this.init();
     }
 
     defaultConfig() {
-      // Hospital-centric + Patient-centric groups (10+ KPIs)
       return {
         groups: [
           {
@@ -540,7 +541,11 @@
       if (!this.row) return;
       this.render();
       this.bindSpeedControls();
+      this.bindResizeObserver();
       if (this.auto) this.start();
+
+      // Pause updates when tab hidden
+      document.addEventListener('visibilitychange', () => (document.hidden ? this.stop() : (this.auto && this.start())));
     }
 
     render() {
@@ -581,7 +586,6 @@
       return '--stable';
     }
 
-    // Generate sparkline data (simulate last 24 points around value & range)
     makeSeries(kpi, points = 24) {
       const base = kpi.value;
       const [minR, maxR] = kpi.range || [base * 0.9, base * 1.1];
@@ -595,7 +599,6 @@
       return series;
     }
 
-    // Draw a tiny sparkline as inline SVG
     drawSpark(host, series) {
       if (!host) return;
       const w = host.clientWidth || 160;
@@ -609,18 +612,17 @@
 
       host.innerHTML = `
         <svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true">
-          <polyline points="${points}" fill="none" stroke="url(#g)" stroke-width="2" stroke-linecap="round" />
           <defs>
-            <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+            <linearGradient id="hf-spark-grad" x1="0" y1="0" x2="1" y2="1">
               <stop offset="0%" stop-color="#4c6ef5"/>
               <stop offset="100%" stop-color="#2dd4bf"/>
             </linearGradient>
           </defs>
+          <polyline points="${points}" fill="none" stroke="url(#hf-spark-grad)" stroke-width="2" stroke-linecap="round" />
         </svg>
       `;
     }
 
-    // Randomly update KPI value within realistic ranges, slightly impressive
     mutate(kpi) {
       const [minR, maxR] = kpi.range || [kpi.value * 0.9, kpi.value * 1.1];
       const variance = (maxR - minR) * 0.06;
@@ -629,7 +631,6 @@
       if (kpi.trend === 'up') delta = Math.abs(delta);
 
       let next = clamp(kpi.value + delta, minR, maxR);
-      // round elegantly
       if (kpi.value > 1000) next = Math.round(next / 50) * 50;
       else if (kpi.value > 100) next = Math.round(next / 5) * 5;
       else next = Math.round(next * 10) / 10;
@@ -643,11 +644,9 @@
       this.cards.forEach(card => {
         const diff = this.mutate(card.data);
         const valueEl = $('[data-field="value"]', card.el);
-        const unitEl = $('[data-field="unit"]', card.el);
         const deltaEl = $('[data-field="delta"]', card.el);
         const sparkEl = $('[data-spark]', card.el);
 
-        // Animate number (GSAP or instant)
         const toVal = card.data.value;
         if (hasGSAP && !prefersReduced) {
           gsap.to(valueEl, {
@@ -656,24 +655,21 @@
             snap: { innerText: 1 },
             ease: 'power1.out',
             onUpdate() {
-              valueEl.textContent = this.fmt(Math.floor(valueEl.innerText));
+              valueEl.textContent = `${Math.floor(valueEl.innerText).toLocaleString()}`;
             }
           });
         } else {
           valueEl.textContent = this.fmt(toVal);
         }
 
-        // Delta badge
         const cls = diff > 0 ? '--up' : diff < 0 ? '--down' : '--stable';
         deltaEl.classList.remove('--up', '--down', '--stable');
         deltaEl.classList.add(cls);
         const sign = diff > 0 ? '+' : diff < 0 ? '' : '±';
         deltaEl.textContent = `${sign}${Math.abs(diff).toFixed(1)}%`;
 
-        // Sparkline
         this.drawSpark(sparkEl, this.makeSeries(card.data));
 
-        // Event
         document.dispatchEvent(new CustomEvent('hf:kpiUpdate', {
           detail: { id: card.id, value: card.data.value, deltaPct: diff }
         }));
@@ -703,7 +699,6 @@
     }
 
     bindSpeedControls() {
-      // If a global control exists above the dashboard (recommended)
       const speedRange = document.getElementById('hf-speed-range');
       const speedToggle = document.getElementById('hf-auto-toggle');
       const speedLabel = document.getElementById('hf-speed-label');
@@ -722,6 +717,21 @@
         on(speedToggle, 'change', () => this.setAuto(speedToggle.checked));
       }
     }
+
+    bindResizeObserver() {
+      const updateSparks = debounce(() => {
+        this.cards.forEach(card => {
+          this.drawSpark($('[data-spark]', card.el), this.makeSeries(card.data));
+        });
+      }, 120);
+
+      if ('ResizeObserver' in window) {
+        this.ro = new ResizeObserver(updateSparks);
+        this.ro.observe(this.row);
+      } else {
+        window.addEventListener('resize', updateSparks, { passive: true });
+      }
+    }
   }
 
   /* -------------------------------------------------------------
@@ -730,6 +740,7 @@
    * - Narrative templates (context-aware)
    * - Auto-open on scroll
    * - Custom events: hf:insightShown
+   * - User can disable via <body data-insights-disabled="true">
    * ------------------------------------------------------------- */
   class HealthFloInsights {
     /**
@@ -737,6 +748,9 @@
      * @param {Object} options { autoOpenOffset, intervalMs }
      */
     constructor(root, options = {}) {
+      this.disabled = document.body.dataset.insightsDisabled === 'true';
+      if (this.disabled) return;
+
       this.root = root || this.createDOM();
       this.drawer = $('.hf-ai-insights__drawer', this.root);
       this.trigger = $('.hf-ai-insights__trigger', this.root);
@@ -746,7 +760,7 @@
       this.speedLabel = $('#hf-insights-speed-label', this.root);
 
       this.intervalMs = ls.get('hf-insights-speed', options.intervalMs ?? 7000);
-      this.autoOpenOffset = options.autoOpenOffset ?? 480; // px scrolled
+      this.autoOpenOffset = options.autoOpenOffset ?? 520; // px scrolled
       this.timer = null;
 
       this.narratives = this.getTemplates();
@@ -766,10 +780,10 @@
             <button class="hf-ai-insights__close" type="button" aria-label="Close">×</button>
           </header>
           <nav class="hf-ai-insights__tabs" role="tablist">
-            <button class="hf-tab active" role="tab" aria-selected="true" aria-controls="tab-exec">Executive</button>
-            <button class="hf-tab" role="tab" aria-selected="false" aria-controls="tab-hosp">Hospital</button>
-            <button class="hf-tab" role="tab" aria-selected="false" aria-controls="tab-patient">Patient</button>
-            <button class="hf-tab" role="tab" aria-selected="false" aria-controls="tab-actions">Actions</button>
+            <button class="hf-tab" role="tab" aria-selected="true" aria-controls="tab-exec" tabindex="0">Executive</button>
+            <button class="hf-tab" role="tab" aria-selected="false" aria-controls="tab-hosp" tabindex="-1">Hospital</button>
+            <button class="hf-tab" role="tab" aria-selected="false" aria-controls="tab-patient" tabindex="-1">Patient</button>
+            <button class="hf-tab" role="tab" aria-selected="false" aria-controls="tab-actions" tabindex="-1">Actions</button>
           </nav>
           <div class="hf-ai-insights__panels">
             <section id="tab-exec" class="hf-tabpanel" role="tabpanel">
@@ -801,7 +815,6 @@
     }
 
     getTemplates() {
-      // Context-aware templates using plausible/ambitious ranges
       return {
         executive: [
           (k) => `Cash velocity improved by <strong>${k.cashVelocity}%</strong> as pre-auth automation holds under <strong>${k.preauth}s</strong>. High-risk denials fell below <strong>${k.highRiskDenials}%</strong>, keeping projections on track.`,
@@ -814,7 +827,7 @@
           { title: 'AR Intelligence', change: 'neutral', text: `AR at ${k.arDays} days; watch list triggered for 3 payors with aging > 45 days.` }
         ],
         patient: (k) => [
-          { title: 'Concierge Responsiveness', change: 'positive', text: `Time-to-first-update at ${k.ttfa} minutes; multilingual onboarding completion at ${k.onboard}% .` },
+          { title: 'Concierge Responsiveness', change: 'positive', text: `Time-to-first-update at ${k.ttfa} minutes; multilingual onboarding completion at ${k.onboard}%.` },
           { title: 'Financing Uptake', change: 'positive', text: `${k.financing.toLocaleString()} zero-interest approvals this cycle.` },
           { title: 'Experience Score', change: 'positive', text: `NPS steady at ${k.nps}; CSAT ${k.csat}% across inpatient flows.` }
         ],
@@ -825,7 +838,7 @@
             'Escalate LOS outliers to clinical coders with root-cause hints.'
           ]},
           { title: 'Action • Patient Concierge', bullets: [
-            'Enable Friday staffing flex for WhatsApp peak (5-8pm).',
+            'Enable Friday staffing flex for WhatsApp peak (5–8pm).',
             'Proactive finance offers for orthopedic & cardiac bundles.',
             'Trigger bedside script for consent/document gaps.'
           ]}
@@ -833,42 +846,88 @@
       };
     }
 
-    // Pseudo metrics (shared with KPI spirit)
     makeK() {
       return {
-        cashVelocity: Math.round(8 + Math.random() * 6),         // 8–14%
-        preauth: Math.round(40 + Math.random() * 12),             // 40–52s
-        highRiskDenials: (3 + Math.random() * 2).toFixed(1),      // 3.0–5.0%
-        arDays: Math.round(24 + Math.random() * 8),               // 24–32
-        recovery: (96 + Math.random() * 3).toFixed(1),            // 96–99%
-        nps: Math.round(62 + Math.random() * 10),                 // 62–72
-        whatsapp: Math.round(10500 + Math.random() * 4500),       // 10.5k–15k
-        ttfa: Math.round(6 + Math.random() * 4),                  // 6–10 min
-        autoAppeals: Math.round(70 + Math.random() * 15),         // 70–85%
-        slaGain: Math.round(4 + Math.random() * 6),               // 4–10%
-        onboard: Math.round(82 + Math.random() * 10),             // 82–92%
-        financing: Math.round(6200 + Math.random() * 2600),       // 6.2k–8.8k
-        csat: Math.round(88 + Math.random() * 6)                  // 88–94%
+        cashVelocity: Math.round(8 + Math.random() * 6),
+        preauth: Math.round(40 + Math.random() * 12),
+        highRiskDenials: (3 + Math.random() * 2).toFixed(1),
+        arDays: Math.round(24 + Math.random() * 8),
+        recovery: (96 + Math.random() * 3).toFixed(1),
+        nps: Math.round(62 + Math.random() * 10),
+        whatsapp: Math.round(10500 + Math.random() * 4500),
+        ttfa: Math.round(6 + Math.random() * 4),
+        autoAppeals: Math.round(70 + Math.random() * 15),
+        slaGain: Math.round(4 + Math.random() * 6),
+        onboard: Math.round(82 + Math.random() * 10),
+        financing: Math.round(6200 + Math.random() * 2600),
+        csat: Math.round(88 + Math.random() * 6)
       };
+    }
+
+    // Focus trap within drawer
+    trapFocus(enable) {
+      if (!enable) { this._trap && this._trap.remove(); return; }
+      const focusable = 'a,button,input,select,textarea,[tabindex]:not([tabindex="-1"])';
+      const nodes = $$(focusable, this.drawer).filter(el => !el.hasAttribute('disabled'));
+      if (!nodes.length) return;
+      const first = nodes[0], last = nodes[nodes.length - 1];
+      const handler = (e) => {
+        if (e.key !== 'Tab') return;
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      };
+      this._trap = { remove: () => document.removeEventListener('keydown', handler) };
+      document.addEventListener('keydown', handler);
     }
 
     open() {
       this.root.classList.add('open');
       this.drawer.setAttribute('aria-hidden', 'false');
       this.trigger.setAttribute('aria-expanded', 'true');
+      this.trapFocus(true);
+      // Save open state
+      ls.set('hf-insights-open', true);
+      // Focus first tab for a11y if opened by keyboard
+      idle(() => this.tabs[0]?.focus());
     }
     close() {
       this.root.classList.remove('open');
       this.drawer.setAttribute('aria-hidden', 'true');
       this.trigger.setAttribute('aria-expanded', 'false');
+      this.trapFocus(false);
+      ls.set('hf-insights-open', false);
+      this.trigger.focus();
     }
     toggle() { this.root.classList.contains('open') ? this.close() : this.open(); }
 
     init() {
       on($('.hf-ai-insights__close', this.root), 'click', () => this.close());
       on(this.trigger, 'click', () => this.toggle());
-      // Tabs
-      this.tabs.forEach((t, idx) => on(t, 'click', () => this.activateTab(idx)));
+
+      // Tabs: keyboardable (ArrowLeft/Right/Home/End)
+      const activateByIndex = (i) => {
+        this.tabs.forEach((t, idx) => {
+          const active = idx === i;
+          t.classList.toggle('active', active);
+          t.setAttribute('aria-selected', String(active));
+          t.tabIndex = active ? 0 : -1;
+          this.panels[idx].toggleAttribute('hidden', !active);
+        });
+        ls.set('hf-insights-tab', i);
+      };
+
+      this.tabs.forEach((t, idx) => {
+        on(t, 'click', () => activateByIndex(idx));
+        on(t, 'keydown', (e) => {
+          const key = e.key;
+          const cur = this.tabs.findIndex(x => x.getAttribute('aria-selected') === 'true');
+          if (key === 'ArrowRight') { e.preventDefault(); const n = (cur + 1) % this.tabs.length; activateByIndex(n); this.tabs[n].focus(); }
+          if (key === 'ArrowLeft')  { e.preventDefault(); const n = (cur - 1 + this.tabs.length) % this.tabs.length; activateByIndex(n); this.tabs[n].focus(); }
+          if (key === 'Home')       { e.preventDefault(); activateByIndex(0); this.tabs[0].focus(); }
+          if (key === 'End')        { e.preventDefault(); const n = this.tabs.length - 1; activateByIndex(n); this.tabs[n].focus(); }
+        });
+      });
+
       // Speed control
       if (this.speedRange) {
         this.speedRange.value = String(this.intervalMs);
@@ -880,26 +939,34 @@
           if (this.speedLabel) this.speedLabel.textContent = `${Math.round(this.intervalMs/1000)}s`;
         });
       }
+
       // Populate initial content
       this.renderAll();
-      // Auto-open on scroll
-      const onScroll = () => {
-        if (window.scrollY > this.autoOpenOffset) {
-          this.open();
-          window.removeEventListener('scroll', onScroll);
-        }
-      };
-      window.addEventListener('scroll', onScroll, { passive: true });
+
+      // Restore last tab
+      const savedTab = ls.get('hf-insights-tab', 0);
+      activateByIndex(Math.min(this.tabs.length - 1, Math.max(0, savedTab)));
+
+      // Open state memory + auto-open on scroll (only once per session)
+      const wantOpen = ls.get('hf-insights-open', null);
+      if (wantOpen === true) {
+        this.open();
+      } else {
+        const onScroll = () => {
+          if (window.scrollY > this.autoOpenOffset) {
+            this.open();
+            window.removeEventListener('scroll', onScroll);
+          }
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+      }
+
       // Start cycling narratives
       this.cycle();
-    }
 
-    activateTab(i) {
-      this.tabs.forEach((t, idx) => {
-        const active = idx === i;
-        t.classList.toggle('active', active);
-        t.setAttribute('aria-selected', String(active));
-        this.panels[idx].toggleAttribute('hidden', !active);
+      // Close on Escape
+      on(document, 'keydown', (e) => {
+        if (e.key === 'Escape' && this.root.classList.contains('open')) this.close();
       });
     }
 
@@ -910,6 +977,7 @@
       };
       tick();
       this.timer = setInterval(tick, this.intervalMs);
+      document.addEventListener('visibilitychange', () => (document.hidden ? clearInterval(this.timer) : this.cycle()));
     }
 
     renderAll() {
@@ -921,7 +989,6 @@
         const tpls = this.narratives.executive;
         execText.innerHTML = tpls.map(fn => fn(k)).join(' ');
         execCards.innerHTML = '';
-        // Add two punchy cards
         const cards = [
           { title: 'Revenue Lens', change: 'positive', text: `Cash velocity +${k.cashVelocity}% with < ${k.preauth}s pre-auth.` },
           { title: 'Risk Posture', change: 'positive', text: `High-risk denials at ${k.highRiskDenials}% — appeals automation steady.` }
@@ -932,18 +999,12 @@
       // Hospital
       const hosp = this.narratives.hospital(k);
       const hospWrap = $('#hf-hosp-cards', this.root);
-      if (hospWrap) {
-        hospWrap.innerHTML = '';
-        hosp.forEach(c => hospWrap.appendChild(this.cardNode(c)));
-      }
+      if (hospWrap) { hospWrap.innerHTML = ''; hosp.forEach(c => hospWrap.appendChild(this.cardNode(c))); }
 
       // Patient
       const patient = this.narratives.patient(k);
       const patientWrap = $('#hf-patient-cards', this.root);
-      if (patientWrap) {
-        patientWrap.innerHTML = '';
-        patient.forEach(c => patientWrap.appendChild(this.cardNode(c)));
-      }
+      if (patientWrap) { patientWrap.innerHTML = ''; patient.forEach(c => patientWrap.appendChild(this.cardNode(c))); }
 
       // Actions
       const actions = this.narratives.actions(k);
@@ -954,12 +1015,8 @@
           const el = document.createElement('article');
           el.className = 'hf-insight-card';
           el.innerHTML = `
-            <header>
-              <h3>${block.title}</h3>
-            </header>
-            <ul class="hf-actions">
-              ${block.bullets.map(b => `<li>${b}</li>`).join('')}
-            </ul>
+            <header><h3>${block.title}</h3></header>
+            <ul class="hf-actions">${block.bullets.map(b => `<li>${b}</li>`).join('')}</ul>
           `;
           actionsWrap.appendChild(el);
         });
@@ -1042,20 +1099,16 @@
     initTheme();
     initQuickPageNav();
     initAnchors();
-    initGSAP();
+    idle(initGSAP);
     initParallaxTilt();
     initGeoMarquee();
     initTestimonials();
-    initCounters();
     initHeroParticles();
     initAudienceShowcase();
 
     // KPI Dashboard — auto-detect container (place before or inside metrics section)
     const kpiHost = document.querySelector('[data-hf-kpi-host]') || document.querySelector('.kpi-strip');
     if (kpiHost) {
-      // Optional controls (above dashboard): add these IDs in HTML if you'd like:
-      // <input id="hf-speed-range" type="range" ... />
-      // <input id="hf-auto-toggle" type="checkbox" ... />
       window.HealthFloDashboard = new HealthFloDashboard(kpiHost, {
         speedMs: 7000,  // default every 7s (user can adjust)
         auto: true
@@ -1063,19 +1116,21 @@
     }
 
     // AI Insights Drawer — single reusable component
-    window.HealthFloInsights = new HealthFloInsights(null, {
-      intervalMs: 7000,        // matches KPI default (user adjustable)
-      autoOpenOffset: 520      // auto open after some scroll
-    });
+    // Respect <body data-insights-disabled="true">
+    if (document.body.dataset.insightsDisabled !== 'true') {
+      window.HealthFloInsights = new HealthFloInsights(null, {
+        intervalMs: 7000,        // matches KPI default (user adjustable)
+        autoOpenOffset: 520      // auto open after some scroll
+      });
+    }
 
-    // Example: listen to custom events and sync narrative state with KPIs if desired
+    // Optional: listen to custom events
     document.addEventListener('hf:kpiUpdate', (e) => {
       // e.detail = { id, value, deltaPct }
-      // In a future integration, you could feed these into Insights.
-      // console.debug('KPI update', e.detail);
+      // Ready to integrate with real analytics or insights fusion later.
     });
     document.addEventListener('hf:insightShown', (e) => {
-      // console.debug('Insight cycled', e.detail.at);
+      // Fired when insights rotate; hook for analytics.
     });
   });
 })();
