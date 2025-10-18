@@ -1,470 +1,1183 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HealthFlo | Seamless Care & Revenue Intelligence</title>
-  <meta
-    name="description"
-    content="HealthFlo delivers AI-driven revenue cycle management, OPD-IPD EMR, and patient concierge solutions for hospitals and clinics across India."
-  />
-  <meta
-    name="keywords"
-    content="HealthFlo, hospital RCM India, OPD IPD EMR, cashless insurance support, hospital empanelment, patient claim recovery"
-  />
-  <meta name="author" content="HealthFlo Ventures Pvt. Ltd." />
-  <link rel="canonical" href="https://www.healthflo.org/" />
-  <meta property="og:title" content="HealthFlo | Seamless Care & Revenue Intelligence" />
-  <meta
-    property="og:description"
-    content="Advanced AI RCM platform empowering hospitals and patients with cashless insurance, billing intelligence, and concierge advocacy."
-  />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://www.healthflo.org/" />
-  <meta property="og:image" content="https://www.healthflo.org/assets/healthflo-preview.png" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="HealthFlo | Seamless Care & Revenue Intelligence" />
-  <meta
-    name="twitter:description"
-    content="Experience AI-powered revenue cycle management, EMR, and patient concierge crafted for hospitals across India."
-  />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css" />
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "MedicalBusiness",
-      "name": "HealthFlo Ventures Pvt. Ltd.",
-      "url": "https://www.healthflo.org/",
-      "logo": "https://www.healthflo.org/assets/healthflo-preview.png",
-      "sameAs": [
-        "https://www.linkedin.com/company/healthflo",
-        "https://www.facebook.com/healthflo",
-        "https://www.instagram.com/healthflo"
-      ],
-      "description": "AI-enabled revenue cycle management, OPD-IPD EMR, and patient advocacy solutions for hospitals and clinics across India.",
-      "areaServed": [
-        "Chennai",
-        "Bengaluru",
-        "Hyderabad",
-        "Delhi",
-        "Mumbai",
-        "Telangana",
-        "Andhra Pradesh",
-        "Tamil Nadu",
-        "Kerala",
-        "Goa",
-        "Maharashtra",
-        "Chhattisgarh"
-      ],
-      "contactPoint": [
-        {
-          "@type": "ContactPoint",
-          "telephone": "+91-9940207670",
-          "contactType": "sales",
-          "areaServed": "IN",
-          "availableLanguage": ["English", "Tamil", "Telugu"]
-        },
-        {
-          "@type": "ContactPoint",
-          "telephone": "+91-8610425342",
-          "contactType": "customer support",
-          "areaServed": "IN",
-          "availableLanguage": ["English", "Kannada", "Hindi"]
-        }
-      ],
-      "address": [
-        {
-          "@type": "PostalAddress",
-          "streetAddress": "Command Centre, Teynampet",
-          "addressLocality": "Chennai",
-          "addressRegion": "Tamil Nadu",
-          "postalCode": "600018",
-          "addressCountry": "IN"
-        },
-        {
-          "@type": "PostalAddress",
-          "streetAddress": "Growth Hub, Indiranagar",
-          "addressLocality": "Bengaluru",
-          "addressRegion": "Karnataka",
-          "postalCode": "560038",
-          "addressCountry": "IN"
-        },
-        {
-          "@type": "PostalAddress",
-          "streetAddress": "RCM Lab, Banjara Hills",
-          "addressLocality": "Hyderabad",
-          "addressRegion": "Telangana",
-          "postalCode": "500034",
-          "addressCountry": "IN"
-        }
-      ]
-    }
-  </script>
-</head>
-<body class="landing">
-  <div class="particle-layer" aria-hidden="true"></div>
-  <div class="orb orb-left" aria-hidden="true"></div>
-  <div class="orb orb-right" aria-hidden="true"></div>
-  <header class="landing__header" data-animate>
-    <nav class="nav" aria-label="Primary">
-      <a href="index.html" class="logo" aria-label="HealthFlo home">
-        <span class="logo__pulse"></span>
-        <span class="logo__text">HealthFlo</span>
-      </a>
-      <button class="nav__toggle" aria-expanded="false" aria-controls="nav-menu">
-        <span></span><span></span><span></span>
-      </button>
-      <div id="nav-menu" class="nav__links">
-        <a href="#vision">Vision</a>
-        <a href="#paths">Choose Your Path</a>
-        <a href="#demo">Live Demo</a>
-        <a href="#contact">Contact</a>
-      </div>
-      <div class="nav__notification" aria-live="polite">
-        <div class="notification__badge">New</div>
-        <span>Cashless Approvals <strong>45s avg</strong></span>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HealthFlo — Next-Generation Healthcare AI Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body>
+    <nav>
+      <div class="nav-container">
+        <div class="logo">
+          <span>HF</span>
+          HEALTHFLO
+        </div>
+        <div class="nav-links">
+          <a href="#experience">Experience</a>
+          <a href="#platform">Platform</a>
+          <a href="#capabilities">Intelligence</a>
+          <a href="#surgery">Surgery Lab</a>
+          <a href="#knowledge">Knowledge</a>
+          <a href="#service">Support</a>
+          <a href="#live">Live Ops</a>
+          <a href="#demo">Live Demo</a>
+          <a href="#impact">Impact</a>
+          <a href="#roi">ROI</a>
+          <a href="#about">About</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <a class="link-button" href="#contact">Request a Demo</a>
       </div>
     </nav>
-    <section id="vision" class="landing__hero">
-      <div class="hero__copy">
-        <h1>Experience HealthFlo Intelligence</h1>
-        <p>Visual-first RCM automation for hospitals and stress-free care journeys for every patient.</p>
-        <div class="hero__badges" role="list">
-          <span class="hero__badge" role="listitem">AI-first OPD &amp; IPD EMR</span>
-          <span class="hero__badge" role="listitem">Revenue cycle autopilot</span>
-          <span class="hero__badge" role="listitem">570+ NABH partners</span>
-        </div>
-        <div class="hero__cta">
-          <a class="cta" href="#paths">Start your journey</a>
-        </div>
-      </div>
-      <div class="hero__visual">
-        <div class="pulse-ring"></div>
-        <div class="organ-demo" role="presentation">
-          <div class="organ organ--heart"></div>
-          <div class="organ organ--lungs"></div>
-          <div class="organ organ--brain"></div>
-        </div>
-        <div class="hero__dashboard" aria-label="AI dashboard preview">
-          <div class="hero__dashboard-row">
-            <span>Pre-auth velocity</span>
-            <strong>45s avg</strong>
-          </div>
-          <div class="hero__dashboard-row">
-            <span>Cashless uptime</span>
-            <strong>99.2%</strong>
-          </div>
-          <div class="hero__dashboard-row">
-            <span>Denial recovery</span>
-            <strong>98%</strong>
-          </div>
-        </div>
-        <div class="doctor-chat" aria-label="Doctor giving smart care tips">
-          <div class="chat-bubble chat-bubble--doctor">Hydration at 2hr intervals.</div>
-          <div class="chat-bubble chat-bubble--patient">Vitals synced ✅</div>
-        </div>
-        <div class="hero__floating-icons" aria-hidden="true">
-          <div class="floating-icon floating-icon--shield">
-            <svg viewBox="0 0 64 64" focusable="false">
-              <defs>
-                <linearGradient id="shieldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#38bdf8" />
-                  <stop offset="100%" stop-color="#0ea5e9" />
-                </linearGradient>
-              </defs>
-              <path d="M32 6l22 8v14c0 15.464-9.821 24.926-22 30-12.179-5.074-22-14.536-22-30V14z" fill="url(#shieldGradient)" />
-              <path d="M23 30l7 7 11-12" fill="none" stroke="#f8fafc" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-          </div>
-          <div class="floating-icon floating-icon--pulse">
-            <svg viewBox="0 0 64 64" focusable="false">
-              <defs>
-                <linearGradient id="pulseGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stop-color="#f97316" />
-                  <stop offset="100%" stop-color="#ef4444" />
-                </linearGradient>
-              </defs>
-              <circle cx="32" cy="32" r="26" fill="none" stroke="url(#pulseGradient)" stroke-width="6" opacity="0.85" />
-              <path d="M10 34h10l6-12 8 20 6-12h14" fill="none" stroke="#f8fafc" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-          </div>
-        </div>
-      </div>
-    </section>
-  </header>
 
-  <main>
-    <section id="paths" class="pathways" aria-labelledby="pathways-title" data-animate>
-      <div class="section-title" id="pathways-title">
-        <h2>Choose your experience</h2>
-        <p>Pick a guided tour built for your goals.</p>
-      </div>
-      <div class="pathways__cards">
-        <article class="select-card" data-target="hospital.html" tabindex="0" aria-label="Explore hospital solutions">
-          <div class="select-card__glow"></div>
-          <div class="select-card__icon" aria-hidden="true">
-            <svg viewBox="0 0 64 64" role="presentation" focusable="false">
-              <defs>
-                <linearGradient id="hospitalGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#6ee7ff" />
-                  <stop offset="100%" stop-color="#3b82f6" />
-                </linearGradient>
-              </defs>
-              <rect x="8" y="16" width="48" height="36" rx="8" fill="url(#hospitalGradient)" />
-              <path d="M20 28h24" stroke="#0f172a" stroke-width="3" stroke-linecap="round" opacity="0.8" />
-              <path d="M32 18l10 8H22z" fill="#0f172a" opacity="0.9" />
-              <path d="M32 26v14" stroke="#0f172a" stroke-width="4" stroke-linecap="round" />
-              <path d="M24 33h16" stroke="#0f172a" stroke-width="4" stroke-linecap="round" />
-              <circle cx="44" cy="38" r="4" fill="#0ea5e9" />
-            </svg>
+    <main>
+      <section class="hero" id="hero">
+        <div class="float-orb large" style="top: -160px; right: -120px"></div>
+        <div class="float-orb medium" style="bottom: 120px; left: -80px"></div>
+        <div class="hero-content" data-animate>
+          <p class="section-title">Immersive blue healthcare intelligence</p>
+          <h1 class="hero-heading">
+            Build future-ready hospitals with <span>HealthFlo</span>
+          </h1>
+          <p class="section-subtitle">
+            Deliver intelligent care from OPD to IPD, home health, and beyond.
+            HealthFlo fuses AI guidance, volumetric storytelling, and CRM
+            service grids so hospitals, investors, and patients experience a
+            living, breathing digital hospital from day one — now showcased on a
+            luminous white canvas.
+          </p>
+          <div class="cta-buttons">
+            <a class="link-button" href="#contact">Book enterprise consultation</a>
+            <a class="button-secondary" href="#platform">Explore platform</a>
           </div>
-          <h3>I'm representing a hospital</h3>
-          <p>Unlock revenue intelligence, empanelment acceleration, and digital front doors.</p>
-          <span class="select-card__action">Launch hospital cockpit →</span>
-        </article>
-        <article class="select-card" data-target="patient.html" tabindex="0" aria-label="Explore patient concierge">
-          <div class="select-card__glow"></div>
-          <div class="select-card__icon" aria-hidden="true">
-            <svg viewBox="0 0 64 64" role="presentation" focusable="false">
-              <defs>
-                <linearGradient id="patientGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#fbbf24" />
-                  <stop offset="100%" stop-color="#ef4444" />
-                </linearGradient>
-              </defs>
-              <path d="M32 12c10 0 18 7.163 18 16 0 9.941-8 16-18 24-10-8-18-14.059-18-24 0-8.837 8-16 18-16z" fill="url(#patientGradient)" />
-              <path d="M32 20c5 0 9 3.5 9 8s-4 8-9 8-9-3.5-9-8 4-8 9-8z" fill="#fff" opacity="0.85" />
-              <path d="M24 38c2.5-3 5-4 8-4s5.5 1 8 4" stroke="#ef4444" stroke-width="3" stroke-linecap="round" fill="none" />
-            </svg>
+          <div class="hero-ribbon">
+            <span>AI diagnostics</span>
+            <span>Voice-first documentation</span>
+            <span>Patient & hospital CRM</span>
+            <span>Insurance & RCM co-pilot</span>
           </div>
-          <h3>I'm seeking care</h3>
-          <p>Discover insurance concierge, zero-interest medical funding, and real-time claim status.</p>
-          <span class="select-card__action">Open patient concierge →</span>
-        </article>
-      </div>
-    </section>
+          <div class="hero-stats">
+            <div class="stat-card" data-animate>
+              <div class="stat-value" data-count="35" data-suffix="%">0</div>
+              <div class="stat-label">More patients handled daily</div>
+            </div>
+            <div class="stat-card" data-animate>
+              <div class="stat-value" data-count="22" data-suffix="%">0</div>
+              <div class="stat-label">Administrative time saved</div>
+            </div>
+            <div class="stat-card" data-animate>
+              <div class="stat-value" data-count="15" data-prefix="+" data-suffix="%">0</div>
+              <div class="stat-label">Reduction in wait times</div>
+            </div>
+          </div>
+          <div class="hero-cta" data-animate>
+            <div>
+              <strong>Launch a sandbox hospital in 3 minutes.</strong>
+              Watch AI documentation, patient CRM, and command boards react in
+              real time before you commit.
+            </div>
+            <a class="button-secondary" href="#demo">Try the live test hospital</a>
+          </div>
+        </div>
+        <div class="hero-visual" data-animate>
+          <span class="badge">Healthcare AI-native platform</span>
+          <h3 style="margin-top: 24px; font-size: 1.6rem">
+            Clinical network intelligence
+          </h3>
+          <p style="color: var(--text-muted); line-height: 1.7">
+            Real-time operational visibility, AI diagnostics, and compliance
+            automation across OPD, IPD, labs, pharmacy, insurance, and home
+            care.
+          </p>
+          <div style="margin-top: 28px; border-radius: var(--radius-md); overflow: hidden">
+            <canvas id="networkCanvas" style="width: 100%; height: 260px"></canvas>
+          </div>
+          <div class="glass-card" style="margin-top: 28px">
+            <div style="font-size: 1.1rem; font-weight: 600">Instant intelligence</div>
+            <p style="color: var(--text-muted)">
+              Voice-driven documentation, predictive alerts, code yellow/red/black escalation, and multilingual patient engagement.
+            </p>
+          </div>
+        </div>
+      </section>
 
-    <section class="ai-suite" aria-labelledby="ai-suite-title" data-animate>
-      <div class="section-title" id="ai-suite-title">
-        <h2>AI command suite for India-first care</h2>
-        <p>Every workflow is visualised with adaptive dashboards and predictive nudges.</p>
-      </div>
-      <div class="ai-suite__grid">
-        <article class="ai-card">
-          <div class="ai-card__icon" aria-hidden="true">
-            <svg viewBox="0 0 72 72" focusable="false">
-              <defs>
-                <linearGradient id="aiGradientOne" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#a855f7" />
-                  <stop offset="100%" stop-color="#6366f1" />
-                </linearGradient>
-              </defs>
-              <circle cx="36" cy="36" r="28" fill="url(#aiGradientOne)" />
-              <path d="M22 38l10 10 18-22" fill="none" stroke="#f8fafc" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-          </div>
-          <h3>Autonomous intake</h3>
-          <p>Pre-visit triage, document capture, and insurance verification complete before admission.</p>
-        </article>
-        <article class="ai-card">
-          <div class="ai-card__icon" aria-hidden="true">
-            <svg viewBox="0 0 72 72" focusable="false">
-              <defs>
-                <linearGradient id="aiGradientTwo" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stop-color="#f97316" />
-                  <stop offset="100%" stop-color="#f43f5e" />
-                </linearGradient>
-              </defs>
-              <rect x="14" y="16" width="44" height="40" rx="10" fill="url(#aiGradientTwo)" />
-              <path d="M24 30h24" stroke="#f8fafc" stroke-width="4" stroke-linecap="round" />
-              <path d="M24 38h18" stroke="#fde68a" stroke-width="4" stroke-linecap="round" />
-              <circle cx="48" cy="46" r="5" fill="#fde68a" />
-            </svg>
-          </div>
-          <h3>RCM intelligence</h3>
-          <p>Billing, coding, and denial risk predictions stream into the HealthFlo RCM cockpit.</p>
-        </article>
-        <article class="ai-card">
-          <div class="ai-card__icon" aria-hidden="true">
-            <svg viewBox="0 0 72 72" focusable="false">
-              <defs>
-                <linearGradient id="aiGradientThree" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stop-color="#34d399" />
-                  <stop offset="100%" stop-color="#22d3ee" />
-                </linearGradient>
-              </defs>
-              <path d="M12 28h48l-8 26H20z" fill="url(#aiGradientThree)" />
-              <circle cx="28" cy="52" r="6" fill="#0f172a" opacity="0.75" />
-              <circle cx="44" cy="52" r="6" fill="#0f172a" opacity="0.75" />
-              <path d="M22 28l8-12h12l8 12" fill="#0f172a" opacity="0.2" />
-            </svg>
-          </div>
-          <h3>Patient concierge</h3>
-          <p>Zero-interest financing, ombudsman escalations, and WhatsApp updates from one panel.</p>
-        </article>
-      </div>
-    </section>
+      <section id="experience" class="experience-section">
+        <div class="float-orb giant" style="top: -180px; left: 30%"></div>
+        <div class="voka-intro" data-animate>
+          <p class="section-title">Voka-inspired immersive design</p>
+          <h2 class="section-heading">
+            Cinematic AI canvases showcase every layer of the HealthFlo
+            ecosystem
+          </h2>
+          <p class="section-subtitle">
+            Borrowing from the bold gradients and volumetric glow of Voka AI,
+            we present organ-level intelligence, command dashboards, and
+            high-fidelity storytelling that prove HealthFlo is the blue
+            standard for futuristic healthcare delivery.
+          </p>
+        </div>
 
-    <section class="reach" aria-labelledby="reach-title" data-animate>
-      <div class="section-title" id="reach-title">
-        <h2>Trusted footprint across India</h2>
-        <p>570+ NABH accredited hospitals, 1.5 lakh patients, and tri-city command hubs.</p>
-      </div>
-      <div class="reach__grid">
-        <div class="reach__card">
-          <strong>Metro anchors</strong>
-          <span>Head offices at Chennai, Bengaluru, and Hyderabad powering rapid deployments.</span>
-        </div>
-        <div class="reach__card">
-          <strong>Regional coverage</strong>
-          <span>Serving Telangana, Andhra, Tamil Nadu, Kerala, Karnataka, Goa, Maharashtra, Chhattisgarh, Delhi NCR, Mumbai, and Pune.</span>
-        </div>
-        <div class="reach__card">
-          <strong>Network scale</strong>
-          <span>Empanelled with 570+ NABH aggregated hospitals &amp; clinics and 150000+ delighted customers.</span>
-        </div>
-      </div>
-    </section>
+        <div class="voka-grid">
+          <div class="voka-panel" data-animate>
+            <div class="panel-header">
+              <span class="badge">Neon Care Mesh</span>
+              <h3>Immersive hero with volumetric light</h3>
+            </div>
+            <p>
+              Floating gradients, particle networks, and glassmorphism panels
+              create a living AI halo while keeping the entire frame loyal to
+              deep royal blues.
+            </p>
+            <ul>
+              <li>Glowing telemetry threads tie every widget together.</li>
+              <li>3D depth cues inspired by Voka product storytelling.</li>
+              <li>Responsive composition from investor pitch to patient app.</li>
+            </ul>
+          </div>
 
-    <section id="demo" class="flow-demo" aria-labelledby="demo-title" data-animate>
-      <div class="section-title" id="demo-title">
-        <h2>See HealthFlo in action</h2>
-        <p>Watch the AI EMR, billing cockpit, and RCM concierge orchestrate a seamless experience.</p>
-      </div>
-      <div class="demo-timeline">
-        <div class="demo-node">
-          <span class="demo-node__icon">🧠</span>
-          <div class="demo-node__content">
-            <h3>AI EMR ignition</h3>
-            <p>Advanced OPD-IPD EMR software activates smart triage, AI scribes, and immersive ward dashboards.</p>
+          <div class="voka-panel stacked" data-animate>
+            <div class="voka-card">
+              <h4>Precision scenario boards</h4>
+              <p>
+                Simulate OPD, IPD, and home-care runs side-by-side with
+                animated status pills and clinical priorities.
+              </p>
+            </div>
+            <div class="voka-card">
+              <h4>Investors see traction instantly</h4>
+              <p>
+                Animated KPIs, success ribbons, and impact reels surface
+                revenue velocity, patient growth, and platform adoption.
+              </p>
+            </div>
+            <div class="voka-card">
+              <h4>Patients trust the experience</h4>
+              <p>
+                The UI flows like a concierge, guiding registration, triage,
+                follow-ups, reimbursements, and home monitoring without
+                friction.
+              </p>
+            </div>
           </div>
-        </div>
-        <div class="demo-bridge" aria-hidden="true"></div>
-        <div class="demo-node">
-          <span class="demo-node__icon">💳</span>
-          <div class="demo-node__content">
-            <h3>Billing intelligence</h3>
-            <p>Unified billing system syncs tariffs, packages, instant provisional approvals, and fraud controls.</p>
-          </div>
-        </div>
-        <div class="demo-bridge" aria-hidden="true"></div>
-        <div class="demo-node">
-          <span class="demo-node__icon">🏦</span>
-          <div class="demo-node__content">
-            <h3>RCM powerhouse</h3>
-            <p>HealthFlo – Complete Revenue Cycle Management (RCM) Solution clears certifications, empanelments, denials, and recovery loops.</p>
-          </div>
-        </div>
-        <div class="demo-bridge" aria-hidden="true"></div>
-        <div class="demo-node">
-          <span class="demo-node__icon">🌐</span>
-          <div class="demo-node__content">
-            <h3>Growth launchpad</h3>
-            <p>Hospital website, fraud prevention matrix, and patient referral engine keep volumes and trust soaring across India.</p>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <section class="command-deck" aria-labelledby="command-deck-title" data-animate>
-      <div class="section-title" id="command-deck-title">
-        <h2>Command dashboard snapshots</h2>
-        <p>Real-time widgets keep your teams in sync.</p>
-      </div>
-      <div class="command-deck__grid">
-        <div class="command-widget">
-          <div class="command-widget__header">Cashless Pulse</div>
-          <div class="command-widget__metric">92% <span>same-day approvals</span></div>
-          <div class="command-widget__chart" aria-hidden="true"></div>
+          <div class="voka-panel holo" data-animate>
+            <div class="holo-glow"></div>
+            <h3>AI theatre preview</h3>
+            <p>
+              Multi-layer holographic panels display anatomy twins, predictive
+              insights, and care team coordination clips—mirroring the Voka AI
+              showcase while staying uniquely HealthFlo.
+            </p>
+            <div class="voka-stream" data-marquee>
+              <span>Cardiac twin stabilized ·</span>
+              <span>OPD intake automated ·</span>
+              <span>Insurance pre-auth approved ·</span>
+              <span>Home-care vitals synced ·</span>
+              <span>Drone ambulance dispatched ·</span>
+            </div>
+          </div>
         </div>
-        <div class="command-widget">
-          <div class="command-widget__header">RCM Tracker</div>
+      </section>
+
+      <section id="platform">
+        <div class="float-orb medium" style="top: 30%; right: 10%"></div>
+        <p class="section-title" data-animate>For hospitals, clinics & practitioners</p>
+        <h2 class="section-heading" data-animate>
+          Streamline every clinical and administrative workflow in one AI-native platform
+        </h2>
+        <p class="section-subtitle" data-animate>
+          From OPD reception to discharge summaries and home care, HealthFlo orchestrates
+          appointments, inpatient journeys, nurse rounds, labs, pharmacy, financials, and insurance
+          with real-time visibility and intelligent automation.
+        </p>
+        <div class="grid-3" style="margin-top: 48px">
+          <div class="feature-card" data-animate>
+            <div class="icon">⚙️</div>
+            <h3>Unified patient care workflow</h3>
+            <p>
+              Coordinate OPD, IPD, ER, and home health on a single timeline. Track vitals, procedures,
+              and interventions with context-rich dashboards.
+            </p>
+            <div class="badge-list">
+              <span>Real-time census</span>
+              <span>Cross-department routing</span>
+              <span>Compliance ready</span>
+            </div>
+          </div>
+          <div class="feature-card" data-animate>
+            <div class="icon">🧠</div>
+            <h3>Clinical decision support system</h3>
+            <p>
+              AI-driven differential diagnosis, triage recommendations, and risk scoring integrated into
+              doctor workflows with HIPAA-compliant guardrails.
+            </p>
+            <div class="badge-list">
+              <span>AI diagnostics</span>
+              <span>Guideline library</span>
+              <span>Explainable insights</span>
+            </div>
+          </div>
+          <div class="feature-card" data-animate>
+            <div class="icon">📄</div>
+            <h3>Automated documentation</h3>
+            <p>
+              Generate SOAP notes, prescriptions, discharge summaries, and insurance-ready bills from voice conversations.
+              Save 15+ hours weekly per provider.
+            </p>
+            <div class="badge-list">
+              <span>Voice dictation</span>
+              <span>Automated coding</span>
+              <span>RCM compliant</span>
+            </div>
+          </div>
+        </div>
+        <div class="grid-3" style="margin-top: 26px">
+          <div class="feature-card" data-animate>
+            <div class="icon">🗓️</div>
+            <h3>Smart scheduling & intake</h3>
+            <p>
+              Automate appointments, digital registrations, and queue orchestration with predictive wait-time alerts and patient self-service kiosks.
+            </p>
+          </div>
+          <div class="feature-card" data-animate>
+            <div class="icon">🤝</div>
+            <h3>Seamless care coordination</h3>
+            <p>
+              Command center for doctors, nurses, and allied teams with handoff automation, escalation pathways, and live task tracking.
+            </p>
+          </div>
+          <div class="feature-card" data-animate>
+            <div class="icon">🌐</div>
+            <h3>Multi-language patient engagement</h3>
+            <p>
+              Deliver instructions, education, and follow-ups in 22+ languages for inclusive patient experiences and better adherence.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="capabilities" style="background: var(--bg-section)">
+        <p class="section-title" data-animate>End-to-end hospital intelligence</p>
+        <h2 class="section-heading" data-animate>Operational control tower for modern healthcare networks</h2>
+        <div class="chat-card" data-animate>
+          <div>
+            <h3 style="font-size: 1.4rem; margin-bottom: 16px">Live clinical assistant</h3>
+            <div class="chat-window">
+              <div class="message">
+                <span class="sender">Dr. Chen</span>
+                <span class="time">10:15 AM</span>
+                <p>Good morning, Mrs. Rodriguez. I'm Dr. Chen. Tell me more about your headaches.</p>
+              </div>
+              <div class="message">
+                <span class="sender">Patient</span>
+                <span class="time">10:16 AM</span>
+                <p>They happen almost daily, 4-6 hours, throbbing on one side, with nausea and light sensitivity.</p>
+              </div>
+              <div class="message">
+                <span class="sender">Dr. Chen</span>
+                <span class="time">10:17 AM</span>
+                <p>Any triggers? Your vitals show BP 150/95. Any history of hypertension?</p>
+              </div>
+              <div class="message">
+                <span class="sender">Patient</span>
+                <span class="time">10:18 AM</span>
+                <p>No history. High stress and poor sleep lately. Could that be related?</p>
+              </div>
+              <div class="message">
+                <span class="sender">Dr. Chen</span>
+                <span class="time">10:19 AM</span>
+                <p>Yes, stress can drive migraines and elevated BP. Any family history?</p>
+              </div>
+              <div class="message">
+                <span class="sender">Patient</span>
+                <span class="time">10:20 AM</span>
+                <p>Mother had migraines, father has hypertension.</p>
+              </div>
+              <div class="message">
+                <span class="sender">AI analyzing conversation</span>
+                <span class="time">10:21 AM</span>
+                <p>Click Generate Summary to view AI-powered clinical documentation.</p>
+              </div>
+            </div>
+          </div>
+          <div class="summary-card">
+            <h3 style="font-size: 1.4rem">AI highlights</h3>
+            <ul style="list-style: none; display: flex; flex-direction: column; gap: 12px">
+              <li>• Auto-generated SOAP notes & prescriptions</li>
+              <li>• Risk alerts for red/yellow/black escalation</li>
+              <li>• Suggested imaging, lab tests, and referral workflows</li>
+              <li>• Seamless OPD to IPD transition with voice orders</li>
+            </ul>
+            <button data-toggle="aiSummary">Generate Summary</button>
+            <div id="aiSummary" class="expandable">
+              <p style="margin-top: 16px; color: var(--text-muted)">
+                Headache likely migraine with hypertensive component. Recommend BP monitoring, lifestyle adjustments, triptan consideration, and follow-up in 1 week.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="metrics-grid" style="margin-top: 48px">
+          <div class="metric-card" data-animate>
+            <div class="metric-value" data-count="15" data-prefix="+" data-suffix="%">0</div>
+            <div class="metric-label">Reduction in patient wait times</div>
+          </div>
+          <div class="metric-card" data-animate>
+            <div class="metric-value" data-count="8" data-prefix="+" data-suffix="%">0</div>
+            <div class="metric-label">Improvement in diagnostic accuracy</div>
+          </div>
+          <div class="metric-card" data-animate>
+            <div class="metric-value" data-count="22" data-prefix="+" data-suffix="%">0</div>
+            <div class="metric-label">Administrative time saved</div>
+          </div>
+          <div class="metric-card" data-animate>
+            <div class="metric-value" data-count="2000" data-suffix="+">0</div>
+            <div class="metric-label">Patients managed daily</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="surgery" class="surgery-lab">
+        <p class="section-title" data-animate>Animated organ & surgical twin</p>
+        <h2 class="section-heading" data-animate>
+          Experience the HealthFlo AI surgery theatre in motion
+        </h2>
+        <p class="section-subtitle" data-animate>
+          Watch organ twins pulse, surgical plans adapt, and intelligent
+          checklists light up. HealthFlo orchestrates surgeons, nurses,
+          anesthetists, labs, and insurance desks through one synchronized
+          surgical journey.
+        </p>
+
+        <div class="lab-grid">
+          <div class="lab-copy" data-animate>
+            <div class="badge">Digital OR director</div>
+            <h3>AI-guided interventions</h3>
+            <p>
+              Precision overlays mark incisions, instrumentation, and safety
+              gates. Voice instructions trigger nurse tasks, escalate alerts,
+              and broadcast updates to family and finance teams.
+            </p>
+            <ul>
+              <li>Organ twins with pulse, perfusion, and anomaly tracking.</li>
+              <li>Procedure timelines auto-adjust to surgeon tempo.</li>
+              <li>In-surgery documentation + billing captured in real time.</li>
+            </ul>
+            <div class="lab-metrics">
+              <div>
+                <span data-count="98" data-suffix="%">0</span>
+                <small>Checklist adherence</small>
+              </div>
+              <div>
+                <span data-count="12" data-suffix=" min">0</span>
+                <small>Faster turnover</small>
+              </div>
+              <div>
+                <span data-count="0" data-prefix="#">0</span>
+                <small>Missed critical steps</small>
+              </div>
+            </div>
+          </div>
+          <div class="lab-visual" data-animate>
+            <div class="organ-overlay">
+              <span class="badge">Live organ twin</span>
+              <span class="status-pill">Robotic ready</span>
+            </div>
+            <canvas id="organCanvas" aria-hidden="true"></canvas>
+            <div class="lab-legend">
+              <div>
+                <span class="dot dot-artery"></span>
+                <p>Arterial flow & perfusion rate</p>
+              </div>
+              <div>
+                <span class="dot dot-nerve"></span>
+                <p>Nerve preservation zone</p>
+              </div>
+              <div>
+                <span class="dot dot-insight"></span>
+                <p>AI insights & caution markers</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lab-panels">
+          <div class="lab-panel" data-animate>
+            <h4>Pre-op digital rehearsal</h4>
+            <p>
+              Surgeons rehearse complex procedures with AI-simulated anatomy
+              and complication playbooks to build mastery before entering the
+              OT.
+            </p>
+          </div>
+          <div class="lab-panel" data-animate>
+            <h4>Intra-op voice assistant</h4>
+            <p>
+              Voice-controlled commands adjust lighting, instruments, and
+              documentation, keeping sterile workflow intact.
+            </p>
+          </div>
+          <div class="lab-panel" data-animate>
+            <h4>Post-op continuity</h4>
+            <p>
+              Recovery dashboards ensure physiotherapy, meds, insurer
+              approvals, and home-care vitals flow without any paperwork.
+            </p>
+          </div>
+        </div>
+
+        <div class="procedure-detail" data-animate>
+          <div class="procedure-column">
+            <h3>Procedure blueprints with sub-second AI guardrails</h3>
+            <p>
+              Cardiac bypass, neuro spine decompression, oncology resections,
+              and robotic gynecology suites are mapped into modular stages.
+              Each stage carries automated documentation, instrument sets,
+              vitals checkpoints, insurance notes, and nurse prompts.
+            </p>
+            <div class="procedure-tags">
+              <span>4D organ rendering</span>
+              <span>Instrument recognition</span>
+              <span>ICU transfer kit</span>
+              <span>Billing moments tracked</span>
+            </div>
+          </div>
+          <div class="procedure-timeline">
+            <div class="procedure-step" data-animate>
+              <div class="step-index">01</div>
+              <h4>Pre-operative precision clinic</h4>
+              <p>
+                Intake forms are transcribed by voice, labs auto-sync, and risk
+                scores trend from the patient’s longitudinal record. AI proposes
+                anesthesia plans and highlights consent clauses to review.
+              </p>
+              <ul>
+                <li>Imaging fused with organ-twin overlays for the surgical team.</li>
+                <li>Insurance pre-authorisation requests drafted instantly.</li>
+              </ul>
+            </div>
+            <div class="procedure-step" data-animate>
+              <div class="step-index">02</div>
+              <h4>Intra-operative orchestration</h4>
+              <p>
+                Robotic feeds, vitals, nurse checklists, and implant inventory
+                updates converge into one command panel. Surgeons trigger
+                hands-free notes while the organ twin pulses with perfusion and
+                anomaly alerts.
+              </p>
+              <ul>
+                <li>Voice macros launch suture packs, antibiotics, or imaging calls.</li>
+                <li>Real-time coding ensures every procedure component is captured.</li>
+              </ul>
+            </div>
+            <div class="procedure-step" data-animate>
+              <div class="step-index">03</div>
+              <h4>Recovery & remote follow-through</h4>
+              <p>
+                ICU, ward, and home-care views stay linked. Vitals trends push
+                alerts to consultants, discharge summaries assemble
+                automatically, and reimbursement dossiers are exported in one
+                click.
+              </p>
+              <ul>
+                <li>Patient and family receive multilingual digital instructions.</li>
+                <li>Finance sees package variance and RCM tasks in real time.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="knowledge" class="knowledge-section">
+        <div class="knowledge-background float-orb medium" aria-hidden="true"></div>
+        <p class="section-title" data-animate>Clinical knowledge hub</p>
+        <h2 class="section-heading" data-animate>
+          Explore animated organs, surgical walkthroughs, and specialty packs in
+          a living library
+        </h2>
+        <p class="section-subtitle" data-animate>
+          Hundreds of 3D organs, peri-operative protocols, and multilingual
+          education assets are bundled into an interactive workspace. Hospitals
+          and patients can preview every care pathway before signing up.
+        </p>
+
+        <div class="knowledge-promo">
+          <div class="knowledge-card" data-animate>
+            <h3>Clinical knowledge hub</h3>
+            <p>
+              Expert-reviewed articles and tele-surgery breakdowns on
+              pathologies, instruments, and modern treatment methods. Every
+              video syncs with AI note templates to accelerate adoption.
+            </p>
+            <div class="knowledge-actions">
+              <a class="link-button" href="#contact">Explore</a>
+              <button class="button-secondary" type="button">Schedule a content tour</button>
+            </div>
+          </div>
+          <div class="knowledge-card app" data-animate>
+            <div class="knowledge-device" aria-hidden="true">
+              <div class="device-screen">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+            <div class="knowledge-copy">
+              <h3>Try the app for free</h3>
+              <p>
+                Gain access to all 3D models and AI static functions after
+                registration — absolutely free for the first pilot hospital.
+              </p>
+              <div class="knowledge-stores">
+                <a href="#demo">Start on the web</a>
+                <a href="#demo">Get it on Google Play</a>
+                <a href="#demo">Download on the App Store</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="knowledge-grid">
+          <div class="knowledge-item" data-animate>
+            <h4>Congenital Heart Defects</h4>
+            <span>55 3D models</span>
+          </div>
+          <div class="knowledge-item" data-animate>
+            <h4>Dentistry</h4>
+            <span>105 3D models</span>
+          </div>
+          <div class="knowledge-item" data-animate>
+            <h4>Acquired Heart Diseases</h4>
+            <span>86 3D models</span>
+          </div>
+          <div class="knowledge-item" data-animate>
+            <h4>Obstetrics</h4>
+            <span>73 3D models</span>
+          </div>
+          <div class="knowledge-item" data-animate>
+            <h4>Gynecology</h4>
+            <span>68 3D models</span>
+          </div>
+          <div class="knowledge-item" data-animate>
+            <h4>Breast Neoplasms</h4>
+            <span>63 3D models</span>
+          </div>
+          <div class="knowledge-item" data-animate>
+            <h4>Endocrinology</h4>
+            <span>73 3D models</span>
+          </div>
+          <div class="knowledge-item" data-animate>
+            <h4>CNS & PNS Disorders</h4>
+            <span>84 3D models</span>
+          </div>
+          <div class="knowledge-item" data-animate>
+            <h4>CNS & PNS Tumors</h4>
+            <span>63 3D models</span>
+          </div>
+          <div class="knowledge-item" data-animate>
+            <h4>Urology</h4>
+            <span>70 3D models</span>
+          </div>
+          <div class="knowledge-item" data-animate>
+            <h4>Gastrointestinal Disorders</h4>
+            <span>83 3D models</span>
+          </div>
+          <div class="knowledge-item" data-animate>
+            <h4>Liver Diseases</h4>
+            <span>40 3D models</span>
+          </div>
+          <div class="knowledge-item" data-animate>
+            <h4>Neurosurgery Suites</h4>
+            <span>48 guided surgeries</span>
+          </div>
+          <div class="knowledge-item" data-animate>
+            <h4>Pediatric Oncology</h4>
+            <span>32 care journeys</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="service" class="service-section" style="background: var(--bg-section)">
+        <p class="section-title" data-animate>CRM & service continuum</p>
+        <h2 class="section-heading" data-animate>
+          Dedicated technology and service support for hospitals <em>and</em>
+          patients
+        </h2>
+        <p class="section-subtitle" data-animate>
+          Beyond software, HealthFlo delivers concierge teams that manage CRM
+          pipelines, insurance journeys, financing, and post-care advocacy for
+          every stakeholder.
+        </p>
+
+        <div class="service-grid">
+          <div class="service-card" data-animate>
+            <span class="badge">Hospital CRM</span>
+            <h3>Enterprise command center</h3>
+            <p>
+              Convert leads to admissions with omnichannel outreach, track
+              referrals, manage empanelment, and synchronize marketing &
+              clinical pipelines.
+            </p>
+            <ul>
+              <li>360° account view with contract status.</li>
+              <li>Investor-grade analytics on bed mix and revenue.</li>
+              <li>Dedicated AR / RCM specialists on standby.</li>
+            </ul>
+          </div>
+          <div class="service-card" data-animate>
+            <span class="badge">Patient CRM</span>
+            <h3>Care concierge desk</h3>
+            <p>
+              Guide patients through registrations, reimbursement,
+              ombudsman escalations, financing, and home-care coordination with
+              human + AI support.
+            </p>
+            <ul>
+              <li>Insurance claim defense & approvals.</li>
+              <li>Zero-interest medical financing orchestration.</li>
+              <li>Smart reminders for meds, vitals, and follow-ups.</li>
+            </ul>
+          </div>
+          <div class="service-card" data-animate>
+            <span class="badge">24/7 Service desk</span>
+            <h3>Always-on technical command</h3>
+            <p>
+              Infrastructure monitoring, rapid integrations, and proactive
+              security keep operations running without downtime or data risk.
+            </p>
+            <ul>
+              <li>99.99% uptime with automated recovery.</li>
+              <li>Regulatory updates & compliance automation.</li>
+              <li>Voice, chat, email, and on-site response teams.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="service-highlight" data-animate>
+          <div>
+            <h4>Revenue cycle mastery</h4>
+            <p>
+              Cashless, reimbursement, and AR tracking handled by HealthFlo
+              experts so your finance teams stay strategic.
+            </p>
+          </div>
+          <div>
+            <h4>Empanelment accelerator</h4>
+            <p>
+              Registration with new insurers, corporates, and TPAs guided end
+              to end with real-time SLA visibility.
+            </p>
+          </div>
+          <div>
+            <h4>Patient advocacy</h4>
+            <p>
+              We defend against unfair denials, support ombudsman cases, and
+              secure financing for critical care.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="live" class="live-section">
+        <p class="section-title" data-animate>Live system working model</p>
+        <h2 class="section-heading" data-animate>
+          Real-time hospital and patient command boards
+        </h2>
+        <p class="section-subtitle" data-animate>
+          Witness simultaneous hospital control rooms and patient journeys.
+          HealthFlo synchronizes clinical, operational, and financial data in a
+          single blue-lit command center.
+        </p>
+
+        <div class="live-dashboard">
+          <div class="live-board" data-animate>
+            <div class="board-header">
+              <span class="badge">Hospital Ops</span>
+              <h3>Central command</h3>
+              <span class="status-pill">99.99% uptime</span>
+            </div>
+            <div class="board-grid">
+              <div class="board-row">
+                <strong>OPD Intake</strong>
+                <span class="pill pill-success">Running</span>
+                <span>312 patients</span>
+              </div>
+              <div class="board-row">
+                <strong>IPD Census</strong>
+                <span class="pill pill-info">88% occupancy</span>
+                <span>12 discharge-ready</span>
+              </div>
+              <div class="board-row">
+                <strong>OT Suite</strong>
+                <span class="pill pill-warning">2 procedures</span>
+                <span>AI assistant active</span>
+              </div>
+              <div class="board-row">
+                <strong>Care team status</strong>
+                <span class="pill pill-info">Live tracking</span>
+                <span>Doctors 18 · Nurses 46 on duty</span>
+              </div>
+              <div class="board-row">
+                <strong>Insurance Desk</strong>
+                <span class="pill pill-success">54 approvals</span>
+                <span>₹1.8Cr cleared</span>
+              </div>
+              <div class="board-row">
+                <strong>Drone Ambulance</strong>
+                <span class="pill pill-alert">Standby</span>
+                <span>ETA 4 min</span>
+              </div>
+            </div>
+          </div>
+          <div class="live-board" data-animate>
+            <div class="board-header">
+              <span class="badge">Patient Journey</span>
+              <h3>Care companion</h3>
+              <span class="status-pill">Synced</span>
+            </div>
+            <div class="board-grid">
+              <div class="board-row">
+                <strong>Digital Registration</strong>
+                <span class="pill pill-success">Complete</span>
+                <span>Biometric verified</span>
+              </div>
+              <div class="board-row">
+                <strong>Vitals Monitoring</strong>
+                <span class="pill pill-info">Streaming</span>
+                <span>BP 118/76</span>
+              </div>
+              <div class="board-row">
+                <strong>Treatment Plan</strong>
+                <span class="pill pill-success">On track</span>
+                <span>Next physio 6 PM</span>
+              </div>
+              <div class="board-row">
+                <strong>Insurance Reimbursement</strong>
+                <span class="pill pill-warning">Under review</span>
+                <span>RCM specialist assigned</span>
+              </div>
+              <div class="board-row">
+                <strong>Home Care</strong>
+                <span class="pill pill-info">Nurse en route</span>
+                <span>Location: Tower B-204 (GPS sync)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="live-stream" data-marquee>
+          <span>Lab results auto-synced</span>
+          <span>ICU occupancy 72%</span>
+          <span>Code yellow resolved</span>
+          <span>Home-care vitals normal</span>
+          <span>Drone meds delivered</span>
+          <span>Teleconsult room available</span>
+        </div>
+
+        <div class="live-insights">
+          <div class="insight" data-animate>
+            <h4>Predictive staffing</h4>
+            <p>AI anticipates demand, tracks doctors & nursing shifts, and balances workload live.</p>
+          </div>
+          <div class="insight" data-animate>
+            <h4>Operational twins</h4>
+            <p>Digital replicas of wards highlight bottlenecks before they hit.</p>
+          </div>
+          <div class="insight" data-animate>
+            <h4>Patient sentiment</h4>
+            <p>CRM tracks feedback pulses to boost retention and referrals.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="demo" class="demo-section">
+        <div class="floating-spark spark-one" aria-hidden="true"></div>
+        <div class="floating-spark spark-two" aria-hidden="true"></div>
+        <p class="section-title" data-animate>Live sandbox</p>
+        <h2 class="section-heading" data-animate>
+          Spin up your own HealthFlo test hospital right now
+        </h2>
+        <p class="section-subtitle" data-animate>
+          Launch a guided simulation with full OPD/IPD flows, insurance queues,
+          and patient companions. No installation — just type your facility name
+          and experience HealthFlo orchestrating every stakeholder in real time.
+        </p>
+
+        <div class="demo-wrapper" data-animate>
+          <div class="demo-controls" data-demo-group data-demo-target="#demo-panels">
+            <button class="active" data-demo-control="hospital" type="button">
+              Hospital HQ
+            </button>
+            <button data-demo-control="patient" type="button">Patient Companion</button>
+            <button data-demo-control="finance" type="button">Insurance & Finance</button>
+          </div>
+
+          <div class="demo-panels" id="demo-panels">
+            <div class="demo-panel active" data-demo-panel="hospital">
+              <h3>Hospital control sandbox</h3>
+              <p>
+                Configure a digital command center with departments, drone
+                ambulance coverage, and staff rosters. HealthFlo instantly
+                generates workflows, patient queues, and notification scripts.
+              </p>
+              <div class="demo-grid">
+                <label>
+                  Facility name
+                  <input type="text" value="HealthFlo Test Hospital" />
+                </label>
+                <label>
+                  Departments in pilot
+                  <select>
+                    <option>Cardiology + Emergency</option>
+                    <option>Oncology + Day Care</option>
+                    <option>Multi-specialty</option>
+                  </select>
+                </label>
+                <label class="toggle">
+                  <input type="checkbox" checked /> Drone ambulance readiness
+                </label>
+                <label class="toggle">
+                  <input type="checkbox" checked /> AI nursing assistant prompts
+                </label>
+              </div>
+              <div class="demo-stats">
+                <div>
+                  <span>00:45</span>
+                  <small>Sandbox deploy time</small>
+                </div>
+                <div>
+                  <span>12</span>
+                  <small>Live command widgets</small>
+                </div>
+                <div>
+                  <span>∞</span>
+                  <small>Concurrent users</small>
+                </div>
+              </div>
+              <button class="link-button" type="button">Deploy sandbox</button>
+            </div>
+
+            <div class="demo-panel" data-demo-panel="patient">
+              <h3>Patient & family companion</h3>
+              <p>
+                Share the sandbox link with patients to see multilingual guides,
+                financial support options, and AI follow-up schedules in action.
+              </p>
+              <div class="demo-grid">
+                <label>
+                  Preferred language
+                  <select>
+                    <option>English + Hindi</option>
+                    <option>Tamil</option>
+                    <option>Arabic</option>
+                  </select>
+                </label>
+                <label>
+                  Insurance assistance
+                  <select>
+                    <option>Cashless (TPA)</option>
+                    <option>Reimbursement</option>
+                    <option>Self-pay with EMI</option>
+                  </select>
+                </label>
+                <label class="toggle">
+                  <input type="checkbox" checked /> Home-care vitals streaming
+                </label>
+                <label class="toggle">
+                  <input type="checkbox" checked /> Family update concierge
+                </label>
+              </div>
+              <div class="demo-notes">
+                <div>
+                  <strong>Voice documentation</strong>
+                  <p>Dictate OPD notes and receive structured summaries instantly.</p>
+                </div>
+                <div>
+                  <strong>Financing desk</strong>
+                  <p>0% interest for 3 months on approved surgical procedures.</p>
+                </div>
+              </div>
+              <button class="link-button" type="button">Launch patient journey</button>
+            </div>
+
+            <div class="demo-panel" data-demo-panel="finance">
+              <h3>Insurance & revenue cockpit</h3>
+              <p>
+                Monitor AR status, raise pre-auth, and trigger reimbursement
+                escalation with one click. HealthFlo keeps insurers, patients,
+                and hospital teams aligned.
+              </p>
+              <div class="demo-grid">
+                <label>
+                  Insurer partner
+                  <select>
+                    <option>ICICI Lombard</option>
+                    <option>Star Health</option>
+                    <option>United India</option>
+                  </select>
+                </label>
+                <label>
+                  Claim volume / day
+                  <input type="number" value="42" />
+                </label>
+                <label class="toggle">
+                  <input type="checkbox" checked /> Auto-code surgical procedures
+                </label>
+                <label class="toggle">
+                  <input type="checkbox" /> Escalate denials to Ombudsman desk
+                </label>
+              </div>
+              <div class="demo-stats">
+                <div>
+                  <span>85%</span>
+                  <small>First-pass claim success</small>
+                </div>
+                <div>
+                  <span>₹2.1Cr</span>
+                  <small>Daily cashflow protected</small>
+                </div>
+                <div>
+                  <span>06</span>
+                  <small>AR specialists assigned</small>
+                </div>
+              </div>
+              <button class="link-button" type="button">Preview RCM workflows</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="demo-footer" data-animate>
+          <div>
+            <h4>What happens next?</h4>
+            <p>
+              A guided call will review your sandbox telemetry, customise SOPs,
+              and activate integrations with HIS, LIS, pharmacy, and insurer
+              networks.
+            </p>
+          </div>
+          <div class="demo-actions">
+            <a class="link-button" href="#contact">Book a guided run-through</a>
+            <a class="button-secondary" href="#platform">Review the full platform</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="impact">
+        <p class="section-title" data-animate>Essential healthcare solution</p>
+        <h2 class="section-heading" data-animate>Deliver measurable impact across every dimension of care</h2>
+        <div class="grid-3" style="margin-top: 48px">
+          <div class="feature-card" data-animate>
+            <div class="icon">🏥</div>
+            <h3>Hospital operations</h3>
+            <p>
+              Track inpatient journeys, nurse rounds, bed availability, lab results, pharmacy orders, and discharge plans through a single command center.
+            </p>
+          </div>
+          <div class="feature-card" data-animate>
+            <div class="icon">📈</div>
+            <h3>Revenue cycle mastery</h3>
+            <p>
+              Automate coding, claims, and AR workflows. Manage insurance empanelment, reimbursement, and patient financing with dedicated RCM experts.
+            </p>
+          </div>
+          <div class="feature-card" data-animate>
+            <div class="icon">🤖</div>
+            <h3>Intelligent automation</h3>
+            <p>
+              Deploy drone ambulance readiness, remote vitals monitoring, AI nurse assistance, and digital twin simulations for proactive care.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="roi" style="background: var(--bg-section)">
+        <p class="section-title" data-animate>ROI & benefits</p>
+        <h2 class="section-heading" data-animate>Transform your practice economics</h2>
+        <p class="section-subtitle" data-animate>
+          Increase revenue, optimize costs, and elevate patient trust with measurable ROI across operations, clinical excellence, and compliance.
+        </p>
+        <div class="roi-grid" style="margin-top: 48px">
+          <div class="roi-card" data-animate>
+            <h3>Revenue growth & patient volume</h3>
+            <p>
+              Expand case throughput with smart scheduling, reduced no-shows, and omnichannel patient acquisition. Deliver personalized journeys that drive loyalty.
+            </p>
+          </div>
+          <div class="roi-card" data-animate>
+            <h3>Cost savings & risk mitigation</h3>
+            <p>
+              Automate documentation, compliance, and asset management. Reduce readmissions and claims denials with predictive analytics and guided workflows.
+            </p>
+          </div>
+          <div class="roi-card" data-animate>
+            <h3>Staff empowerment & compliance</h3>
+            <p>
+              Give doctors and nurses a digital co-pilot. Streamline shift management, voice instructions, alerts, and audits with built-in HIPAA safeguards.
+            </p>
+          </div>
+        </div>
+
+        <div class="metrics-grid" style="margin-top: 48px">
+          <div class="metric-card" data-animate>
+            <div class="metric-value" data-count="40" data-suffix="%">0</div>
+            <div class="metric-label">Reduction in wait times</div>
+          </div>
+          <div class="metric-card" data-animate>
+            <div class="metric-value" data-count="85" data-suffix="%">0</div>
+            <div class="metric-label">Diagnosis accuracy achieved</div>
+          </div>
+          <div class="metric-card" data-animate>
+            <div class="metric-value" data-count="65" data-suffix="%">0</div>
+            <div class="metric-label">Administrative time saved</div>
+          </div>
+          <div class="metric-card" data-animate>
+            <div class="metric-value" data-count="2000" data-suffix="+">0</div>
+            <div class="metric-label">Patients supported every day</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="about">
+        <p class="section-title" data-animate>About HealthFlo</p>
+        <h2 class="section-heading" data-animate>AI-first, patient-centric, mission-driven</h2>
+        <div class="grid-3" style="margin-top: 40px">
+          <div class="feature-card" data-animate>
+            <h3>Founded 2025</h3>
+            <p>Born with a mission to transform healthcare by placing AI at the core of every workflow.</p>
+          </div>
+          <div class="feature-card" data-animate>
+            <h3>Patient-centric</h3>
+            <p>Designed around outcomes, empathy, and accessibility with multilingual and omnichannel support.</p>
+          </div>
+          <div class="feature-card" data-animate>
+            <h3>Innovation obsessed</h3>
+            <p>Continuously evolving with new clinical intelligence, operational automation, and compliance frameworks.</p>
+          </div>
+        </div>
+
+        <div class="metrics-grid" style="margin-top: 48px">
+          <div class="metric-card" data-animate>
+            <div class="metric-value" data-count="2000" data-suffix="+">0</div>
+            <div class="metric-label">Patients served daily</div>
+          </div>
+          <div class="metric-card" data-animate>
+            <div class="metric-value" data-count="85" data-suffix="%">0</div>
+            <div class="metric-label">Diagnosis accuracy</div>
+          </div>
+          <div class="metric-card" data-animate>
+            <div class="metric-value" data-count="60" data-suffix="%">0</div>
+            <div class="metric-label">Administrative time saved</div>
+          </div>
+        </div>
+
+        <div class="timeline" style="margin-top: 48px">
+          <div class="timeline-item" data-animate>
+            <span class="timeline-dot"></span>
+            <h4>AI-native foundation</h4>
+            <p>Built ground-up with AI orchestration for documentation, decisions, and operations.</p>
+          </div>
+          <div class="timeline-item" data-animate>
+            <span class="timeline-dot"></span>
+            <h4>Expanded to enterprise networks</h4>
+            <p>Scaled across multi-hospital systems, home care, telemedicine, and drone ambulance preparedness.</p>
+          </div>
+          <div class="timeline-item" data-animate>
+            <span class="timeline-dot"></span>
+            <h4>Global compliance</h4>
+            <p>HIPAA compliant with localization for data privacy and multilingual care delivery.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="testimonials" style="background: var(--bg-section)">
+        <p class="section-title" data-animate>Healthcare excellence</p>
+        <h2 class="section-heading" data-animate>Trusted by leading hospitals & partners</h2>
+        <div class="partners" style="margin-top: 40px">
+          <div class="partner-card" data-animate>
+            <p>
+              “We moved to HealthFlo to reduce wait times, elevate satisfaction, and free clinicians from paperwork. Our teams finally focus on patient care.”
+            </p>
+            <span style="color: var(--secondary)">Chief Medical Officer, Apollo Zenith Hospitals</span>
+          </div>
+          <div class="partner-card" data-animate>
+            <p>
+              “HealthFlo brings clinical AI where it matters—right into our OPDs—supporting safer decisions, consistent records, and efficient patient flow.”
+            </p>
+            <span style="color: var(--secondary)">Director, Sunrise Multicare Network</span>
+          </div>
+          <div class="partner-card" data-animate>
+            <p>
+              “Insurance automation, revenue cycle mastery, and patient financing support have transformed our growth trajectory.”
+            </p>
+            <span style="color: var(--secondary)">CEO, Medsure Assurance Partners</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="cta-section">
+        <p class="section-title" data-animate>Ready to transform</p>
+        <h2 class="section-heading" data-animate>Experience the future of healthcare delivery</h2>
+        <p class="section-subtitle" data-animate>
+          Schedule a deep-dive demo to discover how HealthFlo unifies hospital operations, clinical intelligence, insurance workflows, and patient finance support.
+        </p>
+        <div class="cta-buttons" style="margin-top: 48px">
+          <a class="link-button" href="mailto:hello@healthflo.ai">Book a strategy session</a>
+          <a class="button-secondary" href="tel:+919876543210">Talk to an advisor</a>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-grid">
+        <div>
+          <div class="footer-logo">HEALTHFLO</div>
+          <p style="color: var(--text-muted); margin-top: 16px">
+            AI-native clinical and practice management platform powering hospitals, clinics, and home health with intelligent automation.
+          </p>
+        </div>
+        <div class="footer-column">
+          <h4>Solutions</h4>
           <ul>
-            <li><span>20+</span> insurers active</li>
-            <li><span>45s</span> average pre-auth</li>
-            <li><span>98%</span> denial recovery</li>
+            <li>Clinical decision support</li>
+            <li>Automated documentation</li>
+            <li>Revenue cycle management</li>
+            <li>Drone ambulance coordination</li>
           </ul>
         </div>
-        <div class="command-widget">
-          <div class="command-widget__header">Patient Concierge</div>
+        <div class="footer-column">
+          <h4>For stakeholders</h4>
           <ul>
-            <li><span>₹0</span> interest for 3-month funding</li>
-            <li><span>Live</span> Ombudsman case desk</li>
-            <li><span>150k+</span> claims navigated</li>
+            <li>Hospitals & networks</li>
+            <li>Clinics & practitioners</li>
+            <li>Investors & partners</li>
+            <li>Patients & caregivers</li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Connect</h4>
+          <ul>
+            <li>hello@healthflo.ai</li>
+            <li>+91 98765 43210</li>
+            <li>Bengaluru • Mumbai • Delhi</li>
+            <li>LinkedIn · Twitter · YouTube</li>
           </ul>
         </div>
       </div>
-    </section>
+      <div class="footer-bottom">
+        <span>© 2025 HealthFlo. All rights reserved.</span>
+        <span>HIPAA Compliant • ISO 27001 • NABH Ready</span>
+      </div>
+    </footer>
 
-    <section class="seo-trust" aria-labelledby="seo-trust-title" data-animate>
-      <div class="section-title" id="seo-trust-title">
-        <h2>Expert-led, transparent &amp; trusted</h2>
-        <p>E-E-A-T ready storytelling with proof of expertise, experience, authority, and trust.</p>
-      </div>
-      <div class="seo-trust__grid">
-        <article class="seo-trust__card">
-          <h3>Experience</h3>
-          <p>7+ years enabling 100+ hospital empanelments with measurable ROI in 3 months.</p>
-        </article>
-        <article class="seo-trust__card">
-          <h3>Authority</h3>
-          <p>Certified specialists with Rohini, NABH, and GIPSA expertise onboard every mandate.</p>
-        </article>
-        <article class="seo-trust__card">
-          <h3>Trust</h3>
-          <p>Live dashboards, transparent SLAs, and secure data estates audited quarterly.</p>
-        </article>
-        <article class="seo-trust__card">
-          <h3>Voice of partners</h3>
-          <p>Hospitals across Chennai, Bengaluru, Hyderabad, Mumbai, Delhi, and Goa champion HealthFlo for faster cashflows.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="geo-marquee" aria-label="HealthFlo operating cities" data-animate>
-      <div class="geo-marquee__track">
-        <span>Chennai HQ</span>
-        <span>Bengaluru Command Hub</span>
-        <span>Hyderabad RCM Lab</span>
-        <span>Mumbai Network Desk</span>
-        <span>Delhi NCR Advocacy</span>
-        <span>Pune Cashless Pod</span>
-        <span>Goa Clinical Partners</span>
-        <span>Kerala Care Grid</span>
-        <span>Andhra Empanelment Team</span>
-        <span>Telangana Recovery Wing</span>
-        <span>Chhattisgarh Outreach</span>
-        <span>Tamil Nadu Specialist Desk</span>
-      </div>
-    </section>
-
-    <section id="contact" class="contact-banner" aria-labelledby="contact-title" data-animate>
-      <div class="section-title" id="contact-title">
-        <h2>Connect with HealthFlo</h2>
-        <p>Let our specialists craft your playbook.</p>
-      </div>
-      <div class="contact-actions">
-        <a class="cta" href="tel:+919940207670">Enquire +91 99402 07670</a>
-        <a class="cta" href="tel:+918610425342">Helpline +91 86104 25342</a>
-        <a class="cta ghost" href="mailto:info@healthflo.in">info@healthflo.in</a>
-        <a class="cta ghost" href="https://www.healthflo.org" target="_blank" rel="noopener">Visit healthflo.org</a>
-      </div>
-      <div class="contact-social" aria-label="HealthFlo social links">
-        <a href="https://www.linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="https://www.instagram.com" target="_blank" rel="noopener">Instagram</a>
-        <a href="https://www.facebook.com" target="_blank" rel="noopener">Facebook</a>
-        <span class="contact-social__tag">#HealthFloRCM</span>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <small>© HealthFlo Ventures Pvt. Ltd. All rights reserved.</small>
-  </footer>
-
-  <script type="module" src="./assets/js/main.js"></script>
-</body>
+    <script src="assets/js/main.js" defer></script>
+  </body>
 </html>
