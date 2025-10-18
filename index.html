@@ -1,446 +1,407 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr" data-theme="light">
-  <head>
-    <!-- Primary Meta -->
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>HealthFlo | AI Revenue Cycle Automation & Patient Concierge</title>
-    <meta name="description" content="HealthFlo: The AI platform uniting hospital advancements and patient support for quality, affordable care." />
-    <meta name="application-name" content="HealthFlo" />
-    <meta name="theme-color" content="#040d21" media="(prefers-color-scheme: dark)">
-    <meta name="theme-color" content="#040d21" media="(prefers-color-scheme: light)">
-    <meta name="color-scheme" content="light only">
-    <link rel="canonical" href="https://www.healthflo.ai/" />
-    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
-
-    <!-- Open Graph -->
-    <meta property="og:title" content="HealthFlo | AI Revenue Cycle Automation & Patient Concierge" />
-    <meta property="og:description" content="AI-first platform that fuses RCM operations, finance, and patient delight." />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://www.healthflo.ai/" />
-    <meta property="og:image" content="assets/images/og-cover.jpg" />
-    <meta property="og:site_name" content="HealthFlo" />
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="HealthFlo | AI Revenue Cycle Automation & Patient Concierge" />
-    <meta name="twitter:description" content="AI-first platform that fuses RCM operations, finance, and patient delight." />
-    <meta name="twitter:image" content="assets/images/og-cover.jpg" />
-
-    <!-- PWA (lightweight) -->
-    <link rel="manifest" href="assets/manifest.webmanifest" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <link rel="apple-touch-icon" href="assets/images/icons/icon-192.png" />
-
-    <!-- Performance Hints -->
-    <meta http-equiv="x-dns-prefetch-control" content="on">
-    <link rel="dns-prefetch" href="//fonts.googleapis.com">
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
-    <!-- Fonts (display=swap to avoid FOIT) -->
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
-
-    <!-- Styles (safe blocking) -->
-    <link rel="stylesheet" href="assets/css/style.css" />
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="assets/images/healthflo-flowmark.svg" />
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16.png" />
-
-    <!-- Structured Data: MedicalBusiness (as requested) -->
-    <script type="application/ld+json">
-    {
-      "@context":"https://schema.org",
-      "@type":"MedicalBusiness",
-      "name":"HealthFlo",
-      "url":"https://www.healthflo.ai",
-      "logo":"https://www.healthflo.ai/assets/images/healthflo-flowmark.svg",
-      "description":"AI-powered revenue cycle automation, denial recovery, and patient concierge for hospitals and health systems.",
-      "foundingDate":"2024",
-      "areaServed":["India","South East Asia"],
-      "serviceType":["Hospital Revenue Cycle Automation","Patient Concierge","Insurance Claim Management"],
-      "address":{"@type":"PostalAddress","addressLocality":"Bengaluru","addressRegion":"Karnataka","addressCountry":"IN"},
-      "contactPoint":{"@type":"ContactPoint","contactType":"Sales","email":"hello@healthflo.ai"}
-    }
-    </script>
-
-    <!-- Structured Data: WebSite + SearchAction -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "url": "https://www.healthflo.ai/",
-      "name": "HealthFlo",
-      "inLanguage": "en-IN",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://www.healthflo.ai/search?q={query}",
-        "query-input": "required name=query"
-      }
-    }
-    </script>
-
-    <!-- Structured Data: Breadcrumbs (SEO nicety) -->
-    <script type="application/ld+json">
-    {
-      "@context":"https://schema.org",
-      "@type":"BreadcrumbList",
-      "itemListElement":[
-        {"@type":"ListItem","position":1,"name":"Home","item":"https://www.healthflo.ai/"},
-        {"@type":"ListItem","position":2,"name":"Platform","item":"https://www.healthflo.ai/#solutions"},
-        {"@type":"ListItem","position":3,"name":"Contact","item":"https://www.healthflo.ai/#final-cta"}
-      ]
-    }
-    </script>
-  </head>
-
-    <!-- Header -->
-    <header class="header" aria-label="Primary">
-      <nav class="navbar" aria-label="Main Navigation">
-        <a href="#hero" class="logo" aria-label="HealthFlo home">
-          <!-- Inline logo (kept) -->
-          <svg class="logo-svg" viewBox="0 0 220 44" role="img" aria-label="HealthFlo">
-            <defs>
-              <linearGradient id="hfMark" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#2b2f77"/>
-                <stop offset="100%" stop-color="#1dbf73"/>
-              </linearGradient>
-              <linearGradient id="hfStroke" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stop-color="#38bdf8"/>
-                <stop offset="100%" stop-color="#5eead4"/>
-              </linearGradient>
-              <filter id="hfGlow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="2.2" result="b" />
-                <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-              </filter>
-            </defs>
-            <g transform="translate(0,6)" filter="url(#hfGlow)">
-              <path d="M8 28 C 22 10, 44 10, 58 28" fill="none" stroke="url(#hfStroke)" stroke-width="5" stroke-linecap="round">
-                <animate attributeName="stroke-dasharray" values="0 160; 120 40; 0 160" dur="3s" repeatCount="indefinite"/>
-              </path>
-              <circle cx="58" cy="14" r="3.8" fill="url(#hfMark)">
-                <animate attributeName="r" values="3.8;5;3.8" dur="3s" repeatCount="indefinite"/>
-              </circle>
-            </g>
-            <text x="78" y="30" font-family="Space Grotesk, Manrope, system-ui, sans-serif" font-size="18" font-weight="700" fill="url(#hfMark)">HealthFlo</text>
-          </svg>
-        </a>
-
-        <button class="mobile-nav-toggle" aria-expanded="false" aria-controls="primary-menu" aria-label="Toggle navigation" data-nav-toggle>☰</button>
-
-        <div class="nav-links" id="primary-menu" role="menubar">
-          <a href="#solutions" role="menuitem" class="nav-link">Platform</a>
-          <a href="#how-it-works" role="menuitem" class="nav-link">How it Works</a>
-          <a href="#metrics" role="menuitem" class="nav-link">Impact</a>
-          <a href="#testimonials" role="menuitem" class="nav-link">Customers</a>
-          <a href="#final-cta" role="menuitem" class="nav-link">Contact</a>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="HealthFlo blends compassionate experts with AI-powered insights to orchestrate seamless hospital journeys, transparent financing, and real-time insurance support.">
+    <title>HealthFlo | Intelligent Care Orchestration</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" integrity="sha512-VnC7dBqfQNUcZ8EHtAEvtTDHkJ/xZBwbNG0Ax7Anxr1j403rwhhtjfiPgk41IrTnfjp+1dZCvGSqt94FP/vP4g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+    <canvas class="hero__nebula" aria-hidden="true"></canvas>
+    <header class="site-header">
+        <div class="announcement" role="banner">
+            <div class="container announcement__inner">
+                <div class="announcement__pulse" aria-hidden="true"></div>
+                <span class="announcement__text">Need urgent support? Speak to a HealthFlo care manager in under 2 minutes.</span>
+                <a class="announcement__link" href="tel:+919940207670">Call +91 99402 07670</a>
+            </div>
         </div>
-
-        <div class="nav-actions">
-          <button class="theme-toggle" type="button" aria-label="Toggle theme" title="Toggle theme">🌗</button>
-          <a class="cta-primary" href="#final-cta">Book a Demo</a>
+        <div class="container">
+            <nav class="nav" aria-label="Primary">
+                <a class="nav__brand" href="#hero" aria-label="HealthFlo home">
+                    <span class="nav__logo">HealthFlo</span>
+                </a>
+                <button class="nav__toggle" aria-controls="primary-navigation" aria-expanded="false">
+                    <span class="nav__toggle-bar"></span>
+                    <span class="nav__toggle-bar"></span>
+                    <span class="nav__toggle-bar"></span>
+                </button>
+                <ul class="nav__list" id="primary-navigation">
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#specialties">Specialties</a></li>
+                    <li><a href="#platform">Platform</a></li>
+                    <li><a href="#insights">Insights</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <a class="button button--primary nav__cta" href="#contact">Book appointment</a>
+            </nav>
         </div>
-      </nav>
-
-      <!-- Announcement (optional; uses your color tokens) -->
-      <div class="announcement" role="note" aria-live="polite">
-        <div class="announcement__inner container">
-          <span class="announcement__pulse" aria-hidden="true"></span>
-          <span>Need urgent support? Care manager in &lt; 2 minutes.</span>
-          <a class="announcement__link" href="tel:+919940207670">Call +91 99402 07670</a>
-        </div>
-      </div>
     </header>
 
-    <main id="main" tabindex="-1">
-      <!-- Hero -->
-      <section id="hero" class="hero full-height" aria-labelledby="hero-title">
-        <div class="hero-content" data-animate="fade-up">
-          <span class="eyebrow">Healthcare Intelligence Platform</span>
-          <h1 id="hero-title" class="headline gradient-text"> 360-Degree AI-Healthcare Advancement: Empowering Hospitals and Patient care.</h1>
-          <p class="subtext">Precision automation meets concierge-grade communication. HealthFlo unifies cashless pre-auth, medical coding, denial recovery, and patient concierge—built for hospital-scale operations.</p>
-          <div class="cta-group" role="group" aria-label="Primary calls to action">
-            <a href="#final-cta" class="cta-primary">Book a Demo</a>
-            <a href="#solutions" class="button-ghost">See the Platform</a>
-          </div>
-          <dl class="hero-metrics" aria-label="Hero performance metrics">
-            <div><dt>Hospitals orchestrated</dt><dd>570+</dd></div>
-            <div><dt>Claims accelerated</dt><dd>150K+</dd></div>
-          </dl>
-        </div>
-
-        <div class="hero-visual parallax" aria-hidden="true" data-animate="fade-left">
-          <div class="hero-slab">
-            <svg viewBox="0 0 460 360" role="img" aria-label="AI revenue orchestration visuals" width="460" height="360">
-              <defs>
-                <linearGradient id="heroAccent" x1="0" x2="1" y1="0" y2="1">
-                  <stop offset="0%" stop-color="#2b2f77" />
-                  <stop offset="100%" stop-color="#1dbf73" />
-                </linearGradient>
-              </defs>
-              <rect x="24" y="28" width="412" height="304" rx="28" fill="rgba(148,163,184,.22)" />
-              <g stroke="url(#heroAccent)" stroke-width="4" stroke-linecap="round">
-                <path d="M112 118h120" opacity="0.8"/>
-                <path d="M112 138h160" opacity="0.5"/>
-                <path d="M112 158h102" opacity="0.3"/>
-              </g>
-              <g fill="#38bdf8"><circle cx="110" cy="110" r="8"/><circle cx="142" cy="110" r="8"/><circle cx="174" cy="110" r="8"/></g>
-              <g fill="#5eead4"><rect x="256" y="232" width="120" height="16" rx="8"/><rect x="256" y="262" width="96" height="16" rx="8"/><rect x="256" y="292" width="138" height="16" rx="8"/></g>
-            </svg>
-            <canvas id="hero-animation" width="360" height="160" aria-hidden="true"></canvas>
-          </div>
-        </div>
-      </section>
-
-      <!-- Operating Cities Marquee (seamless JS clones) -->
-      <section class="geo-marquee" aria-label="HealthFlo operating cities" data-animate="fade-up">
-        <div class="geo-marquee__track" data-marquee>
-          <span>Chennai HQ</span><span>Bengaluru Command Hub</span><span>Hyderabad RCM Lab</span><span>Mumbai Network Desk</span>
-          <span>Delhi NCR Advocacy</span><span>Pune Cashless Pod</span><span>Goa Clinical Partners</span><span>Kerala Care Grid</span>
-          <span>Andhra Empanelment Team</span><span>Telangana Recovery Wing</span><span>Chhattisgarh Outreach</span><span>Tamil Nadu Specialist Desk</span>
-        </div>
-      </section>
-
-      <!-- Platform -->
-      <section id="solutions" class="features section" aria-labelledby="features-title">
-        <header class="section-head" data-animate="fade-up">
-          <span class="section-eyebrow">Platform Chapters</span>
-          <h2 id="features-title">Healthcare revenue cycle superpowers</h2>
-          <p>Advance the storyline from intake to discharge with explainable AI, payer-grade compliance, and patient-first messaging.</p>
-        </header>
-        <div class="feature-grid" role="list">
-          <article class="feature-card hover-tilt" role="listitem" data-animate="scale-in">
-            <span class="tag">EMR Co-Pilot</span>
-            <h3>AI Clinical & Coding Co-Pilot</h3>
-            <p>Auto-scribe encounters, map ICD-10/HCPCS, and validate medical necessity with HL7/FHIR pipes and audit trails.</p>
-          </article>
-          <article class="feature-card hover-tilt" role="listitem" data-animate="scale-in" data-animate-delay="80">
-            <span class="tag">Cashless</span>
-            <h3>Pre-Auth & Cashless Automation</h3>
-            <p>Trigger eligibility, compile packets, and secure approvals in under a minute with payer SLA radar.</p>
-          </article>
-          <article class="feature-card hover-tilt" role="listitem" data-animate="scale-in" data-animate-delay="160">
-            <span class="tag">Denials</span>
-            <h3>Denial Recovery Studio</h3>
-            <p>Predict denials, launch auto-appeals, and improve yield with root-cause analytics and evidence kits.</p>
-          </article>
-          <article class="feature-card hover-tilt" role="listitem" data-animate="scale-in" data-animate-delay="240">
-            <span class="tag">Concierge</span>
-            <h3>Patient Concierge</h3>
-            <p>WhatsApp updates, multilingual onboarding, and zero-interest financing to lift CSAT and reduce LOS.</p>
-          </article>
-        </div>
-      </section>
-
-      <!-- Audience Tabs -->
-      <section id="audiences" class="audience-showcase section" aria-labelledby="audiences-title">
-        <header class="section-head" data-animate="fade-up">
-          <span class="section-eyebrow">Dual-view Storytelling</span>
-          <h2 id="audiences-title">Tailored journeys for hospitals & patients</h2>
-          <p>Switch between leadership control rooms and bedside guidance with cinematic previews of each orbit.</p>
-        </header>
-
-        <div class="audience-toggle" role="tablist">
-          <button class="audience-tab active" type="button" role="tab" aria-selected="true" aria-controls="audience-hospitals" id="tab-hospitals" data-target="audience-hospitals">
-            <span class="audience-tab__icon" aria-hidden="true"></span><span>Hospitals</span>
-          </button>
-          <button class="audience-tab" type="button" role="tab" aria-selected="false" aria-controls="audience-patients" id="tab-patients" data-target="audience-patients">
-            <span class="audience-tab__icon" aria-hidden="true"></span><span>Patients</span>
-          </button>
-        </div>
-
-        <div class="audience-panels">
-          <article id="audience-hospitals" class="audience-panel active" role="tabpanel" aria-labelledby="tab-hospitals">
-            <div class="audience-panel__content">
-              <h3>For CFOs & Operations</h3>
-              <p>Spin up an AI revenue command center with autonomous workflows and governance baked in.</p>
-              <ul class="audience-list">
-                <li>Unified RCM cockpit with AR intelligence and cash forecasting.</li>
-                <li>Predictive denial radar with auto-appeal playbooks.</li>
-                <li>Cashless packet builder and payer SLA telemetry.</li>
-              </ul>
-              <div class="audience-ctas">
-                <a href="#final-cta" class="cta-primary">Explore Hospital Solutions</a>
-                <a href="#solutions" class="button-ghost">View Product Modules</a>
-              </div>
+    <main>
+        <section class="hero" id="hero">
+            <div class="hero__particles" aria-hidden="true"></div>
+            <div class="container hero__content">
+                <div class="hero__copy" data-animate="fade-up">
+                    <div class="hero__badge">
+                        <span class="hero__badge-pulse" aria-hidden="true"></span>
+                        AI-guided care, finance &amp; insurance concierge
+                    </div>
+                    <h1>Designing confident hospital journeys with human empathy and intelligent automation.</h1>
+                    <p>HealthFlo blends clinical expertise, predictive insights, and smart financing to coordinate surgeries, approvals, and follow-up care for families across India.</p>
+                    <div class="hero__actions">
+                        <a class="button button--primary" href="#contact">Talk to a care manager</a>
+                        <a class="button button--ghost" href="#platform">Preview the platform</a>
+                    </div>
+                    <div class="hero__highlights">
+                        <div class="highlight" data-animate="fade-up" data-animate-delay="100">
+                            <span class="highlight__value" data-count="97" data-suffix="%">0%</span>
+                            <span class="highlight__label">Cashless approvals within 60 minutes</span>
+                        </div>
+                        <div class="highlight" data-animate="fade-up" data-animate-delay="200">
+                            <span class="highlight__value" data-count="1500" data-suffix="+">0+</span>
+                            <span class="highlight__label">Families served with personalised pathways</span>
+                        </div>
+                        <div class="highlight" data-animate="fade-up" data-animate-delay="300">
+                            <span class="highlight__value" data-count="5" data-suffix="">0</span>
+                            <span class="highlight__label">Cities with on-ground surgical command centres</span>
+                        </div>
+                    </div>
+                </div>
+                <aside class="hero__media" aria-label="Preview of HealthFlo journey">
+                    <div class="journey" data-animate="fade-in">
+                        <div class="journey__glow" aria-hidden="true"></div>
+                        <header class="journey__header">
+                            <span class="journey__status">Live Care Journey</span>
+                            <span class="journey__time">Approval ETA: 54 mins</span>
+                        </header>
+                        <ol class="journey__steps">
+                            <li class="journey__step journey__step--active">
+                                <span class="journey__icon">🩺</span>
+                                <div>
+                                    <strong>AI triage summary</strong>
+                                    <p>Specialist recommended: Ophthalmology</p>
+                                </div>
+                                <span class="journey__chip">In review</span>
+                            </li>
+                            <li class="journey__step">
+                                <span class="journey__icon">🏥</span>
+                                <div>
+                                    <strong>Hospital shortlisted</strong>
+                                    <p>Apollo Eye Institute · Chennai</p>
+                                </div>
+                                <span class="journey__chip journey__chip--success">Confirmed</span>
+                            </li>
+                            <li class="journey__step">
+                                <span class="journey__icon">💳</span>
+                                <div>
+                                    <strong>Cashless finance</strong>
+                                    <p>Pre-approval issued · ₹3.6L</p>
+                                </div>
+                                <span class="journey__chip journey__chip--pending">Processing</span>
+                            </li>
+                            <li class="journey__step">
+                                <span class="journey__icon">🤝</span>
+                                <div>
+                                    <strong>Care navigator assigned</strong>
+                                    <p>24/7 updates for the family</p>
+                                </div>
+                                <span class="journey__chip journey__chip--upcoming">Upcoming</span>
+                            </li>
+                        </ol>
+                        <footer class="journey__footer">
+                            <p>“The HealthFlo AI agent collects lab history and drafts the claim instantly, so our hospital admission took under 20 minutes.”</p>
+                            <cite>— Priya Sharma, Chennai</cite>
+                        </footer>
+                    </div>
+                </aside>
             </div>
-            <div class="audience-panel__media" aria-hidden="true">
-              <div class="audience-card"><span class="tag">Command</span><h4>RCM Control Hub</h4><p>Real-time AR, escalations, and cash projections with variance alerts.</p></div>
-              <div class="audience-card"><span class="tag">Automation</span><h4>Auto Packet Builder</h4><p>Compile eligibility, diagnostics, narratives, and e-signs in one sweep.</p></div>
-              <div class="audience-card"><span class="tag">Insights</span><h4>Denial Radar</h4><p>Surface high-risk claims and auto-launch appeal workflows instantly.</p></div>
-            </div>
-          </article>
+        </section>
 
-          <article id="audience-patients" class="audience-panel" role="tabpanel" aria-labelledby="tab-patients" hidden>
-            <div class="audience-panel__content">
-              <h3>For Patient Experience</h3>
-              <p>Deliver concierge-grade support with transparent claims, live chat, and compassionate financing.</p>
-              <ul class="audience-list">
-                <li>Guided admissions with multilingual onboarding.</li>
-                <li>WhatsApp concierge, notifications, and escalations.</li>
-                <li>Zero-interest financing and a real-time claim tracker.</li>
-              </ul>
-              <div class="audience-ctas">
-                <a href="#final-cta" class="cta-primary">Explore Patient Solutions</a>
-                <a href="#solutions" class="button-ghost">Patient Modules</a>
-              </div>
+        <section class="partners" aria-label="Trusted hospital &amp; finance partners">
+            <div class="container partners__container" data-animate="fade-up">
+                <span class="partners__label">Trusted by leading hospitals &amp; finance innovators</span>
+                <div class="partners__marquee" role="list">
+                    <span role="listitem">Apollo Hospitals</span>
+                    <span role="listitem">Fortis</span>
+                    <span role="listitem">Manipal Health</span>
+                    <span role="listitem">Narayana Health</span>
+                    <span role="listitem">Star Health</span>
+                    <span role="listitem">Care Health</span>
+                    <span role="listitem">Axis Finance</span>
+                    <span role="listitem">ICICI Lombard</span>
+                </div>
             </div>
-            <div class="audience-panel__media" aria-hidden="true">
-              <div class="audience-card"><span class="tag">Concierge</span><h4>24/7 Guidance</h4><p>Live chat, bedside coordinators, and kiosk updates—always in sync.</p></div>
-              <div class="audience-card"><span class="tag">Finance</span><h4>Zero-Interest Plans</h4><p>Pre-approved medical lines with transparent repayment journeys.</p></div>
-              <div class="audience-card"><span class="tag">Transparency</span><h4>Claim Tracker</h4><p>Swipe-through docs and timers for every payer checkpoint.</p></div>
+        </section>
+
+        <section class="section" id="services">
+            <div class="container">
+                <div class="section__header" data-animate="fade-up">
+                    <h2>Full-spectrum care navigation</h2>
+                    <p>From the first call to post-discharge rehab, HealthFlo teams orchestrate every detail with predictive dashboards and compassionate experts.</p>
+                </div>
+                <div class="grid grid--cards">
+                    <article class="card" data-animate="scale-in">
+                        <div class="card__pulse" aria-hidden="true"></div>
+                        <h3>Surgery coordination</h3>
+                        <p>AI-assisted triage, doctor scheduling, and admission concierge for complex procedures.</p>
+                        <a href="Surgery.html" class="card__link">Learn more</a>
+                    </article>
+                    <article class="card" data-animate="scale-in" data-animate-delay="100">
+                        <div class="card__pulse" aria-hidden="true"></div>
+                        <h3>Medical loans &amp; EMI</h3>
+                        <p>Instant approvals up to ₹50 Lakhs with blended interest and zero-cost EMI programs.</p>
+                        <a href="Mmediclaim.html" class="card__link">Learn more</a>
+                    </article>
+                    <article class="card" data-animate="scale-in" data-animate-delay="200">
+                        <div class="card__pulse" aria-hidden="true"></div>
+                        <h3>Cashless insurance</h3>
+                        <p>Real-time document verification, insurer liaison, and dispute recovery.</p>
+                        <a href="CashlessInsurance.html" class="card__link">Learn more</a>
+                    </article>
+                    <article class="card" data-animate="scale-in" data-animate-delay="300">
+                        <div class="card__pulse" aria-hidden="true"></div>
+                        <h3>Virtual command centre</h3>
+                        <p>Teleconsults, vitals monitoring, and personalised care plans across 12+ specialties.</p>
+                        <a href="OnlineConsultation.html" class="card__link">Book a slot</a>
+                    </article>
+                </div>
             </div>
-          </article>
-        </div>
-      </section>
+        </section>
 
-      <!-- How it Works -->
-      <section id="how-it-works" class="timeline section" aria-labelledby="how-title">
-        <header class="section-head" data-animate="fade-up">
-          <span class="section-eyebrow">Four-beat Sequence</span>
-          <h2 id="how-title">How HealthFlo Works</h2>
-          <p>A four-step orchestration engine woven into your HIS, payers, and patient journeys.</p>
-        </header>
-        <div class="timeline-steps" role="list">
-          <div class="step" role="listitem" data-animate="slide-up"><h3>Intake & Verification</h3><p>Digitize admissions with ID capture, policy fetch, and AI triage.</p></div>
-          <div class="step" role="listitem" data-animate="slide-up" data-animate-delay="80"><h3>Automated Coding</h3><p>ICD-10/HCPCS mapping, medical necessity checks, and audit-ready packets.</p></div>
-          <div class="step" role="listitem" data-animate="slide-up" data-animate-delay="160"><h3>Cashless Claiming</h3><p>Pre-auth autopilot compiles docs, submits to payers, and tracks SLAs.</p></div>
-          <div class="step" role="listitem" data-animate="slide-up" data-animate-delay="240"><h3>Revenue Intelligence</h3><p>Dashboards for leakage, AR aging, yield, and CFO-grade forecasts.</p></div>
-        </div>
-      </section>
-
-      <!-- KPI Controls -->
-      <aside class="kpi-controls kpi-controls--sticky" aria-label="KPI auto-update controls">
-        <div class="kpi-controls__row">
-          <div class="kpi-controls__group">
-            <label for="hf-speed-range">Update speed: <span id="hf-speed-label" aria-live="polite">6s</span></label>
-            <input id="hf-speed-range" type="range" min="3000" max="20000" step="500" value="6000" />
-          </div>
-          <div class="kpi-controls__group kpi-controls__group--toggle">
-            <input type="checkbox" id="hf-auto-toggle" checked />
-            <label for="hf-auto-toggle">Auto-update</label>
-          </div>
-        </div>
-      </aside>
-
-      <!-- KPI Metrics -->
-      <section id="metrics" class="metrics section" aria-label="Key metrics">
-        <div class="kpi-strip glass-card" data-hf-kpi-host>
-          <div class="kpi-row" role="list" aria-label="Live KPI dashboard">
-            <div class="healthflo-kpi" role="listitem">
-              <div class="healthflo-kpi__label">Cashless Turnaround</div>
-              <div class="healthflo-kpi__value-row">
-                <div class="healthflo-kpi__value">00:47</div><span class="healthflo-kpi__unit">min</span>
-                <span class="healthflo-kpi__delta --up">+12%</span>
-              </div>
-              <div class="healthflo-kpi__spark"></div>
+        <section class="section section--alt" id="specialties">
+            <div class="container">
+                <div class="section__header" data-animate="fade-up">
+                    <h2>Centres of excellence</h2>
+                    <p>Leading specialists backed by outcome-driven protocols, robotic surgery partners, and accredited care pathways.</p>
+                </div>
+                <div class="specialty-grid">
+                    <article class="specialty" data-animate="flip-up">
+                        <span class="specialty__icon" aria-hidden="true">👁️</span>
+                        <h3>Ophthalmology</h3>
+                        <p>Advanced LASIK, cataract, and corneal transplant programs.</p>
+                    </article>
+                    <article class="specialty" data-animate="flip-up" data-animate-delay="100">
+                        <span class="specialty__icon" aria-hidden="true">🧠</span>
+                        <h3>Neurology</h3>
+                        <p>Epilepsy surgery, stroke rehab, and neuro ICU coordination.</p>
+                    </article>
+                    <article class="specialty" data-animate="flip-up" data-animate-delay="200">
+                        <span class="specialty__icon" aria-hidden="true">🩺</span>
+                        <h3>Cardiology</h3>
+                        <p>Hybrid cath labs, heart failure clinics, and ECMO expertise.</p>
+                    </article>
+                    <article class="specialty" data-animate="flip-up" data-animate-delay="300">
+                        <span class="specialty__icon" aria-hidden="true">🦴</span>
+                        <h3>Orthopedics</h3>
+                        <p>Robotic joint replacements, sports medicine, and trauma care.</p>
+                    </article>
+                    <article class="specialty" data-animate="flip-up" data-animate-delay="400">
+                        <span class="specialty__icon" aria-hidden="true">🤰</span>
+                        <h3>Obstetrics &amp; IVF</h3>
+                        <p>High-risk maternity and fertility success programs.</p>
+                    </article>
+                    <article class="specialty" data-animate="flip-up" data-animate-delay="500">
+                        <span class="specialty__icon" aria-hidden="true">🧬</span>
+                        <h3>Oncology</h3>
+                        <p>Tumor boards, genomic profiling, and precision therapy access.</p>
+                    </article>
+                </div>
             </div>
-            <div class="healthflo-kpi" role="listitem">
-              <div class="healthflo-kpi__label">Denial Recovery</div>
-              <div class="healthflo-kpi__value-row">
-                <div class="healthflo-kpi__value">98%</div><span class="healthflo-kpi__unit">yield</span>
-                <span class="healthflo-kpi__delta --up">+4.2%</span>
-              </div>
-              <div class="healthflo-kpi__spark"></div>
-            </div>
-            <div class="healthflo-kpi" role="listitem">
-              <div class="healthflo-kpi__label">DSO</div>
-              <div class="healthflo-kpi__value-row">
-                <div class="healthflo-kpi__value">23</div><span class="healthflo-kpi__unit">days</span>
-                <span class="healthflo-kpi__delta --down">-3d</span>
-              </div>
-              <div class="healthflo-kpi__spark"></div>
-            </div>
-          </div>
-        </div>
-      </section>
+        </section>
 
-      <!-- Testimonials -->
-      <section id="testimonials" class="testimonials section" aria-labelledby="testimonial-title">
-        <header class="section-head" data-animate="fade-up">
-          <span class="section-eyebrow">Proof in the Field</span>
-          <h2 id="testimonial-title">Trusted across India</h2>
-          <p>Hospital groups rely on HealthFlo to run RCM as a growth engine.</p>
-        </header>
-        <div class="testimonial-carousel" aria-live="polite">
-          <blockquote class="active">“HealthFlo reduced our pre-auth cycle from 6 hours to minutes.”<div class="testimonial-author">Dr. Kavya Rao · COO, NovaCare</div></blockquote>
-          <blockquote>“We recovered ₹12 Cr in aged claims—forecasts are now board-ready.”<div class="testimonial-author">Sanjay Patel · CFO, Harmony Health</div></blockquote>
-          <blockquote>“Live WhatsApp updates and zero-interest plans lifted PX by 34%.”<div class="testimonial-author">Meera Joshi · Head, Patient Experience</div></blockquote>
-          <div class="carousel-controls" role="tablist" aria-label="testimonial selector">
-            <button class="carousel-dot active" role="tab" aria-selected="true" aria-controls="t1"></button>
-            <button class="carousel-dot" role="tab" aria-selected="false" aria-controls="t2"></button>
-            <button class="carousel-dot" role="tab" aria-selected="false" aria-controls="t3"></button>
-          </div>
-        </div>
-      </section>
+        <section class="section" id="platform">
+            <div class="container platform">
+                <div class="platform__copy" data-animate="fade-up">
+                    <h2>Meet the HealthFlo Care OS</h2>
+                    <p>Our unified command centre fuses real-time patient telemetry, insurer APIs, and financing marketplaces to orchestrate outcomes.</p>
+                    <ul class="platform__list" role="list">
+                        <li><strong>Predictive coverage scoring</strong> surfaces the best cashless and credit mix for every case.</li>
+                        <li><strong>Secure document vault</strong> encrypts medical records with blockchain-backed audit trails.</li>
+                        <li><strong>Care navigator cockpit</strong> syncs patient updates, discharge tasks, and caregiver alerts.</li>
+                        <li><strong>Insights studio</strong> forecasts length of stay, readmission risk, and billing exceptions.</li>
+                    </ul>
+                </div>
+                <div class="platform__visual" aria-hidden="true" data-animate="fade-left">
+                    <div class="radar">
+                        <div class="radar__beam"></div>
+                        <div class="radar__ring radar__ring--1"></div>
+                        <div class="radar__ring radar__ring--2"></div>
+                        <div class="radar__ring radar__ring--3"></div>
+                        <div class="radar__nodes">
+                            <span class="radar__node">Hospitals</span>
+                            <span class="radar__node">Insurers</span>
+                            <span class="radar__node">Diagnostics</span>
+                            <span class="radar__node">Pharma</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-      <!-- Final CTA -->
-      <section id="final-cta" class="cta-band" aria-labelledby="cta-title">
-        <div class="cta-band__content" data-animate="fade-up">
-          <h2 id="cta-title">Ready to transform your revenue cycle?</h2>
-          <p>See how HealthFlo rewrites the revenue story for your network.</p>
-        </div>
-        <a class="cta-primary" href="#hero">Schedule a Demo</a>
-      </section>
+        <section class="section section--alt" id="insights">
+            <div class="container">
+                <div class="section__header" data-animate="fade-up">
+                    <h2>Med intelligence &amp; newsroom</h2>
+                    <p>Actionable stories from HealthFlo specialists, data scientists, and partner hospitals.</p>
+                </div>
+                <div class="grid grid--news">
+                    <article class="news-card" data-animate="fade-up">
+                        <div class="news-card__image" style="--image:url('https://images.unsplash.com/photo-1580281657521-67ac259b9f9d?auto=format&fit=crop&w=900&q=80');" aria-hidden="true"></div>
+                        <div class="news-card__body">
+                            <p class="news-card__tag">Insurance</p>
+                            <h3>Decoding cashless approvals for complex surgeries</h3>
+                            <a href="news.html" class="news-card__link">Read story</a>
+                        </div>
+                    </article>
+                    <article class="news-card" data-animate="fade-up" data-animate-delay="150">
+                        <div class="news-card__image" style="--image:url('https://images.unsplash.com/photo-1587502536263-92952c232c25?auto=format&fit=crop&w=900&q=80');" aria-hidden="true"></div>
+                        <div class="news-card__body">
+                            <p class="news-card__tag">Wellness</p>
+                            <h3>Nutrition insights that accelerate post-op recovery</h3>
+                            <a href="wellnessinfo.html" class="news-card__link">Read story</a>
+                        </div>
+                    </article>
+                    <article class="news-card" data-animate="fade-up" data-animate-delay="300">
+                        <div class="news-card__image" style="--image:url('https://images.unsplash.com/photo-1585559605151-5fc46dba9895?auto=format&fit=crop&w=900&q=80');" aria-hidden="true"></div>
+                        <div class="news-card__body">
+                            <p class="news-card__tag">Community</p>
+                            <h3>How HealthFlo care teams support families beyond discharge</h3>
+                            <a href="blog-single.html" class="news-card__link">Read story</a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="timeline" aria-label="Patient success timeline">
+            <div class="container timeline__container">
+                <div class="timeline__intro" data-animate="fade-up">
+                    <h2>Delivering certainty at every milestone</h2>
+                    <p>Families collaborate with our Care OS in real time. Each stage is transparent, auditable, and supported by human experts.</p>
+                </div>
+                <div class="timeline__grid">
+                    <article class="timeline__card" data-animate="slide-up">
+                        <span class="timeline__number">01</span>
+                        <h3>Precision intake</h3>
+                        <p>Upload prescriptions, lab reports, and insurer details with guided prompts in under 7 minutes.</p>
+                    </article>
+                    <article class="timeline__card" data-animate="slide-up" data-animate-delay="100">
+                        <span class="timeline__number">02</span>
+                        <h3>Smart approvals</h3>
+                        <p>Integrated insurer APIs predict approval time and necessary documents before submission.</p>
+                    </article>
+                    <article class="timeline__card" data-animate="slide-up" data-animate-delay="200">
+                        <span class="timeline__number">03</span>
+                        <h3>Unified surgery command</h3>
+                        <p>Day-of-surgery concierge manages OT slots, billing audits, and companion logistics.</p>
+                    </article>
+                    <article class="timeline__card" data-animate="slide-up" data-animate-delay="300">
+                        <span class="timeline__number">04</span>
+                        <h3>Recovery intelligence</h3>
+                        <p>Daily progress nudges, physiotherapy scheduling, and claim settlement tracking.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta" id="contact">
+            <div class="container cta__container">
+                <div class="cta__copy" data-animate="fade-up">
+                    <h2>Ready to experience precision care with a human heartbeat?</h2>
+                    <p>Share your requirement and a HealthFlo care manager will respond within 15 minutes.</p>
+                    <div class="cta__stats">
+                        <div>
+                            <span class="cta__stats-value">4.9/5</span>
+                            <span class="cta__stats-label">Patient satisfaction</span>
+                        </div>
+                        <div>
+                            <span class="cta__stats-value">12+</span>
+                            <span class="cta__stats-label">Clinical specialities</span>
+                        </div>
+                    </div>
+                </div>
+                <form class="cta__form" action="https://formsubmit.co/support@healthflo.org" method="POST" data-animate="fade-left">
+                    <div class="form-field">
+                        <label for="name">Full name</label>
+                        <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="email">Email address</label>
+                        <input type="email" id="email" name="email" placeholder="name@example.com" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="phone">Phone number</label>
+                        <input type="tel" id="phone" name="phone" placeholder="Your contact number" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="service">Service interested in</label>
+                        <select id="service" name="service">
+                            <option value="Surgery coordination">Surgery coordination</option>
+                            <option value="Medical loan">Medical loan for mediclaim</option>
+                            <option value="Cashless insurance">Cashless insurance service</option>
+                            <option value="Online consultation">Online consultation</option>
+                            <option value="Insurance recovery">Recovery for rejection / less approval</option>
+                            <option value="Government schemes">Government &amp; EMI programs</option>
+                        </select>
+                    </div>
+                    <div class="form-field">
+                        <label for="message">How can we help?</label>
+                        <textarea id="message" name="message" rows="4" placeholder="Share a brief about your requirement"></textarea>
+                    </div>
+                    <button class="button button--primary button--block" type="submit">Book my consultation</button>
+                    <p class="cta__footer">Our command centre monitors requests round-the-clock.</p>
+                </form>
+            </div>
+        </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer" aria-label="Footer">
-      <div class="footer-wave" aria-hidden="true">
-        <svg viewBox="0 0 720 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" width="700" height="160">
-          <defs>
-            <linearGradient id="footerGradient" x1="0" x2="1" y1="0" y2="0.8">
-              <stop offset="0%" stop-color="#38bdf8" />
-              <stop offset="100%" stop-color="#5eead4" />
-            </linearGradient>
-          </defs>
-          <path d="M0 48C120 20 240 76 360 48C480 20 600 76 720 48V160H0Z" fill="url(#footerGradient)" opacity="0.28"></path>
-        </svg>
-      </div>
-      <div class="footer-grid">
-        <div>
-          <h3>HealthFlo</h3>
-          <p class="text-muted">AI-first platform that fuses operations, finance, and patient delight.</p>
+    <footer class="footer">
+        <div class="container footer__grid">
+            <div>
+                <a class="footer__brand" href="#hero">HealthFlo</a>
+                <p>Empowering families with transparent healthcare, financing, and insurance support across India.</p>
+                <ul class="footer__contact" aria-label="Contact information">
+                    <li><a href="tel:+919940207670">+91 99402 07670</a></li>
+                    <li><a href="mailto:support@healthflo.org">support@healthflo.org</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3>Services</h3>
+                <ul>
+                    <li><a href="Surgery.html">Surgery coordination</a></li>
+                    <li><a href="Mmediclaim.html">Medical loans</a></li>
+                    <li><a href="CashlessInsurance.html">Cashless insurance</a></li>
+                    <li><a href="OnlineConsultation.html">Online consultation</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3>Company</h3>
+                <ul>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="#insights">Newsroom</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3>Follow</h3>
+                <ul class="footer__social" aria-label="Social links">
+                    <li><a href="https://www.facebook.com" aria-label="Facebook">Fb</a></li>
+                    <li><a href="https://www.linkedin.com" aria-label="LinkedIn">In</a></li>
+                    <li><a href="https://www.instagram.com" aria-label="Instagram">Ig</a></li>
+                </ul>
+            </div>
         </div>
-        <div>
-          <h4>Company</h4>
-          <ul>
-            <li><a href="#">About</a></li>
-            <li><a href="#metrics">Impact</a></li>
-            <li><a href="#">Investors</a></li>
-          </ul>
+        <div class="footer__bottom">
+            <p>© 2025 HealthFlo. All rights reserved.</p>
         </div>
-        <div>
-          <h4>Solutions</h4>
-          <ul>
-            <li><a href="#solutions">For Hospitals</a></li>
-            <li><a href="#audiences">For Patients</a></li>
-            <li><a href="#solutions">Product Modules</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4>Connect</h4>
-          <p class="text-muted"><a href="mailto:hello@healthflo.ai">hello@healthflo.ai</a></p>
-          <div class="social-links" role="list">
-            <a href="#" aria-label="LinkedIn" rel="noopener">in</a>
-            <a href="#" aria-label="X" rel="noopener">𝕏</a>
-            <a href="#" aria-label="YouTube" rel="noopener">▶</a>
-          </div>
-        </div>
-      </div>
-      <div class="footer-bottom">© <span id="year">2025</span> HealthFlo. All rights reserved.</div>
     </footer>
 
-    <!-- Floating Actions -->
-    <div class="floating-actions" aria-label="Quick actions">
-      <a href="https://wa.me/919999999999" class="whatsapp" aria-label="Chat on WhatsApp" rel="noopener">WhatsApp</a>
-      <a href="#final-cta" aria-label="Book a HealthFlo demo">Book Demo</a>
-    </div>
-
-    <!-- Main JS (deferred) -->
-    <script defer src="assets/js/main.js"></script>
-  </body>
+    <script src="assets/js/main.js" defer></script>
+</body>
 </html>
