@@ -1,0 +1,77 @@
+.fade-up {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.tilt-3d {
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+
+.tilt-3d:hover,
+.tilt-3d:focus-visible {
+  transform: rotateX(6deg) rotateY(-6deg) translateY(-8px);
+  box-shadow: 0 35px 90px -40px rgba(79, 156, 255, 0.45);
+}
+
+.ink-reveal {
+  position: relative;
+  overflow: hidden;
+}
+
+.ink-reveal::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(79, 156, 255, 0.85), rgba(56, 213, 196, 0.75));
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+  z-index: -1;
+}
+
+.ink-reveal.is-active::before {
+  transform: translateX(0);
+}
+
+.shimmer {
+  position: relative;
+  overflow: hidden;
+  background: rgba(79, 156, 255, 0.12);
+}
+
+.shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(120deg, transparent 0%, rgba(143, 186, 255, 0.35) 50%, transparent 100%);
+  animation: shimmer 1.6s infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes hue-rotate {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    filter: hue-rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-up {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .tilt-3d,
+  .ink-reveal,
+  .shimmer::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
