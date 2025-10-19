@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HealthFlo Hospitals Network | AI-Powered Hospital Marketplace & RCM</title>
+  <meta name="description" content="HealthFlo Hospitals Network connects patients and hospitals with AI-powered cashless insurance workflows, transparent tariffs, and full-stack revenue cycle management.">
+  <link rel="canonical" href="https://www.healthflo.org/">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600&display=swap" as="style">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="assets/css/animations.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0057FF">
+  <meta property="og:title" content="HealthFlo Hospitals Network">
+  <meta property="og:description" content="AI-powered hospital marketplace with transparent tariffs, cashless operations, and end-to-end RCM.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.healthflo.org/">
+  <meta property="og:image" content="assets/img/og-cover.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="HealthFlo Hospitals Network">
+  <meta name="twitter:description" content="Streamline hospital access and RCM with AI automation.">
+  <meta name="twitter:image" content="assets/img/og-cover.webp">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "name": "HealthFlo Ventures Pvt. Ltd.",
+        "url": "https://www.healthflo.org/",
+        "logo": "https://www.healthflo.org/assets/img/logo-mark.svg",
+        "contactPoint": [{
+          "@type": "ContactPoint",
+          "contactType": "customer support",
+          "email": "support@healthflo.in",
+          "telephone": "+91-9342569379",
+          "areaServed": "IN"
+        }],
+        "sameAs": [
+          "https://www.linkedin.com/company/healthflo",
+          "https://twitter.com/healthflo"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "url": "https://www.healthflo.org/",
+        "name": "HealthFlo Hospitals Network",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://www.healthflo.org/search?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "Service",
+        "serviceType": "Revenue Cycle Management",
+        "provider": {
+          "@type": "Organization",
+          "name": "HealthFlo Hospitals Network"
+        },
+        "areaServed": "India",
+        "description": "AI-powered RCM including empanelment, cashless facilitation, denial management, and analytics."
+      },
+      {
+        "@type": "Service",
+        "serviceType": "Hospital Marketplace",
+        "provider": {
+          "@type": "Organization",
+          "name": "HealthFlo Hospitals Network"
+        },
+        "description": "Marketplace for hospital services with transparent tariffs, EMI options, and insurance support."
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How does HealthFlo help patients book hospital services?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Patients can search procedures, compare tariffs, check cashless eligibility, choose EMI options, and confirm bookings with automated reminders."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What support do hospitals receive from HealthFlo?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Hospitals access guided empanelment, cashless workflows, denial recovery agents, compliance checklists, and analytics to accelerate time-to-cash."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does HealthFlo manage insurance paperwork?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. HealthFlo orchestrates cashless facilitation, handles insurer paperwork, and keeps patients informed with claim trackers and ICS reminders."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is HealthFlo compliant with data protection laws?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "HealthFlo follows DPDP consent flows, WCAG AA accessibility, OWASP security hygiene, and maintains immutable audit logs for all operations."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can hospitals manage denials on HealthFlo?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Hospitals use the Denial Agent to normalize reason codes, access appeal templates, and monitor recovery progress with analytics dashboards."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+  <script defer data-domain="healthflo.org" src="https://plausible.io/js/script.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <header class="site-header" data-component="header">
+    <div class="container site-header__inner">
+      <a href="#hero" class="site-header__logo" aria-label="HealthFlo Hospitals Network">
+        <svg width="40" height="40" viewBox="0 0 40 40" role="img" aria-hidden="true">
+          <circle cx="20" cy="20" r="20" fill="var(--primary)"></circle>
+          <text x="50%" y="55%" text-anchor="middle" fill="var(--white)" font-size="16" font-family="Inter, sans-serif">HF</text>
+        </svg>
+        <span class="site-header__brand">HealthFlo Hospitals Network</span>
+      </a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <button class="site-nav__toggle" aria-expanded="false" aria-controls="primary-menu">
+          <span class="site-nav__toggle-line"></span>
+          <span class="site-nav__toggle-line"></span>
+          <span class="site-nav__toggle-line"></span>
+          <span class="sr-only">Open navigation</span>
+        </button>
+        <ul class="site-nav__list" id="primary-menu">
+          <li><a href="#patients">Patients</a></li>
+          <li><a href="#hospitals">Hospitals</a></li>
+          <li><a href="#modules">Marketplace</a></li>
+          <li><a href="#ai">AI</a></li>
+          <li><a href="#security">Security</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="site-header__cta">
+        <a class="btn btn--primary" href="#hospitals">For Hospitals – Empanel</a>
+        <a class="btn btn--ghost" href="#patients">For Patients – Find Care</a>
+      </div>
+    </div>
+  </header>
+  <main id="main-content">
+    <section class="hero" id="hero">
+      <div class="container hero__inner">
+        <div class="hero__content">
+          <p class="eyebrow">AI-powered Hospital Marketplace</p>
+          <h1>Find, book, and pay for hospital care.</h1>
+          <p class="hero__sub">Your health, your budget, your terms. We handle the insurance.</p>
+          <p class="hero__support">Compare transparent tariffs, check cashless eligibility in minutes, choose EMI if needed, and book. We handle the insurance paperwork so you can focus on care.</p>
+          <div class="hero__actions">
+            <a class="btn btn--primary" href="#patients">Find Care</a>
+            <a class="btn btn--secondary" href="#hospitals">Empanel Hospital</a>
+          </div>
+          <p class="hero__b2b">Empower Your Hospital with Seamless Insurance & Cashless Operations. We handle your RCM.</p>
+          <div class="hero__badges" role="list">
+            <span class="badge" role="listitem">Cashless Everywhere</span>
+            <span class="badge" role="listitem">Transparent Tariffs</span>
+            <span class="badge" role="listitem">EMI Options</span>
+          </div>
+        </div>
+        <div class="hero__visual" aria-hidden="true">
+          <div class="hero__canvas" data-fallback="lottie" data-reduced-motion="true">
+            <canvas id="hero-flow"></canvas>
+            <div class="hero__fallback hero__fallback--lottie">
+              <lottie-player src="assets/lottie/hero-blob.json" background="transparent" speed="1" loop autoplay></lottie-player>
+            </div>
+            <div class="hero__fallback hero__fallback--css"></div>
+            <img class="hero__fallback hero__fallback--static" src="assets/img/hero-static.svg" alt="Abstract network visualization" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="switchboard" aria-labelledby="switchboard-heading">
+      <div class="container switchboard__inner">
+        <h2 id="switchboard-heading">Choose your journey</h2>
+        <div class="switchboard__cards">
+          <button class="switch-card" data-target="#hospitals">
+            <span class="switch-card__icon" aria-hidden="true">
+              <img src="assets/icons/hospital.svg" alt="" loading="lazy">
+            </span>
+            <span class="switch-card__label">I'm a Hospital</span>
+            <span class="switch-card__text">Standardize pre-auth, slash denials, and accelerate time-to-cash. From empanelment to analytics—your RCM co-pilot.</span>
+          </button>
+          <button class="switch-card" data-target="#patients">
+            <span class="switch-card__icon" aria-hidden="true">
+              <img src="assets/icons/patient.svg" alt="" loading="lazy">
+            </span>
+            <span class="switch-card__label">I'm a Patient</span>
+            <span class="switch-card__text">We’re here to help with transparent pricing, insurance navigation, and booking support.</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="how" id="patients" aria-labelledby="patients-heading">
+      <div class="container">
+        <h2 id="patients-heading">How it works for patients</h2>
+        <div class="how__grid">
+          <article class="how-card fade-up">
+            <img src="assets/icons/search.svg" alt="Search icon" class="how-card__icon" loading="lazy">
+            <h3>Search &amp; compare tariffs</h3>
+            <p>Transparent packages, inclusions, and network hospitals tailored to your coverage.</p>
+          </article>
+          <article class="how-card fade-up">
+            <img src="assets/icons/ai.svg" alt="AI icon" class="how-card__icon" loading="lazy">
+            <h3>Check cashless eligibility</h3>
+            <p>AI with citations answers insurer policy questions in seconds.</p>
+          </article>
+          <article class="how-card fade-up">
+            <img src="assets/icons/emi.svg" alt="EMI icon" class="how-card__icon" loading="lazy">
+            <h3>Choose 0% EMI</h3>
+            <p>Select a repayment plan that fits your budget before admission.</p>
+          </article>
+          <article class="how-card fade-up">
+            <img src="assets/icons/reminder.svg" alt="Reminder icon" class="how-card__icon" loading="lazy">
+            <h3>Book &amp; stay informed</h3>
+            <p>Receive ICS and WhatsApp reminders with real-time claim tracker updates.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="how how--hospitals" id="hospitals" aria-labelledby="hospitals-heading">
+      <div class="container">
+        <div class="how__header">
+          <h2 id="hospitals-heading">How it works for hospitals</h2>
+          <span class="badge badge--outline">SLA timers: T-30 / T-60 / T-240</span>
+        </div>
+        <div class="how__scroll">
+          <article class="how-card fade-up">
+            <img src="assets/icons/empanel.svg" alt="Empanelment icon" class="how-card__icon" loading="lazy">
+            <h3>Empanelment guided setup</h3>
+            <p>Digital onboarding with insurer-specific checklists and document vaults.</p>
+          </article>
+          <article class="how-card fade-up">
+            <img src="assets/icons/cashless.svg" alt="Cashless icon" class="how-card__icon" loading="lazy">
+            <h3>Cashless Everywhere</h3>
+            <p>Non-network cashless flows with escalation ladders and SLA alerts.</p>
+          </article>
+          <article class="how-card fade-up">
+            <img src="assets/icons/recovery.svg" alt="Recovery icon" class="how-card__icon" loading="lazy">
+            <h3>Denial &amp; Recovery Agent</h3>
+            <p>Appeal templates and reason code normalization to recover more revenue.</p>
+          </article>
+          <article class="how-card fade-up">
+            <img src="assets/icons/compliance.svg" alt="Compliance icon" class="how-card__icon" loading="lazy">
+            <h3>Compliance Guardrails</h3>
+            <p>Rohini and NABH compliance checklists embedded into daily workflows.</p>
+          </article>
+          <article class="how-card fade-up">
+            <img src="assets/icons/analytics.svg" alt="Analytics icon" class="how-card__icon" loading="lazy">
+            <h3>Analytics &amp; Reporting</h3>
+            <p>Time-to-cash, denial waterfall, and payer scorecards for leadership reviews.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="modules" id="modules" aria-labelledby="modules-heading">
+      <div class="container">
+        <h2 id="modules-heading">Product modules for every team</h2>
+        <div class="modules__group">
+          <h3>HF-PAT (Patients)</h3>
+          <div class="modules__grid">
+            <article class="module-card">
+              <h4>Find &amp; Book</h4>
+              <p>Service search with inclusions/exclusions and live slot previews.</p>
+              <a href="#" class="module-card__link">Learn more</a>
+            </article>
+            <article class="module-card">
+              <h4>Coverage &amp; Cashless</h4>
+              <p>Policy guidance with cited answers from insurer PDFs.</p>
+              <a href="#" class="module-card__link">Learn more</a>
+            </article>
+            <article class="module-card">
+              <h4>EMI &amp; Payments</h4>
+              <p>0% short-tenure options; repayment schedule you control.</p>
+              <a href="#" class="module-card__link">Learn more</a>
+            </article>
+            <article class="module-card">
+              <h4>Claim Tracker</h4>
+              <p>Document checklist, WhatsApp updates, ICS reminders.</p>
+              <a href="#" class="module-card__link">Learn more</a>
+            </article>
+            <article class="module-card">
+              <h4>Prime Care</h4>
+              <p>Priority slots, platform fee waivers, hotline, family wallet.</p>
+              <a href="#" class="module-card__link">Learn more</a>
+            </article>
+          </div>
+        </div>
+        <div class="modules__group">
+          <h3>HF-RCM (Hospitals)</h3>
+          <div class="modules__grid">
+            <article class="module-card">
+              <h4>Empanelment Hub</h4>
+              <p>Onboard to 20+ insurers/TPAs with guided checklists and renewals.</p>
+              <a href="#" class="module-card__link">Learn more</a>
+            </article>
+            <article class="module-card">
+              <h4>Cashless Everywhere</h4>
+              <p>Non-network cashless workflows with SLA timers &amp; escalations.</p>
+              <a href="#" class="module-card__link">Learn more</a>
+            </article>
+            <article class="module-card">
+              <h4>Denial Agent</h4>
+              <p>Reason code normalization, appeal templates, clause citations—recover more.</p>
+              <a href="#" class="module-card__link">Learn more</a>
+            </article>
+            <article class="module-card">
+              <h4>Tariff &amp; Packages</h4>
+              <p>Procedure packages, room classes, payer overrides—publish to marketplace.</p>
+              <a href="#" class="module-card__link">Learn more</a>
+            </article>
+            <article class="module-card">
+              <h4>RCM Analytics</h4>
+              <p>Denial waterfall, payer scorecards, time-to-cash—board-ready.</p>
+              <a href="#" class="module-card__link">Learn more</a>
+            </article>
+            <article class="module-card">
+              <h4>Compliance Coach</h4>
+              <p>Rohini/NABH checklists, DPDP consent flows, immutable logs.</p>
+              <a href="#" class="module-card__link">Learn more</a>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ai" id="ai" aria-labelledby="ai-heading">
+      <div class="container ai__inner">
+        <div class="ai__header">
+          <h2 id="ai-heading">AI co-pilots for every stakeholder</h2>
+          <p class="ai__disclaimer">No clinical advice. Policy/operations guidance only.</p>
+        </div>
+        <div class="ai-tabs" role="tablist" aria-label="AI demo tabs">
+          <button role="tab" aria-selected="true" aria-controls="ai-panel-patient" id="ai-tab-patient" class="ai-tabs__tab">Patient Concierge</button>
+          <button role="tab" aria-selected="false" aria-controls="ai-panel-hospital" id="ai-tab-hospital" class="ai-tabs__tab">Hospital Admin Assistant</button>
+        </div>
+        <div class="ai__panels">
+          <div id="ai-panel-patient" role="tabpanel" aria-labelledby="ai-tab-patient" class="ai-panel is-active">
+            <div class="ai-panel__prompts" aria-label="Suggested prompts">
+              <button class="prompt-chip" data-message="Knee surgery in Hyderabad under ₹80,000. Cashless?">Knee surgery in Hyderabad under ₹80,000. Cashless?</button>
+              <button class="prompt-chip" data-message="Is day-care cataract eligible for TPA X?">Is day-care cataract eligible for TPA X?</button>
+              <button class="prompt-chip" data-message="Show EMI options for maternity package.">Show EMI options for maternity package.</button>
+            </div>
+            <div class="ai-chat" aria-live="polite">
+              <div class="ai-chat__message ai-chat__message--user">
+                <span class="ai-chat__label">You</span>
+                <p>Can you help me find a hospital for knee surgery?</p>
+              </div>
+              <div class="ai-chat__message ai-chat__message--bot" data-typewriter>
+                <span class="ai-chat__label">HealthFlo Concierge</span>
+                <p>Sure. Choose your city and budget and I’ll shortlist partner hospitals with transparent tariffs and cashless availability. <span class="citation" data-tooltip="Based on TPA network feed (Oct 2024)">[1]</span></p>
+              </div>
+            </div>
+          </div>
+          <div id="ai-panel-hospital" role="tabpanel" aria-labelledby="ai-tab-hospital" class="ai-panel" hidden>
+            <div class="ai-panel__prompts" aria-label="Suggested prompts">
+              <button class="prompt-chip" data-message="Show pending pre-auths over 60 minutes.">Show pending pre-auths &gt;60m.</button>
+              <button class="prompt-chip" data-message="Top denial reasons this week with appeal templates.">Top denial reasons this week + appeal templates.</button>
+              <button class="prompt-chip" data-message="List empanelment renewals due this month.">List empanelment renewals due this month.</button>
+            </div>
+            <div class="ai-chat" aria-live="polite">
+              <div class="ai-chat__message ai-chat__message--user">
+                <span class="ai-chat__label">You</span>
+                <p>How is our denial rate trending?</p>
+              </div>
+              <div class="ai-chat__message ai-chat__message--bot" data-typewriter>
+                <span class="ai-chat__label">HF RCM Assistant</span>
+                <p>Denials dropped 18% week-on-week. Top causes: coding mismatch (28%), missing pre-auth docs (19%). I’ve queued appeals with clause citations. <span class="citation" data-tooltip="Source: Denial Agent logs, Oct 2024">[2]</span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="btn btn--primary ai__contact" data-contact-modal data-department="Customer Support">Talk to a human</button>
+      </div>
+    </section>
+
+    <section class="diagnostics" aria-labelledby="diagnostics-heading">
+      <div class="container">
+        <div class="diagnostics__header">
+          <div>
+            <h2 id="diagnostics-heading">Diagnostics &amp; live slots preview</h2>
+            <p>Explore imaging and lab availability with transparent price bands.</p>
+          </div>
+          <div class="diagnostics__filters" role="radiogroup" aria-label="Select city">
+            <button class="filter-chip" role="radio" aria-checked="true" data-city="Hyderabad">Hyderabad</button>
+            <button class="filter-chip" role="radio" aria-checked="false" data-city="Bengaluru">Bengaluru</button>
+            <button class="filter-chip" role="radio" aria-checked="false" data-city="Pune">Pune</button>
+            <button class="filter-chip" role="radio" aria-checked="false" data-city="Delhi">Delhi</button>
+          </div>
+        </div>
+        <div class="diagnostics__grid" data-diagnostics-grid>
+          <!-- Slots populated by JS -->
+        </div>
+        <a class="btn btn--ghost diagnostics__cta" href="/marketplace/">View more in Marketplace</a>
+      </div>
+    </section>
+
+    <section class="results" aria-labelledby="results-heading">
+      <div class="container">
+        <h2 id="results-heading">Results you can trust</h2>
+        <div class="results__metrics">
+          <div class="metric" data-count="100">
+            <span class="metric__value">0</span>
+            <span class="metric__label">Hospitals onboarded</span>
+          </div>
+          <div class="metric" data-count="10000">
+            <span class="metric__value">0</span>
+            <span class="metric__label">Patient signups</span>
+          </div>
+          <div class="metric" data-count="1000">
+            <span class="metric__value">0</span>
+            <span class="metric__label">Bookings facilitated</span>
+          </div>
+          <div class="metric" data-count="50">
+            <span class="metric__value">0</span>
+            <span class="metric__label">AI automation on pre-auth queries</span>
+          </div>
+        </div>
+        <div class="results__logos" aria-label="Partner logos">
+          <img src="assets/img/logo-insurer-1.svg" alt="Partner insurer" loading="lazy">
+          <img src="assets/img/logo-insurer-2.svg" alt="Partner TPA" loading="lazy">
+          <img src="assets/img/logo-insurer-3.svg" alt="Partner finance" loading="lazy">
+          <img src="assets/img/logo-insurer-4.svg" alt="Partner network" loading="lazy">
+        </div>
+      </div>
+    </section>
+
+    <section class="security" id="security" aria-labelledby="security-heading">
+      <div class="container security__inner">
+        <div>
+          <h2 id="security-heading">Security &amp; compliance you can count on</h2>
+          <ul class="security__list">
+            <li>WCAG AA accessible experiences</li>
+            <li>DPDP consent workflows and audit trails</li>
+            <li>OWASP-aligned engineering hygiene</li>
+            <li>Immutable audit logs for payer escalations</li>
+          </ul>
+          <a href="/legal/privacy.html" class="security__link">View privacy commitments</a>
+        </div>
+        <div class="security__badges">
+          <span class="badge">WCAG AA</span>
+          <span class="badge">DPDP consent</span>
+          <span class="badge">OWASP hygiene</span>
+          <span class="badge">Immutable audit logs</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq" id="faq" aria-labelledby="faq-heading">
+      <div class="container">
+        <div class="faq__header">
+          <h2 id="faq-heading">FAQs</h2>
+          <div class="faq-tabs" role="tablist" aria-label="FAQ tabs">
+            <button role="tab" aria-selected="true" aria-controls="faq-panel-patients" id="faq-tab-patients" class="faq-tabs__tab">Patients</button>
+            <button role="tab" aria-selected="false" aria-controls="faq-panel-hospitals" id="faq-tab-hospitals" class="faq-tabs__tab">Hospitals</button>
+          </div>
+        </div>
+        <div class="faq__panels">
+          <div id="faq-panel-patients" role="tabpanel" aria-labelledby="faq-tab-patients" class="faq-panel" data-accordion-group>
+            <div class="accordion" data-accordion>
+              <button class="accordion__trigger" aria-expanded="false">How do I compare tariffs?</button>
+              <div class="accordion__content" hidden>
+                <p>Use the Find &amp; Book module to view inclusions, exclusions, and package notes side by side for partner hospitals.</p>
+              </div>
+            </div>
+            <div class="accordion" data-accordion>
+              <button class="accordion__trigger" aria-expanded="false">Can HealthFlo help with insurance approvals?</button>
+              <div class="accordion__content" hidden>
+                <p>Yes, our concierge submits pre-auth, tracks approvals, and keeps you updated via WhatsApp and email.</p>
+              </div>
+            </div>
+            <div class="accordion" data-accordion>
+              <button class="accordion__trigger" aria-expanded="false">Do I need to pay upfront?</button>
+              <div class="accordion__content" hidden>
+                <p>Choose 0% EMI or cashless plans based on your policy. Pay only the non-covered balance, if any.</p>
+              </div>
+            </div>
+          </div>
+          <div id="faq-panel-hospitals" role="tabpanel" aria-labelledby="faq-tab-hospitals" class="faq-panel" data-accordion-group hidden>
+            <div class="accordion" data-accordion>
+              <button class="accordion__trigger" aria-expanded="false">What is required for empanelment?</button>
+              <div class="accordion__content" hidden>
+                <p>Upload licenses, submit tariffs, and configure SLAs. Our team validates documents before sharing with payers.</p>
+              </div>
+            </div>
+            <div class="accordion" data-accordion>
+              <button class="accordion__trigger" aria-expanded="false">How does Denial Agent work?</button>
+              <div class="accordion__content" hidden>
+                <p>The Denial Agent normalizes codes, suggests appeal templates, and tracks recovery timelines across payers.</p>
+              </div>
+            </div>
+            <div class="accordion" data-accordion>
+              <button class="accordion__trigger" aria-expanded="false">Can I access analytics?</button>
+              <div class="accordion__content" hidden>
+                <p>Yes, dashboards highlight denial waterfall, time-to-cash, and payer performance by speciality.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact" id="contact" aria-labelledby="contact-heading">
+      <div class="container contact__inner">
+        <div class="contact__intro">
+          <h2 id="contact-heading">Let's build the future of hospital access together</h2>
+          <p>Talk to the right team in minutes. Clinical services are delivered by licensed partner establishments.</p>
+        </div>
+        <div class="contact__forms">
+          <form class="contact-form" name="hospital-empanel" method="POST" data-netlify="true" netlify data-netlify-honeypot="bot-field">
+            <input type="hidden" name="form-name" value="hospital-empanel">
+            <input type="hidden" name="bot-field">
+            <input type="hidden" name="dept_email" value="network_hospital@healthflo.in" data-dept-target>
+            <h3>Hospitals – Empanelment &amp; Support</h3>
+            <label>Hospital name
+              <input type="text" name="hospital_name" required>
+            </label>
+            <label>Contact person
+              <input type="text" name="contact_person" required>
+            </label>
+            <label>Email
+              <input type="email" name="email" required>
+            </label>
+            <label>Department
+              <select name="department" data-department-select>
+                <option>Hospitals - Empanelment & Support</option>
+                <option>IT Support</option>
+                <option>Audit Team</option>
+                <option>Research & Development</option>
+                <option>Scrutiny</option>
+              </select>
+            </label>
+            <label>Message
+              <textarea name="message" rows="4" required></textarea>
+            </label>
+            <label class="consent">
+              <input type="checkbox" name="consent" required>
+              <span>I agree to the DPDP consent terms and <a href="/legal/privacy.html">privacy policy</a>.</span>
+            </label>
+            <button type="submit" class="btn btn--primary">Submit</button>
+          </form>
+          <form class="contact-form" name="patient-support" method="POST" data-netlify="true" netlify data-netlify-honeypot="bot-field">
+            <input type="hidden" name="form-name" value="patient-support">
+            <input type="hidden" name="bot-field">
+            <input type="hidden" name="dept_email" value="support@healthflo.in" data-dept-target>
+            <h3>Patients – Concierge &amp; Claims</h3>
+            <label>Full name
+              <input type="text" name="full_name" required>
+            </label>
+            <label>Email
+              <input type="email" name="email" required>
+            </label>
+            <label>Phone
+              <input type="tel" name="phone" required>
+            </label>
+            <label>Department
+              <select name="department" data-department-select>
+                <option>Customer Support</option>
+                <option>Patient Protect</option>
+                <option>Info</option>
+                <option>HR Support</option>
+              </select>
+            </label>
+            <label>Message
+              <textarea name="message" rows="4" required></textarea>
+            </label>
+            <label class="consent">
+              <input type="checkbox" name="consent" required>
+              <span>I agree to the DPDP consent terms and <a href="/legal/privacy.html">privacy policy</a>.</span>
+            </label>
+            <button type="submit" class="btn btn--secondary">Submit</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" aria-labelledby="footer-heading">
+    <div class="container site-footer__inner">
+      <div class="site-footer__brand">
+        <h2 id="footer-heading">HealthFlo Hospitals Network</h2>
+        <p>HealthFlo Ventures Pvt. Ltd. — <a href="https://www.healthflo.org/">www.healthflo.org</a> | <a href="mailto:info@healthflo.in">info@healthflo.in</a> | +91-9342569379 / 8610425342</p>
+        <p class="disclosure">Clinical services are delivered by licensed partner establishments. HealthFlo orchestrates access, cashless facilitation, RCM operations, financing, and SLAs.</p>
+      </div>
+      <nav class="site-footer__nav" aria-label="Footer links">
+        <a href="#hero">About</a>
+        <a href="/careers/">Careers</a>
+        <a href="/blog/">Blog</a>
+        <a href="/legal/privacy.html">Privacy</a>
+        <a href="/legal/terms.html">Terms</a>
+      </nav>
+      <div class="site-footer__social" aria-label="Social media">
+        <a href="https://www.linkedin.com/company/healthflo" aria-label="LinkedIn">
+          <img src="assets/icons/linkedin.svg" alt="" loading="lazy">
+        </a>
+        <a href="https://twitter.com/healthflo" aria-label="Twitter">
+          <img src="assets/icons/twitter.svg" alt="" loading="lazy">
+        </a>
+        <a href="https://www.youtube.com/" aria-label="YouTube">
+          <img src="assets/icons/youtube.svg" alt="" loading="lazy">
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="modal" data-modal hidden>
+    <div class="modal__overlay" data-modal-close></div>
+    <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="modal-heading">
+      <button class="modal__close" data-modal-close aria-label="Close contact modal">&times;</button>
+      <h2 id="modal-heading">Contact our team</h2>
+      <p>We’ll route your request to the right department instantly.</p>
+      <form class="modal__form" data-modal-form>
+        <label>Full name
+          <input type="text" name="full_name" required>
+        </label>
+        <label>Email
+          <input type="email" name="email" required>
+        </label>
+        <label>Department
+          <select name="department" data-modal-department>
+            <option>Customer Support</option>
+            <option>Hospitals - Empanelment & Support</option>
+            <option>IT Support</option>
+            <option>Audit Team</option>
+          </select>
+        </label>
+        <label>Message
+          <textarea name="message" rows="4" required></textarea>
+        </label>
+        <button type="submit" class="btn btn--primary">Send</button>
+      </form>
+    </div>
+  </div>
+
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-CgZ9eruqbWtaXDpUe1koRaSPoaqe7iT730cdpShUMHbOWcZH/5LiCFYI8aAkaI0s5momkGumZ5qX6Ch12yvDwg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha512-ytSGIN1qfN3npa9eKJeNEgnbPiwxupCSvJzpuG1HsfrN7kYM/qfNwCuWHa3gwxObn2ymlk/wEYBLETymFcpnSg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r148/three.min.js" integrity="sha512-0PazTA/gkGEXUXJJLLq5yRvCNrI6VOGGAaHo9dZYkTfGZNVVRFlE0YyqS/fWznuaCG2lLBVmOAXoJ2i8LojRxw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/@lottiefiles/lottie-player@1.6.0/dist/lottie-player.min.js" integrity="sha384-6j3TjeG6VSZ/Ik2Vq6KYFAsktwVDqveufqdpypu32n7Z1xXHDD236UMtYYV9zp1N" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.31/bundled/lenis.min.js" integrity="sha384-GUeN1Pn+Bs+ZBwbfx9pUrx4hu7nAhLTGyCVi4WZn9pKuaV1HjdUMJFDtAEvtTDHk" crossorigin="anonymous"></script>
+  <script defer src="assets/js/main.js"></script>
+  <script defer src="assets/js/gsap-init.js"></script>
+  <script defer src="assets/js/three-hero.js"></script>
+  <script defer src="assets/js/ai-demo.js"></script>
+  <script defer src="assets/js/forms.js"></script>
+</body>
+</html>
