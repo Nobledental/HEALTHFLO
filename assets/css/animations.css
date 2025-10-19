@@ -1,77 +1,98 @@
+/* ==========================================================
+   HealthFlo — Cinematic Animations Layer
+   Safe drop-in. Works with existing main.css.
+   ========================================================== */
+
+/* HERO ORBIT LAYER */
+.hf-hero-orbit {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0; /* behind hero content */
+}
+
+/* SCROLL CONNECTOR */
+#hf-scroll-path {
+  width: 100%;
+  height: clamp(140px, 30vw, 240px);
+  display: block;
+}
+#hf-path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+/* FADE-UP utility */
 .fade-up {
   opacity: 0;
-  transform: translateY(24px);
+  transform: translateY(16px);
+  will-change: transform, opacity;
 }
 
-.tilt-3d {
-  transition: transform 0.5s ease, box-shadow 0.5s ease;
+/* METRIC COUNTERS */
+.metric__value {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
 }
 
-.tilt-3d:hover,
-.tilt-3d:focus-visible {
-  transform: rotateX(6deg) rotateY(-6deg) translateY(-8px);
-  box-shadow: 0 35px 90px -40px rgba(79, 156, 255, 0.45);
-}
-
-.ink-reveal {
-  position: relative;
+/* LOGO CONVEYOR */
+.hf-conveyor {
   overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.hf-track {
+  display: flex;
+  gap: clamp(40px, 6vw, 96px);
+  align-items: center;
+  animation: hf-slide 22s linear infinite;
+  will-change: transform;
+}
+.hf-track img {
+  height: clamp(28px, 4vw, 44px);
+  opacity: 0.9;
+  transition: opacity 200ms;
+}
+.hf-track img:hover { opacity: 1; }
+@keyframes hf-slide {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }
 
-.ink-reveal::before {
-  content: '';
+/* SECTION UNDERLINE (injected SVG) */
+.u-underline { position: relative; display: inline-block; }
+.u-underline svg {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(79, 156, 255, 0.85), rgba(56, 213, 196, 0.75));
-  transform: translateX(-100%);
-  transition: transform 0.6s ease;
-  z-index: -1;
+  left: 0; bottom: -0.2em;
+  width: 100%; height: 0.5em;
+  overflow: visible;
+}
+.u-underline path {
+  stroke: url(#hf-grad-stroke);
+  stroke-width: 6;
+  fill: none;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
 }
 
-.ink-reveal.is-active::before {
-  transform: translateX(0);
+/* ICON MICRO-MOTION */
+.how-card__icon,
+.switch-card img {
+  transform: translateZ(0);
+  transition: transform 220ms ease, filter 220ms ease;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.08));
+}
+.how-card:hover .how-card__icon,
+.switch-card:hover img {
+  transform: translateY(-4px) scale(1.04);
+  filter: drop-shadow(0 6px 16px rgba(0,0,0,0.12));
 }
 
-.shimmer {
-  position: relative;
-  overflow: hidden;
-  background: rgba(79, 156, 255, 0.12);
-}
-
-.shimmer::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  transform: translateX(-100%);
-  background: linear-gradient(120deg, transparent 0%, rgba(143, 186, 255, 0.35) 50%, transparent 100%);
-  animation: shimmer 1.6s infinite;
-}
-
-@keyframes shimmer {
-  100% {
-    transform: translateX(100%);
-  }
-}
-
-@keyframes hue-rotate {
-  0% {
-    filter: hue-rotate(0deg);
-  }
-  100% {
-    filter: hue-rotate(360deg);
-  }
-}
-
+/* ACCESSIBILITY: Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
-  .fade-up {
-    opacity: 1 !important;
-    transform: none !important;
-  }
-
-  .tilt-3d,
-  .ink-reveal,
-  .shimmer::after {
-    transition: none !important;
-    animation: none !important;
-  }
+  .hf-track { animation: none; }
+  .fade-up { opacity: 1; transform: none; }
 }
