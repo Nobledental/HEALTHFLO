@@ -7,21 +7,32 @@
   <title>HealthFlo Hospitals Network | AI-Powered Hospital Marketplace & RCM</title>
   <meta name="description" content="HealthFlo Hospitals Network connects patients and hospitals with AI-powered cashless insurance workflows, transparent tariffs, and full-stack revenue cycle management.">
   <link rel="canonical" href="https://www.healthflo.org/">
+
+  <!-- Fonts -->
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600&display=swap" as="style">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600&display=swap">
+
+  <!-- Styles -->
   <link rel="stylesheet" href="assets/css/main.css">
   <link rel="stylesheet" href="assets/css/animations.css">
+
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0057FF">
-  <meta property="og:title" content="HealthFlo">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="HealthFlo Hospitals Network">
   <meta property="og:description" content="AI-powered hospital marketplace with transparent tariffs, cashless operations, and end-to-end RCM.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://www.healthflo.org/">
   <meta property="og:image" content="assets/img/og-cover.webp">
+
+  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="HealthFlo Hospitals Network">
   <meta name="twitter:description" content="Streamline hospital access and RCM with AI automation.">
   <meta name="twitter:image" content="assets/img/og-cover.webp">
+
+  <!-- Schema -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -56,20 +67,14 @@
       {
         "@type": "Service",
         "serviceType": "Revenue Cycle Management",
-        "provider": {
-          "@type": "Organization",
-          "name": "HealthFlo Hospitals Network"
-        },
+        "provider": { "@type": "Organization", "name": "HealthFlo Hospitals Network" },
         "areaServed": "India",
         "description": "AI-powered RCM including empanelment, cashless facilitation, denial management, and analytics."
       },
       {
         "@type": "Service",
         "serviceType": "Hospital Marketplace",
-        "provider": {
-          "@type": "Organization",
-          "name": "HealthFlo Hospitals Network"
-        },
+        "provider": { "@type": "Organization", "name": "HealthFlo Hospitals Network" },
         "description": "Marketplace for hospital services with transparent tariffs, EMI options, and insurance support."
       },
       {
@@ -120,10 +125,13 @@
     ]
   }
   </script>
+
+  <!-- Analytics -->
   <script defer data-domain="healthflo.org" src="https://plausible.io/js/script.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to main content</a>
+
   <header class="site-header" data-component="header">
     <div class="container site-header__inner">
       <a href="#hero" class="site-header__logo" aria-label="HealthFlo Hospitals Network">
@@ -133,6 +141,7 @@
         </svg>
         <span class="site-header__brand">HealthFlo Hospitals Network</span>
       </a>
+
       <nav class="site-nav" aria-label="Primary navigation">
         <button class="site-nav__toggle" aria-expanded="false" aria-controls="primary-menu">
           <span class="site-nav__toggle-line"></span>
@@ -150,13 +159,16 @@
           <li><a href="#contact">Contact</a></li>
         </ul>
       </nav>
+
       <div class="site-header__cta">
         <a class="btn btn--primary" href="#hospitals">For Hospitals – Empanel</a>
         <a class="btn btn--ghost" href="#patients">For Patients – Find Care</a>
       </div>
     </div>
   </header>
+
   <main id="main-content">
+    <!-- ================= HERO ================= -->
     <section class="hero" id="hero">
       <div class="container hero__inner">
         <div class="hero__content">
@@ -175,7 +187,45 @@
             <span class="badge" role="listitem">EMI Options</span>
           </div>
         </div>
+
         <div class="hero__visual" aria-hidden="true">
+          <!-- === NEW: AI Orbit Background (SVG) === -->
+          <svg class="hf-hero-orbit" viewBox="0 0 1600 900" aria-hidden="true">
+            <defs>
+              <filter id="hf-glow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="7" result="b"/>
+                <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+              <linearGradient id="hf-grad-stroke" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#4f9cff">
+                  <animate attributeName="stop-color" values="#4f9cff;#38bdf8;#5eead4;#4f9cff" dur="12s" repeatCount="indefinite"/>
+                </stop>
+                <stop offset="100%" stop-color="#38f9d7">
+                  <animate attributeName="stop-color" values="#38f9d7;#5eead4;#4f9cff;#38f9d7" dur="12s" repeatCount="indefinite"/>
+                </stop>
+              </linearGradient>
+              <radialGradient id="hf-grad-soft" cx="50%" cy="45%" r="65%">
+                <stop offset="0%" stop-color="rgba(80,180,255,0.24)"/>
+                <stop offset="60%" stop-color="rgba(56,249,215,0.12)"/>
+                <stop offset="100%" stop-color="transparent"/>
+              </radialGradient>
+            </defs>
+
+            <rect width="1600" height="900" fill="url(#hf-grad-soft)"></rect>
+
+            <g class="orbits" stroke="url(#hf-grad-stroke)" stroke-width="1.6" fill="none" filter="url(#hf-glow)">
+              <circle class="orbit" cx="800" cy="450" r="280"/>
+              <ellipse class="orbit" cx="800" cy="450" rx="420" ry="230" transform="rotate(18 800 450)"/>
+              <ellipse class="orbit" cx="800" cy="450" rx="520" ry="300" transform="rotate(-14 800 450)"/>
+            </g>
+
+            <g class="nodes" fill="#9ae6ff">
+              <circle class="node" cx="1080" cy="360" r="3.5"/>
+              <circle class="node" cx="620"  cy="540" r="3.5"/>
+              <circle class="node" cx="860"  cy="630" r="3.5"/>
+            </g>
+          </svg>
+
           <div class="hero__canvas" data-fallback="lottie" data-reduced-motion="true">
             <canvas id="hero-flow"></canvas>
             <div class="hero__fallback hero__fallback--lottie">
@@ -188,6 +238,7 @@
       </div>
     </section>
 
+    <!-- ===== Switchboard ===== -->
     <section class="switchboard" aria-labelledby="switchboard-heading">
       <div class="container switchboard__inner">
         <h2 id="switchboard-heading">Choose your journey</h2>
@@ -210,6 +261,21 @@
       </div>
     </section>
 
+    <!-- === NEW: Scroll-draw pathway connector === -->
+    <section class="connector" aria-hidden="true">
+      <svg id="hf-scroll-path" viewBox="0 0 1200 300" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <linearGradient id="hf-path-grad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#4f9cff"/>
+            <stop offset="100%" stop-color="#38f9d7"/>
+          </linearGradient>
+        </defs>
+        <path id="hf-path" d="M 40 260 C 220 120, 480 120, 680 220 S 1080 200, 1160 60"
+              stroke="url(#hf-path-grad)" stroke-width="4" fill="none" stroke-linecap="round"/>
+      </svg>
+    </section>
+
+    <!-- ===== Patients How ===== -->
     <section class="how" id="patients" aria-labelledby="patients-heading">
       <div class="container">
         <h2 id="patients-heading">How it works for patients</h2>
@@ -238,6 +304,7 @@
       </div>
     </section>
 
+    <!-- ===== Hospitals How ===== -->
     <section class="how how--hospitals" id="hospitals" aria-labelledby="hospitals-heading">
       <div class="container">
         <div class="how__header">
@@ -274,87 +341,49 @@
       </div>
     </section>
 
+    <!-- ===== Modules ===== -->
     <section class="modules" id="modules" aria-labelledby="modules-heading">
       <div class="container">
         <h2 id="modules-heading">Product modules for every team</h2>
+
         <div class="modules__group">
           <h3>HF-PAT (Patients)</h3>
           <div class="modules__grid">
-            <article class="module-card">
-              <h4>Find &amp; Book</h4>
-              <p>Service search with inclusions/exclusions and live slot previews.</p>
-              <a href="#" class="module-card__link">Learn more</a>
-            </article>
-            <article class="module-card">
-              <h4>Coverage &amp; Cashless</h4>
-              <p>Policy guidance with cited answers from insurer PDFs.</p>
-              <a href="#" class="module-card__link">Learn more</a>
-            </article>
-            <article class="module-card">
-              <h4>EMI &amp; Payments</h4>
-              <p>0% short-tenure options; repayment schedule you control.</p>
-              <a href="#" class="module-card__link">Learn more</a>
-            </article>
-            <article class="module-card">
-              <h4>Claim Tracker</h4>
-              <p>Document checklist, WhatsApp updates, ICS reminders.</p>
-              <a href="#" class="module-card__link">Learn more</a>
-            </article>
-            <article class="module-card">
-              <h4>Prime Care</h4>
-              <p>Priority slots, platform fee waivers, hotline, family wallet.</p>
-              <a href="#" class="module-card__link">Learn more</a>
-            </article>
+            <article class="module-card"><h4>Find &amp; Book</h4><p>Service search with inclusions/exclusions and live slot previews.</p><a href="#" class="module-card__link">Learn more</a></article>
+            <article class="module-card"><h4>Coverage &amp; Cashless</h4><p>Policy guidance with cited answers from insurer PDFs.</p><a href="#" class="module-card__link">Learn more</a></article>
+            <article class="module-card"><h4>EMI &amp; Payments</h4><p>0% short-tenure options; repayment schedule you control.</p><a href="#" class="module-card__link">Learn more</a></article>
+            <article class="module-card"><h4>Claim Tracker</h4><p>Document checklist, WhatsApp updates, ICS reminders.</p><a href="#" class="module-card__link">Learn more</a></article>
+            <article class="module-card"><h4>Prime Care</h4><p>Priority slots, platform fee waivers, hotline, family wallet.</p><a href="#" class="module-card__link">Learn more</a></article>
           </div>
         </div>
+
         <div class="modules__group">
           <h3>HF-RCM (Hospitals)</h3>
           <div class="modules__grid">
-            <article class="module-card">
-              <h4>Empanelment Hub</h4>
-              <p>Onboard to 20+ insurers/TPAs with guided checklists and renewals.</p>
-              <a href="#" class="module-card__link">Learn more</a>
-            </article>
-            <article class="module-card">
-              <h4>Cashless Everywhere</h4>
-              <p>Non-network cashless workflows with SLA timers &amp; escalations.</p>
-              <a href="#" class="module-card__link">Learn more</a>
-            </article>
-            <article class="module-card">
-              <h4>Denial Agent</h4>
-              <p>Reason code normalization, appeal templates, clause citations—recover more.</p>
-              <a href="#" class="module-card__link">Learn more</a>
-            </article>
-            <article class="module-card">
-              <h4>Tariff &amp; Packages</h4>
-              <p>Procedure packages, room classes, payer overrides—publish to marketplace.</p>
-              <a href="#" class="module-card__link">Learn more</a>
-            </article>
-            <article class="module-card">
-              <h4>RCM Analytics</h4>
-              <p>Denial waterfall, payer scorecards, time-to-cash—board-ready.</p>
-              <a href="#" class="module-card__link">Learn more</a>
-            </article>
-            <article class="module-card">
-              <h4>Compliance Coach</h4>
-              <p>Rohini/NABH checklists, DPDP consent flows, immutable logs.</p>
-              <a href="#" class="module-card__link">Learn more</a>
-            </article>
+            <article class="module-card"><h4>Empanelment Hub</h4><p>Onboard to 20+ insurers/TPAs with guided checklists and renewals.</p><a href="#" class="module-card__link">Learn more</a></article>
+            <article class="module-card"><h4>Cashless Everywhere</h4><p>Non-network cashless workflows with SLA timers &amp; escalations.</p><a href="#" class="module-card__link">Learn more</a></article>
+            <article class="module-card"><h4>Denial Agent</h4><p>Reason code normalization, appeal templates, clause citations—recover more.</p><a href="#" class="module-card__link">Learn more</a></article>
+            <article class="module-card"><h4>Tariff &amp; Packages</h4><p>Procedure packages, room classes, payer overrides—publish to marketplace.</p><a href="#" class="module-card__link">Learn more</a></article>
+            <article class="module-card"><h4>RCM Analytics</h4><p>Denial waterfall, payer scorecards, time-to-cash—board-ready.</p><a href="#" class="module-card__link">Learn more</a></article>
+            <article class="module-card"><h4>Compliance Coach</h4><p>Rohini/NABH checklists, DPDP consent flows, immutable logs.</p><a href="#" class="module-card__link">Learn more</a></article>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- ===== AI Section ===== -->
     <section class="ai" id="ai" aria-labelledby="ai-heading">
       <div class="container ai__inner">
         <div class="ai__header">
           <h2 id="ai-heading">AI co-pilots for every stakeholder</h2>
           <p class="ai__disclaimer">No clinical advice. Policy/operations guidance only.</p>
         </div>
+
         <div class="ai-tabs" role="tablist" aria-label="AI demo tabs">
           <button role="tab" aria-selected="true" aria-controls="ai-panel-patient" id="ai-tab-patient" class="ai-tabs__tab">Patient Concierge</button>
           <button role="tab" aria-selected="false" aria-controls="ai-panel-hospital" id="ai-tab-hospital" class="ai-tabs__tab">Hospital Admin Assistant</button>
         </div>
+
         <div class="ai__panels">
           <div id="ai-panel-patient" role="tabpanel" aria-labelledby="ai-tab-patient" class="ai-panel is-active">
             <div class="ai-panel__prompts" aria-label="Suggested prompts">
@@ -363,16 +392,11 @@
               <button class="prompt-chip" data-message="Show EMI options for maternity package.">Show EMI options for maternity package.</button>
             </div>
             <div class="ai-chat" aria-live="polite">
-              <div class="ai-chat__message ai-chat__message--user">
-                <span class="ai-chat__label">You</span>
-                <p>Can you help me find a hospital for knee surgery?</p>
-              </div>
-              <div class="ai-chat__message ai-chat__message--bot" data-typewriter>
-                <span class="ai-chat__label">HealthFlo Concierge</span>
-                <p>Sure. Choose your city and budget and I’ll shortlist partner hospitals with transparent tariffs and cashless availability. <span class="citation" data-tooltip="Based on TPA network feed (Oct 2024)">[1]</span></p>
-              </div>
+              <div class="ai-chat__message ai-chat__message--user"><span class="ai-chat__label">You</span><p>Can you help me find a hospital for knee surgery?</p></div>
+              <div class="ai-chat__message ai-chat__message--bot" data-typewriter><span class="ai-chat__label">HealthFlo Concierge</span><p>Sure. Choose your city and budget and I’ll shortlist partner hospitals with transparent tariffs and cashless availability. <span class="citation" data-tooltip="Based on TPA network feed (Oct 2024)">[1]</span></p></div>
             </div>
           </div>
+
           <div id="ai-panel-hospital" role="tabpanel" aria-labelledby="ai-tab-hospital" class="ai-panel" hidden>
             <div class="ai-panel__prompts" aria-label="Suggested prompts">
               <button class="prompt-chip" data-message="Show pending pre-auths over 60 minutes.">Show pending pre-auths &gt;60m.</button>
@@ -380,21 +404,17 @@
               <button class="prompt-chip" data-message="List empanelment renewals due this month.">List empanelment renewals due this month.</button>
             </div>
             <div class="ai-chat" aria-live="polite">
-              <div class="ai-chat__message ai-chat__message--user">
-                <span class="ai-chat__label">You</span>
-                <p>How is our denial rate trending?</p>
-              </div>
-              <div class="ai-chat__message ai-chat__message--bot" data-typewriter>
-                <span class="ai-chat__label">HF RCM Assistant</span>
-                <p>Denials dropped 18% week-on-week. Top causes: coding mismatch (28%), missing pre-auth docs (19%). I’ve queued appeals with clause citations. <span class="citation" data-tooltip="Source: Denial Agent logs, Oct 2024">[2]</span></p>
-              </div>
+              <div class="ai-chat__message ai-chat__message--user"><span class="ai-chat__label">You</span><p>How is our denial rate trending?</p></div>
+              <div class="ai-chat__message ai-chat__message--bot" data-typewriter><span class="ai-chat__label">HF RCM Assistant</span><p>Denials dropped 18% week-on-week. Top causes: coding mismatch (28%), missing pre-auth docs (19%). I’ve queued appeals with clause citations. <span class="citation" data-tooltip="Source: Denial Agent logs, Oct 2024">[2]</span></p></div>
             </div>
           </div>
         </div>
+
         <button class="btn btn--primary ai__contact" data-contact-modal data-department="Customer Support">Talk to a human</button>
       </div>
     </section>
 
+    <!-- ===== Diagnostics ===== -->
     <section class="diagnostics" aria-labelledby="diagnostics-heading">
       <div class="container">
         <div class="diagnostics__header">
@@ -409,43 +429,39 @@
             <button class="filter-chip" role="radio" aria-checked="false" data-city="Delhi">Delhi</button>
           </div>
         </div>
-        <div class="diagnostics__grid" data-diagnostics-grid>
-          <!-- Slots populated by JS -->
-        </div>
+        <div class="diagnostics__grid" data-diagnostics-grid><!-- Slots populated by JS --></div>
         <a class="btn btn--ghost diagnostics__cta" href="/marketplace/">View more in Marketplace</a>
       </div>
     </section>
 
+    <!-- ===== Results ===== -->
     <section class="results" aria-labelledby="results-heading">
       <div class="container">
         <h2 id="results-heading">Results you can trust</h2>
         <div class="results__metrics">
-          <div class="metric" data-count="100">
-            <span class="metric__value">0</span>
-            <span class="metric__label">Hospitals onboarded</span>
-          </div>
-          <div class="metric" data-count="10000">
-            <span class="metric__value">0</span>
-            <span class="metric__label">Patient signups</span>
-          </div>
-          <div class="metric" data-count="1000">
-            <span class="metric__value">0</span>
-            <span class="metric__label">Bookings facilitated</span>
-          </div>
-          <div class="metric" data-count="50">
-            <span class="metric__value">0</span>
-            <span class="metric__label">AI automation on pre-auth queries</span>
-          </div>
+          <div class="metric" data-count="100"><span class="metric__value">0</span><span class="metric__label">Hospitals onboarded</span></div>
+          <div class="metric" data-count="10000"><span class="metric__value">0</span><span class="metric__label">Patient signups</span></div>
+          <div class="metric" data-count="1000"><span class="metric__value">0</span><span class="metric__label">Bookings facilitated</span></div>
+          <div class="metric" data-count="50"><span class="metric__value">0</span><span class="metric__label">AI automation on pre-auth queries</span></div>
         </div>
-        <div class="results__logos" aria-label="Partner logos">
-          <img src="assets/img/logo-insurer-1.svg" alt="Partner insurer" loading="lazy">
-          <img src="assets/img/logo-insurer-2.svg" alt="Partner TPA" loading="lazy">
-          <img src="assets/img/logo-insurer-3.svg" alt="Partner finance" loading="lazy">
-          <img src="assets/img/logo-insurer-4.svg" alt="Partner network" loading="lazy">
+
+        <!-- === NEW: Infinite conveyor for partner logos === -->
+        <div class="results__logos hf-conveyor" aria-label="Partner logos">
+          <div class="hf-track">
+            <img src="assets/img/logo-insurer-1.svg" alt="Partner insurer" loading="lazy">
+            <img src="assets/img/logo-insurer-2.svg" alt="Partner TPA" loading="lazy">
+            <img src="assets/img/logo-insurer-3.svg" alt="Partner finance" loading="lazy">
+            <img src="assets/img/logo-insurer-4.svg" alt="Partner network" loading="lazy">
+            <img src="assets/img/logo-insurer-1.svg" alt="Partner insurer" loading="lazy">
+            <img src="assets/img/logo-insurer-2.svg" alt="Partner TPA" loading="lazy">
+            <img src="assets/img/logo-insurer-3.svg" alt="Partner finance" loading="lazy">
+            <img src="assets/img/logo-insurer-4.svg" alt="Partner network" loading="lazy">
+          </div>
         </div>
       </div>
     </section>
 
+    <!-- ===== Security ===== -->
     <section class="security" id="security" aria-labelledby="security-heading">
       <div class="container security__inner">
         <div>
@@ -467,6 +483,7 @@
       </div>
     </section>
 
+    <!-- ===== FAQ ===== -->
     <section class="faq" id="faq" aria-labelledby="faq-heading">
       <div class="container">
         <div class="faq__header">
@@ -476,6 +493,7 @@
             <button role="tab" aria-selected="false" aria-controls="faq-panel-hospitals" id="faq-tab-hospitals" class="faq-tabs__tab">Hospitals</button>
           </div>
         </div>
+
         <div class="faq__panels">
           <div id="faq-panel-patients" role="tabpanel" aria-labelledby="faq-tab-patients" class="faq-panel" data-accordion-group>
             <div class="accordion" data-accordion>
@@ -497,6 +515,7 @@
               </div>
             </div>
           </div>
+
           <div id="faq-panel-hospitals" role="tabpanel" aria-labelledby="faq-tab-hospitals" class="faq-panel" data-accordion-group hidden>
             <div class="accordion" data-accordion>
               <button class="accordion__trigger" aria-expanded="false">What is required for empanelment?</button>
@@ -521,27 +540,23 @@
       </div>
     </section>
 
+    <!-- ===== Contact ===== -->
     <section class="contact" id="contact" aria-labelledby="contact-heading">
       <div class="container contact__inner">
         <div class="contact__intro">
           <h2 id="contact-heading">Let's build the future of hospital access together</h2>
           <p>Talk to the right team in minutes. Clinical services are delivered by licensed partner establishments.</p>
         </div>
+
         <div class="contact__forms">
           <form class="contact-form" name="hospital-empanel" method="POST" data-netlify="true" netlify data-netlify-honeypot="bot-field">
             <input type="hidden" name="form-name" value="hospital-empanel">
             <input type="hidden" name="bot-field">
             <input type="hidden" name="dept_email" value="network_hospital@healthflo.in" data-dept-target>
             <h3>Hospitals – Empanelment &amp; Support</h3>
-            <label>Hospital name
-              <input type="text" name="hospital_name" required>
-            </label>
-            <label>Contact person
-              <input type="text" name="contact_person" required>
-            </label>
-            <label>Email
-              <input type="email" name="email" required>
-            </label>
+            <label>Hospital name <input type="text" name="hospital_name" required></label>
+            <label>Contact person <input type="text" name="contact_person" required></label>
+            <label>Email <input type="email" name="email" required></label>
             <label>Department
               <select name="department" data-department-select>
                 <option>Hospitals - Empanelment & Support</option>
@@ -551,29 +566,22 @@
                 <option>Scrutiny</option>
               </select>
             </label>
-            <label>Message
-              <textarea name="message" rows="4" required></textarea>
-            </label>
+            <label>Message <textarea name="message" rows="4" required></textarea></label>
             <label class="consent">
               <input type="checkbox" name="consent" required>
               <span>I agree to the DPDP consent terms and <a href="/legal/privacy.html">privacy policy</a>.</span>
             </label>
             <button type="submit" class="btn btn--primary">Submit</button>
           </form>
+
           <form class="contact-form" name="patient-support" method="POST" data-netlify="true" netlify data-netlify-honeypot="bot-field">
             <input type="hidden" name="form-name" value="patient-support">
             <input type="hidden" name="bot-field">
             <input type="hidden" name="dept_email" value="support@healthflo.in" data-dept-target>
             <h3>Patients – Concierge &amp; Claims</h3>
-            <label>Full name
-              <input type="text" name="full_name" required>
-            </label>
-            <label>Email
-              <input type="email" name="email" required>
-            </label>
-            <label>Phone
-              <input type="tel" name="phone" required>
-            </label>
+            <label>Full name <input type="text" name="full_name" required></label>
+            <label>Email <input type="email" name="email" required></label>
+            <label>Phone <input type="tel" name="phone" required></label>
             <label>Department
               <select name="department" data-department-select>
                 <option>Customer Support</option>
@@ -582,9 +590,7 @@
                 <option>HR Support</option>
               </select>
             </label>
-            <label>Message
-              <textarea name="message" rows="4" required></textarea>
-            </label>
+            <label>Message <textarea name="message" rows="4" required></textarea></label>
             <label class="consent">
               <input type="checkbox" name="consent" required>
               <span>I agree to the DPDP consent terms and <a href="/legal/privacy.html">privacy policy</a>.</span>
@@ -611,19 +617,14 @@
         <a href="/legal/terms.html">Terms</a>
       </nav>
       <div class="site-footer__social" aria-label="Social media">
-        <a href="https://www.linkedin.com/company/healthflo" aria-label="LinkedIn">
-          <img src="assets/icons/linkedin.svg" alt="" loading="lazy">
-        </a>
-        <a href="https://twitter.com/healthflo" aria-label="Twitter">
-          <img src="assets/icons/twitter.svg" alt="" loading="lazy">
-        </a>
-        <a href="https://www.youtube.com/" aria-label="YouTube">
-          <img src="assets/icons/youtube.svg" alt="" loading="lazy">
-        </a>
+        <a href="https://www.linkedin.com/company/healthflo" aria-label="LinkedIn"><img src="assets/icons/linkedin.svg" alt="" loading="lazy"></a>
+        <a href="https://twitter.com/healthflo" aria-label="Twitter"><img src="assets/icons/twitter.svg" alt="" loading="lazy"></a>
+        <a href="https://www.youtube.com/" aria-label="YouTube"><img src="assets/icons/youtube.svg" alt="" loading="lazy"></a>
       </div>
     </div>
   </footer>
 
+  <!-- Contact modal -->
   <div class="modal" data-modal hidden>
     <div class="modal__overlay" data-modal-close></div>
     <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="modal-heading">
@@ -631,12 +632,8 @@
       <h2 id="modal-heading">Contact our team</h2>
       <p>We’ll route your request to the right department instantly.</p>
       <form class="modal__form" data-modal-form>
-        <label>Full name
-          <input type="text" name="full_name" required>
-        </label>
-        <label>Email
-          <input type="email" name="email" required>
-        </label>
+        <label>Full name <input type="text" name="full_name" required></label>
+        <label>Email <input type="email" name="email" required></label>
         <label>Department
           <select name="department" data-modal-department>
             <option>Customer Support</option>
@@ -645,19 +642,20 @@
             <option>Audit Team</option>
           </select>
         </label>
-        <label>Message
-          <textarea name="message" rows="4" required></textarea>
-        </label>
+        <label>Message <textarea name="message" rows="4" required></textarea></label>
         <button type="submit" class="btn btn--primary">Send</button>
       </form>
     </div>
   </div>
 
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-CgZ9eruqbWtaXDpUe1koRaSPoaqe7iT730cdpShUMHbOWcZH/5LiCFYI8aAkaI0s5momkGumZ5qX6Ch12yvDwg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha512-ytSGIN1qfN3npa9eKJeNEgnbPiwxupCSvJzpuG1HsfrN7kYM/qfNwCuWHa3gwxObn2ymlk/wEYBLETymFcpnSg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r148/three.min.js" integrity="sha512-0PazTA/gkGEXUXJJLLq5yRvCNrI6VOGGAaHo9dZYkTfGZNVVRFlE0YyqS/fWznuaCG2lLBVmOAXoJ2i8LojRxw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/@lottiefiles/lottie-player@1.6.0/dist/lottie-player.min.js" integrity="sha384-6j3TjeG6VSZ/Ik2Vq6KYFAsktwVDqveufqdpypu32n7Z1xXHDD236UMtYYV9zp1N" crossorigin="anonymous"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.31/bundled/lenis.min.js" integrity="sha384-GUeN1Pn+Bs+ZBwbfx9pUrx4hu7nAhLTGyCVi4WZn9pKuaV1HjdUMJFDtAEvtTDHk" crossorigin="anonymous"></script>
+  <!-- Scripts -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r148/three.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/@lottiefiles/lottie-player@1.6.0/dist/lottie-player.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.31/bundled/lenis.min.js" crossorigin="anonymous"></script>
+
+  <!-- Your scripts (order preserved) -->
   <script defer src="assets/js/main.js"></script>
   <script defer src="assets/js/gsap-init.js"></script>
   <script defer src="assets/js/three-hero.js"></script>
