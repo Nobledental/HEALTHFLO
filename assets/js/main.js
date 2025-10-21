@@ -818,23 +818,44 @@ function toast(msg) {
    Minor GSAP hooks (if gsap-init.js present)
 ------------------------------------------ */
 (() => {
-  if (!window.gsap || prefersReduced) return;
   // reveal on scroll for [data-animate]
   const items = $$('[data-animate]');
+  if (!items.length) return;
+
   const reveal = (el) => el.classList.add('is-visible');
-  if (window.ScrollTrigger) {
-    gsap.registerPlugin(ScrollTrigger);
-    items.forEach(el => {
-      gsap.fromTo(el, { y: 18, opacity: 0 }, {
-        y: 0, opacity: 1, duration: .6, ease: 'power2.out',
-        scrollTrigger: { trigger: el, start: 'top 85%' }
+
+  // respect reduced motion preference by showing everything instantly
+  if (prefersReduced) {
+    items.forEach(reveal);
+    return;
+  }
+
+  if (window.gsap) {
+    if (window.ScrollTrigger) {
+      gsap.registerPlugin(ScrollTrigger);
+      items.forEach(el => {
+        gsap.fromTo(el, { y: 18, opacity: 0 }, {
+          y: 0, opacity: 1, duration: .6, ease: 'power2.out',
+          scrollTrigger: { trigger: el, start: 'top 85%' }
+        });
       });
-    });
-  } else {
-    const io = new IntersectionObserver((es) => {
-      es.forEach(e => { if (e.isIntersecting) { reveal(e.target); io.unobserve(e.target); } });
+      return;
+    }
+  }
+
+  // Fallback: intersection observer, or reveal immediately if unsupported
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          reveal(entry.target);
+          io.unobserve(entry.target);
+        }
+      });
     }, { rootMargin: '0px 0px -10% 0px' });
     items.forEach(el => io.observe(el));
+  } else {
+    items.forEach(reveal);
   }
 })();
 
