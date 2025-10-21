@@ -250,6 +250,129 @@ const router = (() => {
 })();
 
 /* -----------------------------------------
+   Scope product cards (persona highlights)
+------------------------------------------ */
+(() => {
+  const DATA = {
+    patient: [
+      {
+        tag: 'Cashless 30s',
+        tone: 'patient',
+        title: 'Check eligibility instantly',
+        copy: 'OTP consent, ABHA-ready checks before you travel.',
+        points: [
+          'Works with Care, HDFC ERGO, Niva Bupa & more',
+          'Predicts co-pay, documents, and room eligibility'
+        ]
+      },
+      {
+        tag: 'Transparent pricing',
+        tone: 'patient',
+        title: 'Browse packages by city',
+        copy: 'Fixed-price surgery bundles across trusted hospitals.',
+        points: [
+          'Compare inclusions & room types',
+          '0% EMI on approved treatments'
+        ]
+      },
+      {
+        tag: 'Patient protect',
+        tone: 'patient',
+        title: 'Concierge & reimbursements',
+        copy: 'Track discharge tasks and upload bills till settlement.',
+        points: [
+          'Realtime WhatsApp updates',
+          'Escalation desk for complex claims'
+        ]
+      }
+    ],
+    hospital: [
+      {
+        tag: 'RCM suite',
+        tone: 'hospital',
+        title: 'Cashless desk workflows',
+        copy: 'Digital pre-auth, task boards, and document guardrails to cut denials.',
+        points: [
+          'Escalations with TAT & SLA heatmaps',
+          'Specimen signatures & audit trails built-in'
+        ]
+      },
+      {
+        tag: 'Packages',
+        tone: 'hospital',
+        title: 'Publish tariffs effortlessly',
+        copy: 'Structured package builder with insurer-friendly exports.',
+        points: [
+          'Sync to HealthFlo marketplace',
+          'Room eligibility + add-on matrices'
+        ]
+      },
+      {
+        tag: 'Recovery',
+        tone: 'hospital',
+        title: 'Denial to recovery automation',
+        copy: 'Queue follow-ups, attach evidence, and nudge TPAs till closure.',
+        points: [
+          'Auto reminders with templates',
+          'Central MIS across facilities'
+        ]
+      }
+    ],
+    insurer: [
+      {
+        tag: 'Distribution',
+        tone: 'insurer',
+        title: 'Structured plan listings',
+        copy: 'Expose specialty benefits with IRDAI-aware copy & disclaimers.',
+        points: [
+          'Target by city, specialty & hospital tier',
+          'Self-serve revisions via JSON wizard'
+        ]
+      },
+      {
+        tag: 'Ops',
+        tone: 'insurer',
+        title: 'Cashless ops webhooks',
+        copy: 'Realtime pre-auth, enhancement, and discharge signals for your stack.',
+        points: [
+          'Attach documents & status codes',
+          'Sandbox + sample payloads'
+        ]
+      },
+      {
+        tag: 'Intelligence',
+        tone: 'insurer',
+        title: 'Network & campaign insights',
+        copy: 'Benchmark utilisation and spot anomalies early.',
+        points: [
+          'Compare LOS & rejection rates',
+          'Fraud guard with outlier detection'
+        ]
+      }
+    ]
+  };
+
+  const grids = $$('[data-products]');
+  if (!grids.length) return;
+
+  grids.forEach((grid) => {
+    const key = grid.dataset.products;
+    const items = DATA[key];
+    if (!items || !items.length) return;
+
+    grid.innerHTML = items.map((item) => {
+      const pillClass = item.tone ? `pill pill--${item.tone}` : 'pill';
+      const pill = item.tag ? `<span class="${pillClass}">${item.tag}</span>` : '';
+      const body = item.copy ? `<p>${item.copy}</p>` : '';
+      const bullets = Array.isArray(item.points) && item.points.length
+        ? `<ul class="ticks ticks--compact">${item.points.map(point => `<li>${point}</li>`).join('')}</ul>`
+        : '';
+      return `<article class="product">${pill}<h3>${item.title}</h3>${body}${bullets}</article>`;
+    }).join('');
+  });
+})();
+
+/* -----------------------------------------
    Smooth anchors (respect sticky header)
 ------------------------------------------ */
 (() => {
