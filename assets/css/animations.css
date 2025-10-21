@@ -23,27 +23,40 @@
 }
 
 /* ---------- Scroll reveal primitives ---------- */
-[data-animate]{
+html.no-js [data-animate]{
+  opacity: 1; transform: none;
+}
+html.js [data-animate]{
   opacity: 0; transform: translateY(18px) scale(.98);
   transition: opacity var(--med) var(--e2), transform var(--med) var(--e2);
   will-change: opacity, transform;
 }
-[data-animate].is-visible{
+html.js [data-animate].is-visible{
   opacity: 1; transform: none;
 }
-.reveal-up   { transform: translateY(22px); }
-.reveal-down { transform: translateY(-22px); }
-.reveal-left { transform: translateX(22px); }
-.reveal-right{ transform: translateX(-22px); }
-.reveal-pop  { transform: translateY(14px) scale(.96); }
-.reveal-pop.is-visible{ transform: none; }
+html.no-js .reveal-up,
+html.no-js .reveal-down,
+html.no-js .reveal-left,
+html.no-js .reveal-right,
+html.no-js .reveal-pop{
+  transform: none;
+}
+html.js .reveal-up   { transform: translateY(22px); }
+html.js .reveal-down { transform: translateY(-22px); }
+html.js .reveal-left { transform: translateX(22px); }
+html.js .reveal-right{ transform: translateX(-22px); }
+html.js .reveal-pop  { transform: translateY(14px) scale(.96); }
+html.js .reveal-pop.is-visible{ transform: none; }
 
 /* Stagger helper: apply to children */
-.stagger > *{
+html.no-js .stagger > *{
+  opacity:1; transform:none;
+}
+html.js .stagger > *{
   opacity:0; transform:translateY(16px);
   transition: opacity var(--med) var(--e2), transform var(--med) var(--e2);
 }
-.stagger.is-visible > *{
+html.js .stagger.is-visible > *{
   opacity:1; transform:none;
 }
 .stagger.is-visible > *:nth-child(1){ transition-delay: .02s }
