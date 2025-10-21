@@ -154,17 +154,27 @@
           </span>
         </p>
 
-        <div id="hero-chips" class="chips" data-persona-chips>
+        <div id="hero-chips" class="chips" data-persona-chips data-animate>
           <!-- JS fills persona chips -->
         </div>
 
-        <div class="hero__cta">
-          <button id="hero-cta" class="btn btn--primary" data-no-scroll data-go="#p-scope">Start as Patient</button>
-          <a class="btn btn--ghost" href="#trust" data-no-scroll>Why India trusts us</a>
+        <div class="hero__cta" data-animate>
+          <button id="hero-cta" class="btn btn--primary" data-no-scroll data-go="#p-scope">
+            <i class="ri-rocket-2-line" aria-hidden="true"></i><span>Start as Patient</span>
+          </button>
+          <a class="btn btn--ghost" href="#trust" data-no-scroll>
+            <i class="ri-shield-check-line" aria-hidden="true"></i><span>Why India trusts us</span>
+          </a>
         </div>
       </div>
       <!-- Morph stage (GSAP + Flubber), LCP fallback image -->
       <div class="hero__visual persona-stage" aria-hidden="true" data-animate>
+        <div class="hero__scanlines" aria-hidden="true"></div>
+        <div class="hero__flare hero__flare--one" aria-hidden="true"></div>
+        <div class="hero__flare hero__flare--two" aria-hidden="true"></div>
+        <div class="hero__halo" aria-hidden="true"></div>
+        <div class="hero__spark hero__spark--one" aria-hidden="true"></div>
+        <div class="hero__spark hero__spark--two" aria-hidden="true"></div>
         <div class="fx-dots" aria-hidden="true"></div>
         <picture>
   <img class="hero-lcp-fallback" src="assets/img/hero-static.svg" alt="" decoding="async" />
@@ -187,19 +197,7 @@
             <p>Automation score across network hospitals.</p>
           </li>
           <li class="metric-card" data-count="18" data-suffix="h" data-animate>
-            <div class="metric-card__icon" aria-hidden="true"><i class="ri-sparkling-2-line"></i></div>
-            <span class="metric-card__tag">Faster reimbursements</span>
-            <strong><span data-count-output>0</span><span class="metric-card__suffix">h</span></strong>
-            <p>Average reduction in discharge processing time.</p>
-          </li>
-          <li class="metric-card" data-count="42" data-suffix="%" data-animate>
-            <div class="metric-card__icon" aria-hidden="true"><i class="ri-shield-check-line"></i></div>
-            <span class="metric-card__tag">Denied claims recovered</span>
-            <strong><span data-count-output>0</span><span class="metric-card__suffix">%</span></strong>
-            <p>Recovery uplift using HealthFlo denial workflows.</p>
-          </li>
-        </ul>
-      </div>
+@@ -261,164 +264,199 @@
     </div>
   </section>
 
@@ -225,7 +223,12 @@
     <section id="p-scope" class="scope is-active" aria-labelledby="p-title" data-scope="patient">
       <header class="scope-head scope-head--patient">
         <h2 id="p-title" class="section-title">For Patients</h2>
-        <p class="muted">Instant cashless checks, transparent packages, and concierge support till settlement.</p>
+        <p class="muted type-line" data-typewriter="Instant cashless checks with OTP consent.|Transparent packages you can compare by city.|Concierge support till settlement.">
+          <span class="typewriter__inner">
+            <span class="typewriter__text" data-typewriter-text>Instant cashless checks with OTP consent.</span>
+            <span class="typewriter__cursor" data-typewriter-cursor aria-hidden="true"></span>
+          </span>
+        </p>
       </header>
       <div class="scope__layout">
         <div class="scope__primary">
@@ -272,7 +275,12 @@
     <section id="h-scope" class="scope" aria-labelledby="h-title" data-scope="hospital">
       <header class="scope-head scope-head--hospital">
         <h2 id="h-title" class="section-title">For Hospitals & Clinics</h2>
-        <p class="muted">RCM for India: cashless, reimbursements, recovery & denials. Insurance desk tools included.</p>
+        <p class="muted type-line" data-typewriter="Cashless + reimbursement RCM for India.|Insurance desk tools with denial playbooks.|Recovery workflows and MIS dashboards.">
+          <span class="typewriter__inner">
+            <span class="typewriter__text" data-typewriter-text>Cashless + reimbursement RCM for India.</span>
+            <span class="typewriter__cursor" data-typewriter-cursor aria-hidden="true"></span>
+          </span>
+        </p>
       </header>
       <div id="h-products" class="product-grid" data-animate data-products="hospital"></div>
       <div class="row-split">
@@ -284,7 +292,12 @@
     <section id="i-scope" class="scope" aria-labelledby="i-title" data-scope="insurer">
       <header class="scope-head scope-head--insurer">
         <h2 id="i-title" class="section-title">For Insurers</h2>
-        <p class="muted">Distribution & ops for India. Structured listings, partner campaigns, cashless ops APIs.</p>
+        <p class="muted type-line" data-typewriter="Structured listings ready for IRDAI disclosures.|Partner campaigns with pricing intelligence.|Cashless ops APIs and network insights.">
+          <span class="typewriter__inner">
+            <span class="typewriter__text" data-typewriter-text>Structured listings ready for IRDAI disclosures.</span>
+            <span class="typewriter__cursor" data-typewriter-cursor aria-hidden="true"></span>
+          </span>
+        </p>
       </header>
       <div id="i-products" class="product-grid" data-animate data-products="insurer"></div>
       <div class="row-split">
@@ -298,7 +311,12 @@
     <div class="row-split flow__head">
       <div>
         <h3>How HealthFlo orchestrates cashless journeys</h3>
-        <p class="muted">From instant eligibility to post-discharge recovery — one timeline that keeps patients, hospitals and insurers in sync.</p>
+        <p class="muted type-line" data-typewriter="Instant eligibility to post-discharge recovery.|Keep patients, hospitals and insurers in sync.|Automation that feels cinematic across the journey.">
+          <span class="typewriter__inner">
+            <span class="typewriter__text" data-typewriter-text>Instant eligibility to post-discharge recovery.</span>
+            <span class="typewriter__cursor" data-typewriter-cursor aria-hidden="true"></span>
+          </span>
+        </p>
       </div>
       <div class="flow__legend">
         <span class="pill">Realtime alerts</span>
@@ -312,7 +330,12 @@
           <span class="journey__value"><span data-value>0</span>% automation</span>
         </header>
         <h4>Instant cashless triage</h4>
-        <p class="muted">Eligibility predictions, co-pay estimates and ABHA checks that land in 30 seconds with OTP verified consent.</p>
+        <p class="muted type-line" data-typewriter="Eligibility predictions &amp; co-pay estimates.|ABHA checks that land in 30 seconds.|Consent-first automations for patients.">
+          <span class="typewriter__inner">
+            <span class="typewriter__text" data-typewriter-text>Eligibility predictions &amp; co-pay estimates.</span>
+            <span class="typewriter__cursor" data-typewriter-cursor aria-hidden="true"></span>
+          </span>
+        </p>
         <div class="journey__meter" aria-hidden="true"><span></span></div>
         <ul class="ticks ticks--compact">
           <li>Structured policy rules and package pricing</li>
@@ -325,7 +348,12 @@
           <span class="journey__value"><span data-value>0</span>% automation</span>
         </header>
         <h4>Pre-auth to discharge without chaos</h4>
-        <p class="muted">Digitised pre-auth, denial playbooks and discharge orchestrations that shorten TAT while keeping insurers updated.</p>
+        <p class="muted type-line" data-typewriter="Digital pre-auth &amp; denial playbooks.|Discharge orchestration to shorten TAT.|Insurers updated in realtime.">
+          <span class="typewriter__inner">
+            <span class="typewriter__text" data-typewriter-text>Digital pre-auth &amp; denial playbooks.</span>
+            <span class="typewriter__cursor" data-typewriter-cursor aria-hidden="true"></span>
+          </span>
+        </p>
         <div class="journey__meter" aria-hidden="true"><span></span></div>
         <ul class="ticks ticks--compact">
           <li>Pre-auth SOPs with document guardrails</li>
@@ -338,7 +366,12 @@
           <span class="journey__value"><span data-value>0</span>% automation</span>
         </header>
         <h4>Network intelligence for insurers</h4>
-        <p class="muted">Structured listings, partner campaigns and fraud signals delivered directly to your claim ops and CRM stack.</p>
+        <p class="muted type-line" data-typewriter="Structured listings delivered to claim ops.|Partner campaigns with network telemetry.|Fraud signals piped into your CRM.">
+          <span class="typewriter__inner">
+            <span class="typewriter__text" data-typewriter-text>Structured listings delivered to claim ops.</span>
+            <span class="typewriter__cursor" data-typewriter-cursor aria-hidden="true"></span>
+          </span>
+        </p>
         <div class="journey__meter" aria-hidden="true"><span></span></div>
         <ul class="ticks ticks--compact">
           <li>City-level pricing and utilisation dashboards</li>
