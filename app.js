@@ -61,6 +61,12 @@ function toast(msg){const t=$('#toast');if(!t)return;t.textContent=msg;t.classLi
 /* GSAP entrances (if available) */
 (()=>{if(!window.gsap)return;const {gsap}=window;gsap.timeline({defaults:{ease:'power3.out'}}).from('.brand',{y:-12,opacity:0,duration:.5}).from('.nav__links a',{y:-8,opacity:0,stagger:.06,duration:.35},'-=.3').from('.role-tab',{y:16,opacity:0,stagger:.06,duration:.45},'-=.1').from('.morph',{y:18,opacity:0,duration:.45},'-=.2');gsap.utils.toArray('.card,.product').forEach(el=>gsap.from(el,{y:20,opacity:0,duration:.55,scrollTrigger:{trigger:el,start:'top 85%'}}));})();
 
+/* Scroll reveals for any [data-animate] */
+(()=>{const els=$$('[data-animate]');if(!els.length)return;const show=el=>el.classList.add('is-visible');if('IntersectionObserver' in window){const obs=new IntersectionObserver((entries,observer)=>{entries.forEach(entry=>{if(entry.isIntersecting){show(entry.target);observer.unobserve(entry.target);}})},{threshold:.18,rootMargin:'0px 0px -10% 0px'});els.forEach(el=>obs.observe(el));}else{els.forEach(show)}})();
+
+/* Scroll reveals for any [data-animate] */
+(()=>{const els=$$('[data-animate]');if(!els.length)return;const show=el=>el.classList.add('is-visible');if('IntersectionObserver' in window){const obs=new IntersectionObserver((entries,observer)=>{entries.forEach(entry=>{if(entry.isIntersecting){show(entry.target);observer.unobserve(entry.target);}})},{threshold:.18,rootMargin:'0px 0px -10% 0px'});els.forEach(el=>obs.observe(el));}else{els.forEach(show)}})();
+
 /* Scroll spy */
 (()=>{const links=$$('.nav__links a');if(!links.length)return;const map=new Map(links.map(a=>[a.getAttribute('href'),a]));const obs=new IntersectionObserver((es)=>{es.forEach(({isIntersecting,target})=>{const id='#'+target.id;const a=map.get(id);if(!a)return;if(isIntersecting){links.forEach(x=>x.classList.remove('active'));a.classList.add('active')}})},{rootMargin:'-40% 0px -50% 0px',threshold:0.01});['hero','locations','content','trust','contact'].forEach(id=>{const el=$('#'+id);if(el)obs.observe(el)});})();
 
