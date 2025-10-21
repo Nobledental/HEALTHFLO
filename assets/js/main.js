@@ -154,12 +154,15 @@ const router = (() => {
 
   function setBubbleTo(el) {
     if (!bubble || !el) return;
-    const p = el.parentElement.getBoundingClientRect();
-    const r = el.getBoundingClientRect();
-    const x = r.left - p.left + (r.width - bubble.offsetWidth) / 2;
+    const parentRect = el.parentElement?.getBoundingClientRect();
+    const rect = el.getBoundingClientRect();
+    const width = Math.max(140, rect.width);
+    const height = Math.max(56, rect.height);
+    bubble.style.width = `${width}px`;
+    bubble.style.height = `${height}px`;
+    if (!parentRect) return;
+    const x = rect.left - parentRect.left + rect.width / 2 - width / 2;
     bubble.style.transform = `translateX(${Math.round(x)}px) translateY(-50%)`;
-    bubble.style.width = `${Math.max(140, r.width)}px`;
-    bubble.style.height = `${Math.max(56, r.height)}px`;
   }
 
   function morphTo(kind) {
@@ -181,25 +184,54 @@ const router = (() => {
     morphLabel.textContent = kind[0].toUpperCase() + kind.slice(1);
   }
 
+  let typingToken = 0;
+  let typingTimeout;
   function typing(lines) {
     if (!sub) return;
-    // typing like texting
-    let i = 0, ch = 0, dir = 1;
-    let current = lines[0] || '';
-    function tick() {
-      ch += dir;
-      sub.textContent = current.slice(0, ch);
-      if (dir > 0 && ch >= current.length) {
-        dir = 0;
-        setTimeout(() => { dir = -1; }, 1300);
-      } else if (dir < 0 && ch <= 0) {
-        i = (i + 1) % lines.length;
-        current = lines[i];
-        dir = 1;
-      }
-      if (!prefersReduced) requestAnimationFrame(tick);
+    const token = ++typingToken;
+    clearTimeout(typingTimeout);
+    if (!Array.isArray(lines) || !lines.length) {
+      sub.textContent = '';
+      return;
     }
-    tick();
+    if (prefersReduced) {
+      sub.textContent = lines[0];
+      return;
+    }
+
+    let index = 0;
+    let pos = 0;
+    let direction = 1; // 1 typing, -1 deleting
+
+    const step = () => {
+      if (token !== typingToken) return;
+      const current = lines[index] || '';
+      sub.textContent = current.slice(0, Math.max(0, pos));
+
+      let delay = 48;
+      if (direction > 0) {
+        if (pos < current.length) {
+          pos += 1;
+          delay = 42 + Math.random() * 28;
+        } else {
+          direction = -1;
+          delay = 1200;
+        }
+      } else {
+        if (pos > 0) {
+          pos -= 1;
+          delay = 34 + Math.random() * 18;
+        } else {
+          index = (index + 1) % lines.length;
+          direction = 1;
+          delay = 260;
+        }
+      }
+
+      typingTimeout = setTimeout(step, delay);
+    };
+
+    step();
   }
 
   function activate(kind) {
@@ -503,66 +535,6 @@ const router = (() => {
 })();
 
 /* -----------------------------------------
-   Hero metric counters
------------------------------------------- */
-(() => {
-  const cards = $$('.metric-card[data-count]');
-  if (!cards.length) return;
-
-  cards.forEach(card => {
-    const suffix = $('.metric-card__suffix', card);
-    if (suffix && card.dataset.suffix) suffix.textContent = card.dataset.suffix;
-  });
-
-  if (prefersReduced) {
-    cards.forEach(card => {
-      const target = Number(card.dataset.count || 0);
-      const out = $('[data-count-output]', card);
-      if (out) out.textContent = target.toLocaleString('en-IN');
-    });
-    return;
-  }
-
-  const easeOut = (t) => 1 - Math.pow(1 - t, 3);
-
-  function animate(card) {
-    if (card.dataset.counted) return;
-    card.dataset.counted = '1';
-    card.classList.add('is-animated');
-    const target = Number(card.dataset.count || 0);
-    const out = $('[data-count-output]', card);
-    if (!out) return;
-    const start = performance.now();
-    const duration = 1200;
-
-    function frame(now) {
-      const t = Math.min(1, (now - start) / duration);
-      const eased = easeOut(t);
-      const value = Math.round(target * eased);
-      out.textContent = value.toLocaleString('en-IN');
-      if (t < 1) {
-        requestAnimationFrame(frame);
-      } else {
-        out.textContent = target.toLocaleString('en-IN');
-      }
-    }
-
-    requestAnimationFrame(frame);
-  }
-
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        animate(entry.target);
-        obs.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.55 });
-
-  cards.forEach(card => obs.observe(card));
-})();
-
-/* -----------------------------------------
    Cities we serve — marquee banner
 ------------------------------------------ */
 (() => {
@@ -742,6 +714,7 @@ const router = (() => {
 /* -----------------------------------------
    Journey progress meters
 ------------------------------------------ */
+(() => {
   const steps = $$('.journey__step[data-progress]');
   if (!steps.length) return;
 
