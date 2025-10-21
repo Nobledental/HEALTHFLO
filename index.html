@@ -224,6 +224,49 @@
     <!-- PATIENT -->
     <section id="p-scope" class="scope is-active" aria-labelledby="p-title" data-scope="patient">
       <header class="scope-head scope-head--patient">
+        <h2 id="p-title" class="section-title">For Patients</h2>
+        <p class="muted">Instant cashless checks, transparent packages, and concierge support till settlement.</p>
+      </header>
+      <div class="scope__layout">
+        <div class="scope__primary">
+          <div id="p-products" class="product-grid" data-animate data-products="patient"></div>
+          <div class="row-split">
+            <a class="btn btn--primary" data-go="#patient-elig" data-no-scroll>Check cashless</a>
+            <a class="btn btn--ghost" href="patient.html" rel="prefetch">Explore more for Patients →</a>
+          </div>
+        </div>
+        <aside id="patient-elig" class="card scope__aside" data-animate aria-label="Cashless eligibility simulator">
+          <h3>Cashless eligibility in 30 seconds</h3>
+          <p class="muted">OTP-verified across major insurers.</p>
+          <div class="form-grid">
+            <label class="span-2"><span>Phone</span><input id="phone" type="tel" inputmode="tel" placeholder="+91 98xxxxxxx0" autocomplete="tel"></label>
+            <button type="button" class="btn btn--primary js-send-otp">Send OTP</button>
+            <div class="otp-wrap span-2 hidden">
+              <div class="otp"><input class="otp-i" maxlength="1" inputmode="numeric"><input class="otp-i" maxlength="1" inputmode="numeric"><input class="otp-i" maxlength="1" inputmode="numeric"><input class="otp-i" maxlength="1" inputmode="numeric"></div>
+              <button type="button" class="btn btn--primary js-verify-otp">Verify</button>
+            </div>
+          </div>
+          <p id="otpStatus" class="muted" role="status" aria-live="polite"></p>
+          <div class="info-card">
+            <div class="form-grid">
+              <label><span>Insurer</span><select id="elig-ins"><option>Any</option><option>Care</option><option>HDFC ERGO</option><option>Star Health</option><option>Niva Bupa</option></select></label>
+              <label><span>City</span><select id="elig-city"><option>Delhi</option><option>Mumbai</option><option>Bengaluru</option><option>Hyderabad</option><option>Chennai</option></select></label>
+              <label><span>Specialty</span><select id="elig-spec"><option>General</option><option>Dental</option><option>Ophthalmology</option><option>IVF</option><option>Orthopedics</option><option>Cardiac</option><option>Oncology</option></select></label>
+              <label><span>Sum Insured (₹ L)</span><select id="elig-sum"><option>3</option><option selected>5</option><option>10</option><option>15</option><option>20</option><option>25</option></select></label>
+            </div>
+            <div class="elig-row">
+              <div class="elig-result" id="eligRes">We’ll compute your likely eligibility here.</div>
+              <button id="elig-copy" class="btn btn--ghost" type="button">Copy</button>
+            </div>
+            <div class="form-grid">
+              <label><span>Estimated bill (₹)</span><input id="co-bill" type="number" min="1000" step="500" placeholder="85000"></label>
+              <label><span>Co-pay %</span><input id="co-rate" type="number" min="0" max="100" step="1" value="10"></label>
+            </div>
+            <div id="co-out" class="muted">Enter bill to estimate co-pay.</div>
+          </div>
+        </aside>
+      </div>
+    </section>
 
     <!-- HOSPITAL -->
     <section id="h-scope" class="scope" aria-labelledby="h-title" data-scope="hospital">
