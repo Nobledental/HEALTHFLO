@@ -3,211 +3,103 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>HealthFlo — Insurers (Distribution & Cashless Ops)</title>
-  <meta name="description" content="Insurer solutions for India: structured plan listings, preferred discounts, and cashless ops APIs with anomaly checks and audit logs." />
-
-  <!-- Preload LCP asset -->
-  <link rel="preload" as="image" href="/assets/img/hero-static.svg" imagesizes="100vw" imagesrcset="/assets/img/hero-static.svg 1200w" />
+  <title>HealthFlo — Insurer</title>
+  <meta name="description" content="Distribution & ops: structured listings, campaigns, and cashless ops APIs for insurers in India." />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css" />
-  <link rel="stylesheet" href="/assets/css/animations.css" />
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script defer src="https://unpkg.com/flubber/dist/flubber.min.js"></script>
+  <link rel="stylesheet" href="/assets/css/personas.css" />
 </head>
+<body class="hdr-grid theme--android-glow mode--insurer">
+  <div class="orb orb-left"></div><div class="orb orb-right"></div><canvas id="particles" class="particle-layer"></canvas>
 
-<body class="hf theme--night theme--medical mode--insurer">
-  <a class="skip" href="#content">Skip to main</a>
-
-  <!-- Ambient background -->
-  <div class="orb orb-left" aria-hidden="true"></div>
-  <div class="orb orb-right" aria-hidden="true"></div>
-  <canvas id="particles" class="particle-layer" aria-hidden="true"></canvas>
-
-  <!-- Header -->
-  <header class="nav container">
-    <a class="brand" href="/" aria-label="HealthFlo home">
-      <span class="brand__beacon" aria-hidden="true"></span>
-      <span class="brand__name">HealthFlo</span>
-    </a>
-
-    <nav class="nav__links" aria-label="Primary">
-      <a href="/#hero">Overview</a>
-      <a href="/#locations">Cities</a>
-      <a href="/#content">Products</a>
-      <a href="/#trust">Trust & Tech</a>
-      <a href="/#contact">Contact</a>
+  <header class="site-top container">
+    <div class="brand"><span class="beacon"></span><span>HealthFlo • Insurer</span></div>
+    <nav class="top-nav">
+      <a class="chip active">Overview</a><a class="chip" href="#market">Marketplace</a><a class="chip" href="#discounts">Discounts</a><a class="chip" href="#ops">Ops API</a>
     </nav>
-
-    <div class="theme" aria-expanded="false">
-      <button class="theme__toggle" aria-label="Open theme studio">
-        <span class="dot"></span><span>Theme</span>
-      </button>
-      <div class="theme__panel" role="menu" aria-label="Theme studio">
-        <button class="tbtn" data-theme="night">Night</button>
-        <button class="tbtn" data-theme="day">Day</button>
-        <button class="tbtn" data-theme="aurora">Aurora</button>
-        <button class="tbtn" data-theme="clinic">Clinic</button>
-        <button class="tbtn" data-theme="contrast">High Contrast</button>
-        <button class="tbtn is-active" data-theme="apple-matte">Apple Matte</button>
-      </div>
-    </div>
-
-    <button class="nav__toggle" aria-label="Open menu" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
+    <div class="actions"><button class="theme-toggle" id="themeToggle" aria-pressed="false">Theme</button></div>
   </header>
 
-  <!-- HERO -->
+  <!-- Hero -->
   <section class="hero container">
-    <div class="status-pill">
-      <span class="live-dot" aria-hidden="true"></span>
-      Insurers • Structured listings & cashless ops • <b>SOC2-ready</b>
-    </div>
-
-    <div class="hero__grid">
-      <div class="hero__copy" data-animate>
-        <h1 class="hero-title">Distribution that converts. Ops that scale.</h1>
-        <p class="hero-sub" id="typeTarget" data-typing='["Specialty-wise plan pages by network strength.","Preferred discounts with attribution & ROI.","Cashless Ops API with anomaly checks.","Auditable webhooks for claim events."]'>
-          Specialty-wise plan pages by network strength.
-        </p>
-
-        <div class="chips">
-          <span class="chip">IRDAI-friendly copy</span>
-          <span class="chip">Attribution & ROI</span>
-          <span class="chip">Anomaly detection</span>
-          <span class="chip">Audit logs</span>
-        </div>
-
-        <div class="hero__cta">
-          <a class="btn btn--primary" href="#content">See products</a>
-          <a class="btn btn--ghost" href="/#trust">How we build trust</a>
-        </div>
-      </div>
-
-      <!-- Persona morph: insurer -->
-      <div class="hero__visual persona-stage" aria-hidden="true" data-animate>
-        <svg id="morphSvg" viewBox="0 0 64 64" class="morph">
-          <defs>
-            <linearGradient id="gradInsurer" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="#ff86b5"/><stop offset="1" stop-color="#8b5cf6"/>
-            </linearGradient>
-          </defs>
-          <path id="morphPath" fill="url(#gradInsurer)"
-            d="M12 20a12 12 0 0 1 12-12h16a12 12 0 0 1 12 12v24a12 12 0 0 1-12 12H24A12 12 0 0 1 12 44V20z"/>
-        </svg>
-        <div class="morph-caption">Insurers</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Marquee -->
-  <section class="geo-marquee" aria-label="Cities we serve">
-    <div class="geo-marquee__track" id="cityTrack" data-autoscroll="true">
-      <span>Delhi</span><span>Mumbai</span><span>Bengaluru</span><span>Hyderabad</span><span>Chennai</span><span>Pune</span>
-      <span>Delhi</span><span>Mumbai</span><span>Bengaluru</span><span>Hyderabad</span><span>Chennai</span><span>Pune</span>
-    </div>
-  </section>
-
-  <!-- CONTENT -->
-  <main id="content" class="container" role="main">
-    <header class="scope-head scope-head--insurer">
-      <h2 class="section-title">Products & Services for Insurers</h2>
-      <p class="muted">Drive distribution with structured listings and manage cashless ops with visibility & control.</p>
-    </header>
-
-    <div class="product-grid" data-animate>
-      <article class="product tilt">
-        <div class="product__icon">
-          <img src="/assets/icons/analytics.svg" alt="" loading="lazy" width="28" height="28">
-        </div>
-        <h3>Marketplace Listing</h3>
-        <p>Specialty-wise plan pages, network views, room eligibility & OPD add-ons surfaced clearly.</p>
-        <ul class="ticks">
-          <li>Conversion insights</li>
-          <li>Plan schema</li>
-          <li>IRDAI-friendly copy</li>
-        </ul>
-        <a class="product__cta" href="#connect">See example listing →</a>
-      </article>
-
-      <article class="product tilt">
-        <div class="product__icon">
-          <img src="/assets/icons/emi.svg" alt="" loading="lazy" width="28" height="28">
-        </div>
-        <h3>Preferred Discounts</h3>
-        <p>City & specialty campaigns with attribution, ROI and fraud checks, all reported transparently.</p>
-        <ul class="ticks">
-          <li>Seasonal controls</li>
-          <li>Lead routing</li>
-          <li>Lift simulator</li>
-        </ul>
-        <a class="product__cta" href="#connect">Run a pilot →</a>
-      </article>
-
-      <article class="product tilt">
-        <div class="product__icon">
-          <img src="/assets/icons/compliance.svg" alt="" loading="lazy" width="28" height="28">
-        </div>
-        <h3>Cashless Ops API</h3>
-        <p>Webhooks & panel for pre-auth, documentation & TAT. Includes anomaly checks & audit logs.</p>
-        <ul class="ticks">
-          <li>Claim visibility</li>
-          <li>Escalation hooks</li>
-          <li>Audit-ready logs</li>
-        </ul>
-        <a class="product__cta" href="#connect">Get API docs →</a>
-      </article>
-    </div>
-
-    <!-- Quick connect -->
-    <section id="connect" class="card grid-2" data-animate>
-      <div class="col">
-        <h3>Partner with HealthFlo</h3>
-        <p class="muted">We’ll share schema for listings and API creds for a sandbox. Start with a city or specialty.</p>
-        <div class="helper-actions">
-          <a class="btn btn--primary" href="mailto:hello@healthflo.io?subject=Insurer%20Partner%20Request">Email partnership</a>
-          <a class="btn btn--ghost" href="https://wa.me/?text=Hello%20HealthFlo%2C%20we%20want%20to%20list%20plans.">WhatsApp now</a>
-        </div>
-      </div>
-      <div class="col">
-        <div class="info-card">
-          <h4>What you get</h4>
-          <ul class="ticks">
-            <li>Listing schema + examples</li>
-            <li>Webhook sandbox & payloads</li>
-            <li>Attribution & ROI dashboards</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer__grid container">
+    <div class="status">IRDAI-aware flows • City campaigns</div>
+    <div class="grid">
       <div>
-        <span class="footer__brand">HealthFlo</span>
-        <p>Distribution that converts. Ops that scale. Made for Indian insurers & TPAs.</p>
-        <div class="footer__social">
-          <a href="#" aria-label="Twitter" class="soc"><img src="/assets/icons/twitter.svg" width="18" height="18" alt=""></a>
-          <a href="#" aria-label="LinkedIn" class="soc"><img src="/assets/icons/linkedin.svg" width="18" height="18" alt=""></a>
-          <a href="#" aria-label="YouTube" class="soc"><img src="/assets/icons/youtube.svg" width="18" height="18" alt=""></a>
+        <div class="role">
+          <span class="bubble" aria-hidden="true" style="transform: translateX(360px) translateY(-50%); width:160px;"></span>
+          <button aria-selected="false" onclick="location.href='/patient.html'"><span>Patient</span></button>
+          <button aria-selected="false" onclick="location.href='/hospital.html'"><span>Hospital</span></button>
+          <button aria-selected="true"><span>Insurer</span></button>
+        </div>
+        <h1>Structured listings. Measurable lift.</h1>
+        <p class="sub"><span id="typeTarget" data-typing='["City & specialty targeting.","Network-first plan views.","Cashless Ops APIs with audit."]'></span></p>
+        <div class="cta">
+          <a class="btn btn--primary" href="#market">Open marketplace</a>
+          <a class="btn btn--ghost" href="#ops">See Ops API</a>
         </div>
       </div>
-      <div><h3>Journeys</h3><ul><li><a href="/index.html#p-scope">Patients</a></li><li><a href="/hospital.html">Hospitals</a></li><li><a href="/insurer.html" aria-current="page">Insurers</a></li></ul></div>
-      <div><h3>Company</h3><ul><li><a href="/#locations">Locations</a></li><li><a href="/#trust">Trust & Tech</a></li><li><a href="/#contact">Contact</a></li></ul></div>
+      <div aria-hidden="true">
+        <img src="/assets/img/hero-static.svg" alt="" width="560" height="420" loading="eager">
+      </div>
     </div>
-    <div class="footer__bottom">© 2025 HealthFlo • Terms • Privacy</div>
-  </footer>
+  </section>
 
-  <!-- Toast -->
-  <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+  <!-- Marketplace Listing Wizard -->
+  <section id="market" class="container card">
+    <h3 class="section-title">Product Listing Wizard</h3>
+    <div class="form-grid">
+      <label><span>Plan Name</span><input id="wiz-name" placeholder="ReAssure 2.0"></label>
+      <label><span>Sum Insured (₹L)</span><input id="wiz-sum" type="number" min="1" value="10"></label>
+      <label><span>Room Eligibility</span><input id="wiz-room" placeholder="Single AC"></label>
+      <label><span>OPD cover</span><select id="wiz-opd"><option>Yes</option><option>No</option></select></label>
+    </div>
+    <div class="cta"><button id="wiz-build" class="btn btn--primary">Build JSON</button></div>
+    <pre id="wiz-json" class="card" style="overflow:auto; margin-top:12px;">{}</pre>
+  </section>
 
-  <!-- Scripts -->
+  <!-- Discounts Simulator -->
+  <section id="discounts" class="container card">
+    <h3 class="section-title">Preferred Discounts — Lift Simulator</h3>
+    <div class="form-grid">
+      <label><span>Base CVR %</span><input id="ds-base" type="number" min="0" max="100" value="2.1"></label>
+      <label><span>Discount %</span><input id="ds-disc" type="number" min="0" max="50" value="10"></label>
+    </div>
+    <div id="ds-out" class="muted">Enter values to simulate expected lift.</div>
+    <canvas id="ds-chart" width="280" height="120" style="margin-top:10px;"></canvas>
+  </section>
+
+  <!-- Ops API -->
+  <section id="ops" class="container card">
+    <h3 class="section-title">Ops Webhook Sample</h3>
+    <pre id="api-json" class="card" style="overflow:auto; margin-top:8px;">{
+  "event": "preauth.updated",
+  "claim_id": "CLM-18425",
+  "status": "documents_required",
+  "required": ["ID Proof", "Policy PDF", "Treating Doctor Notes"],
+  "eta_hours": 6
+}</pre>
+    <div class="cta"><button id="api-copy" class="btn btn--primary">Copy JSON</button></div>
+  </section>
+
+  <div id="toast" class="toast" role="status"></div>
+
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script defer src="/assets/js/main.js"></script>
   <script defer src="/assets/js/gsap-init.js"></script>
   <script defer src="/assets/js/insurer.js"></script>
+  <script>
+    (function(){
+      const key='hf-theme'; const b=document.body; const t=document.getElementById('themeToggle');
+      const saved = localStorage.getItem(key) || 'android';
+      if(saved==='matte'){ b.classList.remove('theme--android-glow'); b.classList.add('theme--apple-matte'); t.setAttribute('aria-pressed','true'); }
+      t.addEventListener('click', ()=>{
+        const matte = b.classList.toggle('theme--apple-matte');
+        b.classList.toggle('theme--android-glow', !matte);
+        localStorage.setItem(key, matte ? 'matte' : 'android');
+        t.setAttribute('aria-pressed', matte ? 'true':'false');
+      });
+    })();
+  </script>
 </body>
 </html>
