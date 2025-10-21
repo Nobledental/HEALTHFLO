@@ -9,11 +9,21 @@
   const { gsap } = window;
   if (window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
 
-  gsap.from('.site-top', {y:-16, opacity:0, duration:.45, ease:'power2.out'});
-  gsap.from('.role .role-btn', {y:10, opacity:0, duration:.4, ease:'power2.out', stagger:.06, delay:.05});
-  gsap.from('.status', {y:8, opacity:0, duration:.35, ease:'power2.out', delay:.1});
-  gsap.from('.hero .grid > *', {y:18, opacity:0, duration:.45, ease:'power2.out', stagger:.08, delay:.12});
-
+  const tl = gsap.timeline({ defaults: { ease:'power2.out', duration:.45 } });
+  if (document.querySelector('.nav')) {
+    tl.from('.nav', { y:-18, opacity:0 });
+  }
+  const heroTabs = gsap.utils.toArray('.role-tabs .role-tab');
+  if (heroTabs.length) {
+    tl.from(heroTabs, { y:14, opacity:0, stagger:.06, duration:.4 }, '-=0.2');
+  }
+  if (document.querySelector('.status-pill')) {
+    tl.from('.status-pill', { y:10, opacity:0, duration:.32 }, '-=0.25');
+  }
+  const heroItems = gsap.utils.toArray('.hero__grid > *');
+  if (heroItems.length) {
+    tl.from(heroItems, { y:22, opacity:0, stagger:.08, duration:.5 }, '-=0.2');
+  }
   gsap.utils.toArray('.card, .product').forEach(el=>{
     gsap.from(el, {y:18, opacity:0, duration:.5, ease:'power2.out', scrollTrigger:{ trigger: el, start:'top 88%' }});
   });
