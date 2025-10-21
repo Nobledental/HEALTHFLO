@@ -1,17 +1,148 @@
-/* Micro springs (easing) */
-:root{ --spring:cubic-bezier(.2,.8,.2,1) }
+/* =========================================================
+   HealthFlo — Animations (CSS helpers)
+   - Micro-interactions (hover/spring)
+   - Reveal-in utilities for IntersectionObserver / GSAP
+   - Bubble, float, pulse, shimmer
+   - Gradient + border glow
+   - Reduced motion safety
+   ========================================================= */
 
-/* Entrance */
-[data-animate]{opacity:0;transform:translateY(16px)}
-[data-animate].in{opacity:1;transform:none;transition:opacity .6s var(--spring), transform .6s var(--spring)}
+/* ---------- Reduced Motion Guard ---------- */
+@media (prefers-reduced-motion: reduce){
+  *{animation:none !important; transition:none !important}
+}
 
-/* Tilt hover */
-.tilt{will-change:transform;transition:transform .25s var(--spring)}
-.tilt:hover{transform:translateY(-4px)}
+/* ---------- Reveal In (CSS-only or GSAP baseline) ----------
+   Usage:
+   <div class="reveal reveal-up">...</div>
+   When in-view, add .in to trigger (via JS) or let GSAP override.
+------------------------------------------------------------ */
+.reveal{opacity:0; transform:translateY(16px); transition:opacity .6s cubic-bezier(.22,1,.36,1), transform .6s cubic-bezier(.22,1,.36,1)}
+.reveal.in{opacity:1; transform:none}
+.reveal-up{transform:translateY(22px)}
+.reveal-down{transform:translateY(-22px)}
+.reveal-left{transform:translateX(24px)}
+.reveal-right{transform:translateX(-24px)}
+.reveal-slow{transition-duration:.9s}
+.reveal-stagger > *{opacity:0; transform:translateY(10px)}
+.reveal-stagger.in > *{opacity:1; transform:none; transition:opacity .6s cubic-bezier(.22,1,.36,1), transform .6s cubic-bezier(.22,1,.36,1)}
+.reveal-stagger.in > *:nth-child(1){transition-delay:.03s}
+.reveal-stagger.in > *:nth-child(2){transition-delay:.08s}
+.reveal-stagger.in > *:nth-child(3){transition-delay:.13s}
+.reveal-stagger.in > *:nth-child(4){transition-delay:.18s}
+.reveal-stagger.in > *:nth-child(5){transition-delay:.23s}
 
-/* Toast */
-.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) scale(.96);opacity:0;background:rgba(12,16,35,.94);border:1px solid rgba(148,163,184,.24);padding:.7rem 1rem;border-radius:12px;color:#eaf4ff;pointer-events:none}
-.toast.show{opacity:1;transform:translateX(-50%) scale(1);transition:.25s var(--spring)}
+/* ---------- Springy hover (Apple-like micro) ---------- */
+.springy{
+  transition: transform .18s cubic-bezier(.2,.8,.2,1), filter .18s ease, box-shadow .18s ease;
+  will-change: transform;
+}
+.springy:hover{ transform: translateY(-2px) scale(1.01) }
+.springy:active{ transform: translateY(0) scale(.995) }
 
-/* FAB */
-.fab{position:fixed;right:18px;bottom:18px;width:56px;height:56px;display:grid;place-items:center;border-radius:999px;background:linear-gradient(120deg,var(--p1),var(--p2));color:#08131e;font-weight:900;border:1px solid rgba(255,255,255,.18);box-shadow:0 18px 38px rgba(120,240,255,.22)}
+/* ---------- Tilt baseline (JS sets CSS vars) ----------
+   Usage: add .tilt and drive with JS:
+   el.style.setProperty('--rx', valX); el.style.setProperty('--ry', valY);
+-------------------------------------------------------- */
+.tilt{
+  transform: perspective(800px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateZ(0);
+  transition: transform .15s ease;
+  transform-style: preserve-3d;
+}
+
+/* ---------- Floating & Pulse ---------- */
+.float-slow{ animation: floatY 6s ease-in-out infinite }
+.float-fast{ animation: floatY 3.5s ease-in-out infinite }
+@keyframes floatY{
+  0%,100%{ transform: translateY(0) }
+  50%{ transform: translateY(-8px) }
+}
+
+.pulse-soft{
+  animation: pulseSoft 2.2s ease-in-out infinite;
+  transform-origin: center;
+}
+@keyframes pulseSoft{
+  0%,100%{ transform: scale(1) }
+  50%{ transform: scale(1.03) }
+}
+
+/* ---------- Shimmer (cards / skeleton) ---------- */
+.shimmer{
+  position:relative; overflow:hidden;
+}
+.shimmer::after{
+  content:""; position:absolute; inset:0; translate:-100% 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.24), transparent);
+  animation: shimmer 1.6s linear infinite;
+  pointer-events:none;
+}
+@keyframes shimmer{
+  100%{ translate: 100% 0 }
+}
+
+/* ---------- Gradient drift (backgrounds) ---------- */
+.gradient-animate{
+  background-size: 140% 140%;
+  animation: gradientDrift 14s ease infinite;
+}
+@keyframes gradientDrift{
+  0%{ background-position: 0% 50% }
+  50%{ background-position: 100% 50% }
+  100%{ background-position: 0% 50% }
+}
+
+/* ---------- Border Glow (subtle premium) ---------- */
+.glow-border{
+  position:relative;
+  border:1px solid var(--line);
+  border-radius:inherit;
+}
+.glow-border::before{
+  content:""; position:absolute; inset:-1px; border-radius:inherit;
+  background: conic-gradient(from 0turn, var(--p1), transparent 25%, var(--p2), transparent 75%, var(--p1));
+  filter: blur(16px); opacity:.22; z-index:-1; pointer-events:none;
+}
+
+/* ---------- Cursor blink (fallback if not in main) ---------- */
+.cursor{width:10px;height:1.2rem;background:linear-gradient(180deg,var(--p1),var(--p2));display:inline-block;transform:translateY(2px);animation:blink 1s steps(1,end) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* ---------- Role bubble “breathing” ---------- */
+.role-bubble.breathe{ animation: bubble 6s ease-in-out infinite }
+@keyframes bubble{
+  0%,100%{ transform: translate(var(--bx,0), var(--by, -50%)) scale(1) }
+  50%{ transform: translate(calc(var(--bx,0) + 2px), calc(var(--by, -50%) - 1px)) scale(1.01) }
+}
+
+/* ---------- Icon line-draw variants ---------- */
+.draw{ stroke-dasharray: 220; stroke-dashoffset: 220; animation: drawPath .9s ease forwards }
+.draw-slow{ stroke-dasharray: 320; stroke-dashoffset: 320; animation: drawPath 1.4s ease forwards }
+@keyframes drawPath{ to{ stroke-dashoffset: 0 } }
+
+/* ---------- Marquee helpers (news-style) ---------- */
+.marquee{ overflow:hidden }
+.marquee .track{
+  display:flex; gap:2rem; white-space:nowrap;
+  animation: marquee 22s linear infinite;
+  will-change: transform;
+}
+.marquee:hover .track{ animation-play-state: paused }
+@keyframes marquee{ 0%{ transform:translateX(0) } 100%{ transform:translateX(-50%) } }
+
+/* ---------- Enter effects (optional utility hooks) ---------- */
+.enter-fade{ opacity:0; transform: translateY(8px) }
+.enter-fade.in{ opacity:1; transform:none; transition:opacity .5s ease, transform .5s ease }
+.enter-rise{ opacity:0; transform: translateY(18px) }
+.enter-rise.in{ opacity:1; transform:none; transition:opacity .6s cubic-bezier(.22,1,.36,1), transform .6s cubic-bezier(.22,1,.36,1) }
+
+/* ---------- CTA micro press ---------- */
+.btn, .chip, .soc{
+  transition: transform .14s cubic-bezier(.2,.8,.2,1), filter .14s ease;
+}
+.btn:active, .chip:active, .soc:active{
+  transform: translateY(1px) scale(.995);
+}
+
+/* ---------- Particle Canvas hint (for layering) ---------- */
+.particle-layer{ pointer-events:none; z-index:-2 }
