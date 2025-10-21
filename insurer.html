@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>HealthFlo — For Insurers</title>
+  <meta name="description" content="Sell policies to high-intent patients, manage hospital relationships, and align pricing & APIs with transparency." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script>document.documentElement.classList.replace('no-js','js');</script>
+</head>
+<body class="theme-neon">
+  <div class="bg sun"></div><div class="bg blend"></div><div class="bg grid"></div>
+
+  <header class="hdr glass">
+    <nav class="nav wrap" aria-label="Primary">
+      <a href="index.html" class="brand" aria-label="Back to Home">
+        <svg class="brand__mark" viewBox="0 0 60 60" aria-hidden="true">
+          <defs><linearGradient id="bgrad3" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0%" stop-color="#FFC107"/><stop offset="100%" stop-color="#7c5cff"/></linearGradient></defs>
+          <circle cx="30" cy="30" r="18" fill="url(#bgrad3)" class="brand__pulse"/>
+          <path d="M14 30h12l4-8 6 16 4-8h12" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <span class="brand__name">HealthFlo — Insurers</span>
+      </a>
+
+      <ul class="menu__links">
+        <li><a href="#funnel">Policy Sales</a></li>
+        <li><a href="#relations">Hospital Relations</a></li>
+        <li><a href="#pricing">Pricing & APIs</a></li>
+      </ul>
+
+      <div class="spacer"></div>
+
+      <div class="theme-switch" role="group" aria-label="Theme">
+        <button class="pill" data-theme="theme-dawn">Dawn</button>
+        <button class="pill" data-theme="theme-care">Care</button>
+        <button class="pill is-active" data-theme="theme-neon">Neon</button>
+        <button class="pill" data-theme="theme-cosmos">Cosmos</button>
+      </div>
+
+      <button class="nav__toggle" aria-expanded="false" aria-controls="nav-menu"><span></span><span></span><span></span></button>
+      <div id="nav-menu" class="menu">
+        <ul class="menu__links menu__links--drawer">
+          <li><a href="#funnel">Policy Sales</a></li>
+          <li><a href="#relations">Hospital Relations</a></li>
+          <li><a href="#pricing">Pricing & APIs</a></li>
+        </ul>
+        <div class="menu__ctas">
+          <a class="btn btn-ghost" href="#contact">Watch 90-sec demo</a>
+          <a class="btn btn-primary" href="#funnel">Start here</a>
+        </div>
+      </div>
+    </nav>
+
+    <section class="hero wrap">
+      <div class="hero__grid">
+        <div class="hero__copy" data-animate>
+          <h1>Distribution with care.</h1>
+          <p class="lead">Sell policies to high-intent patients and manage hospital relations with live transparency.</p>
+          <div class="chips">
+            <span class="chip">IRDAI-compliant flows</span>
+            <span class="chip">Network hygiene</span>
+            <span class="chip">City & specialty TAT</span>
+          </div>
+        </div>
+        <div class="hero__vis" aria-hidden="true">
+          <svg class="network" viewBox="0 0 1200 700">
+            <g class="orbit"><circle cx="600" cy="350" r="240" class="o1"></circle><circle cx="600" cy="350" r="120" class="o2"></circle></g>
+            <g class="links"><path d="M240,500 C460,420 780,260 960,210" class="l1"></path><path d="M960,210 C780,360 640,520 520,540" class="l2"></path></g>
+            <g class="nodes">
+              <g class="node" transform="translate(180,460)"><rect rx="18" width="240" height="104" class="card" />
+                <text x="18" y="42" class="title">Prospects</text><text x="18" y="70" class="meta">High intent</text></g>
+              <g class="node" transform="translate(880,160)"><rect rx="18" width="220" height="104" class="card" />
+                <text x="18" y="42" class="title">Insurer</text><text x="18" y="70" class="meta">Issuance</text></g>
+              <g class="node" transform="translate(520,540)"><rect rx="18" width="220" height="104" class="card" />
+                <text x="18" y="42" class="title">Hospitals</text><text x="18" y="70" class="meta">Network</text></g>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </section>
+  </header>
+
+  <main id="main">
+    <!-- FUNNEL -->
+    <section id="funnel" class="section panel">
+      <div class="wrap">
+        <header class="section-head center" data-animate>
+          <h2>Policy sales funnel</h2>
+          <p class="kicker">Compare → Select → Disclose → Issue. Clean, verified, fast.</p>
+        </header>
+
+        <div class="block glass" data-animate>
+          <div class="rowcards">
+            <div class="rowcard"><div class="rowcard__icon">🔎</div><div><strong>Compare</strong><div>Side-by-side features & exclusions</div></div></div>
+            <div class="rowcard"><div class="rowcard__icon">🧾</div><div><strong>Disclosures</strong><div>Smooth KYC & declarations</div></div></div>
+            <div class="rowcard"><div class="rowcard__icon">💳</div><div><strong>Payment</strong><div>Multiple methods, instant receipts</div></div></div>
+            <div class="rowcard"><div class="rowcard__icon">🧩</div><div><strong>Add-ons</strong><div>OPD, room upgrade, riders</div></div></div>
+            <div class="rowcard"><div class="rowcard__icon">✅</div><div><strong>Issue</strong><div>Policy docs & onboarding</div></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RELATIONS -->
+    <section id="relations" class="section panel">
+      <div class="wrap">
+        <header class="section-head center" data-animate>
+          <h2>Hospital relationship management</h2>
+          <p class="kicker">Settlement hygiene, exception tracking, city/specialty TAT.</p>
+        </header>
+
+        <div class="block glass" data-animate>
+          <div class="package-grid">
+            <article class="package-card">
+              <header><strong>Network Hygiene</strong><span class="price">Quarterly</span></header>
+              <ul><li>Documentation quality</li><li>Exception trends</li><li>Settlement SLAs</li></ul>
+            </article>
+            <article class="package-card">
+              <header><strong>City & Specialty TAT</strong><span class="price">Dashboard</span></header>
+              <ul><li>Pre-auth & discharge</li><li>Claim TAT by specialty</li><li>League tables</li></ul>
+            </article>
+            <article class="package-card">
+              <header><strong>Joint Programs</strong><span class="price">Placement</span></header>
+              <ul><li>Bundles & discounts</li><li>Discharge finance</li><li>Preventive care</li></ul>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING/APIs -->
+    <section id="pricing" class="section panel">
+      <div class="wrap">
+        <header class="section-head center" data-animate>
+          <h2>Pricing & APIs</h2>
+          <p class="kicker">Tiered pricing, status hooks, and secure placements.</p>
+        </header>
+
+        <div class="block glass" data-animate>
+          <div class="compare-grid">
+            <article class="compare-row">
+              <div class="plan-badge">Starter</div>
+              <ul class="plan-specs"><li>Lead access</li><li>Basic analytics</li><li>Email status</li></ul>
+              <div class="plan-cta"><span class="plan-price"><strong>Contact</strong></span><a href="#" class="btn btn-secondary">Talk to us</a></div>
+            </article>
+            <article class="compare-row">
+              <div class="plan-badge">Growth</div>
+              <ul class="plan-specs"><li>Placement bundles</li><li>Webhook status</li><li>Relations dashboard</li></ul>
+              <div class="plan-cta"><span class="plan-price"><strong>Custom</strong></span><a href="#" class="btn btn-secondary">Talk to us</a></div>
+            </article>
+            <article class="compare-row">
+              <div class="plan-badge">Enterprise</div>
+              <ul class="plan-specs"><li>City programs</li><li>SLAs & support</li><li>Private APIs</li></ul>
+              <div class="plan-cta"><span class="plan-price"><strong>POA</strong></span><a href="#" class="btn btn-secondary">Talk to us</a></div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <button class="aiguide" aria-label="Open guide">?</button>
+
+  <footer class="ftr"><div class="wrap ftr__grid">
+    <div class="ftr__brand"><strong>HealthFlo Healthcare</strong><small>© HealthFlo Ventures Pvt. Ltd.</small></div>
+    <ul class="ftr__links"><li><a href="index.html#choose">Choose Visit</a></li><li><a href="#funnel">Policy Sales</a></li><li><a href="#relations">Relations</a></li></ul>
+    <ul class="ftr__social"><li><a href="#">LinkedIn</a></li><li><a href="#">Instagram</a></li><li><a href="#">Facebook</a></li></ul>
+  </div></footer>
+
+  <script src="scripts.js" defer></script>
+</body>
+</html>
