@@ -3,371 +3,147 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>HealthFlo — Patients (Cashless-first Care in India)</title>
-  <meta name="description" content="Find, book and pay for care in India — cashless-first. Instant eligibility check, transparent packages, and IRDAI-friendly policy marketplace." />
-
-  <!-- LCP: hero visual (works with your existing hero-static.svg) -->
-  <link rel="preload" as="image" href="/assets/img/hero-static.svg" imagesizes="100vw" imagesrcset="/assets/img/hero-static.svg 1200w" />
+  <title>HealthFlo — Patient</title>
+  <meta name="description" content="Cashless eligibility, transparent packages, and policy marketplace for patients in India." />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
-
-  <!-- Shared styles & motions -->
-  <link rel="stylesheet" href="/assets/css/main.css" />
-  <link rel="stylesheet" href="/assets/css/animations.css" />
-
-  <!-- Motion libs -->
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script defer src="https://unpkg.com/flubber/dist/flubber.min.js"></script>
+  <link rel="stylesheet" href="/assets/css/personas.css" />
+  <!-- LCP hint -->
+  <link rel="preload" as="image" href="/assets/img/hero-static.svg" type="image/svg+xml">
 </head>
-
-<body class="hf theme--night theme--medical mode--patient">
-  <a class="skip" href="#content">Skip to main</a>
-
-  <!-- Ambient background -->
+<body class="hdr-grid theme--android-glow mode--patient">
+  <!-- Ambient -->
   <div class="orb orb-left" aria-hidden="true"></div>
   <div class="orb orb-right" aria-hidden="true"></div>
   <canvas id="particles" class="particle-layer" aria-hidden="true"></canvas>
 
   <!-- Header -->
-  <header class="nav container">
-    <a class="brand" href="/" aria-label="HealthFlo home">
-      <span class="brand__beacon" aria-hidden="true"></span>
-      <span class="brand__name">HealthFlo</span>
-    </a>
-
-    <nav class="nav__links" aria-label="Primary">
-      <a href="/#hero">Overview</a>
-      <a href="/#locations">Cities</a>
-      <a href="/#content">Products</a>
-      <a href="/#trust">Trust & Tech</a>
-      <a href="/#contact">Contact</a>
-    </nav>
-
-    <!-- Theme studio (includes Apple-Matte) -->
-    <div class="theme" aria-expanded="false">
-      <button class="theme__toggle" aria-label="Open theme studio">
-        <span class="dot"></span><span>Theme</span>
-      </button>
-      <div class="theme__panel" role="menu" aria-label="Theme studio">
-        <button class="tbtn is-active" data-theme="night">Night</button>
-        <button class="tbtn" data-theme="day">Day</button>
-        <button class="tbtn" data-theme="aurora">Aurora</button>
-        <button class="tbtn" data-theme="clinic">Clinic</button>
-        <button class="tbtn" data-theme="contrast">High Contrast</button>
-        <button class="tbtn" data-theme="apple-matte">Apple Matte</button>
-      </div>
+  <header class="site-top container">
+    <div class="brand">
+      <span class="beacon" aria-hidden="true"></span>
+      <span>HealthFlo • Patient</span>
     </div>
-
-    <button class="nav__toggle" aria-label="Open menu" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
+    <nav class="top-nav" aria-label="Primary">
+      <a class="chip active">Overview</a>
+      <a class="chip" href="#packages">Packages</a>
+      <a class="chip" href="#elig">Eligibility</a>
+      <a class="chip" href="#contact">Contact</a>
+    </nav>
+    <div class="actions">
+      <button class="theme-toggle" id="themeToggle" aria-pressed="false">Theme</button>
+    </div>
   </header>
 
-  <!-- HERO -->
+  <!-- Hero -->
   <section class="hero container">
-    <div class="status-pill">
-      <span class="live-dot" aria-hidden="true"></span>
-      Patients • Cashless-first • <b>Live in 6 cities</b>
-    </div>
-
-    <div class="hero__grid">
-      <div class="hero__copy" data-animate>
-        <h1 class="hero-title">Find, book & pay — cashless comes first.</h1>
-
-        <!-- Typing: handled by /assets/js/main.js (data-typing) -->
-        <p class="hero-sub" id="typeTarget"
-           data-typing='[
-            "Instant cashless check at network hospitals.",
-            "Transparent packages with taxes and add-ons.",
-            "Buy IRDAI-friendly policies by network strength.",
-            "Get a concierge for claims & reimbursements."
-           ]'>
-          Instant cashless check at network hospitals.
-        </p>
-
-        <div class="chips">
-          <span class="chip">Cashless pre-auth</span>
-          <span class="chip">Transparent packages</span>
-          <span class="chip">0% EMI</span>
-          <span class="chip">ABHA-ready</span>
+    <div class="status">Live in <b>6 cities</b> • Uptime <b>99.2%</b></div>
+    <div class="grid">
+      <div>
+        <div class="role">
+          <span class="bubble" aria-hidden="true" style="transform: translateX(0) translateY(-50%); width:180px;"></span>
+          <button aria-selected="true"><span>Patient</span></button>
+          <button aria-selected="false" onclick="location.href='/hospital.html'"><span>Hospital</span></button>
+          <button aria-selected="false" onclick="location.href='/insurer.html'"><span>Insurer</span></button>
         </div>
-
-        <div class="hero__cta">
-          <a class="btn btn--primary" href="#patient-elig">Check cashless in 30s</a>
-          <a class="btn btn--ghost" href="#content">Explore products</a>
+        <h1>Find, book & pay for care — cashless first.</h1>
+        <p class="sub"><span id="typeTarget" data-typing='["Instant cashless checks.","Transparent package prices.","0% EMI for approved treats."]'></span></p>
+        <div class="cta">
+          <a class="btn btn--primary" href="#elig">Check cashless</a>
+          <a class="btn btn--ghost" href="#packages">Browse packages</a>
         </div>
       </div>
-
-      <!-- Persona morph (kept gentle & premium; no heart icons) -->
-      <div class="hero__visual persona-stage" aria-hidden="true" data-animate>
-        <svg id="morphSvg" viewBox="0 0 64 64" class="morph">
-          <defs>
-            <linearGradient id="gradPatient" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="#78f0ff"/><stop offset="1" stop-color="#7c5cff"/>
-            </linearGradient>
-          </defs>
-          <path id="morphPath" fill="url(#gradPatient)"
-            d="M12 20a12 12 0 0 1 12-12h16a12 12 0 0 1 12 12v24a12 12 0 0 1-12 12H24A12 12 0 0 1 12 44V20z"/>
-        </svg>
-        <div class="morph-caption">Patients</div>
+      <div aria-hidden="true">
+        <img src="/assets/img/hero-static.svg" alt="" width="560" height="420" loading="eager">
       </div>
     </div>
   </section>
 
-  <!-- Running banner: Cities we serve (auto scroll, pause on hover) -->
-  <section class="geo-marquee" aria-label="Cities we serve">
-    <div class="geo-marquee__track" id="cityTrack" data-autoscroll="true">
-      <span>Delhi</span><span>Mumbai</span><span>Bengaluru</span><span>Hyderabad</span><span>Chennai</span><span>Pune</span>
-      <span>Delhi</span><span>Mumbai</span><span>Bengaluru</span><span>Hyderabad</span><span>Chennai</span><span>Pune</span>
+  <!-- Cities marquee -->
+  <section class="geo-marquee">
+    <div class="geo-marquee__track">
+      <span class="pill">Delhi</span><span class="pill">Mumbai</span><span class="pill">Bengaluru</span>
+      <span class="pill">Hyderabad</span><span class="pill">Chennai</span><span class="pill">Pune</span>
+      <span class="pill">Delhi</span><span class="pill">Mumbai</span><span class="pill">Bengaluru</span>
+      <span class="pill">Hyderabad</span><span class="pill">Chennai</span><span class="pill">Pune</span>
     </div>
   </section>
 
-  <!-- CONTENT -->
-  <main id="content" class="container" role="main">
-    <header class="scope-head scope-head--patient">
-      <h2 class="section-title">Products & Services for Patients</h2>
-      <p class="muted">Built for India: cashless at network hospitals, transparent packages, ABHA support, IRDAI-aware flows.</p>
-    </header>
+  <!-- Packages (patient.js will populate) -->
+  <section id="packages" class="container card">
+    <h3 class="section-title">Transparent Packages</h3>
+    <div class="product-grid"></div>
+  </section>
 
-    <!-- Patient product cards -->
-    <div id="p-products" class="product-grid" data-animate>
-      <article class="product tilt">
-        <div class="product__icon">
-          <img src="/assets/icons/cashless.svg" alt="" loading="lazy" width="28" height="28">
+  <!-- Eligibility -->
+  <section id="elig" class="container card">
+    <div class="section-title">Check cashless eligibility in 30 seconds</div>
+    <div class="form-grid">
+      <label class="span-2"><span>Phone</span>
+        <input id="phone" type="tel" inputmode="tel" placeholder="+91 98xxxxxxx0" autocomplete="tel">
+      </label>
+      <button type="button" class="btn btn--primary js-send-otp">Send OTP</button>
+      <div class="otp-wrap span-2">
+        <div class="otp">
+          <input class="otp-i" maxlength="1" inputmode="numeric">
+          <input class="otp-i" maxlength="1" inputmode="numeric">
+          <input class="otp-i" maxlength="1" inputmode="numeric">
+          <input class="otp-i" maxlength="1" inputmode="numeric">
         </div>
-        <h3>Cashless Eligibility (30s)</h3>
-        <p>Check cashless availability before formal pre-auth. No spam. Indicative, IRDAI-aware output.</p>
-        <ul class="ticks">
-          <li>Major TPAs & insurers</li>
-          <li>Room rent & co-pay hints</li>
-          <li>ABHA linking (optional)</li>
-        </ul>
-        <a class="product__cta" href="#patient-elig">Try now →</a>
-      </article>
-
-      <article class="product tilt">
-        <div class="product__icon">
-          <img src="/assets/icons/search.svg" alt="" loading="lazy" width="28" height="28">
-        </div>
-        <h3>Transparent Packages</h3>
-        <p>Indicative prices by city & specialty with clean breakdowns and expected inclusions.</p>
-        <ul class="ticks">
-          <li>NABH partners</li>
-          <li>Day-care ready</li>
-          <li>Taxes & add-ons visible</li>
-        </ul>
-        <a class="product__cta" href="#packages">Browse examples →</a>
-      </article>
-
-      <article class="product tilt">
-        <div class="product__icon">
-          <img src="/assets/icons/patient.svg" alt="" loading="lazy" width="28" height="28">
-        </div>
-        <h3>Buy Health Insurance Policy</h3>
-        <p>IRDAI-friendly listings ranked by network strength, room eligibility and portability.</p>
-        <ul class="ticks">
-          <li>NCB filters</li>
-          <li>Network view</li>
-          <li>Portability help</li>
-        </ul>
-        <a class="product__cta" href="#policy">Compare & buy →</a>
-      </article>
-
-      <article class="product tilt">
-        <div class="product__icon">
-          <img src="/assets/icons/recovery.svg" alt="" loading="lazy" width="28" height="28">
-        </div>
-        <h3>Claim Concierge</h3>
-        <p>Documentation, follow-ups & reimbursements to reduce denials — all on WhatsApp.</p>
-        <ul class="ticks">
-          <li>Live status</li>
-          <li>Appeal templates</li>
-          <li>Discharge tracking</li>
-        </ul>
-        <a class="product__cta" href="#concierge">Get help →</a>
-      </article>
+        <button type="button" class="btn btn--primary js-verify-otp">Verify</button>
+      </div>
     </div>
 
-    <!-- Cashless eligibility widget -->
-    <section class="card grid-2" id="patient-elig" data-animate>
-      <div class="col">
-        <h3>Check cashless eligibility in 30 seconds</h3>
-        <div class="form-grid">
-          <label class="span-2">
-            <span>Phone</span>
-            <input id="phone" type="tel" inputmode="tel" placeholder="+91 98xxxxxxx0" autocomplete="tel">
-          </label>
-          <button type="button" class="btn btn--primary js-send-otp">Send OTP</button>
-
-          <div class="otp-wrap hidden span-2">
-            <div class="otp">
-              <input class="otp-i" maxlength="1" inputmode="numeric">
-              <input class="otp-i" maxlength="1" inputmode="numeric">
-              <input class="otp-i" maxlength="1" inputmode="numeric">
-              <input class="otp-i" maxlength="1" inputmode="numeric">
-            </div>
-            <button type="button" class="btn btn--primary js-verify-otp">Verify</button>
-          </div>
-        </div>
-        <p id="otpStatus" class="status" role="status" aria-live="polite"></p>
+    <div class="card" style="margin-top:12px">
+      <div class="form-grid">
+        <label><span>Insurer</span><select id="elig-ins"><option>Any</option><option>Care</option><option>HDFC ERGO</option><option>Star Health</option><option>Niva Bupa</option></select></label>
+        <label><span>City</span><select id="elig-city"><option>Delhi</option><option>Mumbai</option><option>Bengaluru</option><option>Hyderabad</option><option>Chennai</option></select></label>
+        <label><span>Specialty</span><select id="elig-spec"><option>General</option><option>Dental</option><option>Ophthalmology</option><option>IVF</option><option>Orthopedics</option><option>Cardiac</option><option>Oncology</option></select></label>
+        <label><span>Sum Insured (₹ L)</span><select id="elig-sum"><option>3</option><option selected>5</option><option>10</option><option>15</option><option>20</option><option>25</option></select></label>
       </div>
-
-      <div class="col">
-        <div class="info-card">
-          <h4>Instant Eligibility + Co-pay</h4>
-          <div class="form-grid">
-            <label>
-              <span>Insurer</span>
-              <select id="elig-ins">
-                <option value="Any">Any</option>
-                <option>Care</option><option>HDFC ERGO</option><option>Star Health</option><option>Niva Bupa</option>
-              </select>
-            </label>
-            <label>
-              <span>City</span>
-              <select id="elig-city">
-                <option>Delhi</option><option>Mumbai</option><option>Bengaluru</option><option>Hyderabad</option><option>Chennai</option>
-              </select>
-            </label>
-            <label>
-              <span>Specialty</span>
-              <select id="elig-spec">
-                <option>General</option><option>Dental</option><option>Ophthalmology</option><option>IVF</option><option>Orthopedics</option><option>Cardiac</option><option>Oncology</option>
-              </select>
-            </label>
-            <label>
-              <span>Sum Insured (₹ L)</span>
-              <select id="elig-sum">
-                <option>3</option><option selected>5</option><option>10</option><option>15</option><option>20</option><option>25</option>
-              </select>
-            </label>
-          </div>
-
-          <div class="elig-row">
-            <div class="elig-result">We’ll compute your likely eligibility here.</div>
-            <button id="elig-copy" class="btn btn--ghost">Copy</button>
-          </div>
-
-          <div class="form-grid">
-            <label><span>Estimated bill (₹)</span><input id="co-bill" type="number" min="1000" step="500" placeholder="85000"></label>
-            <label><span>Co-pay %</span><input id="co-rate" type="number" min="0" max="100" step="1" value="10"></label>
-          </div>
-          <div id="co-out" class="muted">Enter bill to estimate co-pay.</div>
-        </div>
+      <div class="elig-row">
+        <div class="elig-result">We’ll compute your likely eligibility here.</div>
+        <button id="elig-copy" class="btn btn--ghost">Copy</button>
       </div>
-    </section>
-
-    <!-- Tiny examples section (optional anchors used above) -->
-    <section id="packages" class="card" data-animate>
-      <div class="row-split">
-        <h3>Package examples</h3>
-        <a class="btn btn--ghost" href="#content">Back to products</a>
+      <div class="form-grid">
+        <label><span>Estimated bill (₹)</span><input id="co-bill" type="number" min="1000" step="500" placeholder="85000"></label>
+        <label><span>Co-pay %</span><input id="co-rate" type="number" min="0" max="100" step="1" value="10"></label>
       </div>
-      <div class="product-grid">
-        <article class="product">
-          <h4>ACL Reconstruction (Delhi)</h4>
-          <p class="muted">Indicative: ₹1.6L – ₹2.3L • Single AC • Day-care possible</p>
-        </article>
-        <article class="product">
-          <h4>Cataract (Mumbai)</h4>
-          <p class="muted">Indicative: ₹28k – ₹55k • Mono/Multifocal options</p>
-        </article>
-        <article class="product">
-          <h4>Angiography (Hyderabad)</h4>
-          <p class="muted">Indicative: ₹12k – ₹22k • Day-care</p>
-        </article>
-      </div>
-    </section>
-
-    <section id="policy" class="card" data-animate>
-      <div class="row-split">
-        <h3>Compare & buy policy</h3>
-        <a class="btn btn--ghost" href="#content">Back to products</a>
-      </div>
-      <p class="muted">IRDAI-aware, clean listing previews. Sort by network strength, room eligibility, or NCB benefits.</p>
-      <div class="product-grid">
-        <article class="product">
-          <h4>SecurePlus • 5L</h4>
-          <ul class="ticks"><li>Room: Single AC</li><li>OPD: Yes</li><li>₹8,900/yr</li></ul>
-        </article>
-        <article class="product">
-          <h4>Optima Restore • 10L</h4>
-          <ul class="ticks"><li>Room: Single AC</li><li>OPD: No</li><li>₹10,200/yr</li></ul>
-        </article>
-        <article class="product">
-          <h4>ReAssure 2.0 • 15L</h4>
-          <ul class="ticks"><li>Room: Single AC</li><li>OPD: Yes</li><li>₹13,900/yr</li></ul>
-        </article>
-      </div>
-    </section>
-
-    <section id="concierge" class="card" data-animate>
-      <div class="row-split">
-        <h3>Get claim concierge</h3>
-        <div class="helper-actions">
-          <a class="btn btn--primary" href="https://wa.me/?text=Hi%20HealthFlo%2C%20I%20need%20help%20with%20my%20claim.">WhatsApp now</a>
-          <a class="btn btn--ghost" href="mailto:hello@healthflo.io">Email us</a>
-        </div>
-      </div>
-      <p class="muted">We’ll set up docs, follow-ups & reimbursements; reduce denials with templates you can reuse.</p>
-    </section>
-  </main>
-
-  <!-- Trust & disclosures (short) -->
-  <section class="container trust card" data-animate>
-    <div class="trust__grid">
-      <div>
-        <h3>Built for trust (India)</h3>
-        <ul class="ticks"><li>Encryption in transit & at rest</li><li>Role-based access & audit trails</li><li>Consent-led PHI handling</li></ul>
-      </div>
-      <div>
-        <h3>Disclosures</h3>
-        <p class="muted">Eligibility is indicative; final decision is by the insurer/TPA under IRDAI rules. We do not provide financial advice.</p>
-      </div>
+      <div id="co-out" class="muted">Enter bill to estimate co-pay.</div>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer__grid container">
-      <div>
-        <span class="footer__brand">HealthFlo</span>
-        <p>Cashless-first care for India — with transparent packages and IRDAI-aware policy listings.</p>
-        <div class="footer__social">
-          <a href="#" aria-label="Twitter" class="soc"><img src="/assets/icons/twitter.svg" width="18" height="18" alt=""></a>
-          <a href="#" aria-label="LinkedIn" class="soc"><img src="/assets/icons/linkedin.svg" width="18" height="18" alt=""></a>
-          <a href="#" aria-label="YouTube" class="soc"><img src="/assets/icons/youtube.svg" width="18" height="18" alt=""></a>
-        </div>
-      </div>
-      <div>
-        <h3>Journeys</h3>
-        <ul>
-          <li><a href="/patient.html" aria-current="page">Patients</a></li>
-          <li><a href="/hospital.html">Hospitals</a></li>
-          <li><a href="/insurer.html">Insurers</a></li>
-        </ul>
-      </div>
-      <div>
-        <h3>Company</h3>
-        <ul>
-          <li><a href="/#locations">Locations</a></li>
-          <li><a href="/#trust">Trust & Tech</a></li>
-          <li><a href="/#contact">Contact</a></li>
-        </ul>
-      </div>
+  <!-- Contact -->
+  <section id="contact" class="container card">
+    <div class="section-title">Talk to an expert</div>
+    <div class="cta">
+      <a class="btn btn--primary" href="https://wa.me/?text=Hi%20HealthFlo%2C%20I%20need%20assistance.">WhatsApp in 30s</a>
+      <a class="btn btn--ghost" href="mailto:hello@healthflo.io">Email us</a>
     </div>
-    <div class="footer__bottom">© 2025 HealthFlo • Terms • Privacy</div>
-  </footer>
+  </section>
 
-  <!-- Toast -->
   <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
-  <!-- Scripts (shared behaviors: typing, marquee pause, OTP, eligibility, theme, particles, GSAP entrances) -->
+  <!-- Shared scripts -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script defer src="/assets/js/main.js"></script>
   <script defer src="/assets/js/gsap-init.js"></script>
-
-    <!-- Persona-only enhancements -->
+  <!-- Persona-only -->
   <script defer src="/assets/js/patient.js"></script>
+
+  <!-- Tiny theme toggle (local) -->
+  <script>
+    (function(){
+      const key='hf-theme'; const b=document.body; const t=document.getElementById('themeToggle');
+      const saved = localStorage.getItem(key) || 'android';
+      if(saved==='matte'){ b.classList.remove('theme--android-glow'); b.classList.add('theme--apple-matte'); t.setAttribute('aria-pressed','true'); }
+      t.addEventListener('click', ()=>{
+        const matte = b.classList.toggle('theme--apple-matte');
+        b.classList.toggle('theme--android-glow', !matte);
+        localStorage.setItem(key, matte ? 'matte' : 'android');
+        t.setAttribute('aria-pressed', matte ? 'true':'false');
+      });
+    })();
+  </script>
 </body>
 </html>
