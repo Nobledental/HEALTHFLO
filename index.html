@@ -2,85 +2,56 @@
 <html lang="en" class="no-js">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>HealthFlo — Cashless Care for India</title>
-  <meta name="description" content="HealthFlo helps patients, hospitals, and insurers in India with cashless eligibility, RCM, and an IRDAI-friendly policy marketplace." />
-
-  <!-- Preconnects -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <meta name="description" content="HealthFlo helps patients, hospitals, and insurers in India with cashless eligibility, RCM, and an IRDAI-aware policy marketplace." />
+  <meta name="theme-color" content="#061226">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-  <!-- Fonts -->
+  <!-- Fonts (Inter & Manrope for Apple-like crisp UI) -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Manrope:wght@500;700&display=swap">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
-
-  <!-- LCP image (hero placeholder / illustration) -->
-  <link rel="preload" as="image" href="assets/img/hero-static.svg" fetchpriority="high">
-
-  <!-- Styles -->
-  <link rel="stylesheet" href="assets/css/main.css" />
-
-  <!-- 3rd-party libs -->
+  <!-- LCP Preloads -->
+  <link rel="preload" as="image" href="/assets/img/hero-static.svg" imagesrcset="/assets/img/hero-static.svg">
+  <link rel="preload" as="style" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  <!-- GSAP -->
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script defer src="https://unpkg.com/flubber/dist/flubber.min.js"></script>
-
-  <!-- App -->
-  <script defer src="assets/js/main.js"></script>
 </head>
 
-<!-- Choose any theme class: theme--night (default), theme--day, theme--aurora, theme--clinic, theme--contrast, theme--ios -->
-<body class="hf theme--night mode--patient">
+<body class="hf theme--night theme--medical mode--patient">
   <a class="skip" href="#content">Skip to main</a>
 
-  <!-- Ambient background -->
+  <!-- Background systems -->
   <div class="orb orb-left" aria-hidden="true"></div>
   <div class="orb orb-right" aria-hidden="true"></div>
   <canvas id="particles" class="particle-layer" aria-hidden="true"></canvas>
+  <div class="hdr-grid" aria-hidden="true"></div>
 
-  <!-- === SHARED SVG SPRITE (icons) === -->
-  <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
-    <!-- Stethoscope -->
-    <symbol id="icon-stetho" viewBox="0 0 64 64">
-      <g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round">
-        <path d="M18 10v20a14 14 0 0 0 28 0V10" />
-        <circle cx="46" cy="30" r="6"/>
-        <path d="M46 36v10c0 6-6 10-14 10s-14-4-14-10V36"/>
-      </g>
+  <!-- Inline sprite (small set for zero-cost icons) -->
+  <svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+    <symbol id="i-patient" viewBox="0 0 64 64">
+      <path d="M32 34a14 14 0 1 0-14-14A14 14 0 0 0 32 34Zm0 6c-12.15 0-22 7.18-22 16v6h44v-6c0-8.82-9.85-16-22-16Z" fill="currentColor"/>
     </symbol>
-    <!-- Hospital -->
-    <symbol id="icon-hos" viewBox="0 0 64 64">
-      <g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="10" y="12" width="44" height="40" rx="6"/>
-        <path d="M32 22v12M26 28h12"/>
-        <path d="M40 50l6 6 10-12"/>
-      </g>
+    <symbol id="i-hospital" viewBox="0 0 64 64">
+      <rect x="8" y="10" width="48" height="44" rx="8" fill="none" stroke="currentColor" stroke-width="4"/>
+      <path d="M32 22v12M26 28h12" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
     </symbol>
-    <!-- Shield -->
-    <symbol id="icon-shield" viewBox="0 0 64 64">
-      <g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 24c0-8 10-12 20-12s20 4 20 12v12c0 12-10 18-20 22-10-4-20-10-20-22V24z"/>
-        <path d="M26 34l6 6 12-12"/>
-      </g>
+    <symbol id="i-insurer" viewBox="0 0 64 64">
+      <path d="M12 24c0-8 10-12 20-12s20 4 20 12v12c0 12-10 18-20 22-10-4-20-10-20-22Z" fill="none" stroke="currentColor" stroke-width="4"/>
+      <path d="M24 36l7 7 13-13" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
     </symbol>
-    <!-- Social -->
-    <symbol id="icon-twitter" viewBox="0 0 24 24">
-      <path d="M18 2l-6.4 11.2L9 10 2 22h20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </symbol>
-    <symbol id="icon-linkedin" viewBox="0 0 24 24">
-      <path d="M4 4h4v16H4zM10 10h4v10h-4zM8 4a2 2 0 110 4 2 2 0 010-4zm10 6a4 4 0 00-4 4v6h4v-6a1 1 0 112 0v6h4v-7a3 3 0 00-3-3h-3z" fill="currentColor"/>
-    </symbol>
-    <symbol id="icon-youtube" viewBox="0 0 24 24">
-      <path d="M22 12s0-4-1-5-5-1-9-1-8 0-9 1-1 5-1 5 0 4 1 5 5 1 9 1 8 0 9-1 1-5 1-5z" fill="currentColor"/>
-      <path d="M10 9l5 3-5 3z" fill="#fff"/>
+    <symbol id="i-tick" viewBox="0 0 24 24">
+      <path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
     </symbol>
   </svg>
 
   <!-- Header -->
-  <header class="nav container" data-spy-section id="hero">
+  <header class="nav container">
     <a class="brand" href="#" aria-label="HealthFlo">
       <span class="brand__beacon" aria-hidden="true"></span>
       <span class="brand__name">HealthFlo</span>
+      <span class="brand__tag">IN</span>
     </a>
 
     <nav class="nav__links" aria-label="Primary">
@@ -98,19 +69,19 @@
       </button>
       <div class="theme__panel" role="menu" aria-label="Theme studio">
         <button class="tbtn is-active" data-theme="night">Night</button>
+        <button class="tbtn" data-theme="medical">Medical</button>
         <button class="tbtn" data-theme="day">Day</button>
-        <button class="tbtn" data-theme="aurora">Aurora</button>
         <button class="tbtn" data-theme="clinic">Clinic</button>
+        <button class="tbtn" data-theme="ios">iOS White/Matt</button>
         <button class="tbtn" data-theme="contrast">High Contrast</button>
-        <button class="tbtn" data-theme="ios">iOS (White/Matt)</button>
       </div>
     </div>
 
     <button class="nav__toggle" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
   </header>
 
-  <!-- HERO (Android neon screen effect wrapper optional) -->
-  <section class="hero container android-grid">
+  <!-- HERO -->
+  <section id="hero" class="hero container">
     <div class="status-pill">
       <span class="live-dot" aria-hidden="true"></span>
       Live in <b>6 cities</b> • Platform uptime <b>99.2%</b>
@@ -118,26 +89,25 @@
 
     <div class="hero__grid">
       <div class="hero__copy" data-animate>
-        <!-- Persona selector -->
+        <!-- Persona tabs (no page scroll on click) -->
         <div class="role-tabs" role="tablist" aria-label="Select your role">
           <span id="roleBubble" class="role-bubble" aria-hidden="true"></span>
-
           <button class="role-tab is-active" role="tab" aria-selected="true" data-persona="patient">
-            <span class="ico"><svg aria-hidden="true"><use href="#icon-stetho"/></svg></span>
+            <span class="ico"><svg><use href="#i-patient"/></svg></span>
             <span>Patient</span>
           </button>
           <button class="role-tab" role="tab" aria-selected="false" data-persona="hospital">
-            <span class="ico"><svg aria-hidden="true"><use href="#icon-hos"/></svg></span>
+            <span class="ico"><svg><use href="#i-hospital"/></svg></span>
             <span>Hospital</span>
           </button>
           <button class="role-tab" role="tab" aria-selected="false" data-persona="insurer">
-            <span class="ico"><svg aria-hidden="true"><use href="#icon-shield"/></svg></span>
+            <span class="ico"><svg><use href="#i-insurer"/></svg></span>
             <span>Insurer</span>
           </button>
         </div>
 
         <h1 id="hero-title" class="hero-title">Find, book & pay for care — cashless first.</h1>
-        <p id="hero-sub" class="hero-sub type-caret">Instant cashless checks</p>
+        <p id="hero-sub" class="hero-sub">Instant cashless checks, transparent packages, and 0% EMI for approved treatments. ABHA-ready.</p>
 
         <div id="hero-chips" class="chips">
           <span class="chip">Cashless pre-auth</span>
@@ -149,42 +119,52 @@
           <a id="hero-cta" class="btn btn--primary" href="#p-scope">Start as Patient</a>
           <a class="btn btn--ghost" href="#trust">Why India trusts us</a>
         </div>
+
+        <!-- Micro AI assistant (client-only) -->
+        <div class="ai-mini" aria-live="polite">
+          <div class="ai-bubble">
+            <div class="ai-dot"></div>
+            <span id="aiLine">Hi! Tell me your city & treatment (e.g., Bengaluru, knee surgery) and I’ll guide you.</span>
+          </div>
+          <form class="ai-form" id="aiForm" novalidate>
+            <input id="aiInput" class="ai-in" placeholder="Try: Mumbai cataract package…" />
+            <button class="btn btn--primary">Assist</button>
+          </form>
+        </div>
       </div>
 
-      <!-- Intro morph stage (kept) -->
       <div class="hero__visual persona-stage" aria-hidden="true" data-animate>
-        <svg id="morphSvg" viewBox="0 0 64 64" class="morph" role="img" aria-label="Persona visual">
-          <defs>
-            <linearGradient id="gradPatient" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="#78f0ff"/><stop offset="1" stop-color="#7c5cff"/>
-            </linearGradient>
-            <linearGradient id="gradHospital" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="#34d399"/><stop offset="1" stop-color="#22d3ee"/>
-            </linearGradient>
-            <linearGradient id="gradInsurer" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="#ff86b5"/><stop offset="1" stop-color="#8b5cf6"/>
-            </linearGradient>
-          </defs>
-          <path id="morphPath" fill="url(#gradPatient)"
-            d="M12 20a12 12 0 0 1 12-12h16a12 12 0 0 1 12 12v24a12 12 0 0 1-12 12H24A12 12 0 0 1 12 44V20z"/>
-        </svg>
+        <img class="lcp" src="/assets/img/hero-static.svg" alt="" />
         <div class="morph-caption" id="morphLabel">Patient</div>
-        <!-- LCP static art (falls back while SVG renders) -->
-        <div class="lcp-holder" style="width:100%;max-width:520px;height:280px;border-radius:16px;margin-top:16px;">
-          <img src="assets/img/hero-static.svg" alt="" width="960" height="540" loading="eager" decoding="async" style="width:100%;height:auto;display:block;opacity:.001;">
-        </div>
       </div>
     </div>
   </section>
 
-  <!-- CITIES (marquee will be injected by JS) -->
-  <section id="locations" class="container" data-spy-section>
-    <h2 class="section-title">Cities we serve</h2>
-    <!-- JS builds .marquee with .track and items -->
+  <!-- Cities marquee (pauses on hover) -->
+  <section id="locations" class="container">
+    <div class="row-split">
+      <h2 class="section-title">Cities we serve</h2>
+    </div>
+    <div class="geo-marquee" aria-label="Locations marquee">
+      <div class="geo-marquee__track" id="cityTrack" role="list">
+        <span role="listitem">Delhi</span>
+        <span role="listitem">Mumbai</span>
+        <span role="listitem">Bengaluru</span>
+        <span role="listitem">Hyderabad</span>
+        <span role="listitem">Chennai</span>
+        <span role="listitem">Pune</span>
+        <span role="listitem">Delhi</span>
+        <span role="listitem">Mumbai</span>
+        <span role="listitem">Bengaluru</span>
+        <span role="listitem">Hyderabad</span>
+        <span role="listitem">Chennai</span>
+        <span role="listitem">Pune</span>
+      </div>
+    </div>
   </section>
 
   <!-- Persona content -->
-  <main id="content" class="container" role="main" data-spy-section>
+  <main id="content" class="container" role="main">
     <!-- PATIENT -->
     <section id="p-scope" class="scope is-active" aria-labelledby="p-title">
       <header class="scope-head scope-head--patient">
@@ -192,6 +172,7 @@
         <p class="muted">Built for India: cashless at network hospitals, transparent packages, ABHA support, IRDAI-aware flows.</p>
       </header>
 
+      <!-- Intent chips -->
       <div class="intent card" data-animate>
         <label class="intent__row">
           <span>What do you need?</span>
@@ -205,26 +186,10 @@
       </div>
 
       <div id="p-products" class="product-grid" data-animate>
-        <article class="product tilt">
-          <h3>Cashless Eligibility (30s)</h3>
-          <p>Check network cashless availability before formal pre-auth.</p>
-          <ul class="ticks"><li>Major TPAs & insurers</li><li>Room rent/Co-pay hints</li><li>ABHA linking (optional)</li></ul>
-        </article>
-        <article class="product tilt">
-          <h3>Transparent Packages</h3>
-          <p>Indicative prices by city & specialty with clean breakdowns.</p>
-          <ul class="ticks"><li>NABH partners</li><li>Day-care ready</li><li>Taxes & add-ons visible</li></ul>
-        </article>
-        <article class="product tilt">
-          <h3>Buy Health Insurance Policy</h3>
-          <p>IRDAI-friendly listings by network strength & room eligibility.</p>
-          <ul class="ticks"><li>NCB filters</li><li>Network view</li><li>Portability help</li></ul>
-        </article>
-        <article class="product tilt">
-          <h3>Claim Concierge</h3>
-          <p>Docs, follow-ups & reimbursements to reduce denials.</p>
-          <ul class="ticks"><li>WhatsApp updates</li><li>Appeal templates</li><li>Discharge tracking</li></ul>
-        </article>
+        <article class="product tilt"><h3>Cashless Eligibility (30s)</h3><p>Check network cashless availability before formal pre-auth.</p><ul class="ticks"><li>Major TPAs & insurers</li><li>Room rent/Co-pay hints</li><li>ABHA linking (optional)</li></ul></article>
+        <article class="product tilt"><h3>Transparent Packages</h3><p>Indicative prices by city & specialty with clean breakdowns.</p><ul class="ticks"><li>NABH partners</li><li>Day-care ready</li><li>Taxes & add-ons visible</li></ul></article>
+        <article class="product tilt"><h3>Buy Health Insurance Policy</h3><p>IRDAI-aware listings by network strength & room eligibility.</p><ul class="ticks"><li>NCB filters</li><li>Network view</li><li>Portability help</li></ul></article>
+        <article class="product tilt"><h3>Claim Concierge</h3><p>Docs, follow-ups & reimbursements to reduce denials.</p><ul class="ticks"><li>WhatsApp updates</li><li>Appeal templates</li><li>Discharge tracking</li></ul></article>
       </div>
 
       <section class="card grid-2" id="patient-elig" data-animate>
@@ -240,7 +205,6 @@
           </div>
           <p id="otpStatus" class="status" role="status" aria-live="polite"></p>
         </div>
-
         <div class="col">
           <div class="info-card">
             <h4>Instant Eligibility + Co-pay</h4>
@@ -258,7 +222,7 @@
       </section>
 
       <div class="row-split">
-        <a class="btn btn--ghost" href="patient.html">Explore more for Patients →</a>
+        <a class="btn btn--ghost explore-link" href="patient.html" data-persona-link="patient">Explore more for Patients →</a>
       </div>
     </section>
 
@@ -274,7 +238,7 @@
         <article class="product tilt"><h3>Get Listed</h3><p>Be discovered by insured patients searching by city & specialty. Promote cashless services.</p><ul class="ticks"><li>Priority cities</li><li>Eligibility pre-checks</li><li>Attribution reporting</li></ul></article>
       </div>
       <div class="row-split">
-        <a class="btn btn--ghost" href="hospital.html">Explore more for Hospitals →</a>
+        <a class="btn btn--ghost explore-link" href="hospital.html" data-persona-link="hospital">Explore more for Hospitals →</a>
       </div>
     </section>
 
@@ -285,34 +249,23 @@
         <p class="muted">Distribution & ops for India. Structured listings, partner campaigns, cashless ops APIs.</p>
       </header>
       <div id="i-products" class="product-grid" data-animate>
-        <article class="product tilt"><h3>Marketplace Listing</h3><p>Specialty-wise plan pages, network views, room eligibility & OPD add-ons surfaced clearly.</p><ul class="ticks"><li>Conversion insights</li><li>Plan schema</li><li>IRDAI-friendly copy</li></ul></article>
+        <article class="product tilt"><h3>Marketplace Listing</h3><p>Specialty-wise plan pages, network views, room eligibility & OPD add-ons surfaced clearly.</p><ul class="ticks"><li>Conversion insights</li><li>Plan schema</li><li>IRDAI-aware copy</li></ul></article>
         <article class="product tilt"><h3>Preferred Discounts</h3><p>City & specialty campaigns with attribution, ROI & fraud checks.</p><ul class="ticks"><li>Seasonal controls</li><li>Lead routing</li><li>Lift simulator</li></ul></article>
         <article class="product tilt"><h3>Cashless Ops API</h3><p>Webhooks & panel for pre-auth, docs & TAT; anomaly & duplicate detection.</p><ul class="ticks"><li>Claim visibility</li><li>Escalation hooks</li><li>Audit logs</li></ul></article>
       </div>
       <div class="row-split">
-        <a class="btn btn--ghost" href="insurer.html">Explore more for Insurers →</a>
+        <a class="btn btn--ghost explore-link" href="insurer.html" data-persona-link="insurer">Explore more for Insurers →</a>
       </div>
     </section>
   </main>
 
   <!-- Trust & tech -->
-  <section id="trust" class="container trust card" data-animate data-spy-section>
+  <section id="trust" class="container trust card" data-animate>
     <div class="trust__grid">
-      <div>
-        <h3>Built for trust (India)</h3>
-        <ul class="ticks"><li>Encryption in transit & at rest</li><li>Role-based access, audit trails</li><li>Consent-led PHI handling</li></ul>
-        <div class="badges"><span class="badge">SOC2-ready</span><span class="badge">NABH partners</span><span class="badge">IRDAI-aware flows</span></div>
-      </div>
-      <div>
-        <h3>Modern tech stack</h3>
-        <ul class="ticks"><li>On-device policy preview (OCR)</li><li>Realtime webhooks for claim events</li><li>Edge caching & auto-failover</li></ul>
-        <pre class="code">POST /webhooks/preauth
-{ "claim_id":"CLM-18425", "status":"documents_required" }</pre>
-      </div>
-      <div>
-        <h3>Disclosures</h3>
-        <p class="muted">Eligibility outputs are indicative; final decision lies with the insurer/TPA under IRDAI regulations. We do not provide financial advice.</p>
-      </div>
+      <div><h3>Built for trust (India)</h3><ul class="ticks"><li>Encryption in transit & at rest</li><li>Role-based access, audit trails</li><li>Consent-led PHI handling</li></ul><div class="badges"><span class="badge">SOC2-ready</span><span class="badge">NABH partners</span><span class="badge">IRDAI-aware flows</span></div></div>
+      <div><h3>Modern tech stack</h3><ul class="ticks"><li>On-device policy preview (OCR)</li><li>Realtime webhooks for claim events</li><li>Edge caching & auto-failover</li></ul><pre class="code">POST /webhooks/preauth
+{ "claim_id":"CLM-18425", "status":"documents_required" }</pre></div>
+      <div><h3>Disclosures</h3><p class="muted">Eligibility outputs are indicative; final decision lies with the insurer/TPA under IRDAI regulations. We do not provide financial advice.</p></div>
     </div>
   </section>
 
@@ -328,7 +281,7 @@
   </section>
 
   <!-- Contact -->
-  <section id="contact" class="contact container" data-animate data-spy-section>
+  <section id="contact" class="contact container" data-animate>
     <h3>Talk to an expert</h3>
     <div class="actions">
       <a class="btn btn--primary" href="https://wa.me/?text=Hi%20HealthFlo%2C%20I%20need%20assistance.">WhatsApp in 30s</a>
@@ -343,33 +296,20 @@
         <span class="footer__brand">HealthFlo</span>
         <p>Cashless insurance for India — connected to hospitals & patients.</p>
         <div class="footer__social">
-          <a href="#" aria-label="Twitter" class="soc"><svg aria-hidden="true" width="16" height="16"><use href="#icon-twitter"/></svg></a>
-          <a href="#" aria-label="LinkedIn" class="soc"><svg aria-hidden="true" width="16" height="16"><use href="#icon-linkedin"/></svg></a>
-          <a href="#" aria-label="YouTube" class="soc"><svg aria-hidden="true" width="16" height="16"><use href="#icon-youtube"/></svg></a>
+          <a href="#" aria-label="Twitter" class="soc"><img src="/assets/icons/twitter.svg" alt="" width="20" height="20"></a>
+          <a href="#" aria-label="LinkedIn" class="soc"><img src="/assets/icons/linkedin.svg" alt="" width="20" height="20"></a>
+          <a href="#" aria-label="YouTube" class="soc"><img src="/assets/icons/youtube.svg" alt="" width="24" height="24"></a>
         </div>
       </div>
-      <div>
-        <h3>Journeys</h3>
-        <ul>
-          <li><a data-persona-link="patient" href="#p-scope">Patients</a></li>
-          <li><a data-persona-link="hospital" href="#h-scope">Hospitals</a></li>
-          <li><a data-persona-link="insurer" href="#i-scope">Insurers</a></li>
-        </ul>
-      </div>
-      <div>
-        <h3>Company</h3>
-        <ul>
-          <li><a href="#locations">Locations</a></li>
-          <li><a href="#trust">Trust & Tech</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-      </div>
+      <div><h3>Journeys</h3><ul><li><a data-persona-link="patient" href="patient.html">Patients</a></li><li><a data-persona-link="hospital" href="hospital.html">Hospitals</a></li><li><a data-persona-link="insurer" href="insurer.html">Insurers</a></li></ul></div>
+      <div><h3>Company</h3><ul><li><a href="#locations">Locations</a></li><li><a href="#trust">Trust & Tech</a></li><li><a href="#contact">Contact</a></li></ul></div>
     </div>
     <div class="footer__bottom">© 2025 HealthFlo • Terms • Privacy</div>
   </footer>
 
-  <!-- Toast + FAB -->
   <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
   <a href="#patient-elig" class="fab" aria-label="Try cashless eligibility">⚡</a>
+
+  <script defer src="/assets/js/main.js"></script>
 </body>
 </html>
