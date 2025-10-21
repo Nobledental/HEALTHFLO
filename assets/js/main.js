@@ -21,6 +21,14 @@ const ls = {
   set: (k, v) => localStorage.setItem(k, JSON.stringify(v))
 };
 const prefersReduced = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+const runIdle = (cb, opts) => {
+  if (typeof window !== 'undefined' && typeof window.requestIdleCallback === 'function') {
+    window.requestIdleCallback(cb, opts);
+  } else {
+    const delay = opts && typeof opts.timeout === 'number' ? opts.timeout : 1;
+    setTimeout(cb, delay);
+  }
+};
 
 /* -----------------------------------------
    Keyboard focus ring (a11y)
