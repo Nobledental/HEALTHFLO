@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>HealthFlo — For Hospitals & Clinics</title>
+  <title>HealthFlo — For Insurers</title>
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
@@ -15,10 +15,10 @@
   <!-- GSAP (tiny entrances) -->
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 </head>
-<body class="hf theme--clinic mode--hospital">
+<body class="hf theme--day mode--insurer">
   <a class="skip" href="#main">Skip to content</a>
 
-  <!-- Ambient background (reuses site look) -->
+  <!-- Ambient background -->
   <div class="orb orb-left" aria-hidden="true"></div>
   <div class="orb orb-right" aria-hidden="true"></div>
 
@@ -30,16 +30,16 @@
     </a>
     <nav class="nav__links" aria-label="Primary">
       <a href="/">Home</a>
-      <a href="#suite">RCM Suite</a>
+      <a href="#listing">Listings</a>
       <a href="#products">Products</a>
       <a href="#contact">Contact</a>
     </nav>
     <div class="theme" aria-expanded="false">
       <button class="theme__toggle" aria-label="Theme studio"><span class="dot"></span><span>Theme</span></button>
       <div class="theme__panel" role="menu">
+        <button class="tbtn is-active" data-theme="day">Day</button>
         <button class="tbtn" data-theme="night">Night</button>
-        <button class="tbtn is-active" data-theme="clinic">Clinic</button>
-        <button class="tbtn" data-theme="day">Day</button>
+        <button class="tbtn" data-theme="aurora">Aurora</button>
         <button class="tbtn" data-theme="matte">Matte</button>
         <button class="tbtn" data-theme="contrast">High Contrast</button>
       </div>
@@ -47,47 +47,38 @@
   </header>
 
   <!-- HERO -->
-  <section class="page-hero container" id="suite">
-    <h1>RCM for India. <br>Faster cashless. Fewer denials.</h1>
-    <p class="muted">Cashless, reimbursements, recovery & denial management with insurance-desk tools. SOPs for pre-auth, TAT heatmaps, and claim trackers — made for Indian hospital ops.</p>
+  <section class="page-hero container" id="listing">
+    <h1>Distribution & ops for India.<br>Structured listings. Real-time ops.</h1>
+    <p class="muted">Publish IRDAI-friendly plan pages, run city campaigns, and get webhook-based visibility into pre-auth & claims. Built with hospitals in the loop.</p>
 
-    <!-- KPI chips (premium look) -->
+    <!-- KPI chips -->
     <div class="chips" style="margin-top:12px">
-      <span class="chip">Pre-auth automation <b>80% queries</b></span>
-      <span class="chip">Cashless uptime <b>99.2%</b></span>
-      <span class="chip">Denial recovery <b>98%</b></span>
+      <span class="chip">Cities live <b>6</b></span>
+      <span class="chip">Panel hospitals <b>100+</b></span>
+      <span class="chip">API uptime <b>99.9%</b></span>
     </div>
   </section>
 
-  <!-- Animated ops lane -->
-  <section class="container card" aria-label="RCM flow">
-    <h3 class="section-title" style="margin-top:0">Ops flow at a glance</h3>
-    <div class="ops-lane" style="--c: var(--p1); position:relative; overflow:hidden; border-radius:16px; border:1px solid var(--line); padding:14px; background:var(--card-2)">
+  <!-- Partners stripe (auto-scroll, pauses on hover) -->
+  <section class="container card" aria-label="Insurer partners">
+    <h3 class="section-title" style="margin-top:0">Featured partners</h3>
+    <div class="ops-lane" style="position:relative; overflow:hidden; border-radius:16px; border:1px solid var(--line); padding:12px; background:var(--card-2)">
       <style>
-        .ops-track{display:flex; gap:18px; white-space:nowrap; animation:ops 22s linear infinite}
-        .ops-pill{display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:999px; background:rgba(255,255,255,.06); border:1px solid var(--line)}
-        .ops-dot{width:8px; height:8px; border-radius:50%; background:var(--p1)}
-        @keyframes ops{to{transform:translateX(-50%)}}
-        .ops-lane:hover .ops-track{animation-play-state:paused}
+        .logo-track{display:flex; gap:24px; align-items:center; white-space:nowrap; animation:logos 28s linear infinite}
+        .logo-track img{height:28px; opacity:.9; filter:drop-shadow(0 6px 22px rgba(0,0,0,.25))}
+        @keyframes logos{to{transform:translateX(-50%)}}
+        .ops-lane:hover .logo-track{animation-play-state:paused}
       </style>
-      <div class="ops-track">
-        <span class="ops-pill"><span class="ops-dot"></span>Pre-registration</span>
-        <span class="ops-pill"><span class="ops-dot"></span>Policy OCR</span>
-        <span class="ops-pill"><span class="ops-dot"></span>Cashless Pre-auth</span>
-        <span class="ops-pill"><span class="ops-dot"></span>Docs & Queries</span>
-        <span class="ops-pill"><span class="ops-dot"></span>Discharge Summary</span>
-        <span class="ops-pill"><span class="ops-dot"></span>Claim Submission</span>
-        <span class="ops-pill"><span class="ops-dot"></span>Denials & Recovery</span>
-        <span class="ops-pill"><span class="ops-dot"></span>Payment Reconciliation</span>
+      <div class="logo-track">
+        <img src="img/logo-insurer-1.svg" alt="Insurer 1">
+        <img src="img/logo-insurer-2.svg" alt="Insurer 2">
+        <img src="img/logo-insurer-3.svg" alt="Insurer 3">
+        <img src="img/logo-insurer-4.svg" alt="Insurer 4">
         <!-- loop -->
-        <span class="ops-pill"><span class="ops-dot"></span>Pre-registration</span>
-        <span class="ops-pill"><span class="ops-dot"></span>Policy OCR</span>
-        <span class="ops-pill"><span class="ops-dot"></span>Cashless Pre-auth</span>
-        <span class="ops-pill"><span class="ops-dot"></span>Docs & Queries</span>
-        <span class="ops-pill"><span class="ops-dot"></span>Discharge Summary</span>
-        <span class="ops-pill"><span class="ops-dot"></span>Claim Submission</span>
-        <span class="ops-pill"><span class="ops-dot"></span>Denials & Recovery</span>
-        <span class="ops-pill"><span class="ops-dot"></span>Payment Reconciliation</span>
+        <img src="img/logo-insurer-1.svg" alt="Insurer 1">
+        <img src="img/logo-insurer-2.svg" alt="Insurer 2">
+        <img src="img/logo-insurer-3.svg" alt="Insurer 3">
+        <img src="img/logo-insurer-4.svg" alt="Insurer 4">
       </div>
     </div>
   </section>
@@ -96,37 +87,54 @@
   <main id="main" class="container" role="main">
     <section id="products" class="product-grid" data-animate>
       <article class="product tilt">
-        <h3>RCM Suite</h3>
-        <p>Cashless, reimbursement, recovery, denial management, pre-auth SOPs & escalation desk.</p>
+        <h3>Marketplace Listing</h3>
+        <p>Specialty-wise plan pages, network views, room eligibility & OPD add-ons surfaced clearly.</p>
         <ul class="ticks">
-          <li>TPA matrix & SLAs</li><li>TAT heatmaps</li><li>Claim trackers</li>
+          <li>Conversion insights</li><li>Plan schema</li><li>IRDAI-friendly copy</li>
         </ul>
       </article>
 
       <article class="product tilt">
-        <h3>Starter Stack</h3>
-        <p>Website, OPD & billing, WhatsApp intake, digital tariffs & package builder.</p>
+        <h3>Preferred Discounts</h3>
+        <p>City & specialty campaigns with attribution, ROI, and fraud signals.</p>
         <ul class="ticks">
-          <li>NABH ready</li><li>GST invoicing</li><li>MIS dashboards</li>
+          <li>Seasonal controls</li><li>Lead routing</li><li>Lift simulator</li>
         </ul>
       </article>
 
       <article class="product tilt">
-        <h3>Get Listed</h3>
-        <p>Be discovered by insured patients searching by city & specialty. Promote cashless services.</p>
+        <h3>Cashless Ops API</h3>
+        <p>Webhooks & panel for pre-auth, document requests, and TAT — with anomaly & duplicate detection.</p>
         <ul class="ticks">
-          <li>Priority cities</li><li>Eligibility pre-checks</li><li>Attribution reporting</li>
+          <li>Claim visibility</li><li>Escalation hooks</li><li>Audit logs</li>
         </ul>
       </article>
+    </section>
+
+    <!-- API sample -->
+    <section class="card" data-animate>
+      <div class="row-split">
+        <h3>Webhook example</h3>
+        <div class="helper-actions">
+          <button id="copyApi" class="btn btn--ghost">Copy JSON</button>
+        </div>
+      </div>
+      <pre id="api-json" class="code">{
+  "event": "preauth.updated",
+  "claim_id": "CLM-18425",
+  "status": "documents_required",
+  "required": ["ID Proof", "Policy PDF", "Treating Doctor Notes"],
+  "eta_hours": 6
+}</pre>
     </section>
 
     <!-- CTA -->
     <section class="card" id="contact" data-animate>
       <div class="row-split">
-        <h3>Want a 30-minute RCM walkthrough?</h3>
+        <h3>List your products on HealthFlo</h3>
         <div class="helper-actions">
-          <a class="btn btn--primary" href="mailto:sales@healthflo.io?subject=RCM%20demo">Request a demo</a>
-          <a class="btn btn--ghost" href="https://wa.me/?text=Hi%20HealthFlo%2C%20RCM%20demo%20please.">WhatsApp us</a>
+          <a class="btn btn--primary" href="mailto:partners@healthflo.io?subject=Insurer%20listing">Request listing deck</a>
+          <a class="btn btn--ghost" href="https://wa.me/?text=Hi%20HealthFlo%2C%20share%20insurer%20listing%20details.">WhatsApp us</a>
         </div>
       </div>
     </section>
@@ -134,20 +142,21 @@
 
   <!-- Footer -->
   <footer class="footer">
-    <div class="footer__bottom">© 2025 HealthFlo • Hospitals & Clinics</div>
+    <div class="footer__bottom">© 2025 HealthFlo • Insurers</div>
   </footer>
 
-  <!-- Light entrances -->
+  <!-- Minimal page logic -->
   <script>
     (function(){
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      if (window.gsap){
+      // entrances
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && window.gsap){
         gsap.from('.page-hero h1', {y:18, opacity:0, duration:.6, ease:'power2.out'});
         gsap.from('.page-hero .muted', {y:14, opacity:0, duration:.5, delay:.05});
         gsap.from('.chips .chip', {y:10, opacity:0, duration:.4, stagger:.05, delay:.08});
         gsap.from('.product', {y:18, opacity:0, duration:.55, ease:'power2.out', stagger:.06});
       }
-      // theme studio open/close
+
+      // theme studio
       const theme = document.querySelector('.theme');
       theme?.querySelector('.theme__toggle')?.addEventListener('click', ()=> {
         theme.setAttribute('aria-expanded', theme.getAttribute('aria-expanded')!=='true');
@@ -158,6 +167,19 @@
           if(b.dataset.theme!=='night') document.body.classList.add(`theme--${b.dataset.theme}`);
           theme.setAttribute('aria-expanded','false');
         });
+      });
+
+      // copy API JSON
+      const pre = document.getElementById('api-json');
+      document.getElementById('copyApi')?.addEventListener('click', async ()=>{
+        try {
+          await navigator.clipboard.writeText(pre.textContent);
+          const btn = document.getElementById('copyApi');
+          btn.textContent = 'Copied!';
+          setTimeout(()=> btn.textContent = 'Copy JSON', 1200);
+        } catch(e){
+          alert('Copy failed');
+        }
       });
     })();
   </script>
