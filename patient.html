@@ -7,91 +7,55 @@
   <meta name="description" content="Cashless eligibility, transparent packages, and policy marketplace for patients in India." />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/personas.css" />
-  <!-- LCP hint -->
-  <link rel="preload" as="image" href="/assets/img/hero-static.svg" type="image/svg+xml">
+  <link rel="preload" as="image" href="/assets/img/hero-static.svg" type="image/svg+xml" fetchpriority="high">
+  <link rel="stylesheet" href="/assets/css/main.css" />
 </head>
 <body class="hdr-grid theme--android-glow mode--patient">
-  <!-- Ambient -->
-  <div class="orb orb-left" aria-hidden="true"></div>
-  <div class="orb orb-right" aria-hidden="true"></div>
-  <canvas id="particles" class="particle-layer" aria-hidden="true"></canvas>
+  <div class="orb orb-left"></div><div class="orb orb-right"></div><canvas id="particles" class="particle-layer"></canvas>
 
-  <!-- Header -->
   <header class="site-top container">
-    <div class="brand">
-      <span class="beacon" aria-hidden="true"></span>
-      <span>HealthFlo • Patient</span>
-    </div>
-    <nav class="top-nav" aria-label="Primary">
-      <a class="chip active">Overview</a>
-      <a class="chip" href="#packages">Packages</a>
-      <a class="chip" href="#elig">Eligibility</a>
-      <a class="chip" href="#contact">Contact</a>
-    </nav>
-    <div class="actions">
-      <button class="theme-toggle" id="themeToggle" aria-pressed="false">Theme</button>
-    </div>
+    <div class="brand"><span class="beacon"></span><span>HealthFlo • Patient</span></div>
+    <nav class="top-nav"><a class="chip active" href="#hero">Overview</a><a class="chip" href="#packages">Packages</a><a class="chip" href="#elig">Eligibility</a><a class="chip" href="#contact">Contact</a></nav>
+    <div class="actions"><button id="themeToggle" class="theme-toggle" aria-pressed="false">Theme</button></div>
   </header>
 
-  <!-- Hero -->
-  <section class="hero container">
+  <section id="hero" class="hero container">
     <div class="status">Live in <b>6 cities</b> • Uptime <b>99.2%</b></div>
     <div class="grid">
       <div>
-        <div class="role">
-          <span class="bubble" aria-hidden="true" style="transform: translateX(0) translateY(-50%); width:180px;"></span>
-          <button aria-selected="true"><span>Patient</span></button>
-          <button aria-selected="false" onclick="location.href='/hospital.html'"><span>Hospital</span></button>
-          <button aria-selected="false" onclick="location.href='/insurer.html'"><span>Insurer</span></button>
+        <div class="role" aria-label="Persona switch">
+          <span class="bubble" style="transform: translateX(0) translateY(-50%); width:180px;"></span>
+          <button class="role-btn is-active" data-persona="patient">Patient</button>
+          <button class="role-btn" data-persona="hospital" onclick="location.href='/hospital.html'">Hospital</button>
+          <button class="role-btn" data-persona="insurer" onclick="location.href='/insurer.html'">Insurer</button>
         </div>
         <h1>Find, book & pay for care — cashless first.</h1>
-        <p class="sub"><span id="typeTarget" data-typing='["Instant cashless checks.","Transparent package prices.","0% EMI for approved treats."]'></span></p>
+        <p class="sub"><span id="typeTarget" data-typing='["Instant cashless checks.","Transparent package prices by city.","0% EMI for approved treatments."]'></span></p>
         <div class="cta">
           <a class="btn btn--primary" href="#elig">Check cashless</a>
           <a class="btn btn--ghost" href="#packages">Browse packages</a>
         </div>
       </div>
-      <div aria-hidden="true">
-        <img src="/assets/img/hero-static.svg" alt="" width="560" height="420" loading="eager">
-      </div>
+      <div aria-hidden="true"><img src="/assets/img/hero-static.svg" alt="" width="560" height="420" loading="eager" decoding="async"></div>
     </div>
   </section>
 
-  <!-- Cities marquee -->
-  <section class="geo-marquee">
-    <div class="geo-marquee__track">
-      <span class="pill">Delhi</span><span class="pill">Mumbai</span><span class="pill">Bengaluru</span>
-      <span class="pill">Hyderabad</span><span class="pill">Chennai</span><span class="pill">Pune</span>
-      <span class="pill">Delhi</span><span class="pill">Mumbai</span><span class="pill">Bengaluru</span>
-      <span class="pill">Hyderabad</span><span class="pill">Chennai</span><span class="pill">Pune</span>
-    </div>
-  </section>
-
-  <!-- Packages (patient.js will populate) -->
   <section id="packages" class="container card">
-    <h3 class="section-title">Transparent Packages</h3>
-    <div class="product-grid"></div>
+    <h2 class="section-title">Transparent Packages</h2>
+    <div class="product-grid" id="pkgGrid"></div>
   </section>
 
-  <!-- Eligibility -->
   <section id="elig" class="container card">
-    <div class="section-title">Check cashless eligibility in 30 seconds</div>
+    <h2 class="section-title">Check cashless eligibility in 30 seconds</h2>
     <div class="form-grid">
-      <label class="span-2"><span>Phone</span>
-        <input id="phone" type="tel" inputmode="tel" placeholder="+91 98xxxxxxx0" autocomplete="tel">
-      </label>
+      <label class="span-2"><span>Phone</span><input id="phone" type="tel" inputmode="tel" placeholder="+91 98xxxxxxx0" autocomplete="tel"></label>
       <button type="button" class="btn btn--primary js-send-otp">Send OTP</button>
-      <div class="otp-wrap span-2">
-        <div class="otp">
-          <input class="otp-i" maxlength="1" inputmode="numeric">
-          <input class="otp-i" maxlength="1" inputmode="numeric">
-          <input class="otp-i" maxlength="1" inputmode="numeric">
-          <input class="otp-i" maxlength="1" inputmode="numeric">
-        </div>
+      <div class="otp-wrap span-2 hidden">
+        <div class="otp"><input class="otp-i" maxlength="1" inputmode="numeric"><input class="otp-i" maxlength="1" inputmode="numeric"><input class="otp-i" maxlength="1" inputmode="numeric"><input class="otp-i" maxlength="1" inputmode="numeric"></div>
         <button type="button" class="btn btn--primary js-verify-otp">Verify</button>
       </div>
     </div>
+    <p id="otpStatus" class="muted" role="status" aria-live="polite"></p>
 
     <div class="card" style="margin-top:12px">
       <div class="form-grid">
@@ -100,50 +64,26 @@
         <label><span>Specialty</span><select id="elig-spec"><option>General</option><option>Dental</option><option>Ophthalmology</option><option>IVF</option><option>Orthopedics</option><option>Cardiac</option><option>Oncology</option></select></label>
         <label><span>Sum Insured (₹ L)</span><select id="elig-sum"><option>3</option><option selected>5</option><option>10</option><option>15</option><option>20</option><option>25</option></select></label>
       </div>
-      <div class="elig-row">
-        <div class="elig-result">We’ll compute your likely eligibility here.</div>
-        <button id="elig-copy" class="btn btn--ghost">Copy</button>
-      </div>
-      <div class="form-grid">
-        <label><span>Estimated bill (₹)</span><input id="co-bill" type="number" min="1000" step="500" placeholder="85000"></label>
-        <label><span>Co-pay %</span><input id="co-rate" type="number" min="0" max="100" step="1" value="10"></label>
-      </div>
+      <div class="elig-row"><div class="elig-result" id="eligRes">We’ll compute your likely eligibility here.</div><button id="elig-copy" class="btn btn--ghost">Copy</button></div>
+      <div class="form-grid"><label><span>Estimated bill (₹)</span><input id="co-bill" type="number" min="1000" step="500" placeholder="85000"></label><label><span>Co-pay %</span><input id="co-rate" type="number" min="0" max="100" step="1" value="10"></label></div>
       <div id="co-out" class="muted">Enter bill to estimate co-pay.</div>
     </div>
   </section>
 
-  <!-- Contact -->
   <section id="contact" class="container card">
-    <div class="section-title">Talk to an expert</div>
+    <h2 class="section-title">Need help?</h2>
     <div class="cta">
-      <a class="btn btn--primary" href="https://wa.me/?text=Hi%20HealthFlo%2C%20I%20need%20assistance.">WhatsApp in 30s</a>
-      <a class="btn btn--ghost" href="mailto:hello@healthflo.io">Email us</a>
+      <a class="btn btn--primary" href="https://wa.me/?text=Hi%20HealthFlo%2C%20I%20need%20assistance."><svg class="ico"><use href="/assets/icons/sprite.svg#whatsapp"/></svg> WhatsApp in 30s</a>
+      <a class="btn btn--ghost" href="mailto:hello@healthflo.io"><svg class="ico"><use href="/assets/icons/sprite.svg#mail"/></svg> Email us</a>
     </div>
   </section>
 
   <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
-  <!-- Shared scripts -->
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script defer src="/assets/js/main.js"></script>
   <script defer src="/assets/js/gsap-init.js"></script>
-  <!-- Persona-only -->
   <script defer src="/assets/js/patient.js"></script>
-
-  <!-- Tiny theme toggle (local) -->
-  <script>
-    (function(){
-      const key='hf-theme'; const b=document.body; const t=document.getElementById('themeToggle');
-      const saved = localStorage.getItem(key) || 'android';
-      if(saved==='matte'){ b.classList.remove('theme--android-glow'); b.classList.add('theme--apple-matte'); t.setAttribute('aria-pressed','true'); }
-      t.addEventListener('click', ()=>{
-        const matte = b.classList.toggle('theme--apple-matte');
-        b.classList.toggle('theme--android-glow', !matte);
-        localStorage.setItem(key, matte ? 'matte' : 'android');
-        t.setAttribute('aria-pressed', matte ? 'true':'false');
-      });
-    })();
-  </script>
 </body>
 </html>
