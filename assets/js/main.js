@@ -11,6 +11,15 @@
    ========================================================================== */
 
 /* -----------------------------------------
+   Progressive enhancement flags
+------------------------------------------ */
+const docEl = document.documentElement;
+if (docEl) {
+  docEl.classList.remove('no-js');
+  docEl.classList.add('js');
+}
+
+/* -----------------------------------------
    Tiny helpers
 ------------------------------------------ */
 const $  = (s, el = document) => el.querySelector(s);
