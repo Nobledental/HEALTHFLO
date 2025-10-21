@@ -1,162 +1,228 @@
-/* =========================================================
-   HealthFlo — main.js
-   - Theme studio (Android HDR <-> Apple Matte)
-   - Non-scroll persona switches
-   - Role bubble spring, typewriter micro-interactions
-   - Cities marquee (CSS pauses on hover)
-   - Scroll-spy on chips
-   - Perf-friendly opts (passive listeners, rIC)
-   ========================================================= */
+/* ==========================================================================
+   HealthFlo — animations.css (advanced motion system)
+   Works with variables & themes from assets/css/main.css
+   ========================================================================== */
 
-(() => {
-  const body = document.body;
-  const key = 'hf-theme-v2';
-  const toggle = document.getElementById('themeToggle');
-
-  // Restore theme
-  const saved = localStorage.getItem(key) || 'android';
-  if (saved === 'matte') {
-    body.classList.remove('theme--android-glow');
-    body.classList.add('theme--apple-matte');
-    toggle?.setAttribute('aria-pressed','true');
-  } else {
-    body.classList.add('theme--android-glow');
-    toggle?.setAttribute('aria-pressed','false');
+/* ---------- Reduced motion guard ---------- */
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
   }
+}
 
-  toggle?.addEventListener('click', () => {
-    const isMatte = body.classList.toggle('theme--apple-matte');
-    body.classList.toggle('theme--android-glow', !isMatte);
-    localStorage.setItem(key, isMatte ? 'matte' : 'android');
-    toggle.setAttribute('aria-pressed', isMatte ? 'true' : 'false');
-  }, { passive:true });
-})();
+/* ---------- Base transition tokens ---------- */
+:root{
+  --e1: cubic-bezier(.2,.8,.2,1);
+  --e2: cubic-bezier(.22,1,.36,1);
+  --spring: cubic-bezier(.34,1.56,.64,1);
+  --fast: .22s;
+  --med: .42s;
+  --slow: .7s;
+}
 
-// Prevent scroll-jumps for persona nav + external links marked data-no-scroll
-(() => {
-  document.addEventListener('click', (e) => {
-    const a = e.target.closest('a,button');
-    if (!a) return;
+/* ---------- Scroll reveal primitives ---------- */
+[data-animate]{
+  opacity: 0; transform: translateY(18px) scale(.98);
+  transition: opacity var(--med) var(--e2), transform var(--med) var(--e2);
+  will-change: opacity, transform;
+}
+[data-animate].is-visible{
+  opacity: 1; transform: none;
+}
+.reveal-up   { transform: translateY(22px); }
+.reveal-down { transform: translateY(-22px); }
+.reveal-left { transform: translateX(22px); }
+.reveal-right{ transform: translateX(-22px); }
+.reveal-pop  { transform: translateY(14px) scale(.96); }
+.reveal-pop.is-visible{ transform: none; }
 
-    // role buttons do not scroll page
-    if (a.matches('.role-btn')) {
-      e.preventDefault();
-      // If it has a location redirect, follow without #anchors
-      const href = a.getAttribute('onclick');
-      if (href && href.includes('location.href')) {
-        // evaluate just the URL part safely
-        const url = href.split("location.href=")[1]?.replace(/['";]/g,'') || null;
-        if (url) window.location.href = url;
-      } else {
-        // On index, just toggle bubble (no auto scroll)
-        const all = [...document.querySelectorAll('.role-btn')];
-        const idx = all.indexOf(a);
-        const bubble = document.getElementById('roleBubble') || document.querySelector('.bubble');
-        all.forEach(x => x.classList.remove('is-active'));
-        a.classList.add('is-active');
-        if (bubble) {
-          const rect = a.getBoundingClientRect();
-          const parent = a.parentElement.getBoundingClientRect();
-          const tx = rect.left - parent.left;
-          bubble.style.width = rect.width + 'px';
-          bubble.style.transform = `translateX(${tx}px) translateY(-50%)`;
-        }
-      }
-    }
+/* Stagger helper: apply to children */
+.stagger > *{
+  opacity:0; transform:translateY(16px);
+  transition: opacity var(--med) var(--e2), transform var(--med) var(--e2);
+}
+.stagger.is-visible > *{
+  opacity:1; transform:none;
+}
+.stagger.is-visible > *:nth-child(1){ transition-delay: .02s }
+.stagger.is-visible > *:nth-child(2){ transition-delay: .06s }
+.stagger.is-visible > *:nth-child(3){ transition-delay: .10s }
+.stagger.is-visible > *:nth-child(4){ transition-delay: .14s }
+.stagger.is-visible > *:nth-child(5){ transition-delay: .18s }
 
-    // links annotated with data-no-scroll never cause anchor jumps
-    if (a.hasAttribute('data-no-scroll')) {
-      e.preventDefault();
-      const href = a.getAttribute('href');
-      if (href && !href.startsWith('#')) window.location.href = href;
-    }
-  });
-})();
+/* ---------- Premium buttons (micro-spring) ---------- */
+.btn{
+  transition: transform .18s var(--spring), box-shadow var(--fast) var(--e1), background var(--fast) var(--e1);
+}
+.btn:hover{ transform: translateY(-1px) scale(1.015); }
+.btn:active{ transform: translateY(0) scale(.985); }
 
-// Role bubble spring (on load + resize)
-(() => {
-  function placeInitialBubble() {
-    const active = document.querySelector('.role-btn.is-active');
-    const bubble = document.getElementById('roleBubble') || document.querySelector('.bubble');
-    if (!active || !bubble) return;
-    const rect = active.getBoundingClientRect();
-    const parent = active.parentElement.getBoundingClientRect();
-    const tx = rect.left - parent.left;
-    bubble.style.width = rect.width + 'px';
-    bubble.style.transform = `translateX(${tx}px) translateY(-50%)`;
-  }
-  window.addEventListener('load', placeInitialBubble);
-  window.addEventListener('resize', placeInitialBubble);
-})();
+/* Glow lift for primary */
+.btn--primary{
+  box-shadow: 0 12px 28px color-mix(in oklab, var(--accent-1), transparent 78%);
+}
+.btn--primary:hover{
+  box-shadow: 0 16px 38px color-mix(in oklab, var(--accent-2), transparent 70%);
+}
 
-// Typewriter micro-interaction
-(() => {
-  const el = document.getElementById('typeTarget');
-  if (!el) return;
-  const phrases = JSON.parse(el.dataset.typing || '[]');
-  let i = 0, j = 0, deleting = false;
+/* ---------- Ripple (CSS-only baseline, JS will enhance) ---------- */
+.ripple{
+  position: relative; overflow: hidden;
+}
+.ripple::after{
+  content:""; position:absolute; inset:auto; width:12px; height:12px;
+  background: radial-gradient(circle, color-mix(in oklab, var(--accent-1), #fff 22%) 0%, transparent 60%);
+  border-radius:50%; transform: scale(0); opacity:.55; pointer-events:none;
+  transition: transform .5s var(--e1), opacity .6s var(--e1);
+}
+.ripple.is-pressing::after{ transform: scale(16); opacity:0; }
 
-  function tick() {
-    const p = phrases[i] || '';
-    if (!deleting) {
-      j++;
-      el.textContent = p.slice(0, j);
-      if (j === p.length) { deleting = true; setTimeout(tick, 1200); return; }
-      setTimeout(tick, 28 + Math.random()*60);
-    } else {
-      j--;
-      el.textContent = p.slice(0, j);
-      if (j === 0) { deleting = false; i = (i+1)%phrases.length; setTimeout(tick, 300); return; }
-      setTimeout(tick, 18 + Math.random()*30);
-    }
-  }
-  tick();
-})();
+/* ---------- Role bubble subtle spring ---------- */
+.role-bubble{
+  animation: bubble-idle 6s ease-in-out infinite;
+}
+@keyframes bubble-idle{
+  0%,100%{ transform: translateY(-50%) translateZ(0) }
+  50%{ transform: translateY(calc(-50% - 2px)) translateZ(0) }
+}
 
-// Scroll-spy for top chips (sections within page only)
-(() => {
-  const chips = [...document.querySelectorAll('.top-nav .chip')];
-  const targets = chips
-    .map(c => c.getAttribute('href'))
-    .filter(h => h && h.startsWith('#'))
-    .map(h => document.querySelector(h))
-    .filter(Boolean);
+/* ---------- Pills / chips hover micro-move ---------- */
+.chip, .pill, .tab, .seg-btn{
+  transition: transform var(--fast) var(--e1), background var(--fast) var(--e1), border-color var(--fast) var(--e1);
+}
+.chip:hover, .pill:hover, .tab:hover, .seg-btn:hover{
+  transform: translateY(-1px);
+}
 
-  if (!targets.length) return;
+/* ---------- Cards (glass + aurora sheen) ---------- */
+.product{
+  transform: translateZ(0);
+}
+.product:hover{
+  box-shadow: 0 28px 72px color-mix(in oklab, var(--accent-2), transparent 78%);
+}
+.product::after{
+  /* Sweep sheen */
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background: linear-gradient(95deg, transparent 45%, color-mix(in oklab, #fff, var(--accent-1) 12%) 50%, transparent 55%);
+  mix-blend-mode: soft-light; opacity:0; transform: translateX(-40%) skewX(-12deg);
+  transition: opacity .5s var(--e1), transform .6s var(--e1);
+}
+.product:hover::after{
+  opacity:.55; transform: translateX(40%) skewX(-12deg);
+}
 
-  const map = new Map(targets.map((sec) => [sec.id, chips.find(c => c.getAttribute('href') === `#${sec.id}`)]));
+/* ---------- Typing headline shimmer ---------- */
+.type-gradient{
+  background: linear-gradient(90deg, #fff 0%, var(--accent-1) 50%, var(--accent-2) 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: shine 4s linear infinite;
+}
+@keyframes shine{ 0%{background-position:0 0} 100%{background-position:-200% 0} }
 
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(({isIntersecting, target}) => {
-      if (!isIntersecting) return;
-      chips.forEach(c => c.classList.remove('active'));
-      const chip = map.get(target.id);
-      chip?.classList.add('active');
-    });
-  }, { rootMargin: '-40% 0px -50% 0px', threshold: 0.01 });
+/* ---------- SVG stroke draw ---------- */
+.draw-stroke{
+  stroke-dasharray: 220; stroke-dashoffset: 220;
+  animation: draw .9s var(--e2) forwards;
+}
+@keyframes draw{ to{ stroke-dashoffset: 0 } }
 
-  targets.forEach(sec => io.observe(sec));
-})();
+/* ---------- Orb parallax soft float ---------- */
+@keyframes float{
+  0%,100%{ transform: translate3d(0,0,0) }
+  50%{ transform: translate3d(0,-8px,0) }
+}
+.orb-left{ animation: float 12s ease-in-out infinite; }
+.orb-right{ animation: float 10s ease-in-out infinite; }
 
-// Particle field (lightweight)
-(() => {
-  const c = document.getElementById('particles');
-  if (!c) return;
-  const ctx = c.getContext('2d');
-  let w=0,h=0; const pts = [];
-  function resize(){ w = c.width = innerWidth; h = c.height = innerHeight; pts.length=80; for(let i=0;i<pts.length;i++){ pts[i]={x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3}; } }
-  function step(){
-    ctx.clearRect(0,0,w,h);
-    ctx.fillStyle = 'rgba(255,255,255,.55)';
-    for(const p of pts){
-      p.x+=p.vx; p.y+=p.vy;
-      if(p.x<0||p.x>w) p.vx*=-1;
-      if(p.y<0||p.y>h) p.vy*=-1;
-      ctx.globalAlpha = 0.35;
-      ctx.beginPath(); ctx.arc(p.x,p.y,1.1,0,Math.PI*2); ctx.fill();
-    }
-    requestAnimationFrame(step);
-  }
-  resize(); step();
-  window.addEventListener('resize', resize, { passive:true });
-})();
+/* ---------- Grid HDR twinkle (optional class) ---------- */
+.grid-hdr.twinkle{
+  animation: twinkle 10s ease-in-out infinite;
+}
+@keyframes twinkle{
+  0%,100%{opacity:.9; filter:saturate(115%)}
+  50%{opacity:1; filter:saturate(125%)}
+}
+
+/* ---------- Marquee polish ---------- */
+.geo-marquee__track{
+  animation: marquee var(--marquee-speed) linear infinite;
+  will-change: transform;
+}
+.geo-marquee:hover .geo-marquee__track{
+  animation-play-state: paused;
+}
+
+/* ---------- Toast entrance ---------- */
+.toast{ transition: transform .35s var(--e2), opacity .35s var(--e2) }
+.toast.in{ transform: translateX(-50%) translateY(0); opacity:1 }
+
+/* ---------- Icon hover (subtle 3D) ---------- */
+.soc{ transition: transform var(--fast) var(--spring), box-shadow var(--fast) var(--e1) }
+.soc:hover{ transform: translateY(-2px) scale(1.05); box-shadow: 0 16px 34px color-mix(in oklab, var(--accent-1), transparent 70%) }
+
+/* ---------- Form focus glint ---------- */
+.input:focus, .form-grid input:focus, .form-grid select:focus, .form-grid textarea:focus{
+  border-color: color-mix(in oklab, var(--accent-1), #fff 12%);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent-1), transparent 82%);
+  transition: box-shadow .22s var(--e1), border-color .22s var(--e1);
+}
+
+/* ---------- OTP bump on verified (add .ok in JS) ---------- */
+.status.ok{
+  animation: ok-pulse .7s var(--spring);
+}
+@keyframes ok-pulse{
+  0%{ transform: scale(1); color: #9de9c5 }
+  40%{ transform: scale(1.04); color: #6ee7b7 }
+  100%{ transform: scale(1); color: inherit }
+}
+
+/* ---------- Press feedback helper (add .press on mousedown) ---------- */
+.pressable{ transition: transform .14s var(--spring) }
+.pressable.press{ transform: scale(.98) }
+
+/* ---------- Floating dots (optional decorative layer) ---------- */
+.fx-dots{
+  position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen; opacity:.35;
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(125,231,255,.2) 0 2px, transparent 3px),
+    radial-gradient(circle at 30% 40%, rgba(140,125,255,.2) 0 2px, transparent 3px),
+    radial-gradient(circle at 70% 30%, rgba(255,134,181,.2) 0 2px, transparent 3px),
+    radial-gradient(circle at 85% 75%, rgba(52,211,153,.2) 0 2px, transparent 3px);
+  background-size: 140px 140px;
+  animation: dots-pan 30s linear infinite;
+}
+@keyframes dots-pan{ to{ background-position: 140px 140px, -140px 140px, 140px -140px, -140px -140px } }
+
+/* ---------- Section divider shimmer ---------- */
+.divider{
+  height:1px; width:100%;
+  background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--accent-2), transparent 60%), transparent);
+  animation: divider-spark 3.2s linear infinite;
+}
+@keyframes divider-spark{
+  0%{ background-position: -200% 0; background-size: 200% 100%; }
+  100%{ background-position: 200% 0; background-size: 200% 100%; }
+}
+
+/* ---------- Android-style elevation hover ---------- */
+.elevate{
+  transition: box-shadow var(--fast) var(--e1), transform var(--fast) var(--e1);
+}
+.elevate:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 26px 60px rgba(0,0,0,.35), 0 0 0 1px color-mix(in oklab, var(--accent-1), transparent 75%);
+}
+
+/* ---------- Matched persona accent rings ---------- */
+.accent-ring{
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--accent-1), transparent 70%), 0 16px 30px color-mix(in oklab, var(--accent-2), transparent 80%);
+}
+
+/* ---------- Spinner utility ---------- */
+.spin{ animation: spin 1s linear infinite }
+@keyframes spin{ to{ transform: rotate(360deg) } }
