@@ -109,6 +109,7 @@ const spy = (() => {
 const router = (() => {
   const tabs = $$('.role-tab');
   const bubble = $('#roleBubble');
+  const tabsWrap = bubble?.parentElement || tabs[0]?.parentElement;
   const title = $('#hero-title');
   const sub   = $('#hero-sub');
   const chips = $('#hero-chips');
@@ -154,15 +155,18 @@ const router = (() => {
 
   function setBubbleTo(el) {
     if (!bubble || !el) return;
-    const parentRect = el.parentElement?.getBoundingClientRect();
+    const parent = tabsWrap || el.parentElement;
     const rect = el.getBoundingClientRect();
-    const width = Math.max(140, rect.width);
-    const height = Math.max(56, rect.height);
+    const parentRect = parent?.getBoundingClientRect();
+    const width = Math.round(rect.width + 20);
+    const height = Math.round(rect.height + 12);
     bubble.style.width = `${width}px`;
     bubble.style.height = `${height}px`;
     if (!parentRect) return;
-    const x = rect.left - parentRect.left + rect.width / 2 - width / 2;
-    bubble.style.transform = `translateX(${Math.round(x)}px) translateY(-50%)`;
+    const scrollX = parent?.scrollLeft || 0;
+    const offset = rect.left - parentRect.left + scrollX;
+    const x = offset + rect.width / 2 - width / 2;
+    bubble.style.setProperty('--bubble-x', `${Math.round(x)}px`);
   }
 
   function morphTo(kind) {
@@ -188,27 +192,7 @@ const router = (() => {
   let typingTimeout;
   function typing(lines) {
     if (!sub) return;
-    const token = ++typingToken;
-    clearTimeout(typingTimeout);
-    if (!Array.isArray(lines) || !lines.length) {
-      sub.textContent = '';
-      return;
-    }
-    if (prefersReduced) {
-      sub.textContent = lines[0];
-      return;
-    }
-
-    let index = 0;
-    let pos = 0;
-    let direction = 1; // 1 typing, -1 deleting
-
-    const step = () => {
-      if (token !== typingToken) return;
-      const current = lines[index] || '';
-      sub.textContent = current.slice(0, Math.max(0, pos));
-
-      let delay = 48;
+@@ -283,118 +287,135 @@ const router = (() => {
       if (direction > 0) {
         if (pos < current.length) {
           pos += 1;
@@ -234,6 +218,10 @@ const router = (() => {
     step();
   }
 
+  if (chips) {
+    chips.classList.add('stagger');
+  }
+
   function activate(kind) {
     // body class for persona accents
     document.body.classList.remove('mode--patient','mode--hospital','mode--insurer');
@@ -244,7 +232,7 @@ const router = (() => {
       const active = t.dataset.persona === kind;
       t.classList.toggle('is-active', active);
       t.setAttribute('aria-selected', String(active));
-      if (active) setBubbleTo(t);
+      if (active) requestAnimationFrame(() => setBubbleTo(t));
     });
 
     // scopes
@@ -266,11 +254,19 @@ const router = (() => {
         span.textContent = txt;
         chips.appendChild(span);
       });
+      chips.classList.add('is-visible');
     }
     if (cta) {
-      cta.textContent = kind === 'patient' ? 'Start as Patient' :
-                        kind === 'hospital' ? 'Start as Hospital' : 'Start as Insurer';
-      cta.href = kind === 'patient' ? '#p-scope' : kind === 'hospital' ? '#h-scope' : '#i-scope';
+      const target = kind === 'patient' ? '#p-scope' : kind === 'hospital' ? '#h-scope' : '#i-scope';
+      const label = cta.querySelector('span');
+      if (label) {
+        label.textContent = kind === 'patient' ? 'Start as Patient' :
+                            kind === 'hospital' ? 'Start as Hospital' : 'Start as Insurer';
+      } else {
+        cta.textContent = kind === 'patient' ? 'Start as Patient' :
+                          kind === 'hospital' ? 'Start as Hospital' : 'Start as Insurer';
+      }
+      cta.dataset.go = target;
     }
 
     morphTo(kind);
@@ -291,6 +287,18 @@ const router = (() => {
 
   // track bubble on resize
   on(window, 'resize', () => {
+    const active = $('.role-tab.is-active');
+    if (active) setBubbleTo(active);
+  }, { passive: true });
+
+  if (tabsWrap) {
+    on(tabsWrap, 'scroll', () => {
+      const active = $('.role-tab.is-active');
+      if (active) setBubbleTo(active);
+    }, { passive: true });
+  }
+
+  on(window, 'load', () => {
     const active = $('.role-tab.is-active');
     if (active) setBubbleTo(active);
   }, { passive: true });
@@ -320,70 +328,7 @@ const router = (() => {
         title: 'Browse packages by city',
         copy: 'Fixed-price surgery bundles across trusted hospitals.',
         points: [
-          'Compare inclusions & room types',
-          '0% EMI on approved treatments'
-        ]
-      },
-      {
-        tag: 'Patient protect',
-        tone: 'patient',
-        title: 'Concierge & reimbursements',
-        copy: 'Track discharge tasks and upload bills till settlement.',
-        points: [
-          'Realtime WhatsApp updates',
-          'Escalation desk for complex claims'
-        ]
-      }
-    ],
-    hospital: [
-      {
-        tag: 'RCM suite',
-        tone: 'hospital',
-        title: 'Cashless desk workflows',
-        copy: 'Digital pre-auth, task boards, and document guardrails to cut denials.',
-        points: [
-          'Escalations with TAT & SLA heatmaps',
-          'Specimen signatures & audit trails built-in'
-        ]
-      },
-      {
-        tag: 'Packages',
-        tone: 'hospital',
-        title: 'Publish tariffs effortlessly',
-        copy: 'Structured package builder with insurer-friendly exports.',
-        points: [
-          'Sync to HealthFlo marketplace',
-          'Room eligibility + add-on matrices'
-        ]
-      },
-      {
-        tag: 'Recovery',
-        tone: 'hospital',
-        title: 'Denial to recovery automation',
-        copy: 'Queue follow-ups, attach evidence, and nudge TPAs till closure.',
-        points: [
-          'Auto reminders with templates',
-          'Central MIS across facilities'
-        ]
-      }
-    ],
-    insurer: [
-      {
-        tag: 'Distribution',
-        tone: 'insurer',
-        title: 'Structured plan listings',
-        copy: 'Expose specialty benefits with IRDAI-aware copy & disclaimers.',
-        points: [
-          'Target by city, specialty & hospital tier',
-          'Self-serve revisions via JSON wizard'
-        ]
-      },
-      {
-        tag: 'Ops',
-        tone: 'insurer',
-        title: 'Cashless ops webhooks',
-        copy: 'Realtime pre-auth, enhancement, and discharge signals for your stack.',
-        points: [
+@@ -465,62 +486,125 @@ const router = (() => {
           'Attach documents & status codes',
           'Sandbox + sample payloads'
         ]
@@ -409,6 +354,7 @@ const router = (() => {
     const items = DATA[key];
     if (!items || !items.length) return;
 
+    grid.classList.add('stagger', 'reveal-up');
     grid.innerHTML = items.map((item) => {
       const pillClass = item.tone ? `pill pill--${item.tone}` : 'pill';
       const pill = item.tag ? `<span class="${pillClass}">${item.tag}</span>` : '';
@@ -418,6 +364,68 @@ const router = (() => {
         : '';
       return `<article class="product">${pill}<h3>${item.title}</h3>${body}${bullets}</article>`;
     }).join('');
+  });
+})();
+
+/* -----------------------------------------
+   Ambient typewriter loops (data-typewriter)
+------------------------------------------ */
+(() => {
+  const nodes = $$('[data-typewriter]');
+  if (!nodes.length) return;
+
+  nodes.forEach((node) => {
+    const raw = node.dataset.typewriter || '';
+    const lines = raw.split('|').map(str => str.trim()).filter(Boolean);
+    const textEl = node.querySelector('[data-typewriter-text]');
+    const cursor = node.querySelector('[data-typewriter-cursor]');
+    if (!textEl || !lines.length) return;
+
+    const initial = lines[0];
+    textEl.textContent = initial;
+    if (cursor) cursor.hidden = true;
+
+    const staticMode = prefersReduced || lines.length < 2;
+    node.classList.toggle('is-static', staticMode);
+    if (staticMode) {
+      return;
+    }
+
+    if (cursor) cursor.hidden = false;
+    textEl.textContent = '';
+
+    let index = 0;
+    let pos = 0;
+    let direction = 1;
+
+    const loop = () => {
+      const current = lines[index] || '';
+      textEl.textContent = current.slice(0, Math.max(0, pos));
+
+      let delay = 48 + Math.random() * 22;
+      if (direction > 0) {
+        if (pos < current.length) {
+          pos += 1;
+          delay = 42 + Math.random() * 26;
+        } else {
+          direction = -1;
+          delay = 1200;
+        }
+      } else {
+        if (pos > 0) {
+          pos -= 1;
+          delay = 36 + Math.random() * 18;
+        } else {
+          index = (index + 1) % lines.length;
+          direction = 1;
+          delay = 320;
+        }
+      }
+
+      setTimeout(loop, delay);
+    };
+
+    setTimeout(loop, 200);
   });
 })();
 
