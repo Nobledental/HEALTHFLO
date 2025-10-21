@@ -2,49 +2,164 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>HealthFlo — Hospitals & Clinics</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet"/>
-  <link rel="stylesheet" href="styles.css"/>
-</head>
-<body class="hf theme--apple mode--hospital subpage">
-  <header class="subnav container">
-    <a class="brand" href="index.html"><span class="brand__beacon"></span><span class="brand__name">HealthFlo</span></a>
-    <nav class="crumbs"><a href="index.html">Home</a><span>›</span><span>Hospitals</span></nav>
-    <a class="btn btn--ghost ripple" href="index.html#contact">Contact</a>
-  </header>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>HealthFlo — For Hospitals & Clinics</title>
 
-  <section class="sub-hero container hospital-hero">
-    <div class="copy">
-      <h1 class="hero-title">RCM that speeds cashless & reduces denials</h1>
-      <p class="lead">End-to-end RCM with pre-auth SOPs, TPA matrix & SLAs, insurance desk tools, and claim visibility.</p>
-      <div class="cta-row">
-        <a class="btn btn--primary ripple" href="#suite">Explore RCM Suite</a>
-        <a class="btn btn--ghost ripple" href="#list">Get listed</a>
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/main.css"/>
+  <link rel="stylesheet" href="css/animations.css"/>
+
+  <!-- GSAP (tiny entrances) -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+</head>
+<body class="hf theme--clinic mode--hospital">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <!-- Ambient background (reuses site look) -->
+  <div class="orb orb-left" aria-hidden="true"></div>
+  <div class="orb orb-right" aria-hidden="true"></div>
+
+  <!-- Header -->
+  <header class="nav container">
+    <a class="brand" href="/" aria-label="HealthFlo">
+      <span class="brand__beacon" aria-hidden="true"></span>
+      <span class="brand__name">HealthFlo</span>
+    </a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="/">Home</a>
+      <a href="#suite">RCM Suite</a>
+      <a href="#products">Products</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="theme" aria-expanded="false">
+      <button class="theme__toggle" aria-label="Theme studio"><span class="dot"></span><span>Theme</span></button>
+      <div class="theme__panel" role="menu">
+        <button class="tbtn" data-theme="night">Night</button>
+        <button class="tbtn is-active" data-theme="clinic">Clinic</button>
+        <button class="tbtn" data-theme="day">Day</button>
+        <button class="tbtn" data-theme="matte">Matte</button>
+        <button class="tbtn" data-theme="contrast">High Contrast</button>
       </div>
     </div>
-    <div class="visual">
-      <div class="floating-icons"><i class="ri-file-shield-2-line"></i><i class="ri-customer-service-2-line"></i><i class="ri-bar-chart-2-line"></i></div>
+  </header>
+
+  <!-- HERO -->
+  <section class="page-hero container" id="suite">
+    <h1>RCM for India. <br>Faster cashless. Fewer denials.</h1>
+    <p class="muted">Cashless, reimbursements, recovery & denial management with insurance-desk tools. SOPs for pre-auth, TAT heatmaps, and claim trackers — made for Indian hospital ops.</p>
+
+    <!-- KPI chips (premium look) -->
+    <div class="chips" style="margin-top:12px">
+      <span class="chip">Pre-auth automation <b>80% queries</b></span>
+      <span class="chip">Cashless uptime <b>99.2%</b></span>
+      <span class="chip">Denial recovery <b>98%</b></span>
     </div>
   </section>
 
-  <section id="suite" class="container product-grid">
-    <article class="product tilt"><h3>RCM Suite</h3><p>Cashless, reimbursement, recovery, denial management, pre-auth SOPs & escalation desk.</p></article>
-    <article class="product tilt"><h3>Starter Stack</h3><p>Website, OPD & billing, WhatsApp intake, digital tariffs & package builder.</p></article>
-    <article class="product tilt"><h3>Claim Tracker</h3><p>Panel-wise TAT heatmaps, SLA alerts & audit logs.</p></article>
+  <!-- Animated ops lane -->
+  <section class="container card" aria-label="RCM flow">
+    <h3 class="section-title" style="margin-top:0">Ops flow at a glance</h3>
+    <div class="ops-lane" style="--c: var(--p1); position:relative; overflow:hidden; border-radius:16px; border:1px solid var(--line); padding:14px; background:var(--card-2)">
+      <style>
+        .ops-track{display:flex; gap:18px; white-space:nowrap; animation:ops 22s linear infinite}
+        .ops-pill{display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:999px; background:rgba(255,255,255,.06); border:1px solid var(--line)}
+        .ops-dot{width:8px; height:8px; border-radius:50%; background:var(--p1)}
+        @keyframes ops{to{transform:translateX(-50%)}}
+        .ops-lane:hover .ops-track{animation-play-state:paused}
+      </style>
+      <div class="ops-track">
+        <span class="ops-pill"><span class="ops-dot"></span>Pre-registration</span>
+        <span class="ops-pill"><span class="ops-dot"></span>Policy OCR</span>
+        <span class="ops-pill"><span class="ops-dot"></span>Cashless Pre-auth</span>
+        <span class="ops-pill"><span class="ops-dot"></span>Docs & Queries</span>
+        <span class="ops-pill"><span class="ops-dot"></span>Discharge Summary</span>
+        <span class="ops-pill"><span class="ops-dot"></span>Claim Submission</span>
+        <span class="ops-pill"><span class="ops-dot"></span>Denials & Recovery</span>
+        <span class="ops-pill"><span class="ops-dot"></span>Payment Reconciliation</span>
+        <!-- loop -->
+        <span class="ops-pill"><span class="ops-dot"></span>Pre-registration</span>
+        <span class="ops-pill"><span class="ops-dot"></span>Policy OCR</span>
+        <span class="ops-pill"><span class="ops-dot"></span>Cashless Pre-auth</span>
+        <span class="ops-pill"><span class="ops-dot"></span>Docs & Queries</span>
+        <span class="ops-pill"><span class="ops-dot"></span>Discharge Summary</span>
+        <span class="ops-pill"><span class="ops-dot"></span>Claim Submission</span>
+        <span class="ops-pill"><span class="ops-dot"></span>Denials & Recovery</span>
+        <span class="ops-pill"><span class="ops-dot"></span>Payment Reconciliation</span>
+      </div>
+    </div>
   </section>
 
-  <section id="list" class="container card">
-    <h3>Get listed where insured patients search</h3>
-    <p class="muted">City & specialty pages with clear cashless services. Eligibility pre-checks & attribution reporting included.</p>
-    <a href="index.html#locations" class="btn btn--primary ripple">See active cities</a>
-  </section>
+  <!-- Products -->
+  <main id="main" class="container" role="main">
+    <section id="products" class="product-grid" data-animate>
+      <article class="product tilt">
+        <h3>RCM Suite</h3>
+        <p>Cashless, reimbursement, recovery, denial management, pre-auth SOPs & escalation desk.</p>
+        <ul class="ticks">
+          <li>TPA matrix & SLAs</li><li>TAT heatmaps</li><li>Claim trackers</li>
+        </ul>
+      </article>
 
+      <article class="product tilt">
+        <h3>Starter Stack</h3>
+        <p>Website, OPD & billing, WhatsApp intake, digital tariffs & package builder.</p>
+        <ul class="ticks">
+          <li>NABH ready</li><li>GST invoicing</li><li>MIS dashboards</li>
+        </ul>
+      </article>
+
+      <article class="product tilt">
+        <h3>Get Listed</h3>
+        <p>Be discovered by insured patients searching by city & specialty. Promote cashless services.</p>
+        <ul class="ticks">
+          <li>Priority cities</li><li>Eligibility pre-checks</li><li>Attribution reporting</li>
+        </ul>
+      </article>
+    </section>
+
+    <!-- CTA -->
+    <section class="card" id="contact" data-animate>
+      <div class="row-split">
+        <h3>Want a 30-minute RCM walkthrough?</h3>
+        <div class="helper-actions">
+          <a class="btn btn--primary" href="mailto:sales@healthflo.io?subject=RCM%20demo">Request a demo</a>
+          <a class="btn btn--ghost" href="https://wa.me/?text=Hi%20HealthFlo%2C%20RCM%20demo%20please.">WhatsApp us</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
   <footer class="footer">
-    <div class="footer__bottom container">© 2025 HealthFlo • Hospitals</div>
+    <div class="footer__bottom">© 2025 HealthFlo • Hospitals & Clinics</div>
   </footer>
 
-  <script src="app.js" defer></script>
+  <!-- Light entrances -->
+  <script>
+    (function(){
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if (window.gsap){
+        gsap.from('.page-hero h1', {y:18, opacity:0, duration:.6, ease:'power2.out'});
+        gsap.from('.page-hero .muted', {y:14, opacity:0, duration:.5, delay:.05});
+        gsap.from('.chips .chip', {y:10, opacity:0, duration:.4, stagger:.05, delay:.08});
+        gsap.from('.product', {y:18, opacity:0, duration:.55, ease:'power2.out', stagger:.06});
+      }
+      // theme studio open/close
+      const theme = document.querySelector('.theme');
+      theme?.querySelector('.theme__toggle')?.addEventListener('click', ()=> {
+        theme.setAttribute('aria-expanded', theme.getAttribute('aria-expanded')!=='true');
+      });
+      theme?.querySelectorAll('.tbtn').forEach(b=>{
+        b.addEventListener('click', ()=>{
+          document.body.classList.remove('theme--night','theme--clinic','theme--day','theme--matte','theme--contrast');
+          if(b.dataset.theme!=='night') document.body.classList.add(`theme--${b.dataset.theme}`);
+          theme.setAttribute('aria-expanded','false');
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
