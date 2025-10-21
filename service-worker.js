@@ -2,13 +2,16 @@ const VERSION = 'v5';
 const PRECACHE = `hf-precache-${VERSION}`;
 const RUNTIME  = `hf-runtime-${VERSION}`;
 
-const PRECACHE_URLS = [
-  '/', '/index.html', '/patient.html', '/hospital.html', '/insurer.html',
-  '/assets/css/main.css',
-  '/assets/js/main.js',
-  '/assets/img/hero-static.svg',
-  '/lottie/hero-blob.json'
+const SCOPE_ROOT = new URL('./', self.location);
+const PRECACHE_PATHS = [
+  './', './index.html', './patient.html', './hospital.html', './insurer.html',
+  './assets/css/main.css',
+  './assets/js/main.js',
+  './assets/img/hero-static.svg',
+  './lottie/hero-blob.json'
 ];
+const PRECACHE_URLS = PRECACHE_PATHS.map((path) => new URL(path, SCOPE_ROOT).toString());
+const INDEX_URL = new URL('./index.html', SCOPE_ROOT).toString();
 
 self.addEventListener('install', (event) => {
   event.waitUntil((async () => {
@@ -40,12 +43,12 @@ self.addEventListener('fetch', (event) => {
         return fresh;
       } catch {
         const cache = await caches.open(PRECACHE);
-        return (await cache.match(new URL(request.url).pathname)) || (await cache.match('/index.html')) || Response.error();
+        return (await cache.match(request)) || (await cache.match(INDEX_URL)) || Response.error();
       }
     })());
     return;
   }
-
+  
   // CSS/JS: stale-while-revalidate
   if (request.destination === 'style' || request.destination === 'script') {
     event.respondWith((async () => {
