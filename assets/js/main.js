@@ -59,38 +59,6 @@ const prefersReduced = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.
 })();
 
 /* -----------------------------------------
-   Smooth anchors (respect sticky header)
------------------------------------------- */
-(() => {
-  const header = $('.nav');
-  const off = () => (header ? header.offsetHeight + 10 : 0);
-
-  function smoothScrollTo(hash) {
-    const target = document.querySelector(hash);
-    if (!target) return;
-    const top = target.getBoundingClientRect().top + window.scrollY - off();
-    window.scrollTo({ top, behavior: prefersReduced ? 'auto' : 'smooth' });
-  }
-
-  $$('a[href^="#"]').forEach(a => {
-    on(a, 'click', (e) => {
-      const href = a.getAttribute('href');
-      // For persona tabs we DO NOT scroll (handled by router)
-      if (a.hasAttribute('data-persona-link')) {
-        e.preventDefault();
-        router.set(a.dataset.personaLink);
-        return;
-      }
-      // For Explore links & section anchors: smooth scroll
-      if (href && href.length > 1) {
-        e.preventDefault();
-        smoothScrollTo(href);
-      }
-    });
-  });
-})();
-
-/* -----------------------------------------
    Scroll spy (update nav active state)
 ------------------------------------------ */
 const spy = (() => {
@@ -282,6 +250,37 @@ const router = (() => {
 })();
 
 /* -----------------------------------------
+   Smooth anchors (respect sticky header)
+------------------------------------------ */
+(() => {
+  const header = $('.nav');
+  const offset = () => (header ? header.offsetHeight + 10 : 0);
+
+  function smoothTo(hash) {
+    const target = document.querySelector(hash);
+    if (!target) return;
+    const top = target.getBoundingClientRect().top + window.scrollY - offset();
+    window.scrollTo({ top, behavior: prefersReduced ? 'auto' : 'smooth' });
+  }
+
+  const anchors = $$('a[href^="#"], [data-go^="#"]');
+  anchors.forEach(el => {
+    on(el, 'click', (e) => {
+      const persona = el.dataset.personaLink;
+      if (persona) {
+        e.preventDefault();
+        router.set(persona);
+        return;
+      }
+      const hash = el.dataset.go || (el.tagName === 'A' ? el.getAttribute('href') : '');
+      if (!hash || hash.length < 2) return;
+      e.preventDefault();
+      smoothTo(hash);
+    });
+  });
+})();
+
+/* -----------------------------------------
    Ripple / press feedback (Android micro)
 ------------------------------------------ */
 (() => {
@@ -301,6 +300,126 @@ const router = (() => {
       on(el, type, () => { el.classList.remove('press', 'is-pressing'); }, { passive: true });
     });
   });
+})();
+
+/* -----------------------------------------
+   Hero metric counters
+------------------------------------------ */
+(() => {
+  const cards = $$('.metric-card[data-count]');
+  if (!cards.length) return;
+
+  cards.forEach(card => {
+    const suffix = $('.metric-card__suffix', card);
+    if (suffix && card.dataset.suffix) suffix.textContent = card.dataset.suffix;
+  });
+
+  if (prefersReduced) {
+    cards.forEach(card => {
+      const target = Number(card.dataset.count || 0);
+      const out = $('[data-count-output]', card);
+      if (out) out.textContent = target.toLocaleString('en-IN');
+    });
+    return;
+  }
+
+  const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+
+  function animate(card) {
+    if (card.dataset.counted) return;
+    card.dataset.counted = '1';
+    card.classList.add('is-animated');
+    const target = Number(card.dataset.count || 0);
+    const out = $('[data-count-output]', card);
+    if (!out) return;
+    const start = performance.now();
+    const duration = 1200;
+
+    function frame(now) {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = easeOut(t);
+      const value = Math.round(target * eased);
+      out.textContent = value.toLocaleString('en-IN');
+      if (t < 1) {
+        requestAnimationFrame(frame);
+      } else {
+        out.textContent = target.toLocaleString('en-IN');
+      }
+    }
+
+    requestAnimationFrame(frame);
+  }
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animate(entry.target);
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.55 });
+
+  cards.forEach(card => obs.observe(card));
+})();
+
+/* -----------------------------------------
+   Hero metric counters
+------------------------------------------ */
+(() => {
+  const cards = $$('.metric-card[data-count]');
+  if (!cards.length) return;
+
+  cards.forEach(card => {
+    const suffix = $('.metric-card__suffix', card);
+    if (suffix && card.dataset.suffix) suffix.textContent = card.dataset.suffix;
+  });
+
+  if (prefersReduced) {
+    cards.forEach(card => {
+      const target = Number(card.dataset.count || 0);
+      const out = $('[data-count-output]', card);
+      if (out) out.textContent = target.toLocaleString('en-IN');
+    });
+    return;
+  }
+
+  const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+
+  function animate(card) {
+    if (card.dataset.counted) return;
+    card.dataset.counted = '1';
+    card.classList.add('is-animated');
+    const target = Number(card.dataset.count || 0);
+    const out = $('[data-count-output]', card);
+    if (!out) return;
+    const start = performance.now();
+    const duration = 1200;
+
+    function frame(now) {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = easeOut(t);
+      const value = Math.round(target * eased);
+      out.textContent = value.toLocaleString('en-IN');
+      if (t < 1) {
+        requestAnimationFrame(frame);
+      } else {
+        out.textContent = target.toLocaleString('en-IN');
+      }
+    }
+
+    requestAnimationFrame(frame);
+  }
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animate(entry.target);
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.55 });
+
+  cards.forEach(card => obs.observe(card));
 })();
 
 /* -----------------------------------------
@@ -481,16 +600,63 @@ const router = (() => {
 })();
 
 /* -----------------------------------------
-   Footer persona links (no scroll)
+   Journey progress meters
 ------------------------------------------ */
-(() => {
-  $$('[data-persona-link]').forEach(a => {
-    on(a, 'click', (e) => {
-      e.preventDefault();
-      router.set(a.dataset.personaLink);
+  const steps = $$('.journey__step[data-progress]');
+  if (!steps.length) return;
+
+  const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+  const clamp = (n) => Math.max(0, Math.min(100, Number(n) || 0));
+
+  function paint(step, instant = false) {
+    if (step.dataset.progressDone) return;
+    step.dataset.progressDone = '1';
+    step.classList.add('is-animated');
+    const target = clamp(step.dataset.progress);
+    const bar = $('.journey__meter span', step);
+    const value = $('[data-value]', step);
+    if (instant || prefersReduced) {
+      if (bar) bar.style.width = `${target}%`;
+      if (value) value.textContent = target;
+      return;
+    }
+    const start = performance.now();
+    const duration = 1100;
+
+    function frame(now) {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = easeOut(t);
+      const current = Math.round(target * eased);
+      if (bar) bar.style.width = `${current}%`;
+      if (value) value.textContent = current;
+      if (t < 1) {
+        requestAnimationFrame(frame);
+      } else {
+        if (bar) bar.style.width = `${target}%`;
+        if (value) value.textContent = target;
+      }
+    }
+
+    requestAnimationFrame(frame);
+  }
+
+  if (prefersReduced) {
+    steps.forEach(step => paint(step, true));
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        paint(entry.target);
+        observer.unobserve(entry.target);
+      }
     });
-  });
+  }, { threshold: 0.5, rootMargin: '0px 0px -10% 0px' });
+
+  steps.forEach(step => observer.observe(step));
 })();
+
 
 /* -----------------------------------------
    Toast utility
