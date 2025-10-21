@@ -72,12 +72,15 @@
   position: relative; overflow: hidden;
 }
 .ripple::after{
-  content:""; position:absolute; inset:auto; width:12px; height:12px;
+  content:""; position:absolute; width:12px; height:12px;
+  left:var(--rx, 50%); top:var(--ry, 50%);
+  transform:translate(-50%, -50%) scale(0);
   background: radial-gradient(circle, color-mix(in oklab, var(--accent-1), #fff 22%) 0%, transparent 60%);
-  border-radius:50%; transform: scale(0); opacity:.55; pointer-events:none;
+  border-radius:50%; opacity:.55; pointer-events:none;
   transition: transform .5s var(--e1), opacity .6s var(--e1);
 }
-.ripple.is-pressing::after{ transform: scale(16); opacity:0; }
+.ripple.is-pressing::after{ transform: translate(-50%, -50%) scale(16); opacity:0; }
+
 
 /* ---------- Role bubble subtle spring ---------- */
 .role-bubble{
@@ -112,6 +115,25 @@
 }
 .product:hover::after{
   opacity:.55; transform: translateX(40%) skewX(-12deg);
+}
+
+/* ---------- Floating metric drift ---------- */
+.floating-metrics .metric-card{
+  animation: metric-float 12s ease-in-out infinite;
+}
+.floating-metrics .metric-card:nth-child(2){ animation-duration: 14s; animation-delay: -3s; }
+.floating-metrics .metric-card:nth-child(3){ animation-duration: 13s; animation-delay: -5s; }
+@keyframes metric-float{
+  0%,100%{ transform: translateX(var(--tx,0)) translateY(0); }
+  50%{ transform: translateX(var(--tx,0)) translateY(-12px); }
+}
+
+/* ---------- Journey meter easing ---------- */
+.journey__meter span{
+  transition: width .9s var(--e2), box-shadow .9s var(--e2);
+}
+.journey__step.is-animated .journey__meter span{
+  box-shadow:0 14px 32px color-mix(in oklab, var(--accent-2), transparent 68%);
 }
 
 /* ---------- Typing headline shimmer ---------- */
