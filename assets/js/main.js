@@ -1,228 +1,558 @@
 /* ==========================================================================
-   HealthFlo — animations.css (advanced motion system)
-   Works with variables & themes from assets/css/main.css
+   HealthFlo — main.js (advanced)
+   - Persona router (no scroll), role bubble spring, Flubber morph
+   - Scroll spy, smooth anchors, typing effect
+   - Ripple + press feedback, Android-style
+   - Cities marquee (news-ticker style, pause on hover)
+   - Particles / starfield + HDR grid twinkle
+   - OTP demo, eligibility estimator, co-pay calc, copy
+   - Theme studio persistence + keyboard focus ring
+   - Performance: passive listeners, rAF batching, idle hydration
    ========================================================================== */
 
-/* ---------- Reduced motion guard ---------- */
-@media (prefers-reduced-motion: reduce){
-  *, *::before, *::after{
-    animation: none !important;
-    transition: none !important;
-    scroll-behavior: auto !important;
+/* -----------------------------------------
+   Tiny helpers
+------------------------------------------ */
+const $  = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => Array.from(el.querySelectorAll(s));
+const on = (el, ev, fn, opts) => el && el.addEventListener(ev, fn, opts);
+const ls = {
+  get: (k, d = null) => { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } },
+  set: (k, v) => localStorage.setItem(k, JSON.stringify(v))
+};
+const prefersReduced = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+
+/* -----------------------------------------
+   Keyboard focus ring (a11y)
+------------------------------------------ */
+(() => {
+  let using = false;
+  on(window, 'keydown', (e) => { if (e.key === 'Tab') { using = true; document.body.classList.add('using-keyboard'); } }, { passive: true });
+  on(window, 'mousedown', () => { if (using) { using = false; document.body.classList.remove('using-keyboard'); } }, { passive: true });
+})();
+
+/* -----------------------------------------
+   Theme Studio (persist)
+------------------------------------------ */
+(() => {
+  const wrap = $('.theme');
+  if (!wrap) return;
+  const panel = $('.theme__panel', wrap);
+  const toggle = $('.theme__toggle', wrap);
+  const btns = $$('.tbtn', panel);
+  const saved = ls.get('hf-theme', 'night');
+
+  function apply(name) {
+    document.body.classList.remove('theme--day','theme--aurora','theme--clinic','theme--contrast','theme--apple');
+    if (name !== 'night') document.body.classList.add(`theme--${name}`);
+    btns.forEach(b => b.classList.toggle('is-active', b.dataset.theme === name));
+    ls.set('hf-theme', name);
   }
+
+  apply(saved);
+  on(toggle, 'click', () => wrap.setAttribute('aria-expanded', String(wrap.getAttribute('aria-expanded') !== 'true')));
+  btns.forEach(b => on(b, 'click', () => {
+    apply(b.dataset.theme);
+    wrap.setAttribute('aria-expanded', 'false');
+  }));
+  on(document, 'click', (e) => { if (!wrap.contains(e.target)) wrap.setAttribute('aria-expanded','false'); });
+})();
+
+/* -----------------------------------------
+   Smooth anchors (respect sticky header)
+------------------------------------------ */
+(() => {
+  const header = $('.nav');
+  const off = () => (header ? header.offsetHeight + 10 : 0);
+
+  function smoothScrollTo(hash) {
+    const target = document.querySelector(hash);
+    if (!target) return;
+    const top = target.getBoundingClientRect().top + window.scrollY - off();
+    window.scrollTo({ top, behavior: prefersReduced ? 'auto' : 'smooth' });
+  }
+
+  $$('a[href^="#"]').forEach(a => {
+    on(a, 'click', (e) => {
+      const href = a.getAttribute('href');
+      // For persona tabs we DO NOT scroll (handled by router)
+      if (a.hasAttribute('data-persona-link')) {
+        e.preventDefault();
+        router.set(a.dataset.personaLink);
+        return;
+      }
+      // For Explore links & section anchors: smooth scroll
+      if (href && href.length > 1) {
+        e.preventDefault();
+        smoothScrollTo(href);
+      }
+    });
+  });
+})();
+
+/* -----------------------------------------
+   Scroll spy (update nav active state)
+------------------------------------------ */
+const spy = (() => {
+  const links = $$('.nav__links a[href^="#"]');
+  const map = new Map(links.map(a => [a.getAttribute('href'), a]));
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const id = `#${entry.target.id}`;
+      const link = map.get(id);
+      if (!link) return;
+      if (entry.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px', threshold: 0.01 });
+
+  function mount() {
+    map.forEach((_a, hash) => {
+      const sec = document.querySelector(hash);
+      if (sec) obs.observe(sec);
+    });
+  }
+  requestIdleCallback ? requestIdleCallback(mount) : setTimeout(mount, 1);
+  return { mount };
+})();
+
+/* -----------------------------------------
+   Role tabs + persona router (no page jump)
+------------------------------------------ */
+const router = (() => {
+  const tabs = $$('.role-tab');
+  const bubble = $('#roleBubble');
+  const title = $('#hero-title');
+  const sub   = $('#hero-sub');
+  const chips = $('#hero-chips');
+  const cta   = $('#hero-cta');
+  const morphPath = $('#morphPath');
+  const morphLabel = $('#morphLabel');
+  const scopes = {
+    patient: $('#p-scope'),
+    hospital: $('#h-scope'),
+    insurer: $('#i-scope')
+  };
+
+  const SHAPES = {
+    patient: 'M12 20a12 12 0 0 1 12-12h16a12 12 0 0 1 12 12v24a12 12 0 0 1-12 12H24A12 12 0 0 1 12 44V20z',
+    hospital: 'M10 24a10 10 0 0 1 10-10h24a10 10 0 0 1 10 10v18c0 8-8 14-22 20-14-6-22-12-22-20V24z',
+    insurer: 'M8 22c0-9 12-14 24-14s24 5 24 14v14c0 14-12 21-24 26C20 57 8 50 8 36V22z'
+  };
+  const GRAD = {
+    patient: 'url(#gradPatient)',
+    hospital: 'url(#gradHospital)',
+    insurer: 'url(#gradInsurer)'
+  };
+  const PHRASES = {
+    patient: [
+      'Instant cashless checks in India 🇮🇳',
+      'Transparent packages by city',
+      '0% EMI on approved care',
+      'ABHA-ready journeys'
+    ],
+    hospital: [
+      'RCM: cashless + reimbursements',
+      'Denial management & recovery',
+      'Insurance desk & pre-auth SOPs',
+      'TPA SLAs & TAT heatmaps'
+    ],
+    insurer: [
+      'Structured listings & network views',
+      'City campaigns + preferred pricing',
+      'Cashless Ops webhooks & panel',
+      'Fraud signals & anomalies'
+    ]
+  };
+
+  function setBubbleTo(el) {
+    if (!bubble || !el) return;
+    const p = el.parentElement.getBoundingClientRect();
+    const r = el.getBoundingClientRect();
+    const x = r.left - p.left + (r.width - bubble.offsetWidth) / 2;
+    bubble.style.transform = `translateX(${Math.round(x)}px) translateY(-50%)`;
+    bubble.style.width = `${Math.max(140, r.width)}px`;
+    bubble.style.height = `${Math.max(56, r.height)}px`;
+  }
+
+  function morphTo(kind) {
+    if (!window.flubber || !morphPath) return;
+    const from = morphPath.getAttribute('d');
+    const to   = SHAPES[kind] || SHAPES.patient;
+    if (from === to) return;
+    const interp = flubber.interpolate(from, to, { maxSegmentLength: 2 });
+    const start = performance.now();
+    const dur = prefersReduced ? 0 : 620;
+
+    function step(t) {
+      const k = Math.min(1, (t - start) / dur);
+      morphPath.setAttribute('d', interp(k));
+      if (k < 1) requestAnimationFrame(step);
+    }
+    morphPath.setAttribute('fill', GRAD[kind] || GRAD.patient);
+    requestAnimationFrame(step);
+    morphLabel.textContent = kind[0].toUpperCase() + kind.slice(1);
+  }
+
+  function typing(lines) {
+    if (!sub) return;
+    // typing like texting
+    let i = 0, ch = 0, dir = 1;
+    let current = lines[0] || '';
+    function tick() {
+      ch += dir;
+      sub.textContent = current.slice(0, ch);
+      if (dir > 0 && ch >= current.length) {
+        dir = 0;
+        setTimeout(() => { dir = -1; }, 1300);
+      } else if (dir < 0 && ch <= 0) {
+        i = (i + 1) % lines.length;
+        current = lines[i];
+        dir = 1;
+      }
+      if (!prefersReduced) requestAnimationFrame(tick);
+    }
+    tick();
+  }
+
+  function activate(kind) {
+    // body class for persona accents
+    document.body.classList.remove('mode--patient','mode--hospital','mode--insurer');
+    document.body.classList.add(`mode--${kind}`);
+
+    // tabs state + bubble
+    tabs.forEach(t => {
+      const active = t.dataset.persona === kind;
+      t.classList.toggle('is-active', active);
+      t.setAttribute('aria-selected', String(active));
+      if (active) setBubbleTo(t);
+    });
+
+    // scopes
+    Object.entries(scopes).forEach(([k, el]) => el && el.classList.toggle('is-active', k === kind));
+
+    // hero content & CTA
+    if (title) {
+      title.textContent = (
+        kind === 'patient' ? 'Find, book & pay for care — cashless first.' :
+        kind === 'hospital' ? 'RCM platform for hospitals — cashless to reimbursements.' :
+        'Distribution & ops for insurers — structured listings & cashless APIs.'
+      );
+    }
+    if (chips) {
+      chips.innerHTML = '';
+      PHRASES[kind].slice(0,3).forEach(txt => {
+        const span = document.createElement('span');
+        span.className = 'chip';
+        span.textContent = txt;
+        chips.appendChild(span);
+      });
+    }
+    if (cta) {
+      cta.textContent = kind === 'patient' ? 'Start as Patient' :
+                        kind === 'hospital' ? 'Start as Hospital' : 'Start as Insurer';
+      cta.href = kind === 'patient' ? '#p-scope' : kind === 'hospital' ? '#h-scope' : '#i-scope';
+    }
+
+    morphTo(kind);
+    typing(PHRASES[kind]);
+    ls.set('hf-persona', kind);
+  }
+
+  // public API
+  function set(kind) { activate(kind); }
+  const saved = ls.get('hf-persona', 'patient');
+  requestIdleCallback ? requestIdleCallback(() => activate(saved)) : setTimeout(() => activate(saved), 1);
+
+  // events
+  tabs.forEach(t => on(t, 'click', (e) => {
+    e.preventDefault(); // STOP page scrolling
+    set(t.dataset.persona);
+  }, { passive: false }));
+
+  // track bubble on resize
+  on(window, 'resize', () => {
+    const active = $('.role-tab.is-active');
+    if (active) setBubbleTo(active);
+  }, { passive: true });
+
+  return { set };
+})();
+
+/* -----------------------------------------
+   Ripple / press feedback (Android micro)
+------------------------------------------ */
+(() => {
+  const pressables = $$('.btn, .chip, .pill, .product, .seg-btn, .tab');
+  pressables.forEach(el => {
+    el.classList.add('pressable', 'ripple');
+    on(el, 'pointerdown', (e) => {
+      el.classList.add('press');
+      // place the ripple origin
+      const rect = el.getBoundingClientRect();
+      const x = e.clientX - rect.left, y = e.clientY - rect.top;
+      el.style.setProperty('--rx', `${x}px`);
+      el.style.setProperty('--ry', `${y}px`);
+      el.classList.add('is-pressing');
+    });
+    ['pointerup','pointercancel','pointerleave','blur'].forEach(type => {
+      on(el, type, () => { el.classList.remove('press', 'is-pressing'); }, { passive: true });
+    });
+  });
+})();
+
+/* -----------------------------------------
+   Cities we serve — marquee banner
+------------------------------------------ */
+(() => {
+  // Works with either legacy #loc-slider or new .geo-marquee structure
+  const host = $('#locations');
+  if (!host) return;
+
+  const CITIES = ['Delhi','Mumbai','Bengaluru','Hyderabad','Chennai','Pune','Ahmedabad','Kolkata','Jaipur','Lucknow','Surat','Indore'];
+
+  let marquee = host.querySelector('.geo-marquee');
+  if (!marquee) {
+    marquee = document.createElement('div');
+    marquee.className = 'geo-marquee';
+    marquee.innerHTML = `<div class="geo-marquee__track" role="marquee"></div>`;
+    host.appendChild(marquee);
+  }
+
+  const track = $('.geo-marquee__track', marquee);
+  track.innerHTML = '';
+  const unit = (name) => `<span>• ${name} • Cashless Supported</span>`;
+  // duplicate to fill
+  const items = [...CITIES, ...CITIES, ...CITIES].map(unit).join('');
+  track.innerHTML = items;
+
+  marquee.style.setProperty('--marquee-speed', prefersReduced ? '0s' : '24s');
+  // Pause on hover handled by CSS; also pause on focus
+  on(marquee, 'focusin', () => track.style.animationPlayState = 'paused');
+  on(marquee, 'focusout', () => track.style.animationPlayState = '');
+})();
+
+/* -----------------------------------------
+   Particles / starfield (HDR-ish)
+------------------------------------------ */
+(() => {
+  const canvas = $('#particles');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let w, h, dpr;
+
+  const stars = [];
+  const COUNT = 80;
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = canvas.clientWidth; h = canvas.clientHeight;
+    canvas.width = Math.round(w * dpr);
+    canvas.height = Math.round(h * dpr);
+    ctx.scale(dpr, dpr);
+  }
+  function spawn() {
+    stars.length = 0;
+    for (let i = 0; i < COUNT; i++) {
+      stars.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: Math.random() * 1.4 + 0.4,
+        s: Math.random() * 0.25 + 0.05, // speed
+        hue: 180 + Math.random() * 120
+      });
+    }
+  }
+  function tick() {
+    ctx.clearRect(0, 0, w, h);
+    stars.forEach(st => {
+      st.x -= st.s;
+      if (st.x < -8) st.x = w + 8;
+      ctx.beginPath();
+      ctx.arc(st.x, st.y, st.r, 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(${st.hue}, 90%, 70%, .55)`;
+      ctx.shadowColor = `hsla(${st.hue}, 90%, 60%, .6)`;
+      ctx.shadowBlur = 8;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    });
+    if (!prefersReduced) requestAnimationFrame(tick);
+  }
+  resize(); spawn(); tick();
+  on(window, 'resize', resize, { passive: true });
+})();
+
+/* -----------------------------------------
+   OTP demo + eligibility + co-pay
+------------------------------------------ */
+(() => {
+  const root = $('#patient-elig');
+  if (!root) return;
+  const phone = $('#phone', root);
+  const send  = $('.js-send-otp', root);
+  const verify= $('.js-verify-otp', root);
+  const otpWrap = $('.otp-wrap', root);
+  const inputs = $$('.otp-i', root);
+  const status = $('#otpStatus', root);
+
+  let code = '';
+  function gen() { return String(Math.floor(1000 + Math.random()*9000)); }
+
+  on(send, 'click', () => {
+    const digits = (phone.value || '').replace(/\D/g, '');
+    if (digits.length < 10) { status.textContent = 'Enter a valid phone number.'; return; }
+    code = gen();
+    status.textContent = 'OTP sent. Please enter the 4 digits.';
+    otpWrap.classList.remove('hidden');
+    inputs[0].focus();
+  });
+
+  inputs.forEach((i, idx) => {
+    on(i, 'input', () => {
+      i.value = i.value.replace(/\D/g,'').slice(0,1);
+      if (i.value && inputs[idx+1]) inputs[idx+1].focus();
+    });
+    on(i, 'keydown', (e) => {
+      if (e.key === 'Backspace' && !i.value && inputs[idx-1]) inputs[idx-1].focus();
+    });
+  });
+
+  on(verify, 'click', () => {
+    const entered = inputs.map(x => x.value).join('');
+    if (entered.length < 4) { status.textContent = 'Enter all digits.'; return; }
+    if (entered === code) {
+      status.textContent = 'Phone verified ✓';
+      status.classList.add('ok');
+      toast('Phone verified ✓');
+    } else {
+      status.textContent = 'Incorrect code, try again.';
+    }
+  });
+
+  // Eligibility + Co-pay
+  const selects = {
+    ins:  $('#elig-ins',  root),
+    city: $('#elig-city', root),
+    spec: $('#elig-spec', root),
+    sum:  $('#elig-sum',  root)
+  };
+  const out = $('.elig-result', root);
+  const copyBtn = $('#elig-copy', root);
+
+  function estimate(spec, sum) {
+    const base = { general:.8, dental:.6, ophthalmology:.72, ivf:.55, orthopedics:.66, cardiac:.62, oncology:.5 };
+    const b = base[String(spec).toLowerCase()] ?? .6;
+    const s = parseInt(sum, 10) || 5;
+    const adj = s>20 ? -0.1 : s>10 ? -0.05 : 0.02;
+    const val = Math.min(.92, Math.max(.3, b + adj));
+    return Math.round(val * 100);
+  }
+  function renderElig() {
+    const ins  = selects.ins.value || 'Any';
+    const city = selects.city.value;
+    const spec = selects.spec.value;
+    const sum  = selects.sum.value;
+    const pct  = estimate(spec, sum);
+    out.innerHTML = `<strong>Likely eligible: ${pct}%</strong> — for ${spec} with ₹${sum}L cover in ${city}. <em>${ins}</em>`;
+  }
+  Object.values(selects).forEach(el => on(el, 'change', renderElig, { passive: true }));
+  renderElig();
+
+  on(copyBtn, 'click', async () => {
+    try {
+      await navigator.clipboard.writeText(out.textContent.trim());
+      copyBtn.textContent = 'Copied ✓';
+      setTimeout(() => copyBtn.textContent = 'Copy', 1200);
+    } catch {
+      copyBtn.textContent = 'Copy failed';
+      setTimeout(() => copyBtn.textContent = 'Copy', 1200);
+    }
+  });
+
+  const bill = $('#co-bill', root), rate = $('#co-rate', root), coOut = $('#co-out', root);
+  function copay() {
+    const b = Number(bill.value || 0), r = Math.min(100, Math.max(0, Number(rate.value || 0)));
+    if (!b) { coOut.textContent = 'Enter bill to estimate co-pay.'; return; }
+    const cop = Math.round(b * (r / 100));
+    coOut.innerHTML = `Estimated co-pay: <b>₹${cop.toLocaleString('en-IN')}</b>. Net payable by insurer: <b>₹${(b - cop).toLocaleString('en-IN')}</b>.`;
+  }
+  on(bill, 'input', copay); on(rate, 'input', copay);
+})();
+
+/* -----------------------------------------
+   Footer persona links (no scroll)
+------------------------------------------ */
+(() => {
+  $$('[data-persona-link]').forEach(a => {
+    on(a, 'click', (e) => {
+      e.preventDefault();
+      router.set(a.dataset.personaLink);
+    });
+  });
+})();
+
+/* -----------------------------------------
+   Toast utility
+------------------------------------------ */
+function toast(msg) {
+  const node = $('#toast'); if (!node) return;
+  node.textContent = msg;
+  node.classList.add('in');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => node.classList.remove('in'), 1800);
 }
 
-/* ---------- Base transition tokens ---------- */
-:root{
-  --e1: cubic-bezier(.2,.8,.2,1);
-  --e2: cubic-bezier(.22,1,.36,1);
-  --spring: cubic-bezier(.34,1.56,.64,1);
-  --fast: .22s;
-  --med: .42s;
-  --slow: .7s;
-}
+/* -----------------------------------------
+   Smart LCP swap (if you use hero-static)
+------------------------------------------ */
+(() => {
+  const heroImg = $('#heroLCP');
+  if (!heroImg) return;
+  const src = heroImg.dataset.src;
+  if (!src) return;
+  const im = new Image();
+  im.decoding = 'async';
+  im.onload = () => { heroImg.src = src; heroImg.classList.add('loaded'); };
+  im.src = src;
+})();
 
-/* ---------- Scroll reveal primitives ---------- */
-[data-animate]{
-  opacity: 0; transform: translateY(18px) scale(.98);
-  transition: opacity var(--med) var(--e2), transform var(--med) var(--e2);
-  will-change: opacity, transform;
-}
-[data-animate].is-visible{
-  opacity: 1; transform: none;
-}
-.reveal-up   { transform: translateY(22px); }
-.reveal-down { transform: translateY(-22px); }
-.reveal-left { transform: translateX(22px); }
-.reveal-right{ transform: translateX(-22px); }
-.reveal-pop  { transform: translateY(14px) scale(.96); }
-.reveal-pop.is-visible{ transform: none; }
+/* -----------------------------------------
+   Minor GSAP hooks (if gsap-init.js present)
+------------------------------------------ */
+(() => {
+  if (!window.gsap || prefersReduced) return;
+  // reveal on scroll for [data-animate]
+  const items = $$('[data-animate]');
+  const reveal = (el) => el.classList.add('is-visible');
+  if (window.ScrollTrigger) {
+    gsap.registerPlugin(ScrollTrigger);
+    items.forEach(el => {
+      gsap.fromTo(el, { y: 18, opacity: 0 }, {
+        y: 0, opacity: 1, duration: .6, ease: 'power2.out',
+        scrollTrigger: { trigger: el, start: 'top 85%' }
+      });
+    });
+  } else {
+    const io = new IntersectionObserver((es) => {
+      es.forEach(e => { if (e.isIntersecting) { reveal(e.target); io.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -10% 0px' });
+    items.forEach(el => io.observe(el));
+  }
+})();
 
-/* Stagger helper: apply to children */
-.stagger > *{
-  opacity:0; transform:translateY(16px);
-  transition: opacity var(--med) var(--e2), transform var(--med) var(--e2);
-}
-.stagger.is-visible > *{
-  opacity:1; transform:none;
-}
-.stagger.is-visible > *:nth-child(1){ transition-delay: .02s }
-.stagger.is-visible > *:nth-child(2){ transition-delay: .06s }
-.stagger.is-visible > *:nth-child(3){ transition-delay: .10s }
-.stagger.is-visible > *:nth-child(4){ transition-delay: .14s }
-.stagger.is-visible > *:nth-child(5){ transition-delay: .18s }
+/* -----------------------------------------
+   Defensive: prevent accidental jumps on hashchange
+------------------------------------------ */
+on(window, 'hashchange', (e) => {
+  const hash = location.hash;
+  const persona = ['#p-scope','#h-scope','#i-scope'];
+  if (persona.includes(hash)) {
+    e.preventDefault?.();
+    history.replaceState(null, '', ' ');
+  }
+}, { passive: false });
 
-/* ---------- Premium buttons (micro-spring) ---------- */
-.btn{
-  transition: transform .18s var(--spring), box-shadow var(--fast) var(--e1), background var(--fast) var(--e1);
-}
-.btn:hover{ transform: translateY(-1px) scale(1.015); }
-.btn:active{ transform: translateY(0) scale(.985); }
-
-/* Glow lift for primary */
-.btn--primary{
-  box-shadow: 0 12px 28px color-mix(in oklab, var(--accent-1), transparent 78%);
-}
-.btn--primary:hover{
-  box-shadow: 0 16px 38px color-mix(in oklab, var(--accent-2), transparent 70%);
-}
-
-/* ---------- Ripple (CSS-only baseline, JS will enhance) ---------- */
-.ripple{
-  position: relative; overflow: hidden;
-}
-.ripple::after{
-  content:""; position:absolute; inset:auto; width:12px; height:12px;
-  background: radial-gradient(circle, color-mix(in oklab, var(--accent-1), #fff 22%) 0%, transparent 60%);
-  border-radius:50%; transform: scale(0); opacity:.55; pointer-events:none;
-  transition: transform .5s var(--e1), opacity .6s var(--e1);
-}
-.ripple.is-pressing::after{ transform: scale(16); opacity:0; }
-
-/* ---------- Role bubble subtle spring ---------- */
-.role-bubble{
-  animation: bubble-idle 6s ease-in-out infinite;
-}
-@keyframes bubble-idle{
-  0%,100%{ transform: translateY(-50%) translateZ(0) }
-  50%{ transform: translateY(calc(-50% - 2px)) translateZ(0) }
-}
-
-/* ---------- Pills / chips hover micro-move ---------- */
-.chip, .pill, .tab, .seg-btn{
-  transition: transform var(--fast) var(--e1), background var(--fast) var(--e1), border-color var(--fast) var(--e1);
-}
-.chip:hover, .pill:hover, .tab:hover, .seg-btn:hover{
-  transform: translateY(-1px);
-}
-
-/* ---------- Cards (glass + aurora sheen) ---------- */
-.product{
-  transform: translateZ(0);
-}
-.product:hover{
-  box-shadow: 0 28px 72px color-mix(in oklab, var(--accent-2), transparent 78%);
-}
-.product::after{
-  /* Sweep sheen */
-  content:""; position:absolute; inset:0; pointer-events:none;
-  background: linear-gradient(95deg, transparent 45%, color-mix(in oklab, #fff, var(--accent-1) 12%) 50%, transparent 55%);
-  mix-blend-mode: soft-light; opacity:0; transform: translateX(-40%) skewX(-12deg);
-  transition: opacity .5s var(--e1), transform .6s var(--e1);
-}
-.product:hover::after{
-  opacity:.55; transform: translateX(40%) skewX(-12deg);
-}
-
-/* ---------- Typing headline shimmer ---------- */
-.type-gradient{
-  background: linear-gradient(90deg, #fff 0%, var(--accent-1) 50%, var(--accent-2) 100%);
-  background-size: 200% 100%;
-  -webkit-background-clip: text; background-clip: text; color: transparent;
-  animation: shine 4s linear infinite;
-}
-@keyframes shine{ 0%{background-position:0 0} 100%{background-position:-200% 0} }
-
-/* ---------- SVG stroke draw ---------- */
-.draw-stroke{
-  stroke-dasharray: 220; stroke-dashoffset: 220;
-  animation: draw .9s var(--e2) forwards;
-}
-@keyframes draw{ to{ stroke-dashoffset: 0 } }
-
-/* ---------- Orb parallax soft float ---------- */
-@keyframes float{
-  0%,100%{ transform: translate3d(0,0,0) }
-  50%{ transform: translate3d(0,-8px,0) }
-}
-.orb-left{ animation: float 12s ease-in-out infinite; }
-.orb-right{ animation: float 10s ease-in-out infinite; }
-
-/* ---------- Grid HDR twinkle (optional class) ---------- */
-.grid-hdr.twinkle{
-  animation: twinkle 10s ease-in-out infinite;
-}
-@keyframes twinkle{
-  0%,100%{opacity:.9; filter:saturate(115%)}
-  50%{opacity:1; filter:saturate(125%)}
-}
-
-/* ---------- Marquee polish ---------- */
-.geo-marquee__track{
-  animation: marquee var(--marquee-speed) linear infinite;
-  will-change: transform;
-}
-.geo-marquee:hover .geo-marquee__track{
-  animation-play-state: paused;
-}
-
-/* ---------- Toast entrance ---------- */
-.toast{ transition: transform .35s var(--e2), opacity .35s var(--e2) }
-.toast.in{ transform: translateX(-50%) translateY(0); opacity:1 }
-
-/* ---------- Icon hover (subtle 3D) ---------- */
-.soc{ transition: transform var(--fast) var(--spring), box-shadow var(--fast) var(--e1) }
-.soc:hover{ transform: translateY(-2px) scale(1.05); box-shadow: 0 16px 34px color-mix(in oklab, var(--accent-1), transparent 70%) }
-
-/* ---------- Form focus glint ---------- */
-.input:focus, .form-grid input:focus, .form-grid select:focus, .form-grid textarea:focus{
-  border-color: color-mix(in oklab, var(--accent-1), #fff 12%);
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent-1), transparent 82%);
-  transition: box-shadow .22s var(--e1), border-color .22s var(--e1);
-}
-
-/* ---------- OTP bump on verified (add .ok in JS) ---------- */
-.status.ok{
-  animation: ok-pulse .7s var(--spring);
-}
-@keyframes ok-pulse{
-  0%{ transform: scale(1); color: #9de9c5 }
-  40%{ transform: scale(1.04); color: #6ee7b7 }
-  100%{ transform: scale(1); color: inherit }
-}
-
-/* ---------- Press feedback helper (add .press on mousedown) ---------- */
-.pressable{ transition: transform .14s var(--spring) }
-.pressable.press{ transform: scale(.98) }
-
-/* ---------- Floating dots (optional decorative layer) ---------- */
-.fx-dots{
-  position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen; opacity:.35;
-  background-image:
-    radial-gradient(circle at 10% 20%, rgba(125,231,255,.2) 0 2px, transparent 3px),
-    radial-gradient(circle at 30% 40%, rgba(140,125,255,.2) 0 2px, transparent 3px),
-    radial-gradient(circle at 70% 30%, rgba(255,134,181,.2) 0 2px, transparent 3px),
-    radial-gradient(circle at 85% 75%, rgba(52,211,153,.2) 0 2px, transparent 3px);
-  background-size: 140px 140px;
-  animation: dots-pan 30s linear infinite;
-}
-@keyframes dots-pan{ to{ background-position: 140px 140px, -140px 140px, 140px -140px, -140px -140px } }
-
-/* ---------- Section divider shimmer ---------- */
-.divider{
-  height:1px; width:100%;
-  background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--accent-2), transparent 60%), transparent);
-  animation: divider-spark 3.2s linear infinite;
-}
-@keyframes divider-spark{
-  0%{ background-position: -200% 0; background-size: 200% 100%; }
-  100%{ background-position: 200% 0; background-size: 200% 100%; }
-}
-
-/* ---------- Android-style elevation hover ---------- */
-.elevate{
-  transition: box-shadow var(--fast) var(--e1), transform var(--fast) var(--e1);
-}
-.elevate:hover{
-  transform: translateY(-3px);
-  box-shadow: 0 26px 60px rgba(0,0,0,.35), 0 0 0 1px color-mix(in oklab, var(--accent-1), transparent 75%);
-}
-
-/* ---------- Matched persona accent rings ---------- */
-.accent-ring{
-  box-shadow: 0 0 0 1px color-mix(in oklab, var(--accent-1), transparent 70%), 0 16px 30px color-mix(in oklab, var(--accent-2), transparent 80%);
-}
-
-/* ---------- Spinner utility ---------- */
-.spin{ animation: spin 1s linear infinite }
-@keyframes spin{ to{ transform: rotate(360deg) } }
+/* -----------------------------------------
+   End
+------------------------------------------ */
