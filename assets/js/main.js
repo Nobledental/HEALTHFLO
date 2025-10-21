@@ -99,7 +99,7 @@ const spy = (() => {
       if (sec) obs.observe(sec);
     });
   }
-  requestIdleCallback ? requestIdleCallback(mount) : setTimeout(mount, 1);
+  runIdle(mount);
   return { mount };
 })();
 
@@ -249,8 +249,8 @@ const router = (() => {
   // public API
   function set(kind) { activate(kind); }
   const saved = ls.get('hf-persona', 'patient');
-  requestIdleCallback ? requestIdleCallback(() => activate(saved)) : setTimeout(() => activate(saved), 1);
-
+  runIdle(() => activate(saved));
+   
   // events
   tabs.forEach(t => on(t, 'click', (e) => {
     e.preventDefault(); // STOP page scrolling
