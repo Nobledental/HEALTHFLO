@@ -3,56 +3,21 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HealthFlo — Insurers (Distribution & Cashless Ops)</title>
+  <meta name="description" content="Insurer solutions for India: structured plan listings, preferred discounts, and cashless ops APIs with anomaly checks and audit logs." />
 
-  <title>HealthFlo — Insurers</title>
-  <meta name="description" content="Distribution & operations for Indian insurers: structured listings, partner discounts, and cashless ops APIs with audit & anomaly checks." />
-
-  <!-- Preconnects -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <!-- Preload LCP asset -->
+  <link rel="preload" as="image" href="/assets/img/hero-static.svg" imagesizes="100vw" imagesrcset="/assets/img/hero-static.svg 1200w" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
-
-  <!-- LCP hero art -->
-  <link rel="preload" as="image" href="assets/img/hero-static.svg" fetchpriority="high">
-
-  <!-- Global styles -->
-  <link rel="stylesheet" href="assets/css/main.css" />
-
-  <!-- Persona-specific light overrides -->
-  <style>
-    /* Persona accent: insurer */
-    body.mode--insurer{ --p1:#ff86b5; --p2:#8b5cf6; --accent:#ff9ac5; }
-    .sub-hero{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(20px,5vw,44px);align-items:center;padding:clamp(18px,2.8vw,28px) 0}
-    .eyebrow{display:inline-flex;align-items:center;gap:.5rem;border:1px solid var(--line);background:rgba(255,255,255,.06);padding:.45rem .85rem;border-radius:999px;margin-bottom:10px}
-    .eyebrow .live-dot{width:8px;height:8px;border-radius:999px;background:#22c55e;box-shadow:0 0 0 0 rgba(34,197,94,.5);animation:beacon 2.2s ease-in-out infinite}
-    .insurer-hero h1{font-size:clamp(2.1rem,4.8vw,4rem);line-height:1.05;margin:.2rem 0 .65rem;background:linear-gradient(90deg,#fff 25%,var(--p1),var(--p2));-webkit-background-clip:text;background-clip:text;color:transparent}
-    .insurer-hero p{max-width:60ch;color:var(--muted)}
-    .hero-figure{position:relative;min-height:320px}
-    .hero-figure .morph{position:absolute;inset:auto 0 0 auto;width:min(42vw,520px)}
-    .android-grid{--grid-alpha:.12}
-    .product-grid .product h3{font-weight:800}
-    .subtle-note{color:var(--muted);font-size:.92rem}
-
-    /* Partner cities marquee (pauses on hover) */
-    .loc-marquee{overflow:hidden;border-block:1px solid rgba(124,92,255,.25);background:rgba(10,15,38,.75);padding:1rem 0;margin-top:.4rem;border-radius:14px;backdrop-filter:blur(12px)}
-    .loc-track{display:flex;gap:2.2rem;white-space:nowrap;animation:locrun 24s linear infinite}
-    .loc-marquee:hover .loc-track{animation-play-state:paused}
-    .loc-pill{padding:.5rem 1rem;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid var(--line);font-weight:700;color:#d9ebff}
-    @keyframes locrun{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-  </style>
-
-  <!-- Libs -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  <link rel="stylesheet" href="/assets/css/animations.css" />
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script defer src="https://unpkg.com/flubber/dist/flubber.min.js"></script>
-
-  <!-- Shared app -->
-  <script defer src="assets/js/main.js"></script>
 </head>
 
-<body class="hf theme--night mode--insurer">
+<body class="hf theme--night theme--medical mode--insurer">
   <a class="skip" href="#content">Skip to main</a>
 
   <!-- Ambient background -->
@@ -60,37 +25,19 @@
   <div class="orb orb-right" aria-hidden="true"></div>
   <canvas id="particles" class="particle-layer" aria-hidden="true"></canvas>
 
-  <!-- Minimal SVG sprite for this page -->
-  <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
-    <symbol id="icon-shield" viewBox="0 0 64 64">
-      <g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 24c0-8 10-12 20-12s20 4 20 12v12c0 12-10 18-20 22-10-4-20-10-20-22V24z"/>
-        <path d="M26 34l6 6 12-12"/>
-      </g>
-    </symbol>
-    <symbol id="icon-twitter" viewBox="0 0 24 24">
-      <path d="M18 2l-6.4 11.2L9 10 2 22h20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </symbol>
-    <symbol id="icon-linkedin" viewBox="0 0 24 24">
-      <path d="M4 4h4v16H4zM10 10h4v10h-4zM8 4a2 2 0 110 4 2 2 0 010-4zm10 6a4 4 0 00-4 4v6h4v-6a1 1 0 112 0v6h4v-7a3 3 0 00-3-3h-3z" fill="currentColor"/>
-    </symbol>
-    <symbol id="icon-youtube" viewBox="0 0 24 24">
-      <path d="M22 12s0-4-1-5-5-1-9-1-8 0-9 1-1 5-1 5 0 4 1 5 5 1 9 1 8 0 9-1 1-5 1-5z" fill="currentColor"/>
-      <path d="M10 9l5 3-5 3z" fill="#fff"/>
-    </symbol>
-  </svg>
-
   <!-- Header -->
   <header class="nav container">
-    <a class="brand" href="index.html" aria-label="HealthFlo Home">
+    <a class="brand" href="/" aria-label="HealthFlo home">
       <span class="brand__beacon" aria-hidden="true"></span>
       <span class="brand__name">HealthFlo</span>
     </a>
 
     <nav class="nav__links" aria-label="Primary">
-      <a href="index.html#locations">Cities</a>
-      <a href="#content">Products</a>
-      <a href="#contact">Contact</a>
+      <a href="/#hero">Overview</a>
+      <a href="/#locations">Cities</a>
+      <a href="/#content">Products</a>
+      <a href="/#trust">Trust & Tech</a>
+      <a href="/#contact">Contact</a>
     </nav>
 
     <div class="theme" aria-expanded="false">
@@ -98,185 +45,168 @@
         <span class="dot"></span><span>Theme</span>
       </button>
       <div class="theme__panel" role="menu" aria-label="Theme studio">
-        <button class="tbtn is-active" data-theme="night">Night</button>
+        <button class="tbtn" data-theme="night">Night</button>
         <button class="tbtn" data-theme="day">Day</button>
         <button class="tbtn" data-theme="aurora">Aurora</button>
         <button class="tbtn" data-theme="clinic">Clinic</button>
         <button class="tbtn" data-theme="contrast">High Contrast</button>
-        <button class="tbtn" data-theme="ios">iOS (White/Matt)</button>
+        <button class="tbtn is-active" data-theme="apple-matte">Apple Matte</button>
       </div>
     </div>
+
+    <button class="nav__toggle" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </header>
 
-  <!-- Sub-hero (Android neon grid + iOS white ready + typing line) -->
-  <section class="sub-hero container android-grid">
-    <div class="insurer-hero">
-      <span class="eyebrow"><span class="live-dot" aria-hidden="true"></span> Insurer journey</span>
-      <h1>Distribution that converts. Ops that give clarity.</h1>
-      <p id="hero-sub" class="type-caret">
-        Structured listings, partner campaigns, and cashless ops APIs — built for India with audit & anomaly checks.
-      </p>
-      <div class="hero__cta" style="margin-top:14px;display:flex;gap:.75rem;flex-wrap:wrap">
-        <a class="btn btn--primary" href="#i-products">View capabilities</a>
-        <a class="btn btn--ghost" href="#contact">Talk to solutions</a>
-      </div>
+  <!-- HERO -->
+  <section class="hero container">
+    <div class="status-pill">
+      <span class="live-dot" aria-hidden="true"></span>
+      Insurers • Structured listings & cashless ops • <b>SOC2-ready</b>
     </div>
 
-    <div class="hero-figure">
-      <svg id="morphSvg" class="morph" viewBox="0 0 64 64" aria-hidden="true">
-        <defs>
-          <linearGradient id="gradInsurer" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stop-color="#ff86b5"/><stop offset="1" stop-color="#8b5cf6"/>
-          </linearGradient>
-        </defs>
-        <path id="morphPath" fill="url(#gradInsurer)"
-              d="M12 20a12 12 0 0 1 12-12h16a12 12 0 0 1 12 12v24a12 12 0 0 1-12 12H24A12 12 0 0 1 12 44V20z"/>
-      </svg>
-      <div class="lcp-holder" style="width:100%;max-width:520px;height:260px;border-radius:16px;margin-top:16px;">
-        <img src="assets/img/hero-static.svg" alt="" width="960" height="540" loading="eager" decoding="async" style="width:100%;height:auto;display:block;opacity:.001;">
+    <div class="hero__grid">
+      <div class="hero__copy" data-animate>
+        <h1 class="hero-title">Distribution that converts. Ops that scale.</h1>
+        <p class="hero-sub" id="typeTarget" data-typing='["Specialty-wise plan pages by network strength.","Preferred discounts with attribution & ROI.","Cashless Ops API with anomaly checks.","Auditable webhooks for claim events."]'>
+          Specialty-wise plan pages by network strength.
+        </p>
+
+        <div class="chips">
+          <span class="chip">IRDAI-friendly copy</span>
+          <span class="chip">Attribution & ROI</span>
+          <span class="chip">Anomaly detection</span>
+          <span class="chip">Audit logs</span>
+        </div>
+
+        <div class="hero__cta">
+          <a class="btn btn--primary" href="#content">See products</a>
+          <a class="btn btn--ghost" href="/#trust">How we build trust</a>
+        </div>
       </div>
-    </div>
-  </section>
 
-  <!-- Top partner cities marquee -->
-  <section class="container" aria-label="Top partner cities">
-    <div class="loc-marquee">
-      <div class="loc-track">
-        <span class="loc-pill">Delhi</span>
-        <span class="loc-pill">Mumbai</span>
-        <span class="loc-pill">Bengaluru</span>
-        <span class="loc-pill">Hyderabad</span>
-        <span class="loc-pill">Chennai</span>
-        <span class="loc-pill">Pune</span>
-
-        <!-- Repeat for seamless scroll -->
-        <span class="loc-pill">Delhi</span>
-        <span class="loc-pill">Mumbai</span>
-        <span class="loc-pill">Bengaluru</span>
-        <span class="loc-pill">Hyderabad</span>
-        <span class="loc-pill">Chennai</span>
-        <span class="loc-pill">Pune</span>
+      <!-- Persona morph: insurer -->
+      <div class="hero__visual persona-stage" aria-hidden="true" data-animate>
+        <svg id="morphSvg" viewBox="0 0 64 64" class="morph">
+          <defs>
+            <linearGradient id="gradInsurer" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#ff86b5"/><stop offset="1" stop-color="#8b5cf6"/>
+            </linearGradient>
+          </defs>
+          <path id="morphPath" fill="url(#gradInsurer)"
+            d="M12 20a12 12 0 0 1 12-12h16a12 12 0 0 1 12 12v24a12 12 0 0 1-12 12H24A12 12 0 0 1 12 44V20z"/>
+        </svg>
+        <div class="morph-caption">Insurers</div>
       </div>
     </div>
   </section>
 
+  <!-- Marquee -->
+  <section class="geo-marquee" aria-label="Cities we serve">
+    <div class="geo-marquee__track" id="cityTrack" data-autoscroll="true">
+      <span>Delhi</span><span>Mumbai</span><span>Bengaluru</span><span>Hyderabad</span><span>Chennai</span><span>Pune</span>
+      <span>Delhi</span><span>Mumbai</span><span>Bengaluru</span><span>Hyderabad</span><span>Chennai</span><span>Pune</span>
+    </div>
+  </section>
+
+  <!-- CONTENT -->
   <main id="content" class="container" role="main">
-    <!-- Intent -->
-    <section class="card" data-animate>
-      <label class="intent__row">
-        <span>What do you need?</span>
-        <input id="ask-insurer" class="input" type="text" placeholder="Listings, partner discounts, cashless ops API, analytics…" />
-      </label>
-      <div class="chips" style="margin-top:.7rem">
-        <button class="chip chip--btn" data-go="#i-products" data-q="Marketplace listing">Marketplace listing</button>
-        <button class="chip chip--btn" data-go="#i-products" data-q="Preferred discounts">Preferred discounts</button>
-        <button class="chip chip--btn" data-go="#i-products" data-q="Cashless ops API">Cashless ops API</button>
-      </div>
-    </section>
+    <header class="scope-head scope-head--insurer">
+      <h2 class="section-title">Products & Services for Insurers</h2>
+      <p class="muted">Drive distribution with structured listings and manage cashless ops with visibility & control.</p>
+    </header>
 
-    <!-- Insurer products (only) -->
-    <section id="i-products" class="product-grid" data-animate>
+    <div class="product-grid" data-animate>
       <article class="product tilt">
+        <div class="product__icon">
+          <img src="/assets/icons/analytics.svg" alt="" loading="lazy" width="28" height="28">
+        </div>
         <h3>Marketplace Listing</h3>
-        <p>Specialty-wise plan pages, network views, room eligibility & OPD clarity.</p>
-        <ul class="ticks"><li>Plan schema v1.0</li><li>Conversion insights</li><li>IRDAI-friendly copy</li></ul>
+        <p>Specialty-wise plan pages, network views, room eligibility & OPD add-ons surfaced clearly.</p>
+        <ul class="ticks">
+          <li>Conversion insights</li>
+          <li>Plan schema</li>
+          <li>IRDAI-friendly copy</li>
+        </ul>
+        <a class="product__cta" href="#connect">See example listing →</a>
       </article>
 
       <article class="product tilt">
+        <div class="product__icon">
+          <img src="/assets/icons/emi.svg" alt="" loading="lazy" width="28" height="28">
+        </div>
         <h3>Preferred Discounts</h3>
-        <p>City & specialty campaigns with guardrails, attribution, and ROI.</p>
-        <ul class="ticks"><li>Fraud signals</li><li>Lead routing</li><li>Lift simulator</li></ul>
+        <p>City & specialty campaigns with attribution, ROI and fraud checks, all reported transparently.</p>
+        <ul class="ticks">
+          <li>Seasonal controls</li>
+          <li>Lead routing</li>
+          <li>Lift simulator</li>
+        </ul>
+        <a class="product__cta" href="#connect">Run a pilot →</a>
       </article>
 
       <article class="product tilt">
+        <div class="product__icon">
+          <img src="/assets/icons/compliance.svg" alt="" loading="lazy" width="28" height="28">
+        </div>
         <h3>Cashless Ops API</h3>
-        <p>Webhooks & panel for pre-auth, docs & TAT; anomaly & duplicate detection.</p>
-        <ul class="ticks"><li>Audit logs</li><li>Escalation hooks</li><li>Claim visibility</li></ul>
+        <p>Webhooks & panel for pre-auth, documentation & TAT. Includes anomaly checks & audit logs.</p>
+        <ul class="ticks">
+          <li>Claim visibility</li>
+          <li>Escalation hooks</li>
+          <li>Audit-ready logs</li>
+        </ul>
+        <a class="product__cta" href="#connect">Get API docs →</a>
       </article>
-    </section>
+    </div>
 
-    <!-- API sandbox + discount simulator -->
-    <section class="card grid-2" id="ins-tools" data-animate>
+    <!-- Quick connect -->
+    <section id="connect" class="card grid-2" data-animate>
       <div class="col">
-        <h3>Ops Webhook Sandbox</h3>
-        <pre class="code" id="api-json">{
-  "event": "preauth.updated",
-  "claim_id": "CLM-18425",
-  "status": "documents_required",
-  "required": ["ID Proof", "Policy PDF", "Treating Doctor Notes"],
-  "eta_hours": 6
-}</pre>
-        <div class="helper-actions" style="margin-top:.6rem">
-          <button id="api-copy" class="btn btn--primary">Copy JSON</button>
-        </div>
-      </div>
-
-      <div class="col">
-        <h3>Discount Simulator</h3>
-        <div class="form-grid">
-          <label><span>Base CVR %</span><input id="ds-base" type="number" min="0" max="100" value="2.1"></label>
-          <label><span>Discount %</span><input id="ds-disc" type="number" min="0" max="50" value="10"></label>
-        </div>
-        <div id="ds-out" class="muted">Enter to simulate expected CVR lift.</div>
-      </div>
-    </section>
-
-    <p class="subtle-note">Disclaimers: examples are illustrative; actual outcomes depend on insurer rules, partner networks, and IRDAI regulations.</p>
-
-    <!-- CTA -->
-    <section class="card" data-animate>
-      <div class="row-split">
-        <h3>Ready to launch campaigns or integrate ops?</h3>
+        <h3>Partner with HealthFlo</h3>
+        <p class="muted">We’ll share schema for listings and API creds for a sandbox. Start with a city or specialty.</p>
         <div class="helper-actions">
-          <a class="btn btn--primary" href="#i-products">View capabilities</a>
-          <a class="btn btn--ghost" href="#contact">Talk to solutions</a>
+          <a class="btn btn--primary" href="mailto:hello@healthflo.io?subject=Insurer%20Partner%20Request">Email partnership</a>
+          <a class="btn btn--ghost" href="https://wa.me/?text=Hello%20HealthFlo%2C%20we%20want%20to%20list%20plans.">WhatsApp now</a>
+        </div>
+      </div>
+      <div class="col">
+        <div class="info-card">
+          <h4>What you get</h4>
+          <ul class="ticks">
+            <li>Listing schema + examples</li>
+            <li>Webhook sandbox & payloads</li>
+            <li>Attribution & ROI dashboards</li>
+          </ul>
         </div>
       </div>
     </section>
   </main>
-
-  <!-- Contact -->
-  <section id="contact" class="contact container" data-animate>
-    <h3>Talk to our solutions team</h3>
-    <div class="actions">
-      <a class="btn btn--primary" href="mailto:hello@healthflo.io?subject=Insurer%20Partnership%20with%20HealthFlo">Email us</a>
-      <a class="btn btn--ghost" href="https://wa.me/?text=Hi%20HealthFlo%2C%20we%20want%20to%20discuss%20insurer%20distribution%20%26%20ops.">WhatsApp in 30s</a>
-    </div>
-  </section>
 
   <!-- Footer -->
   <footer class="footer">
     <div class="footer__grid container">
       <div>
         <span class="footer__brand">HealthFlo</span>
-        <p>Distribution & cashless ops for Indian insurers.</p>
+        <p>Distribution that converts. Ops that scale. Made for Indian insurers & TPAs.</p>
         <div class="footer__social">
-          <a href="#" aria-label="Twitter" class="soc"><svg aria-hidden="true" width="16" height="16"><use href="#icon-twitter"/></svg></a>
-          <a href="#" aria-label="LinkedIn" class="soc"><svg aria-hidden="true" width="16" height="16"><use href="#icon-linkedin"/></svg></a>
-          <a href="#" aria-label="YouTube" class="soc"><svg aria-hidden="true" width="16" height="16"><use href="#icon-youtube"/></svg></a>
+          <a href="#" aria-label="Twitter" class="soc"><img src="/assets/icons/twitter.svg" width="18" height="18" alt=""></a>
+          <a href="#" aria-label="LinkedIn" class="soc"><img src="/assets/icons/linkedin.svg" width="18" height="18" alt=""></a>
+          <a href="#" aria-label="YouTube" class="soc"><img src="/assets/icons/youtube.svg" width="18" height="18" alt=""></a>
         </div>
       </div>
-      <div>
-        <h3>Explore</h3>
-        <ul>
-          <li><a href="index.html#locations">Locations</a></li>
-          <li><a href="index.html#trust">Trust & Tech</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-      </div>
-      <div>
-        <h3>Personas</h3>
-        <ul>
-          <li><a href="patient.html">Patients</a></li>
-          <li><a href="hospital.html">Hospitals</a></li>
-          <li><a href="insurer.html" aria-current="page">Insurers</a></li>
-        </ul>
-      </div>
+      <div><h3>Journeys</h3><ul><li><a href="/index.html#p-scope">Patients</a></li><li><a href="/hospital.html">Hospitals</a></li><li><a href="/insurer.html" aria-current="page">Insurers</a></li></ul></div>
+      <div><h3>Company</h3><ul><li><a href="/#locations">Locations</a></li><li><a href="/#trust">Trust & Tech</a></li><li><a href="/#contact">Contact</a></li></ul></div>
     </div>
     <div class="footer__bottom">© 2025 HealthFlo • Terms • Privacy</div>
   </footer>
 
+  <!-- Toast -->
   <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
-  <a href="#i-products" class="fab" aria-label="See insurer capabilities">🛡️</a>
+
+  <!-- Scripts -->
+  <script defer src="/assets/js/main.js"></script>
+  <script defer src="/assets/js/gsap-init.js"></script>
 </body>
 </html>
