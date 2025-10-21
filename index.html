@@ -8,7 +8,7 @@
   <meta name="description" content="HealthFlo connects patients, hospitals, and insurers in India with cashless eligibility, RCM, pre-auth ops, and an IRDAI-aware marketplace." />
   <meta name="theme-color" content="#070a16" media="(prefers-color-scheme: dark)">
   <meta name="theme-color" content="#f7f9ff" media="(prefers-color-scheme: light)">
-  <link rel="icon" href="/assets/img/og-cover.webp" type="image/webp" />
+  <link rel="icon" href="assets/img/og-cover.webp" type="image/webp" />
 
   <!-- Preconnects / Fonts -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,24 +17,24 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
 
   <!-- LCP Preloads -->
-  <link rel="preload" as="image" href="/assets/img/hero-static.svg" imagesrcset="/assets/img/hero-static.svg" fetchpriority="high">
-  <link rel="preload" as="style" href="/assets/css/main.css" />
+  <link rel="preload" as="image" href="assets/img/hero-static.svg" imagesrcset="assets/img/hero-static.svg" fetchpriority="high">
+  <link rel="preload" as="style" href="assets/css/main.css" />
   <link rel="preload" as="font" href="https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtQ.woff2" type="font/woff2" crossorigin>
 
   <!-- CSS -->
-  <link rel="stylesheet" href="/assets/css/main.css" />
-  <link rel="stylesheet" href="/assets/css/animations.css" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <link rel="stylesheet" href="assets/css/animations.css" />
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
 
   <!-- Social -->
   <meta property="og:title" content="HealthFlo — Cashless Care for India" />
   <meta property="og:description" content="Cashless eligibility, transparent packages, RCM suite, IRDAI-aware marketplace." />
-  <meta property="og:image" content="/assets/img/og-cover.webp" />
+  <meta property="og:image" content="assets/img/og-cover.webp" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
 
   <!-- App Capabilities -->
-  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="manifest" href="manifest.webmanifest" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
 
   <!-- Structured Data (Org) -->
@@ -66,7 +66,7 @@
   <div class="grid-hdr" aria-hidden="true"></div>
 
   <!-- Shared SVG sprite (icons) -->
-  <!-- Keep this external file in /assets/icons/sprite.svg; example usage: <use href="/assets/icons/sprite.svg#patient" /> -->
+  <!-- Keep this external file in assets/icons/sprite.svg; example usage: <use href="assets/icons/sprite.svg#patient" /> -->
   <!-- Optional inline fallback could be injected by JS if sprite fails to load -->
 
   <!-- Header -->
@@ -117,21 +117,21 @@
 
           <button class="role-tab is-active" role="tab" aria-selected="true" data-persona="patient" data-no-scroll>
             <span class="ico">
-              <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="/assets/icons/sprite.svg#patient"/></svg>
+              <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons/sprite.svg#patient"/></svg>
             </span>
             <span>Patient</span>
           </button>
 
           <button class="role-tab" role="tab" aria-selected="false" data-persona="hospital" data-no-scroll>
             <span class="ico">
-              <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="/assets/icons/sprite.svg#hospital"/></svg>
+              <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons/sprite.svg#hospital"/></svg>
             </span>
             <span>Hospital</span>
           </button>
 
           <button class="role-tab" role="tab" aria-selected="false" data-persona="insurer" data-no-scroll>
             <span class="ico">
-              <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="/assets/icons/sprite.svg#insurer"/></svg>
+              <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons/sprite.svg#insurer"/></svg>
             </span>
             <span>Insurer</span>
           </button>
@@ -167,7 +167,7 @@
       <div class="hero__visual persona-stage" aria-hidden="true" data-animate>
         <div class="fx-dots" aria-hidden="true"></div>
         <picture>
-          <img class="hero-lcp-fallback" src="/assets/img/hero-static.svg" alt="" decoding="async" />
+  <img class="hero-lcp-fallback" src="assets/img/hero-static.svg" alt="" decoding="async" />
         </picture>
         <svg id="morphSvg" viewBox="0 0 64 64" class="morph" aria-hidden="true">
           <defs>
@@ -224,7 +224,7 @@
     <!-- PATIENT -->
     <section id="p-scope" class="scope is-active" aria-labelledby="p-title" data-scope="patient">
       <header class="scope-head scope-head--patient">
-@@ -274,50 +296,105 @@
+
     <!-- HOSPITAL -->
     <section id="h-scope" class="scope" aria-labelledby="h-title" data-scope="hospital">
       <header class="scope-head scope-head--hospital">
@@ -233,7 +233,7 @@
       </header>
       <div id="h-products" class="product-grid" data-animate data-products="hospital"></div>
       <div class="row-split">
-        <a class="btn btn--ghost" href="/hospitals.html" rel="prefetch">Explore more for Hospitals →</a>
+          <a class="btn btn--ghost" href="hospital.html" rel="prefetch">Explore more for Hospitals →</a>
       </div>
     </section>
 
@@ -245,7 +245,7 @@
       </header>
       <div id="i-products" class="product-grid" data-animate data-products="insurer"></div>
       <div class="row-split">
-        <a class="btn btn--ghost" href="/insurers.html" rel="prefetch">Explore more for Insurers →</a>
+          <a class="btn btn--ghost" href="insurer.html" rel="prefetch">Explore more for Insurers →</a>
       </div>
     </section>
   </main>
@@ -361,9 +361,9 @@
         <span class="footer__brand">HealthFlo</span>
         <p>Cashless insurance for India — connected to hospitals & patients.</p>
         <div class="footer__social">
-          <a href="#" aria-label="Twitter" class="soc"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="/assets/icons/sprite.svg#twitter"/></svg></a>
-          <a href="#" aria-label="LinkedIn" class="soc"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="/assets/icons/sprite.svg#linkedin"/></svg></a>
-          <a href="#" aria-label="YouTube" class="soc"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="/assets/icons/sprite.svg#youtube"/></svg></a>
+          <a href="#" aria-label="Twitter" class="soc"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons/sprite.svg#twitter"/></svg></a>
+          <a href="#" aria-label="LinkedIn" class="soc"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons/sprite.svg#linkedin"/></svg></a>
+          <a href="#" aria-label="YouTube" class="soc"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons/sprite.svg#youtube"/></svg></a>
         </div>
       </div>
       <div>
@@ -396,11 +396,11 @@
   <script defer src="https://unpkg.com/flubber/dist/flubber.min.js"></script>
 
   <!-- Your JS modules in this order -->
-  <script defer src="/assets/js/ai-demo.js"></script>
-  <script defer src="/assets/js/forms.js"></script>
-  <script defer src="/assets/js/three-hero.js"></script>
-  <script defer src="/assets/js/gsap-init.js"></script>
-  <script defer src="/assets/js/main.js"></script>
+  <script defer src="assets/js/ai-demo.js"></script>
+  <script defer src="assets/js/forms.js"></script>
+  <script defer src="assets/js/three-hero.js"></script>
+  <script defer src="assets/js/gsap-init.js"></script>
+  <script defer src="assets/js/main.js"></script>
 
   <!-- Noscript fallback particles -->
   <noscript><style>.particle-layer{display:none !important}</style></noscript>
