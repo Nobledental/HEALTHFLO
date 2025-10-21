@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>HealthFlo — For Patients</title>
+  <link rel="stylesheet" href="css/main.css"/><link rel="stylesheet" href="css/animations.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+</head>
+<body class="hf theme--matte mode--patient">
+  <header class="nav container"><a class="brand" href="/"><span class="brand__beacon"></span><span class="brand__name">HealthFlo</span></a>
+    <nav class="nav__links"><a href="/">Home</a><a href="#elig">Eligibility</a><a href="#products">Products</a></nav>
+  </header>
+
+  <section class="page-hero container">
+    <h1>Patient experience, re-imagined.</h1>
+    <p class="muted">Cashless eligibility in 30 seconds. Transparent packages. IRDAI-friendly policy shop with 0% EMI.</p>
+  </section>
+
+  <main id="elig" class="container">
+    <section class="card grid-2">
+      <div class="col">
+        <h3>Check cashless eligibility (30s)</h3>
+        <div class="form-grid">
+          <label class="span-2"><span>Phone</span><input id="p-phone" type="tel" inputmode="tel" placeholder="+91 98xxxxxxx0"></label>
+          <button type="button" class="btn btn--primary js-send-otp">Send OTP</button>
+          <div class="otp-wrap hidden span-2">
+            <div class="otp"><input class="otp-i" maxlength="1"/><input class="otp-i" maxlength="1"/><input class="otp-i" maxlength="1"/><input class="otp-i" maxlength="1"/></div>
+            <button type="button" class="btn btn--primary js-verify-otp">Verify</button>
+          </div>
+        </div>
+        <p id="p-otpStatus" class="status" role="status"></p>
+      </div>
+
+      <div class="col">
+        <div class="info-card">
+          <h4>Eligibility + Co-pay</h4>
+          <div class="form-grid">
+            <label><span>Insurer</span><select id="p-elig-ins"><option>Any</option><option>Care</option><option>HDFC ERGO</option><option>Star Health</option><option>Niva Bupa</option></select></label>
+            <label><span>City</span><select id="p-elig-city"><option>Delhi</option><option>Mumbai</option><option>Bengaluru</option><option>Hyderabad</option><option>Chennai</option></select></label>
+            <label><span>Specialty</span><select id="p-elig-spec"><option>General</option><option>Dental</option><option>Ophthalmology</option><option>IVF</option><option>Orthopedics</option><option>Cardiac</option><option>Oncology</option></select></label>
+            <label><span>Sum Insured (₹ L)</span><select id="p-elig-sum"><option>3</option><option selected>5</option><option>10</option><option>15</option><option>20</option><option>25</option></select></label>
+          </div>
+          <div class="elig-row"><div class="elig-result" id="p-elig-out">We’ll compute your likely eligibility here.</div><button class="btn btn--ghost" id="p-elig-copy">Copy</button></div>
+          <div class="form-grid"><label><span>Estimated bill (₹)</span><input id="p-co-bill" type="number" placeholder="85000"></label><label><span>Co-pay %</span><input id="p-co-rate" type="number" value="10"></label></div>
+          <div id="p-co-out" class="muted">Enter bill to estimate co-pay.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="products" class="product-grid">
+      <article class="product tilt"><h3>Transparent Packages</h3><p>Indicative prices by city & specialty with clean breakdowns.</p></article>
+      <article class="product tilt"><h3>Policy Marketplace</h3><p>Filter by network, room eligibility, NCB & premiums.</p></article>
+      <article class="product tilt"><h3>Claim Concierge</h3><p>Docs, follow-ups & reimbursements to reduce denials.</p></article>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="footer__bottom">© 2025 HealthFlo</div></footer>
+  <script defer src="js/forms.js"></script>
+  <script>
+    // Light GSAP intro
+    if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
+      gsap.from('.card, .product', {y:20, opacity:0, duration:.45, stagger:.05, ease:'power2.out'});
+    }
+  </script>
+</body>
+</html>
