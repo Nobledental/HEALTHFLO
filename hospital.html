@@ -3,211 +3,106 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>HealthFlo — Hospitals & Clinics (RCM for India)</title>
-  <meta name="description" content="RCM suite for hospitals & clinics in India: cashless, reimbursements, recovery, denial management, insurance desk, pre-auth SOPs, dashboards." />
-
-  <!-- Preload LCP asset -->
-  <link rel="preload" as="image" href="/assets/img/hero-static.svg" imagesizes="100vw" imagesrcset="/assets/img/hero-static.svg 1200w" />
+  <title>HealthFlo — Hospital & Clinic</title>
+  <meta name="description" content="RCM suite: cashless, reimbursement, recovery & denials for hospitals in India. Insurance desk tools included." />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css" />
-  <link rel="stylesheet" href="/assets/css/animations.css" />
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script defer src="https://unpkg.com/flubber/dist/flubber.min.js"></script>
+  <link rel="stylesheet" href="/assets/css/personas.css" />
 </head>
+<body class="hdr-grid theme--android-glow mode--hospital">
+  <div class="orb orb-left"></div><div class="orb orb-right"></div><canvas id="particles" class="particle-layer"></canvas>
 
-<body class="hf theme--night theme--medical mode--hospital">
-  <a class="skip" href="#content">Skip to main</a>
-
-  <!-- Ambient background -->
-  <div class="orb orb-left" aria-hidden="true"></div>
-  <div class="orb orb-right" aria-hidden="true"></div>
-  <canvas id="particles" class="particle-layer" aria-hidden="true"></canvas>
-
-  <!-- Header -->
-  <header class="nav container">
-    <a class="brand" href="/" aria-label="HealthFlo home">
-      <span class="brand__beacon" aria-hidden="true"></span>
-      <span class="brand__name">HealthFlo</span>
-    </a>
-
-    <nav class="nav__links" aria-label="Primary">
-      <a href="/#hero">Overview</a>
-      <a href="/#locations">Cities</a>
-      <a href="/#content">Products</a>
-      <a href="/#trust">Trust & Tech</a>
-      <a href="/#contact">Contact</a>
+  <header class="site-top container">
+    <div class="brand"><span class="beacon"></span><span>HealthFlo • Hospital</span></div>
+    <nav class="top-nav">
+      <a class="chip active">Overview</a><a class="chip" href="#rcm">RCM</a><a class="chip" href="#starter">Starter</a><a class="chip" href="#list">Get Listed</a>
     </nav>
-
-    <div class="theme" aria-expanded="false">
-      <button class="theme__toggle" aria-label="Open theme studio">
-        <span class="dot"></span><span>Theme</span>
-      </button>
-      <div class="theme__panel" role="menu" aria-label="Theme studio">
-        <button class="tbtn" data-theme="night">Night</button>
-        <button class="tbtn" data-theme="day">Day</button>
-        <button class="tbtn" data-theme="aurora">Aurora</button>
-        <button class="tbtn" data-theme="clinic">Clinic</button>
-        <button class="tbtn" data-theme="contrast">High Contrast</button>
-        <button class="tbtn is-active" data-theme="apple-matte">Apple Matte</button>
-      </div>
-    </div>
-
-    <button class="nav__toggle" aria-label="Open menu" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
+    <div class="actions"><button class="theme-toggle" id="themeToggle" aria-pressed="false">Theme</button></div>
   </header>
 
-  <!-- HERO -->
+  <!-- Hero -->
   <section class="hero container">
-    <div class="status-pill">
-      <span class="live-dot" aria-hidden="true"></span>
-      Hospitals • RCM in <b>6 cities</b> • Average pre-auth TAT <b>~6.8h</b>
-    </div>
-
-    <div class="hero__grid">
-      <div class="hero__copy" data-animate>
-        <h1 class="hero-title">RCM built for India — cashless to recovery.</h1>
-        <p class="hero-sub" id="typeTarget" data-typing='["Cut denials with SOPs and checklists.","Track cashless + reimbursements in one place.","Escalate with TAT heatmaps & alerts.","Insurance desk toolkit for real ops."]'>
-          Insurance desk toolkit for real ops.
-        </p>
-
-        <div class="chips">
-          <span class="chip">Cashless + Reimbursement</span>
-          <span class="chip">Denial management</span>
-          <span class="chip">Claim recovery</span>
-          <span class="chip">Pre-auth SOPs</span>
-        </div>
-
-        <div class="hero__cta">
-          <a class="btn btn--primary" href="#content">See products</a>
-          <a class="btn btn--ghost" href="/#trust">How we build trust</a>
-        </div>
-      </div>
-
-      <!-- Persona morph: hospital -->
-      <div class="hero__visual persona-stage" aria-hidden="true" data-animate>
-        <svg id="morphSvg" viewBox="0 0 64 64" class="morph">
-          <defs>
-            <linearGradient id="gradHospital" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="#34d399"/><stop offset="1" stop-color="#22d3ee"/>
-            </linearGradient>
-          </defs>
-          <path id="morphPath" fill="url(#gradHospital)"
-            d="M12 20a12 12 0 0 1 12-12h16a12 12 0 0 1 12 12v24a12 12 0 0 1-12 12H24A12 12 0 0 1 12 44V20z"/>
-        </svg>
-        <div class="morph-caption">Hospitals & Clinics</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Marquee: Cities we serve -->
-  <section class="geo-marquee" aria-label="Cities we serve">
-    <div class="geo-marquee__track" id="cityTrack" data-autoscroll="true">
-      <span>Delhi</span><span>Mumbai</span><span>Bengaluru</span><span>Hyderabad</span><span>Chennai</span><span>Pune</span>
-      <span>Delhi</span><span>Mumbai</span><span>Bengaluru</span><span>Hyderabad</span><span>Chennai</span><span>Pune</span>
-    </div>
-  </section>
-
-  <!-- CONTENT -->
-  <main id="content" class="container" role="main">
-    <header class="scope-head scope-head--hospital">
-      <h2 class="section-title">Products & Services for Hospitals</h2>
-      <p class="muted">Everything your insurance desk needs — from pre-auth to recovery — tuned for Indian payors & TPAs.</p>
-    </header>
-
-    <div class="product-grid" data-animate>
-      <article class="product tilt">
-        <div class="product__icon">
-          <img src="/assets/icons/recovery.svg" alt="" loading="lazy" width="28" height="28">
-        </div>
-        <h3>RCM Suite</h3>
-        <p>Cashless, reimbursement, recovery & denial management. SOPs, checklists, & escalation desk included.</p>
-        <ul class="ticks">
-          <li>TPA matrix & SLA monitoring</li>
-          <li>TAT heatmaps & alerts</li>
-          <li>Claims tracker with artifacts</li>
-        </ul>
-        <a class="product__cta" href="#demo">Request a demo →</a>
-      </article>
-
-      <article class="product tilt">
-        <div class="product__icon">
-          <img src="/assets/icons/empanel.svg" alt="" loading="lazy" width="28" height="28">
-        </div>
-        <h3>Starter Stack</h3>
-        <p>OPD, billing, WhatsApp intake, digital tariffs & package builder in days — NABH-friendly.</p>
-        <ul class="ticks">
-          <li>GST invoicing</li>
-          <li>Tariff templates</li>
-          <li>MIS dashboards</li>
-        </ul>
-        <a class="product__cta" href="#demo">See capabilities →</a>
-      </article>
-
-      <article class="product tilt">
-        <div class="product__icon">
-          <img src="/assets/icons/hospital.svg" alt="" loading="lazy" width="28" height="28">
-        </div>
-        <h3>Get Listed</h3>
-        <p>Be discovered by insured patients searching by city & specialty. Promote cashless services.</p>
-        <ul class="ticks">
-          <li>Priority cities</li>
-          <li>Eligibility pre-checks</li>
-          <li>Attribution reporting</li>
-        </ul>
-        <a class="product__cta" href="#demo">Boost visibility →</a>
-      </article>
-    </div>
-
-    <!-- Quick contact -->
-    <section id="demo" class="card grid-2" data-animate>
-      <div class="col">
-        <h3>Talk to our hospital team</h3>
-        <p class="muted">We’ll understand your payor mix, SOPs, and current TAT — and share a tailored rollout plan.</p>
-        <div class="helper-actions">
-          <a class="btn btn--primary" href="https://wa.me/?text=Hi%20HealthFlo%2C%20we%20want%20an%20RCM%20demo.">WhatsApp now</a>
-          <a class="btn btn--ghost" href="mailto:hello@healthflo.io">Email us</a>
-        </div>
-      </div>
-      <div class="col">
-        <div class="info-card">
-          <h4>What we’ll cover</h4>
-          <ul class="ticks">
-            <li>Cashless SOPs (admission → discharge)</li>
-            <li>Escalation matrix & TAT controls</li>
-            <li>Denial taxonomy & recovery playbook</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer__grid container">
+    <div class="status">Live in <b>6 cities</b> • TAT visibility</div>
+    <div class="grid">
       <div>
-        <span class="footer__brand">HealthFlo</span>
-        <p>RCM for real-world Indian operations. Cashless to recovery — fewer denials, faster payouts.</p>
-        <div class="footer__social">
-          <a href="#" aria-label="Twitter" class="soc"><img src="/assets/icons/twitter.svg" width="18" height="18" alt=""></a>
-          <a href="#" aria-label="LinkedIn" class="soc"><img src="/assets/icons/linkedin.svg" width="18" height="18" alt=""></a>
-          <a href="#" aria-label="YouTube" class="soc"><img src="/assets/icons/youtube.svg" width="18" height="18" alt=""></a>
+        <div class="role">
+          <span class="bubble" aria-hidden="true" style="transform: translateX(180px) translateY(-50%); width:170px;"></span>
+          <button aria-selected="false" onclick="location.href='/patient.html'"><span>Patient</span></button>
+          <button aria-selected="true"><span>Hospital</span></button>
+          <button aria-selected="false" onclick="location.href='/insurer.html'"><span>Insurer</span></button>
+        </div>
+        <h1>RCM built for India — cashless to denials.</h1>
+        <p class="sub"><span id="typeTarget" data-typing='["Reduce denials with pre-auth SOPs.","24×7 escalation with TAT heatmaps.","Digital insurance desk with audit trails."]'></span></p>
+        <div class="cta">
+          <a class="btn btn--primary" href="#rcm">Explore RCM suite</a>
+          <a class="btn btn--ghost" href="#starter">Starter stack</a>
         </div>
       </div>
-      <div><h3>Journeys</h3><ul><li><a href="/index.html#p-scope">Patients</a></li><li><a href="/hospital.html" aria-current="page">Hospitals</a></li><li><a href="/insurer.html">Insurers</a></li></ul></div>
-      <div><h3>Company</h3><ul><li><a href="/#locations">Locations</a></li><li><a href="/#trust">Trust & Tech</a></li><li><a href="/#contact">Contact</a></li></ul></div>
+      <div aria-hidden="true">
+        <img src="/assets/img/hero-static.svg" alt="" width="560" height="420" loading="eager">
+      </div>
     </div>
-    <div class="footer__bottom">© 2025 HealthFlo • Terms • Privacy</div>
-  </footer>
+  </section>
 
-  <!-- Toast -->
-  <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+  <!-- Cities marquee -->
+  <section class="geo-marquee">
+    <div class="geo-marquee__track">
+      <span class="pill">Delhi</span><span class="pill">Mumbai</span><span class="pill">Bengaluru</span>
+      <span class="pill">Hyderabad</span><span class="pill">Chennai</span><span class="pill">Pune</span>
+      <span class="pill">Delhi</span><span class="pill">Mumbai</span><span class="pill">Bengaluru</span>
+      <span class="pill">Hyderabad</span><span class="pill">Chennai</span><span class="pill">Pune</span>
+    </div>
+  </section>
 
-  <!-- Scripts -->
+  <!-- RCM -->
+  <section id="rcm" class="container card">
+    <h3 class="section-title">RCM Suite</h3>
+    <div id="rcm-checklist" class="muted">Loading checklist…</div>
+  </section>
+
+  <!-- Starter Stack -->
+  <section id="starter" class="container card">
+    <h3 class="section-title">Starter Stack</h3>
+    <div class="product-grid">
+      <article class="product"><h4>OPD & Billing</h4><p class="muted">Queueing, receipts, GST, and tariffs.</p></article>
+      <article class="product"><h4>Digital Tariffs</h4><p class="muted">Templates & package builder.</p></article>
+      <article class="product"><h4>Insurance Desk</h4><p class="muted">Pre-auth templates & audit trail.</p></article>
+    </div>
+  </section>
+
+  <!-- Get Listed + WA intake -->
+  <section id="list" class="container card">
+    <h3 class="section-title">Get Listed + WhatsApp Intake</h3>
+    <div class="form-grid">
+      <label><span>Hospital Name</span><input id="wa-hname" placeholder="Acme Care Hospital"></label>
+      <label><span>Specialty</span><input id="wa-spec" placeholder="Cardiology"></label>
+      <label class="span-2"><span>Generated Link</span><input id="wa-link" readonly></label>
+    </div>
+    <div class="cta">
+      <button id="wa-make" class="btn btn--primary">Generate</button>
+      <a id="wa-open" class="btn btn--ghost" target="_blank" rel="noopener">Open</a>
+    </div>
+  </section>
+
+  <div id="toast" class="toast" role="status"></div>
+
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script defer src="/assets/js/main.js"></script>
   <script defer src="/assets/js/gsap-init.js"></script>
   <script defer src="/assets/js/hospital.js"></script>
+  <script>
+    (function(){
+      const key='hf-theme'; const b=document.body; const t=document.getElementById('themeToggle');
+      const saved = localStorage.getItem(key) || 'android';
+      if(saved==='matte'){ b.classList.remove('theme--android-glow'); b.classList.add('theme--apple-matte'); t.setAttribute('aria-pressed','true'); }
+      t.addEventListener('click', ()=>{
+        const matte = b.classList.toggle('theme--apple-matte');
+        b.classList.toggle('theme--android-glow', !matte);
+        localStorage.setItem(key, matte ? 'matte' : 'android');
+        t.setAttribute('aria-pressed', matte ? 'true':'false');
+      });
+    })();
+  </script>
 </body>
 </html>
