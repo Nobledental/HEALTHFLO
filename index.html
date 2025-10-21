@@ -80,6 +80,7 @@
       <a class="spy" href="#hero" data-no-scroll>Overview</a>
       <a class="spy" href="#locations" data-no-scroll>Cities</a>
       <a class="spy" href="#content" data-no-scroll>Products</a>
+      <a class="spy" href="#flow" data-no-scroll>Flow</a>
       <a class="spy" href="#trust" data-no-scroll>Trust & Tech</a>
       <a class="spy" href="#contact" data-no-scroll>Contact</a>
     </nav>
@@ -138,7 +139,7 @@
 
         <!-- Typing animation line (persona-aware) -->
         <h1 id="hero-title" class="hero-title" aria-live="polite">
-          <span class="type" data-type-patient="Find, book & pay for care — cashless first."
+          <span class="type type-gradient" data-type-patient="Find, book & pay for care — cashless first."
                 data-type-hospital="RCM that cuts denials & TAT — cashless to reimbursements."
                 data-type-insurer="Structured listings, partner ops & cashless APIs — built for India.">
             Find, book & pay for care — cashless first.
@@ -162,9 +163,9 @@
           <a class="btn btn--ghost" href="#trust" data-no-scroll>Why India trusts us</a>
         </div>
       </div>
-
       <!-- Morph stage (GSAP + Flubber), LCP fallback image -->
       <div class="hero__visual persona-stage" aria-hidden="true" data-animate>
+        <div class="fx-dots" aria-hidden="true"></div>
         <picture>
           <img class="hero-lcp-fallback" src="/assets/img/hero-static.svg" alt="" decoding="async" />
         </picture>
@@ -178,6 +179,26 @@
             d="M12 20a12 12 0 0 1 12-12h16a12 12 0 0 1 12 12v24a12 12 0 0 1-12 12H24A12 12 0 0 1 12 44V20z"/>
         </svg>
         <div class="morph-caption" id="morphLabel">Patient</div>
+        <ul class="floating-metrics" aria-label="HealthFlo platform stats">
+          <li class="metric-card" data-count="96" data-suffix="%" data-animate>
+            <div class="metric-card__icon" aria-hidden="true"><i class="ri-flashlight-fill"></i></div>
+            <span class="metric-card__tag">Cashless approvals</span>
+            <strong><span data-count-output>0</span><span class="metric-card__suffix">%</span></strong>
+            <p>Automation score across network hospitals.</p>
+          </li>
+          <li class="metric-card" data-count="18" data-suffix="h" data-animate>
+            <div class="metric-card__icon" aria-hidden="true"><i class="ri-sparkling-2-line"></i></div>
+            <span class="metric-card__tag">Faster reimbursements</span>
+            <strong><span data-count-output>0</span><span class="metric-card__suffix">h</span></strong>
+            <p>Average reduction in discharge processing time.</p>
+          </li>
+          <li class="metric-card" data-count="42" data-suffix="%" data-animate>
+            <div class="metric-card__icon" aria-hidden="true"><i class="ri-shield-check-line"></i></div>
+            <span class="metric-card__tag">Denied claims recovered</span>
+            <strong><span data-count-output>0</span><span class="metric-card__suffix">%</span></strong>
+            <p>Recovery uplift using HealthFlo denial workflows.</p>
+          </li>
+        </ul>
       </div>
     </div>
   </section>
@@ -203,74 +224,7 @@
     <!-- PATIENT -->
     <section id="p-scope" class="scope is-active" aria-labelledby="p-title" data-scope="patient">
       <header class="scope-head scope-head--patient">
-        <h2 id="p-title" class="section-title">For Patients</h2>
-        <p class="muted">Built for India: cashless at network hospitals, transparent packages, ABHA support, IRDAI-aware flows.</p>
-      </header>
-
-      <div class="intent card" data-animate>
-        <label class="intent__row">
-          <span>What do you need?</span>
-          <input id="ask-patient" class="input" type="text" placeholder="Cashless check, package price, buy policy, EMI…" inputmode="text" />
-        </label>
-        <div class="chips">
-          <button class="chip chip--btn" data-go="#patient-elig" data-no-scroll>Cashless check</button>
-          <button class="chip chip--btn" data-go="#p-products" data-q="Buy policy" data-no-scroll>Buy policy</button>
-          <button class="chip chip--btn" data-go="#p-products" data-q="Transparent packages" data-no-scroll>Package price</button>
-        </div>
-      </div>
-
-      <div id="p-products" class="product-grid" data-animate data-products="patient"></div>
-
-      <!-- Cashless micro-flow -->
-      <section class="card grid-2" id="patient-elig" data-animate>
-        <div class="col">
-          <h3>Check cashless eligibility in 30 seconds</h3>
-          <div class="form-grid">
-            <label class="span-2">
-              <span>Phone</span>
-              <input id="phone" type="tel" inputmode="tel" placeholder="+91 98xxxxxxx0" autocomplete="tel">
-            </label>
-            <button type="button" class="btn btn--primary js-send-otp">Send OTP</button>
-            <div class="otp-wrap hidden span-2">
-              <div class="otp">
-                <input class="otp-i" maxlength="1" inputmode="numeric"/>
-                <input class="otp-i" maxlength="1" inputmode="numeric"/>
-                <input class="otp-i" maxlength="1" inputmode="numeric"/>
-                <input class="otp-i" maxlength="1" inputmode="numeric"/>
-              </div>
-              <button type="button" class="btn btn--primary js-verify-otp">Verify</button>
-            </div>
-          </div>
-          <p id="otpStatus" class="status" role="status" aria-live="polite"></p>
-        </div>
-
-        <div class="col">
-          <div class="info-card">
-            <h4>Instant Eligibility + Co-pay</h4>
-            <div class="form-grid">
-              <label><span>Insurer</span><select id="elig-ins"><option value="Any">Any</option><option>Care</option><option>HDFC ERGO</option><option>Star Health</option><option>Niva Bupa</option></select></label>
-              <label><span>City</span><select id="elig-city"><option>Delhi</option><option>Mumbai</option><option>Bengaluru</option><option>Hyderabad</option><option>Chennai</option></select></label>
-              <label><span>Specialty</span><select id="elig-spec"><option>General</option><option>Dental</option><option>Ophthalmology</option><option>IVF</option><option>Orthopedics</option><option>Cardiac</option><option>Oncology</option></select></label>
-              <label><span>Sum Insured (₹ L)</span><select id="elig-sum"><option>3</option><option selected>5</option><option>10</option><option>15</option><option>20</option><option>25</option></select></label>
-            </div>
-            <div class="elig-row">
-              <div class="elig-result">We’ll compute your likely eligibility here.</div>
-              <button id="elig-copy" class="btn btn--ghost">Copy</button>
-            </div>
-            <div class="form-grid">
-              <label><span>Estimated bill (₹)</span><input id="co-bill" type="number" min="1000" step="500" placeholder="85000"></label>
-              <label><span>Co-pay %</span><input id="co-rate" type="number" min="0" max="100" step="1" value="10"></label>
-            </div>
-            <div id="co-out" class="muted">Enter bill to estimate co-pay.</div>
-          </div>
-        </div>
-      </section>
-
-      <div class="row-split">
-        <a class="btn btn--ghost" href="/patients.html" rel="prefetch">Explore more for Patients →</a>
-      </div>
-    </section>
-
+@@ -274,50 +296,105 @@
     <!-- HOSPITAL -->
     <section id="h-scope" class="scope" aria-labelledby="h-title" data-scope="hospital">
       <header class="scope-head scope-head--hospital">
@@ -295,6 +249,61 @@
       </div>
     </section>
   </main>
+
+  <!-- Orchestrated flow -->
+  <section id="flow" class="container flow card" data-animate data-spy-target>
+    <div class="row-split flow__head">
+      <div>
+        <h3>How HealthFlo orchestrates cashless journeys</h3>
+        <p class="muted">From instant eligibility to post-discharge recovery — one timeline that keeps patients, hospitals and insurers in sync.</p>
+      </div>
+      <div class="flow__legend">
+        <span class="pill">Realtime alerts</span>
+        <span class="pill">Ops automation</span>
+      </div>
+    </div>
+    <div class="journey">
+      <article class="journey__step reveal-right" data-progress="96" data-animate>
+        <header class="journey__header">
+          <span class="pill">Patient</span>
+          <span class="journey__value"><span data-value>0</span>% automation</span>
+        </header>
+        <h4>Instant cashless triage</h4>
+        <p class="muted">Eligibility predictions, co-pay estimates and ABHA checks that land in 30 seconds with OTP verified consent.</p>
+        <div class="journey__meter" aria-hidden="true"><span></span></div>
+        <ul class="ticks ticks--compact">
+          <li>Structured policy rules and package pricing</li>
+          <li>Network hospital discovery with real-time slots</li>
+        </ul>
+      </article>
+      <article class="journey__step reveal-right" data-progress="88" data-animate>
+        <header class="journey__header">
+          <span class="pill pill--hospital">Hospital</span>
+          <span class="journey__value"><span data-value>0</span>% automation</span>
+        </header>
+        <h4>Pre-auth to discharge without chaos</h4>
+        <p class="muted">Digitised pre-auth, denial playbooks and discharge orchestrations that shorten TAT while keeping insurers updated.</p>
+        <div class="journey__meter" aria-hidden="true"><span></span></div>
+        <ul class="ticks ticks--compact">
+          <li>Pre-auth SOPs with document guardrails</li>
+          <li>Realtime task board for insurance desks</li>
+        </ul>
+      </article>
+      <article class="journey__step reveal-right" data-progress="92" data-animate>
+        <header class="journey__header">
+          <span class="pill pill--insurer">Insurer</span>
+          <span class="journey__value"><span data-value>0</span>% automation</span>
+        </header>
+        <h4>Network intelligence for insurers</h4>
+        <p class="muted">Structured listings, partner campaigns and fraud signals delivered directly to your claim ops and CRM stack.</p>
+        <div class="journey__meter" aria-hidden="true"><span></span></div>
+        <ul class="ticks ticks--compact">
+          <li>City-level pricing and utilisation dashboards</li>
+          <li>Claim event webhooks and anomaly detection</li>
+        </ul>
+      </article>
+    </div>
+  </section>
 
   <!-- Trust & tech -->
   <section id="trust" class="container trust card" data-animate data-spy-target>
