@@ -2,589 +2,427 @@
 <html lang="en" class="no-js">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#050816" media="(prefers-color-scheme: dark)">
-  <meta name="theme-color" content="#f7f9fc" media="(prefers-color-scheme: light)">
-  <title>HealthFlo Healthcare — Futuristic Marketplace &amp; RCM</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>HealthFlo Healthcare — Cashless care, clear pricing, predictable revenue</title>
+  <meta name="description" content="HealthFlo connects Hospitals, Patients, and Insurers with cashless operations, transparent packages, and revenue reliability." />
 
-  <meta name="description" content="HealthFlo orchestrates cashless healthcare between patients, hospitals, and insurers with a futuristic glassmorphism interface and rich automation." />
-  <link rel="canonical" href="https://nobledental.github.io/HF-TEST/" />
-
-  <meta property="og:title" content="HealthFlo Healthcare — Futuristic Marketplace &amp; RCM" />
-  <meta property="og:description" content="Explore a next-gen cashless healthcare network for patients, hospitals, and insurers with Apple-like polish." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://nobledental.github.io/HF-TEST/" />
-  <meta property="og:image" content="https://nobledental.github.io/HF-TEST/assets/preview.png" />
-  <meta name="twitter:card" content="summary_large_image" />
-
-  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
-  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
-  <link rel="manifest" href="manifest.webmanifest" />
-
+  <!-- Premium fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="styles.css" />
   <script>document.documentElement.classList.replace('no-js','js');</script>
 </head>
-<body class="theme-cosmos" data-mode="intro">
-  <div class="bg sun" aria-hidden="true"></div>
-  <div class="bg blend" aria-hidden="true"></div>
-  <div class="bg grid" aria-hidden="true"></div>
 
-  <header class="hdr glass" role="banner">
-    <div class="nav wrap">
-      <a class="brand" href="#hero" aria-label="HealthFlo home">
-        <svg class="brand__mark" viewBox="0 0 40 40" aria-hidden="true">
+<!-- Default theme: theme-dawn. Other options now include theme-care, theme-neon, and the new theme-cosmos -->
+<body class="theme-dawn" data-mode="intro">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Background layers -->
+  <div class="bg sun"></div>
+  <div class="bg blend"></div>
+  <div class="bg grid"></div>
+
+  <header class="hdr glass">
+    <nav class="nav wrap" aria-label="Primary">
+      <a href="#" class="brand" aria-label="HealthFlo home">
+        <svg class="brand__mark" viewBox="0 0 60 60" aria-hidden="true">
           <defs>
-            <linearGradient id="brandGrad" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#00BFA6" />
-              <stop offset="100%" stop-color="#7c5cff" />
+            <linearGradient id="bgrad" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0%" stop-color="#00BFA6"/><stop offset="100%" stop-color="#0057FF"/>
             </linearGradient>
+            <filter id="gblur" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="1.8"/>
+            </filter>
           </defs>
-          <circle class="brand__pulse" cx="20" cy="20" r="18" fill="url(#brandGrad)" />
-          <path fill="#fff" d="M12 18h16a2 2 0 0 1 0 4H12a2 2 0 0 1 0-4Zm0 7h8a2 2 0 0 1 0 4h-8a2 2 0 0 1 0-4Z" />
+          <circle cx="30" cy="30" r="18" fill="url(#bgrad)" filter="url(#gblur)" class="brand__pulse"/>
+          <path d="M14 30h12l4-8 6 16 4-8h12" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
         </svg>
-        <span class="brand__name">HealthFlo</span>
+        <span class="brand__name">HealthFlo Healthcare</span>
       </a>
 
-      <button class="nav__toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle navigation">
+      <ul class="menu__links">
+        <li><a href="#choose">Choose Visit</a></li>
+        <li><a href="#patients">Patients</a></li>
+        <li><a href="#hospitals">Hospitals</a></li>
+        <li><a href="#insurers">Insurers</a></li>
+        <li><a href="#proof">Proof</a></li>
+      </ul>
+
+      <div class="spacer"></div>
+
+      <!-- Theme switcher (far right) -->
+      <div class="theme-switch" role="group" aria-label="Theme">
+        <button class="pill is-active" data-theme="theme-dawn" title="Dawn Glass">Dawn</button>
+        <button class="pill" data-theme="theme-care" title="Clinical Calm">Care</button>
+        <button class="pill" data-theme="theme-neon" title="Neon Pulse">Neon</button>
+        <button class="pill" data-theme="theme-cosmos" title="Cosmos Gradient">Cosmos</button>
+      </div>
+
+      <button class="nav__toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">
         <span></span><span></span><span></span>
       </button>
 
-      <div class="menu" id="nav-menu" data-open="false">
-        <ul class="menu__links">
-          <li><a href="#hero">Home</a></li>
-          <li><a href="#choose">Choose Visit</a></li>
-          <li><a href="#patients">Patients</a></li>
-          <li><a href="#hospitals">Hospitals</a></li>
-          <li><a href="#insurers">Insurers</a></li>
-          <li><a href="#packages">Packages</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-
+      <div id="nav-menu" class="menu" role="dialog" aria-label="Main menu">
         <ul class="menu__links menu__links--drawer">
-          <li><a href="#hero">Home</a></li>
           <li><a href="#choose">Choose Visit</a></li>
           <li><a href="#patients">Patients</a></li>
           <li><a href="#hospitals">Hospitals</a></li>
           <li><a href="#insurers">Insurers</a></li>
-          <li><a href="#packages">Packages</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li><a href="#proof">Proof</a></li>
         </ul>
-
-        <div class="theme-switch" role="group" aria-label="Color theme">
-          <button class="pill is-active" data-theme="theme-cosmos">Cosmos</button>
-          <button class="pill" data-theme="theme-care">Care</button>
-          <button class="pill" data-theme="theme-neon">Neon</button>
-          <button class="pill" data-theme="theme-dawn">Dawn</button>
-        </div>
-
         <div class="menu__ctas">
-          <a class="btn btn-secondary" href="mailto:info@healthflo.in">Contact</a>
-          <a class="btn btn-primary" href="#choose">Get Started</a>
+          <a class="btn btn-ghost" href="#demo">Watch 90-sec demo</a>
+          <a class="btn btn-primary" href="#choose">Get started</a>
         </div>
       </div>
-    </div>
-  </header>
+    </nav>
 
-  <main class="wrap main" id="hero">
-    <section class="hero" aria-labelledby="hero-title">
+    <!-- HERO -->
+    <section id="hero" class="hero wrap">
       <div class="hero__grid">
         <div class="hero__copy" data-animate>
-          <h1 id="hero-title">
-            Cashless healthcare that feels futuristic.
-          </h1>
+          <h1>Shaping next-gen healthcare</h1>
           <p class="lead">
-            <span class="typed">We connect hospitals, patients, and insurers so cashless care just works.</span><span class="typed-caret" aria-hidden="true"></span>
-          </p>
-          <p>
-            HealthFlo orchestrates admissions, coverage, approvals, and payouts with precision workflows — intuitive for people, compliant for hospitals, and insightful for insurers.
+            <span class="typed"></span><span class="typed-caret" aria-hidden="true"></span>
           </p>
           <div class="chips">
-            <span class="chip">Cashless Approvals</span>
-            <span class="chip">Coverage Insights</span>
-            <span class="chip">RCM Automation</span>
-            <span class="chip">Network Intelligence</span>
+            <span class="chip">Cashless Everywhere</span>
+            <span class="chip">Transparent Packages</span>
+            <span class="chip">Denial Recovery</span>
           </div>
-          <div class="menu__ctas">
-            <a class="btn btn-primary" href="#choose">Explore journeys</a>
-            <a class="btn btn-ghost" href="#packages">See packages</a>
-          </div>
+          <ul class="proof-inline">
+            <li><strong data-count="92">0</strong>% same-day approvals</li>
+            <li><strong data-count="98">0</strong>% denial recovery</li>
+            <li><strong data-count="150000">0</strong> patients guided</li>
+          </ul>
         </div>
-        <div class="hero__vis" data-animate>
-          <svg class="network" viewBox="0 0 540 420" aria-hidden="true">
+
+        <!-- Advanced SVG network -->
+        <div class="hero__vis" aria-hidden="true">
+          <svg class="network" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice">
             <defs>
-              <linearGradient id="n1" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="#00BFA6" />
-                <stop offset="100%" stop-color="#7c5cff" />
+              <linearGradient id="n1" x1="0" y1="1" x2="1" y2="0">
+                <stop offset="0%" stop-color="#00BFA6"/><stop offset="100%" stop-color="#0057FF"/>
               </linearGradient>
-              <linearGradient id="n2" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="#FFC107" />
-                <stop offset="100%" stop-color="#7c5cff" />
+              <linearGradient id="n2" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#FFC107"/><stop offset="100%" stop-color="#FF7A7A"/>
               </linearGradient>
             </defs>
-            <g class="orbit">
-              <ellipse class="o1" cx="270" cy="210" rx="210" ry="160"></ellipse>
-              <ellipse class="o2" cx="270" cy="210" rx="150" ry="110"></ellipse>
-            </g>
+            <g class="orbit"><circle cx="600" cy="350" r="260" class="o1"></circle><circle cx="600" cy="350" r="160" class="o2"></circle></g>
             <g class="links">
-              <path class="l1" d="M140 220 Q270 90 400 220"></path>
-              <path class="l2" d="M120 260 Q270 340 420 260"></path>
-              <path class="l3" d="M270 120 Q330 210 270 300 Q210 210 270 120" stroke="url(#n1)" stroke-width="3" stroke-linecap="round" stroke-dasharray="12 14"></path>
+              <path d="M240,500 C460,420 780,260 960,210" class="l1"></path>
+              <path d="M960,210 C820,360 700,460 600,540" class="l2"></path>
+              <path d="M240,500 C480,400 560,300 600,170" class="l3"></path>
             </g>
             <g class="nodes">
-              <g transform="translate(90,190)">
-                <rect class="card" rx="16" ry="16" width="140" height="92"></rect>
-                <text class="title" x="20" y="42">Patients</text>
-                <text class="meta" x="20" y="66">Policies · Packages</text>
-              </g>
-              <g transform="translate(220,80)">
-                <rect class="card" rx="16" ry="16" width="160" height="92"></rect>
-                <text class="title" x="20" y="42">Hospitals</text>
-                <text class="meta" x="20" y="66">Cashless · RCM</text>
-              </g>
-              <g transform="translate(320,250)">
-                <rect class="card" rx="16" ry="16" width="150" height="92"></rect>
-                <text class="title" x="20" y="42">Insurers</text>
-                <text class="meta" x="20" y="66">Network · Pricing</text>
-              </g>
+              <g class="node n-h" transform="translate(180,460)"><rect rx="18" width="220" height="104" class="card" />
+                <text x="18" y="42" class="title">Hospital</text><text x="18" y="70" class="meta">RCM • Cashless</text></g>
+              <g class="node n-i" transform="translate(880,140)"><rect rx="18" width="220" height="104" class="card" />
+                <text x="18" y="42" class="title">Insurer</text><text x="18" y="70" class="meta">Policies • TPA</text></g>
+              <g class="node n-p" transform="translate(500,540)"><rect rx="18" width="220" height="104" class="card" />
+                <text x="18" y="42" class="title">Patient</text><text x="18" y="70" class="meta">Care • EMI</text></g>
             </g>
           </svg>
         </div>
       </div>
     </section>
 
-    <section class="choose" id="choose" aria-labelledby="choose-title">
-      <h2 class="choose__title" id="choose-title">Choose your visit</h2>
+    <!-- CHOOSE VISIT (BIGGER + BLINK SEQUENCE) -->
+    <section id="choose" class="choose wrap" aria-label="Choose your visit">
+      <h2 class="choose__title">Choose your visit</h2>
       <div class="choose__grid">
-        <a class="choose__card choose__card--patient" href="#patients" data-target="patient">
-          <div class="choose__icon">🩺</div>
+        <a class="choose__card choose__card--patient blink" href="#patients" data-target="patient" aria-label="I am a Patient">
+          <div class="choose__icon">🧑‍⚕️</div>
           <div class="choose__text">
-            <strong>Patients</strong>
-            <span>Compare policies, explore packages, book specialists.</span>
+            <strong>Patient</strong>
+            <span>Policies • Packages • Appointments</span>
           </div>
-          <div class="choose__go">Explore</div>
+          <span class="choose__go">Explore more →</span>
         </a>
-        <a class="choose__card choose__card--hospital" href="#hospitals" data-target="hospital">
+        <a class="choose__card choose__card--hospital" href="#hospitals" data-target="hospital" aria-label="I represent a Hospital">
           <div class="choose__icon">🏥</div>
           <div class="choose__text">
-            <strong>Hospitals</strong>
-            <span>Cashless ops, denials, network growth, ROI tools.</span>
+            <strong>Hospital / Clinic</strong>
+            <span>Empanelment • Cashless • RCM</span>
           </div>
-          <div class="choose__go">Explore</div>
+          <span class="choose__go">Explore more →</span>
         </a>
-        <a class="choose__card choose__card--insurer" href="#insurers" data-target="insurer">
-          <div class="choose__icon">📊</div>
+        <a class="choose__card choose__card--insurer" href="#insurers" data-target="insurer" aria-label="I am an Insurer">
+          <div class="choose__icon">🛡️</div>
           <div class="choose__text">
-            <strong>Insurers</strong>
-            <span>Distribution, provider network, claim intelligence.</span>
+            <strong>Insurer</strong>
+            <span>Policy Sales • Network Relations</span>
           </div>
-          <div class="choose__go">Explore</div>
+          <span class="choose__go">Explore more →</span>
         </a>
       </div>
-      <p class="choose__hint">Tap a card to auto-scroll to the right console.</p>
+      <p class="choose__hint">We’ll show only what matters to you.</p>
     </section>
+  </header>
 
-    <section class="section" aria-labelledby="metric-title">
-      <div class="panel glass" data-animate>
-        <h2 id="metric-title">Why teams trust HealthFlo</h2>
-        <div class="rowcards">
-          <div class="rowcard">
-            <div class="rowcard__icon">⚡️</div>
-            <div>
-              <strong data-count="72" data-suffix="%">0</strong>
-              <small>Faster pre-auth approvals</small>
-            </div>
-          </div>
-          <div class="rowcard">
-            <div class="rowcard__icon">🤝</div>
-            <div>
-              <strong data-count="250" data-suffix="+">0</strong>
-              <small>Hospitals on our network</small>
-            </div>
-          </div>
-          <div class="rowcard">
-            <div class="rowcard__icon">🛡️</div>
-            <div>
-              <strong data-count="18000" data-suffix="+" data-duration="1500">0</strong>
-              <small>Policies mapped with clarity</small>
-            </div>
-          </div>
-          <div class="rowcard">
-            <div class="rowcard__icon">📈</div>
-            <div>
-              <strong data-count="38" data-suffix="%">0</strong>
-              <small>Average denial reduction</small>
-            </div>
-          </div>
-          <div class="rowcard">
-            <div class="rowcard__icon">💬</div>
-            <div>
-              <strong data-count="4.9" data-decimals="1">0</strong>
-              <small>Experience rating</small>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+  <main id="main">
 
-    <section class="section" aria-labelledby="slider-title">
-      <header class="section-head">
-        <h2 id="slider-title">Apple-like walk-through</h2>
-        <p>Swipe through signature HealthFlo flows designed for real-world teams.</p>
-      </header>
-      <div class="slider" data-slider>
-        <button class="slider__btn prev" aria-label="Previous">‹</button>
-        <div class="slider__track">
-          <article class="slide bigcard">
-            <h3>Patient Journey</h3>
-            <p>Compare policies, check coverage, book procedures, track claim updates.</p>
-            <ul>
-              <li>Upload policy PDF for instant insights</li>
-              <li>Dynamic package builder with add-ons</li>
-              <li>Real-time status &amp; concierge chat</li>
-            </ul>
-          </article>
-          <article class="slide bigcard">
-            <h3>Hospital Cockpit</h3>
-            <p>Central console for approvals, denials, and cashflow analytics.</p>
-            <ul>
-              <li>One-click pre-auth submission</li>
-              <li>AI triage for document gaps</li>
-              <li>Live dashboards &amp; alerts</li>
-            </ul>
-          </article>
-          <article class="slide bigcard">
-            <h3>Insurer Console</h3>
-            <p>Manage provider networks, audit claims, and monitor experience.</p>
-            <ul>
-              <li>Smart distribution &amp; onboarding</li>
-              <li>Network health scoring</li>
-              <li>Insightful claims analytics</li>
-            </ul>
-          </article>
-        </div>
-        <button class="slider__btn next" aria-label="Next">›</button>
-      </div>
-    </section>
+    <!-- PATIENTS -->
+    <section id="patients" class="section panel patient tone-patient" aria-labelledby="patients-title" hidden>
+      <div class="wrap">
+        <header class="section-head center" id="patients-title" data-animate>
+          <h2>You’re in the right place</h2>
+          <p class="kicker">Compare policies, see package prices, check coverage, and book everything in minutes.</p>
+        </header>
 
-    <section id="patients" class="section panel" hidden>
-      <header class="section-head">
-        <h2>Patient experience</h2>
-        <p>Guided journey that keeps you informed and in control.</p>
-      </header>
-      <div class="block-group">
-        <article class="block">
-          <div class="block-head">
-            <h3>Policy clarity</h3>
-            <p>Upload your policy or link your insurer login for instant decode.</p>
+        <!-- Apple-like slider (Explore more) -->
+        <div class="slider glass" data-slider>
+          <button class="slider__btn prev" aria-label="Previous">‹</button>
+          <div class="slider__track" tabindex="0">
+            <article class="slide bigcard">
+              <h3>Compare & Buy Insurance</h3>
+              <p>Side-by-side benefits, clear exclusions, quick issuance.</p>
+              <a class="btn btn-primary" href="#patients-policies">Open →</a>
+            </article>
+            <article class="slide bigcard">
+              <h3>Treatment Packages</h3>
+              <p>Transparent hospital pricing with EMI options.</p>
+              <a class="btn btn-primary" href="#patients-packages">Open →</a>
+            </article>
+            <article class="slide bigcard">
+              <h3>Know Your Coverage</h3>
+              <p>Upload policy PDF for instant sub-limits & co-pay.</p>
+              <a class="btn btn-primary" href="#patients-coverage">Open →</a>
+            </article>
+            <article class="slide bigcard">
+              <h3>Denial & Short-settlement</h3>
+              <p>File a case with Ombudsman escalation support.</p>
+              <a class="btn btn-primary" href="#patients-denial">Open →</a>
+            </article>
+            <article class="slide bigcard">
+              <h3>Appointments • Medicines • Labs</h3>
+              <p>Book specialists, 24h medicine dispatch*, at-home tests.</p>
+              <a class="btn btn-primary" href="#patients-ops">Open →</a>
+            </article>
           </div>
-          <ul class="checklist">
-            <li>Room rent, co-pay, and sub-limits explained</li>
-            <li>Pre-existing waiting periods flagged</li>
-            <li>Compare top-up options in one tap</li>
-          </ul>
-        </article>
-        <article class="block">
-          <div class="block-head">
-            <h3>Treatment packages</h3>
-            <p>Transparent bundles curated with partner hospitals.</p>
-          </div>
-          <ul class="checklist">
-            <li>Choose add-ons like room upgrades or home rehab</li>
-            <li>Zero hidden fees — see OT, implant, and doctor charges</li>
-            <li>Dedicated concierge for every admission</li>
-          </ul>
-        </article>
-        <article class="block">
-          <div class="block-head">
-            <h3>Care at home</h3>
-            <p>Book specialists, labs, and medicine delivery from one place.</p>
-          </div>
-          <ul class="checklist">
-            <li>Video consults with verified doctors</li>
-            <li>Lab at home with sanitized kits</li>
-            <li>Pharmacy orders with 24-hour delivery windows</li>
-          </ul>
-        </article>
-      </div>
-      <div class="coverage">
-        <div class="dropzone" id="policy-drop">
-          <div class="dz-illustration">📄</div>
-          <div>
-            <strong>Know your coverage</strong>
-            <p>Upload a policy PDF to see rent limits, co-pay, waiting, and more.</p>
-          </div>
-          <input type="file" id="policy-file" accept="application/pdf" />
+          <button class="slider__btn next" aria-label="Next">›</button>
         </div>
-        <div class="coverage-results" id="coverage-results" hidden>
-          <h3>Coverage summary</h3>
-          <ul class="checklist" id="coverage-checklist"></ul>
-        </div>
+
+        <!-- (Rest of patient sections unchanged from previous version) -->
+        <section id="patients-policies" class="block glass" data-animate>
+          <div class="block-head"><h3>Compare & buy health insurance</h3><p>IRDAI-compliant flows. Policy is issued by the insurer.</p></div>
+          <div class="compare-grid">
+            <article class="compare-row">
+              <div class="plan-badge">Family Care Plus</div>
+              <ul class="plan-specs"><li><strong>₹10L</strong> Sum insured</li><li>No Copay</li><li>Room: Single</li><li>Waiting: 2 yrs</li><li>OPD Add-on</li></ul>
+              <div class="plan-cta"><span class="plan-price">from <strong>₹712/mo</strong></span><a href="#" class="btn btn-secondary">Compare</a><a href="#" class="btn btn-primary">Buy</a></div>
+            </article>
+            <article class="compare-row">
+              <div class="plan-badge">Comprehensive Secure</div>
+              <ul class="plan-specs"><li><strong>₹20L</strong> Sum insured</li><li>10% Copay (55+)</li><li>Room: Pvt</li><li>Waiting: 1 yr</li><li>Maternity Add-on</li></ul>
+              <div class="plan-cta"><span class="plan-price">from <strong>₹1,184/mo</strong></span><a href="#" class="btn btn-secondary">Compare</a><a href="#" class="btn btn-primary">Buy</a></div>
+            </article>
+            <article class="compare-row">
+              <div class="plan-badge">Smart Essentials</div>
+              <ul class="plan-specs"><li><strong>₹5L</strong> Sum insured</li><li>No Copay</li><li>Room: Shared</li><li>Waiting: 3 yrs</li><li>No OPD</li></ul>
+              <div class="plan-cta"><span class="plan-price">from <strong>₹399/mo</strong></span><a href="#" class="btn btn-secondary">Compare</a><a href="#" class="btn btn-primary">Buy</a></div>
+            </article>
+          </div>
+        </section>
+
+        <section id="patients-packages" class="block glass" data-animate>
+          <div class="block-head"><h3>Treatment packages in hospitals</h3><p>See inclusions, exclusions, and add-ons before you book.</p></div>
+          <div class="package-grid">
+            <article class="package-card lift"><header><strong>Total Knee Replacement</strong><span class="price">₹1.6L–₹2.4L <em>(from ₹6,999/mo)</em></span></header>
+              <ul><li>Surgeon & OT charges</li><li>Standard implant</li><li>2 days room</li></ul>
+              <details><summary>What’s not included</summary><p>ICU stay, premium implant, extended physio.</p></details>
+              <div class="package-cta"><a class="btn btn-secondary" href="#">Explore hospitals</a><a class="btn btn-ghost" href="#">EMI options</a></div>
+            </article>
+            <article class="package-card lift"><header><strong>Cesarean Delivery</strong><span class="price">₹65k–₹1.2L <em>(from ₹3,499/mo)</em></span></header>
+              <ul><li>Consults & anesthesia</li><li>OT & post-op care</li><li>Mother+baby room</li></ul>
+              <details><summary>What’s not included</summary><p>NICU beyond 24h, private room upgrade, donor blood.</p></details>
+              <div class="package-cta"><a class="btn btn-secondary" href="#">Explore hospitals</a><a class="btn btn-ghost" href="#">EMI options</a></div>
+            </article>
+            <article class="package-card lift"><header><strong>Lap Cholecystectomy</strong><span class="price">₹45k–₹85k <em>(from ₹1,899/mo)</em></span></header>
+              <ul><li>Surgeon & consumables</li><li>1 day room</li><li>Day-care eligible</li></ul>
+              <details><summary>What’s not included</summary><p>Private room, additional imaging, extra stay.</p></details>
+              <div class="package-cta"><a class="btn btn-secondary" href="#">Explore hospitals</a><a class="btn btn-ghost" href="#">EMI options</a></div>
+            </article>
+          </div>
+        </section>
+
+        <section id="patients-coverage" class="block glass" data-animate>
+          <div class="block-head"><h3>Know your policy coverage</h3><p>Upload your policy PDF—get sub-limits, co-pay & waiting periods.</p></div>
+          <div class="dropzone" id="policy-drop" tabindex="0" aria-label="Upload policy PDF">
+            <input type="file" accept=".pdf,.jpg,.jpeg,.png" id="policy-file" aria-label="Choose policy file" />
+            <div class="dz-illustration">⬆️</div><div class="dz-copy"><strong>Drop your policy here</strong><span>or click to upload</span></div>
+          </div>
+          <div class="coverage-results" id="coverage-results" hidden>
+            <h4>Coverage summary</h4>
+            <ul class="checklist" id="coverage-checklist"></ul>
+            <div class="coverage-cta"><a class="btn btn-secondary" href="#">Talk to an expert</a><a class="btn btn-ghost" href="#">Book a consult</a></div>
+          </div>
+        </section>
+
+        <section id="patients-denial" class="block glass" data-animate>
+          <div class="block-head"><h3>Denied or short-paid? We’ll fight it.</h3><p>Escalations with Ombudsman support. File a case in minutes.</p></div>
+          <div class="denial-grid">
+            <div class="denial-stat"><strong data-count="2400000">0</strong><span>Recovered last quarter (₹)</span></div>
+            <div class="denial-stat"><strong data-count="78">0</strong><span>Average recovery %</span></div>
+            <div class="denial-actions"><a class="btn btn-primary" href="#">Open a denial case</a><a class="btn btn-ghost" href="#">Docs checklist</a></div>
+          </div>
+        </section>
+
+        <section id="patients-ops" class="block glass" data-animate>
+          <div class="block-head"><h3>Appointments, medicines & tests</h3><p>Book specialists, medicine delivery (24h*), and at-home blood tests.</p></div>
+          <div class="ops-grid">
+            <a class="ops-card" href="#"><div class="ops-ico">🩺</div><div><strong>Book specialist</strong><span>Live slots • reminders</span></div></a>
+            <a class="ops-card" href="#"><div class="ops-ico">💊</div><div><strong>Order medicines</strong><span>Discounts • 24h dispatch*</span></div></a>
+            <a class="ops-card" href="#"><div class="ops-ico">🧪</div><div><strong>Blood test at home</strong><span>Partner labs • doorstep pickup</span></div></a>
+          </div>
+          <small class="microcopy">*Eligible cities only.</small>
+        </section>
       </div>
     </section>
 
-    <section id="hospitals" class="section panel" hidden>
-      <header class="section-head">
-        <h2>Hospital operations</h2>
-        <p>RCM cockpit engineered for scale and compliance.</p>
-      </header>
-      <div class="block-group">
-        <article class="block">
-          <div class="block-head">
-            <h3>Cashless Everywhere</h3>
-            <p>Single workflow for multi-insurer approvals.</p>
+    <!-- HOSPITALS -->
+    <section id="hospitals" class="section panel hospital tone-hospital" aria-labelledby="hospitals-title" hidden>
+      <div class="wrap">
+        <header class="section-head center" id="hospitals-title" data-animate>
+          <h2>Revenue that lands in the bank</h2>
+          <p class="kicker">Empanelment, Cashless Everywhere, Denial Recovery—built for Indian hospitals.</p>
+        </header>
+
+        <!-- Apple-like slider -->
+        <div class="slider glass" data-slider>
+          <button class="slider__btn prev" aria-label="Previous">‹</button>
+          <div class="slider__track" tabindex="0">
+            <article class="slide bigcard">
+              <h3>Mandatory Certification</h3>
+              <p>Rohini, NABH, CMCIS and more.</p>
+              <a class="btn btn-primary" href="#hospitals">Explore →</a>
+            </article>
+            <article class="slide bigcard">
+              <h3>Insurance & TPA Empanelment</h3>
+              <p>20+ insurers/TPAs • GIPSA assistance.</p>
+              <a class="btn btn-primary" href="#hospitals">Explore →</a>
+            </article>
+            <article class="slide bigcard">
+              <h3>Cashless Everywhere</h3>
+              <p>Non-network cashless • Post-empanelment support.</p>
+              <a class="btn btn-primary" href="#hospitals">Explore →</a>
+            </article>
+            <article class="slide bigcard">
+              <h3>Denial & Recovery</h3>
+              <p>Reconciliation • Root-cause • Recovery.</p>
+              <a class="btn btn-primary" href="#hospitals">Explore →</a>
+            </article>
           </div>
-          <ul class="checklist">
-            <li>Unified pre-auth with smart document check</li>
-            <li>Track authorizations and SLAs in real time</li>
-            <li>Digital discharge kits shared with patients</li>
-          </ul>
-        </article>
-        <article class="block">
-          <div class="block-head">
-            <h3>Denial recovery</h3>
-            <p>AI suggestions and templated appeals to reclaim revenue.</p>
-          </div>
-          <ul class="checklist">
-            <li>Root-cause analytics across departments</li>
-            <li>Automated reminder workflows</li>
-            <li>Escalation routing to insurer SPOCs</li>
-          </ul>
-        </article>
-        <article class="block">
-          <div class="block-head">
-            <h3>Network growth</h3>
-            <p>Expand distribution with curated insurer connects.</p>
-          </div>
-          <ul class="checklist">
-            <li>Empanelment tracker across payers</li>
-            <li>ROHINI &amp; NABH document vault</li>
-            <li>Benchmark pricing with peers</li>
-          </ul>
-        </article>
-      </div>
-      <div class="denial-grid">
-        <div class="denial-stat">
-          <strong data-count="55" data-suffix="%">0</strong>
-          <p>Average drop in denials after 90 days</p>
+          <button class="slider__btn next" aria-label="Next">›</button>
         </div>
-        <div class="denial-stat">
-          <strong data-count="7.5" data-decimals="1">0</strong>
-          <p>Days to cash-in on approved claims</p>
-        </div>
-        <div class="card roi glass">
-          <div class="roi__form">
-            <h3>Estimate your ROI</h3>
-            <form id="roi-form">
-              <label>Monthly claims volume
-                <input type="number" name="claims" placeholder="e.g. 120" required />
-              </label>
-              <label>Average claim size (₹)
-                <input type="number" name="bill" placeholder="e.g. 55000" required />
-              </label>
-              <label>Current denial rate (%)
-                <input type="number" name="denial" placeholder="e.g. 18" />
-              </label>
-              <button class="btn btn-primary" type="submit">Calculate</button>
+
+        <!-- ROI widget (same as previous) -->
+        <div class="card roi glass" data-animate>
+          <div class="roi__left">
+            <h3>90-day ROI estimator</h3>
+            <p>Estimate cash-in impact when you switch to HealthFlo.</p>
+            <form class="roi__form" id="roi-form" novalidate>
+              <label>Monthly claims volume<input type="number" name="claims" placeholder="120" inputmode="numeric" required /></label>
+              <label>Avg bill size (₹)<input type="number" name="bill" placeholder="85000" inputmode="numeric" required /></label>
+              <label>Current denial rate (%)<input type="number" name="denial" placeholder="14" inputmode="numeric" /></label>
+              <button class="btn btn-primary" type="submit">Calculate ROI</button>
             </form>
           </div>
-          <div class="roi__right">
-            <div class="roi__metric glass">
-              <span>Projected cash-in (90 days)</span>
-              <strong id="roi-cashin">₹ 0</strong>
-            </div>
-            <div class="roi__metric glass">
-              <span>Denial rate after HealthFlo</span>
-              <strong id="roi-denial">0%</strong>
-            </div>
+          <div class="roi__right" id="roi-out" aria-live="polite">
+            <div class="roi__metric"><span>Projected extra cash-in (90 days)</span><strong id="roi-cashin">—</strong></div>
+            <div class="roi__metric"><span>Denial drop</span><strong id="roi-denial">—</strong></div>
+            <a class="btn btn-secondary" href="#demo">Email me a PDF report</a>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="insurers" class="section panel" hidden>
-      <header class="section-head">
-        <h2>Insurer intelligence</h2>
-        <p>Grow distribution with visibility into provider performance.</p>
-      </header>
-      <div class="block-group">
-        <article class="block">
-          <div class="block-head">
-            <h3>Provider network</h3>
-            <p>Real-time ops pulse and SLA adherence.</p>
+    <!-- INSURERS -->
+    <section id="insurers" class="section panel insurer tone-insurer" aria-labelledby="insurers-title" hidden>
+      <div class="wrap">
+        <header class="section-head center" id="insurers-title" data-animate>
+          <h2>Distribution with care</h2>
+          <p class="kicker">Sell policies to high-intent patients; manage hospital relations with transparency.</p>
+        </header>
+
+        <!-- Apple-like slider -->
+        <div class="slider glass" data-slider>
+          <button class="slider__btn prev" aria-label="Previous">‹</button>
+          <div class="slider__track" tabindex="0">
+            <article class="slide bigcard">
+              <h3>Policy Sales Funnel</h3>
+              <p>Compare → Select → Issue • IRDAI disclosures</p>
+              <a class="btn btn-primary" href="#insurers">Explore →</a>
+            </article>
+            <article class="slide bigcard">
+              <h3>Hospital Relations</h3>
+              <p>Settlement hygiene heatmap • City/Specialty TAT</p>
+              <a class="btn btn-primary" href="#insurers">Explore →</a>
+            </article>
+            <article class="slide bigcard">
+              <h3>Pricing & APIs</h3>
+              <p>Tiered pricing • Status hooks • Placements</p>
+              <a class="btn btn-primary" href="#insurers">Explore →</a>
+            </article>
           </div>
-          <ul class="checklist">
-            <li>Hospital scorecards with denial trendlines</li>
-            <li>Predictive outlier detection</li>
-            <li>Automated renewals &amp; credentialing</li>
-          </ul>
-        </article>
-        <article class="block">
-          <div class="block-head">
-            <h3>Distribution</h3>
-            <p>Curate partners, measure conversions, optimize onboarding.</p>
-          </div>
-          <ul class="checklist">
-            <li>Tiered agency &amp; broker dashboards</li>
-            <li>Unified communication trail with hospitals</li>
-            <li>Package manager with instant rate cards</li>
-          </ul>
-        </article>
-        <article class="block">
-          <div class="block-head">
-            <h3>Claim intelligence</h3>
-            <p>Spot anomalies before they become leakage.</p>
-          </div>
-          <ul class="checklist">
-            <li>AI scoring on every submission</li>
-            <li>Clinical audit workflows with collaboration</li>
-            <li>Experience heatmaps across metros</li>
-          </ul>
-        </article>
-      </div>
-      <div class="ins__grid">
-        <div class="ins-card glass">
-          <h3>Live dashboards</h3>
-          <p>Monitor service levels, top procedures, and claim durations.</p>
-        </div>
-        <div class="ins-card glass">
-          <h3>Network health</h3>
-          <p>Visualize leakage, flagged trends, and patient feedback.</p>
-        </div>
-        <div class="ins-card glass">
-          <h3>Co-create packages</h3>
-          <p>Launch limited-time programs with connected hospitals.</p>
+          <button class="slider__btn next" aria-label="Next">›</button>
         </div>
       </div>
     </section>
 
-    <section class="section" id="packages" aria-labelledby="package-title">
-      <header class="section-head">
-        <h2 id="package-title">Signature packages</h2>
-        <p>Ready-to-go bundles with transparent pricing.</p>
-      </header>
-      <div class="package-grid">
-        <article class="package-card glass">
-          <header>
-            <h3>Cashless Assurance</h3>
-            <span class="plan-badge">Patients</span>
-          </header>
-          <p>Full concierge support for planned admissions.</p>
-          <ul>
-            <li>Room upgrade assistance</li>
-            <li>Discharge planning</li>
-            <li>Post-op recovery kit</li>
-          </ul>
-          <div class="package-cta">
-            <button class="btn btn-secondary" data-nav="patient">Talk to us</button>
-          </div>
-        </article>
-        <article class="package-card glass">
-          <header>
-            <h3>RCM Turbo</h3>
-            <span class="plan-badge">Hospitals</span>
-          </header>
-          <p>Accelerate approvals and slash denials.</p>
-          <ul>
-            <li>Unified pre-auth console</li>
-            <li>Document intelligence</li>
-            <li>Denial recovery squad</li>
-          </ul>
-          <div class="package-cta">
-            <button class="btn btn-secondary" data-nav="hospital">Request demo</button>
-          </div>
-        </article>
-        <article class="package-card glass">
-          <header>
-            <h3>Network Amplify</h3>
-            <span class="plan-badge">Insurers</span>
-          </header>
-          <p>Grow quality hospitals with predictive insights.</p>
-          <ul>
-            <li>Hospital scorecards</li>
-            <li>Dynamic rate cards</li>
-            <li>Experience analytics</li>
-          </ul>
-          <div class="package-cta">
-            <button class="btn btn-secondary" data-nav="insurer">Partner now</button>
-          </div>
-        </article>
+    <!-- PROOF -->
+    <section id="proof" class="section section--muted" aria-labelledby="proof-title">
+      <div class="wrap">
+        <header class="section-head center" id="proof-title" data-animate>
+          <h2>Trusted across India</h2>
+          <p class="kicker">100+ hospitals • 10,000+ patients • 10+ cities</p>
+        </header>
+        <ul class="logo-bar" data-animate>
+          <li class="logo">MetroCare</li><li class="logo">Sunrise</li><li class="logo">Silverline</li>
+          <li class="logo">CityCare</li><li class="logo">CardiaPlus</li><li class="logo">LifeSpring</li>
+        </ul>
       </div>
     </section>
 
-    <section class="section section--muted" id="contact" aria-labelledby="contact-title">
-      <header class="section-head center">
-        <h2 id="contact-title">Trusted by healthcare leaders</h2>
-        <p>Join insurers, hospitals, and TPAs already orchestrating with HealthFlo.</p>
-      </header>
-      <ul class="logo-bar">
-        <li class="logo">Apollo</li>
-        <li class="logo">Manipal</li>
-        <li class="logo">Star Health</li>
-        <li class="logo">Niva Bupa</li>
-        <li class="logo">Care Health</li>
-        <li class="logo">ICICI Lombard</li>
-      </ul>
-      <div class="contact__grid">
-        <a class="btn btn-primary" href="mailto:info@healthflo.in">Book a discovery call</a>
-        <a class="btn btn-secondary" href="tel:+919999999999">Talk to an expert</a>
-        <a class="btn btn-ghost" href="https://www.linkedin.com" target="_blank" rel="noopener">Follow on LinkedIn</a>
+    <!-- CONTACT -->
+    <section id="demo" class="section contact section--muted" aria-labelledby="contact-title">
+      <div class="wrap">
+        <header class="section-head center" id="contact-title" data-animate>
+          <h2>See it live</h2>
+          <p class="kicker">Book a 30-minute walkthrough tailored to your city and specialty.</p>
+        </header>
+        <div class="contact__grid" data-animate>
+          <a class="btn btn-primary" href="tel:+919940207670">Enquire +91 99402 07670</a>
+          <a class="btn btn-secondary" href="tel:+918610425342">Helpline +91 86104 25342</a>
+          <a class="btn btn-ghost" href="mailto:info@healthflo.in">info@healthflo.in</a>
+          <a class="btn btn-ghost" href="https://www.healthflo.org" target="_blank" rel="noopener">Visit healthflo.org</a>
+        </div>
       </div>
     </section>
   </main>
 
-  <footer class="ftr glass" role="contentinfo">
-    <div class="ftr__grid">
-      <section>
-        <div class="brand">
-          <svg class="brand__mark" viewBox="0 0 40 40" aria-hidden="true">
-            <defs>
-              <linearGradient id="brandGradFooter" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#00BFA6" />
-                <stop offset="100%" stop-color="#7c5cff" />
-              </linearGradient>
-            </defs>
-            <circle cx="20" cy="20" r="18" fill="url(#brandGradFooter)" />
-            <path fill="#fff" d="M12 18h16a2 2 0 0 1 0 4H12a2 2 0 0 1 0-4Zm0 7h8a2 2 0 0 1 0 4h-8a2 2 0 0 1 0-4Z" />
-          </svg>
-          <span class="brand__name">HealthFlo</span>
-        </div>
-        <p>Shaping next-gen healthcare journeys with glassmorphism polish and rock-solid operations.</p>
-      </section>
-      <section>
-        <h3>Navigate</h3>
-        <ul class="ftr__links">
-          <li><a href="#choose">Choose visit</a></li>
-          <li><a href="#packages">Packages</a></li>
-          <li><a href="#patients">Patients</a></li>
-          <li><a href="#hospitals">Hospitals</a></li>
-          <li><a href="#insurers">Insurers</a></li>
-        </ul>
-      </section>
-      <section>
-        <h3>Connect</h3>
-        <ul class="ftr__social">
-          <li><a href="mailto:info@healthflo.in">info@healthflo.in</a></li>
-          <li><a href="https://www.linkedin.com" target="_blank" rel="noopener">LinkedIn</a></li>
-          <li><a href="https://www.instagram.com" target="_blank" rel="noopener">Instagram</a></li>
-        </ul>
-      </section>
-    </div>
-    <div class="ftr__bar">
-      <small>© <span id="year"></span> HealthFlo Ventures Pvt. Ltd. All rights reserved.</small>
-      <div class="ftr__links">
-        <a href="#privacy">Privacy</a>
-        <a href="#terms">Terms</a>
-        <a href="#faq">FAQs</a>
-      </div>
+  <!-- AI Guide floating entry -->
+  <button class="aiguide" aria-label="Open guide">?</button>
+
+  <footer class="ftr">
+    <div class="wrap ftr__grid">
+      <div class="ftr__brand"><strong>HealthFlo Healthcare</strong><small>© HealthFlo Ventures Pvt. Ltd.</small></div>
+      <ul class="ftr__links">
+        <li><a href="#choose">Choose Visit</a></li>
+        <li><a href="#patients">Patients</a></li>
+        <li><a href="#hospitals">Hospitals</a></li>
+        <li><a href="#insurers">Insurers</a></li>
+      </ul>
+      <ul class="ftr__social">
+        <li><a href="https://www.linkedin.com" target="_blank">LinkedIn</a></li>
+        <li><a href="https://www.instagram.com" target="_blank">Instagram</a></li>
+        <li><a href="https://www.facebook.com" target="_blank">Facebook</a></li>
+      </ul>
     </div>
   </footer>
 
-  <button class="aiguide" type="button" aria-label="Open AI guide">AI</button>
-
-  <script src="app.js" defer></script>
+  <script src="scripts.js" defer></script>
 </body>
 </html>
