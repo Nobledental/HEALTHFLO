@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HealthFlo — Insurance Coverage Check</title>
+  <meta name="description" content="Upload your policy, choose retail or corporate, get coverage details, medical team support, admission planning, or explore packages." />
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="coverages.css"/>
+</head>
+<body class="density-compact">
+  <a class="skip-link" href="#coverageForm">Skip to coverage form</a>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="index.html">
+        <span class="logo-dot" aria-hidden="true"></span>
+        <span class="logo-text">HealthFlo</span>
+      </a>
+
+      <nav class="primary-nav" aria-label="Primary">
+        <ul>
+          <li><a href="packages.html">Treatment Packages</a></li>
+          <li><a href="#coverageForm">Coverage</a></li>
+          <li><a href="index.html#contact">Support</a></li>
+        </ul>
+      </nav>
+
+      <div class="view-controls">
+        <button id="themeToggle" class="btn btn-ghost btn-icon" aria-label="Toggle theme">🌗</button>
+        <select id="densitySelect" class="select density-select" aria-label="Density">
+          <option value="compact" selected>Compact</option>
+          <option value="tight">Cozy</option>
+          <option value="comfortable">Comfortable</option>
+        </select>
+        <button class="nav-toggle" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="cover-hero" aria-labelledby="heroTitle">
+    <div class="container">
+      <h1 id="heroTitle">Insurance Coverage Check</h1>
+      <p class="sub">Select policy type, upload documents, choose what you need, and we’ll help—optionally with a call from our medical team. You can also plan admission or explore treatment packages.</p>
+    </div>
+  </section>
+
+  <!-- Form -->
+  <main class="cover-wrap">
+    <div class="container">
+      <form id="coverageForm" class="hf-form" novalidate>
+        <!-- Policy Type -->
+        <div class="hf-field">
+          <div class="hf-label">Policy type <span class="vh">(required)</span></div>
+          <div class="hf-radio-row" role="radiogroup" aria-label="Policy type">
+            <label class="hf-radio">
+              <input type="radio" name="policyType" value="Retail" required> Retail / Individual
+            </label>
+            <label class="hf-radio">
+              <input type="radio" name="policyType" value="Corporate" required> Corporate
+            </label>
+          </div>
+        </div>
+
+        <!-- Retail-only block -->
+        <div id="retailWrap" class="hf-grid-2" hidden>
+          <div class="hf-field">
+            <label class="hf-label" for="primaryName">Primary insured full name</label>
+            <input id="primaryName" name="primaryName" class="hf-input" placeholder="Policyholder’s full name">
+          </div>
+          <div class="hf-field">
+            <label class="hf-label" for="primaryPhone">Primary insured contact number</label>
+            <input id="primaryPhone" name="primaryPhone" class="hf-input" placeholder="+91…" inputmode="tel" />
+          </div>
+          <div class="hf-col" style="grid-column:1/-1">
+            <div class="hf-hint">
+              Note: Coverage details will be shared with the <strong>primary insured only</strong>.
+            </div>
+          </div>
+        </div>
+
+        <!-- Corporate-only block -->
+        <div id="corporateWrap" class="hf-grid-3" hidden>
+          <div class="hf-field">
+            <label class="hf-label" for="insurer">Insurer name</label>
+            <input id="insurer" name="insurer" class="hf-input" placeholder="e.g., HDFC ERGO, Star Health">
+          </div>
+          <div class="hf-field">
+            <label class="hf-label" for="policyNo">Policy number</label>
+            <input id="policyNo" name="policyNo" class="hf-input" placeholder="Policy / TPA ID">
+          </div>
+          <div class="hf-field" id="employeeIdWrap">
+            <label class="hf-label" for="employeeId">Employee ID (Corporate)</label>
+            <input id="employeeId" name="employeeId" class="hf-input" placeholder="Your employee code (optional)">
+          </div>
+          <div class="hf-col" style="grid-column:1/-1">
+            <div class="hf-note">We will <strong>contact your mobile number</strong> for further assistance.</div>
+          </div>
+        </div>
+
+        <!-- Common: Member info -->
+        <div class="hf-grid-3">
+          <div class="hf-field">
+            <label class="hf-label" for="memberName">Patient / Member name</label>
+            <input id="memberName" name="memberName" class="hf-input" placeholder="As on policy card">
+          </div>
+          <div class="hf-field">
+            <label class="hf-label" for="relation">Relation to proposer</label>
+            <select id="relation" name="relation" class="hf-select">
+              <option value="">Select…</option>
+              <option>Self</option><option>Spouse</option><option>Child</option><option>Parent</option><option>Other</option>
+            </select>
+          </div>
+          <div class="hf-field hf-when-retail">
+            <label class="hf-label" for="insurerCommon">Insurer name</label>
+            <input id="insurerCommon" name="insurerCommon" class="hf-input" placeholder="e.g., HDFC ERGO, Star Health">
+          </div>
+          <div class="hf-field hf-when-retail">
+            <label class="hf-label" for="policyNoCommon">Policy number</label>
+            <input id="policyNoCommon" name="policyNoCommon" class="hf-input" placeholder="Policy / TPA ID">
+          </div>
+        </div>
+
+        <!-- Upload -->
+        <div class="hf-field">
+          <div class="hf-label">Attach policy documents</div>
+          <div class="hf-upload">
+            <div class="hf-upload-row">
+              <label class="btn btn-ghost" for="files">Upload files</label>
+              <input id="files" name="files" type="file" multiple
+                     accept=".pdf,.jpg,.jpeg,.png,.webp,.heic,.heif,image/*,application/pdf">
+              <div class="hf-note">Accepted: PDF, JPG/PNG/WEBP/HEIC. Up to 10 files.</div>
+            </div>
+            <div id="fileList" class="hf-row" style="margin-top:8px; flex-wrap:wrap;"></div>
+          </div>
+        </div>
+
+        <!-- What do you need -->
+        <div class="hf-field">
+          <div class="hf-label">What do you need help with?</div>
+          <div class="hf-chip-check">
+            <input type="checkbox" id="needCoverage" name="needCoverage" checked>
+            <label for="needCoverage">Coverage details</label>
+
+            <input type="checkbox" id="needMedTeam" name="needMedTeam">
+            <label for="needMedTeam">Medical team to call & explain</label>
+
+            <input type="checkbox" id="needAdmission" name="needAdmission">
+            <label for="needAdmission">Plan admission / treatment</label>
+
+            <input type="checkbox" id="needPackages" name="needPackages">
+            <label for="needPackages">Explore treatment packages</label>
+          </div>
+          <div class="hf-note">Want to browse packages now? <a href="packages.html">Open the Treatment Packages page</a>.</div>
+        </div>
+
+        <!-- Phone if medical team support (Corporate only) -->
+        <div id="phoneWrap" class="hf-grid-2" hidden>
+          <div class="hf-field">
+            <label class="hf-label" for="phone">Your contact number for a call</label>
+            <input id="phone" name="phone" class="hf-input" placeholder="+91…" inputmode="tel" />
+          </div>
+          <div class="hf-field">
+            <label class="hf-label" for="bestTime">Best time to call</label>
+            <select id="bestTime" name="bestTime" class="hf-select">
+              <option value="">Anytime</option>
+              <option>Morning (9–12)</option><option>Afternoon (12–4)</option><option>Evening (4–7)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Planned treatment -->
+        <div class="hf-grid-2">
+          <div class="hf-field">
+            <label class="hf-label" for="treatment">Planned treatment / concern</label>
+            <textarea id="treatment" name="treatment" class="hf-textarea" placeholder="e.g., Knee replacement, angioplasty, delivery, endoscopy…"></textarea>
+          </div>
+          <div class="hf-field">
+            <label class="hf-label" for="hospitalPref">Preferred hospital / city (optional)</label>
+            <textarea id="hospitalPref" name="hospitalPref" class="hf-textarea" placeholder="Hospital name(s), city, dates…"></textarea>
+          </div>
+        </div>
+
+        <div class="hf-divider" role="presentation"></div>
+
+        <!-- Consent -->
+        <div class="hf-row" style="justify-content:space-between; align-items:flex-start;">
+          <label class="hf-row" style="align-items:flex-start; gap:10px;">
+            <input type="checkbox" id="consent" required>
+            <span class="hf-hint">
+              I allow HealthFlo to review my documents and share relevant details with the hospital/insurer.
+              For Retail, details will be shared with the <strong>primary insured only</strong>.
+              For Corporate, we may contact your mobile number for assistance.
+            </span>
+          </label>
+          <a class="btn btn-ghost" href="packages.html">Browse Packages</a>
+        </div>
+
+        <!-- Actions -->
+        <div class="hf-actions">
+          <button type="reset" class="btn btn-ghost">Clear</button>
+          <button type="submit" class="btn btn-primary">Send via WhatsApp</button>
+        </div>
+
+        <div id="formSuccess" class="hf-success" role="status" aria-live="polite">
+          Submitted! We’ve opened WhatsApp with your details.
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a class="logo" href="#"><span class="logo-dot" aria-hidden="true"></span><span class="logo-text">HealthFlo</span></a>
+        <p>Trusted coverage checks, clear hospital packages, and door-to-door care.</p>
+      </div>
+      <div class="footer-meta">
+        <ul><li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li><li><a href="#">Support</a></li></ul>
+        <small>© 2025 HealthFlo.</small>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast -->
+  <div id="toast" class="hf-toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Success Modal -->
+  <div id="successModal" class="s-modal" aria-hidden="true" role="dialog" aria-labelledby="sTitle">
+    <div class="s-modal__backdrop"></div>
+    <div class="s-modal__card" role="document">
+      <div class="s-modal__icon">✅</div>
+      <h3 id="sTitle">Request submitted successfully</h3>
+      <p id="sSubtitle">We’ve recorded your request.</p>
+      <div class="s-modal__meta">
+        <div><strong>Date & Time:</strong> <span id="sWhen">—</span></div>
+        <div><strong>Reference:</strong> <span id="sRef">—</span></div>
+      </div>
+      <div class="s-modal__actions">
+        <button id="sClose" class="btn btn-primary" type="button">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <noscript>
+    <div style="padding:1rem; text-align:center;">Please enable JavaScript to submit coverage details and open WhatsApp.</div>
+  </noscript>
+
+  <script defer src="coverages.js"></script>
+</body>
+</html>
