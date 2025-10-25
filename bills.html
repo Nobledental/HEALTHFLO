@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>HealthFlo — Insurance Coverage Check</title>
+  <meta name="description" content="Upload policy copy, discharge summary & final bill. Get coverage eligibility review in ~30 minutes."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="bills.css"/>
+</head>
+<body>
+  <a class="skip-link" href="#covForm">Skip to coverage form</a>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="index.html">
+        <span class="logo-dot" aria-hidden="true"></span>
+        <span class="logo-text">HealthFlo</span>
+      </a>
+      <nav class="primary-nav" aria-label="Primary">
+        <ul>
+          <li><a href="packages.html">Treatment Packages</a></li>
+          <li><a href="reimbursement.html">Reimbursement</a></li>
+          <li><a href="#covForm">Coverage Check</a></li>
+        </ul>
+      </nav>
+      <div class="view-controls">
+        <button id="themeToggle" class="btn btn-ghost btn-icon" aria-label="Toggle theme">🌗</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" aria-labelledby="heroTitle">
+    <div class="container">
+      <h1 id="heroTitle">Check Insurance Coverage & Eligibility</h1>
+      <p class="sub">Upload your <strong>policy copy</strong>, <strong>discharge summary</strong> and <strong>final bill</strong>. Our team will evaluate coverage & policy eligibility and respond in about <strong>30 minutes</strong>.</p>
+
+      <div class="hero-badges">
+        <span class="chip chip--ok">Avg response &lt; 30 min</span>
+        <span class="chip">HIPAA / ISO workflows</span>
+        <span class="chip">Cashless & reimbursement</span>
+      </div>
+
+      <div class="hero-actions">
+        <a id="waQuick" class="btn btn-primary" target="_blank" rel="noopener">Chat on WhatsApp</a>
+        <a id="callQuick" class="btn btn-ghost">Call Support</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Form -->
+  <main class="wrap">
+    <div class="container">
+      <form id="covForm" class="hf-form" novalidate>
+        <!-- Contact -->
+        <div class="card">
+          <div class="card__head">
+            <h2>Contact & Case</h2>
+            <p class="muted">We’ll share findings by WhatsApp/call within ~30 minutes.</p>
+          </div>
+          <div class="grid-3">
+            <div class="field">
+              <label for="pName">Patient name</label>
+              <input id="pName" class="input" placeholder="Patient full name"/>
+            </div>
+            <div class="field">
+              <label for="phone">Phone number <span class="req">*</span></label>
+              <input id="phone" class="input" inputmode="numeric" maxlength="10" placeholder="10-digit" required/>
+            </div>
+            <div class="field">
+              <label for="policyType">Policy type <span class="req">*</span></label>
+              <select id="policyType" class="select" required>
+                <option value="">Select…</option>
+                <option>Retail / Individual</option>
+                <option>Corporate</option>
+              </select>
+            </div>
+            <div class="field span-2">
+              <label for="hospital">Hospital (optional)</label>
+              <input id="hospital" class="input" placeholder="Hospital / Clinic name"/>
+            </div>
+            <div class="field">
+              <label for="dischargeDate">Date of discharge (optional)</label>
+              <input id="dischargeDate" class="input" type="date"/>
+            </div>
+          </div>
+          <div class="note" id="riskNote" hidden>High risk: discharge date is &gt; 15 days ago.</div>
+        </div>
+
+        <!-- Documents -->
+        <div class="card">
+          <div class="card__head">
+            <h2>Upload Documents</h2>
+            <p class="muted">All three are recommended for accurate eligibility.</p>
+          </div>
+
+          <div class="grid-3">
+            <div class="drop" data-title="Policy copy (PDF/JPG/PNG)">
+              <input id="policyFile" type="file" accept=".pdf,.jpg,.jpeg,.png" required/>
+              <div class="drop__body"><div class="big">📜</div><div>Policy Copy</div></div>
+              <ul class="drop__list" id="listPolicy"></ul>
+            </div>
+
+            <div class="drop" data-title="Discharge summary (PDF/JPG/PNG)">
+              <input id="dischargeFile" type="file" accept=".pdf,.jpg,.jpeg,.png" required/>
+              <div class="drop__body"><div class="big">📝</div><div>Discharge Summary</div></div>
+              <ul class="drop__list" id="listDischarge"></ul>
+            </div>
+
+            <div class="drop" data-title="Final bill (PDF/JPG/PNG)">
+              <input id="billFile" type="file" accept=".pdf,.jpg,.jpeg,.png" required/>
+              <div class="drop__body"><div class="big">💳</div><div>Final Bill</div></div>
+              <ul class="drop__list" id="listBill"></ul>
+            </div>
+          </div>
+
+          <div class="stack">
+            <label class="check">
+              <input type="checkbox" id="consent" required/>
+              <span>I agree to be contacted by phone/WhatsApp for coverage clarification.</span>
+            </label>
+          </div>
+
+          <div class="actions">
+            <a class="btn btn-ghost" href="packages.html">Explore Treatment Packages</a>
+            <div class="spacer"></div>
+            <button type="reset" class="btn btn-ghost">Clear</button>
+            <button type="submit" class="btn btn-primary">Submit & WhatsApp</button>
+          </div>
+
+          <div id="inlineSuccess" class="inline-success" role="status" aria-live="polite">
+            Request submitted successfully.
+          </div>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- Success Modal -->
+  <div id="successModal" class="s-modal" aria-hidden="true" role="dialog" aria-labelledby="sTitle">
+    <div class="s-modal__backdrop"></div>
+    <div class="s-modal__card" role="document">
+      <div class="s-modal__icon">✅</div>
+      <h3 id="sTitle">Submitted — 30-minute eligibility review</h3>
+      <p>Our coordinators will review your documents and respond on WhatsApp/call.</p>
+
+      <div class="s-modal__meta">
+        <div><strong>Date & Time:</strong> <span id="sWhen">—</span></div>
+        <div><strong>Reference:</strong> <span id="sRef">—</span></div>
+      </div>
+
+      <div class="hero-badges">
+        <span class="chip chip--ok">Avg response &lt; 30 min</span>
+        <span class="chip">Cashless & Reimbursement</span>
+      </div>
+
+      <div class="s-modal__actions">
+        <a id="sWA" class="btn btn-primary" target="_blank" rel="noopener">Open WhatsApp</a>
+        <button id="sClose" class="btn btn-ghost" type="button">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick FABs -->
+  <div class="fab-wrap" aria-label="Quick help">
+    <a id="fabWA" class="fab fab--wa" target="_blank" rel="noopener"><span>WhatsApp</span></a>
+    <a id="fabCall" class="fab fab--call"><span>Call</span></a>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <noscript>
+    <div style="padding:1rem; text-align:center;">Please enable JavaScript to submit and share via WhatsApp.</div>
+  </noscript>
+
+  <script defer src="bills.js"></script>
+</body>
+</html>
