@@ -115,17 +115,48 @@
     </div>
   </main>
 
-  <!-- Success Modal -->
+  <!-- Success + Payment Modal -->
   <div id="successModal" class="s-modal" aria-hidden="true" role="dialog" aria-labelledby="sTitle">
     <div class="s-modal__backdrop"></div>
     <div class="s-modal__card" role="document">
       <div class="s-modal__icon">✅</div>
       <h3 id="sTitle">Request submitted successfully</h3>
       <p id="sSubtitle">We’ve opened WhatsApp with your form details.</p>
+
       <div class="s-modal__meta">
         <div><strong>Date & Time:</strong> <span id="sWhen">—</span></div>
         <div><strong>Reference:</strong> <span id="sRef">—</span></div>
       </div>
+
+      <div class="s-pay">
+        <div class="s-pay__head">
+          <div class="s-pay__title">Optional Service Fee (₹100)</div>
+          <div class="s-pay__meta">
+            Pay after our team contacts you to proceed with reimbursement assistance.
+          </div>
+        </div>
+        <div class="s-pay__grid">
+          <div class="s-pay__qr">
+            <img id="qrImg" alt="UPI QR for ₹100 to HealthFlo" width="220" height="220" />
+          </div>
+          <div class="s-pay__info">
+            <div class="kv"><span>Payee</span><strong id="upiName">HealthFlo Services</strong></div>
+            <div class="kv"><span>UPI ID</span><strong id="upiId">healthflo@upi</strong></div>
+            <div class="kv"><span>Amount</span><strong>₹100</strong></div>
+            <div class="kv"><span>Note</span><strong id="upiNote">Reimbursement Service</strong></div>
+
+            <div class="s-pay__actions">
+              <a id="btnOpenUPI" class="btn btn-primary" href="#" target="_blank" rel="noopener">Open UPI app</a>
+              <button id="btnCopyLink" class="btn btn-ghost" type="button">Copy UPI link</button>
+              <button id="btnCopyId" class="btn btn-ghost" type="button">Copy UPI ID</button>
+            </div>
+            <div class="s-pay__hint">
+              Works with Google Pay, PhonePe, Paytm, BHIM, etc.
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="s-modal__actions">
         <button id="sClose" class="btn btn-primary" type="button">Done</button>
       </div>
@@ -135,7 +166,7 @@
   <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
   <noscript>
-    <div style="padding:1rem; text-align:center;">Please enable JavaScript to submit and open WhatsApp.</div>
+    <div style="padding:1rem; text-align:center;">Please enable JavaScript to submit, open WhatsApp and show the payment QR.</div>
   </noscript>
 
   <script defer src="reimbursement.js"></script>
