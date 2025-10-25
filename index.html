@@ -14,7 +14,66 @@
       href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Your base styles (unchanged) -->
     <link rel="stylesheet" href="styles.css" />
+
+    <!-- Minimal add-on styles (only for NEW pieces) -->
+    <style>
+      /* ===== Infinite ticker ===== */
+      .ticker { padding: 10px 0; border-bottom: 1px solid var(--color-border); background: color-mix(in srgb, var(--color-surface) 86%, transparent); }
+      .ticker__inner { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 16px; }
+      .ticker__label { display: inline-flex; align-items: center; gap: 8px; color: var(--color-subtle); font-weight: 700; }
+      .ticker__label svg { width: 18px; height: 18px; opacity: .9; }
+      .ticker__viewport { overflow: hidden; }
+      .ticker__track { display: inline-flex; gap: 28px; white-space: nowrap; will-change: transform; }
+      .ticker__item { padding: 6px 12px; border-radius: 999px; background: color-mix(in srgb, var(--color-primary) 18%, transparent); }
+      .ticker__pause { border-radius: 999px; border: 1px solid var(--color-border); background: transparent; color: var(--color-text); padding: 6px 10px; cursor: pointer; }
+      .is-paused [data-ticker-track] { animation-play-state: paused !important; }
+
+      /* ===== How it works: progress + animated cards ===== */
+      .how-progress-bar { position: sticky; top: 64px; height: 6px; border-radius: 6px; background: color-mix(in srgb, var(--color-surface) 85%, transparent); overflow: hidden; margin-bottom: 16px; }
+      .how-progress { height: 100%; width: 0%; background: linear-gradient(90deg, var(--color-primary), var(--color-accent)); transition: width .2s ease; }
+      .step-card { display: grid; grid-template-columns: 44px 1fr; gap: 12px; align-items: start; }
+      .step-card .step-icon { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 12px; background: color-mix(in srgb, var(--color-primary) 20%, transparent); }
+      .step-card[data-reveal] { transform-origin: 50% 100%; }
+      .step-card.is-visible { animation: float-in .7s cubic-bezier(.2,.9,.2,1) both; }
+      @keyframes float-in {
+        from { opacity: 0; transform: translateY(18px) scale(.98); }
+        to   { opacity: 1; transform: translateY(0) scale(1); }
+      }
+
+      /* ===== Hospitals directory (Zomato-style) ===== */
+      .directory { padding: 70px 0; }
+      .dir-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+      .dir-card { border: 1px solid var(--color-border); border-radius: var(--radius-md); background: color-mix(in srgb, var(--color-surface) 90%, transparent); overflow: hidden; box-shadow: 0 22px 48px -35px var(--color-card-shadow); }
+      .dir-card img { width: 100%; height: 140px; object-fit: cover; }
+      .dir-body { padding: 14px; display: grid; gap: 8px; }
+      .dir-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+      .dir-tag { font-size: .72rem; padding: 4px 8px; border-radius: 999px; background: color-mix(in srgb, var(--color-primary) 18%, transparent); display: inline-block; }
+
+      /* Popup */
+      .dir-modal[hidden] { display: none; }
+      .dir-modal { position: fixed; inset: 0; display: grid; place-items: center; z-index: 900; }
+      .dir-scrim { position: absolute; inset: 0; background: rgba(0,0,0,.5); }
+      .dir-panel { position: relative; width: min(780px, 92vw); border-radius: var(--radius-lg); border: 1px solid var(--color-border); background: color-mix(in srgb, var(--color-surface) 92%, transparent); padding: 18px; box-shadow: 0 26px 80px -40px var(--color-card-shadow); }
+      .dir-close { position: absolute; right: 12px; top: 8px; border: 0; background: none; color: inherit; font-size: 1.6rem; cursor: pointer; }
+      .menu-row { display: grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items: center; border: 1px solid var(--color-border); border-radius: 12px; padding: 10px; margin-bottom: 10px; }
+      .menu-price { font-weight: 800; }
+
+      /* ===== Registration floaters (3 blinking FABs) ===== */
+      .floaters { position: fixed; left: 24px; bottom: 24px; z-index: 850; display: grid; gap: 10px; }
+      .floater { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--color-border); padding: 10px 14px; border-radius: 999px; background: color-mix(in srgb, var(--color-surface) 92%, transparent); box-shadow: 0 16px 40px -30px var(--color-card-shadow); cursor: pointer; font-weight: 800; animation: pulse 1.8s infinite; }
+      .floater .ico { width: 20px; height: 20px; display: grid; place-items: center; border-radius: 6px; background: color-mix(in srgb, var(--color-primary) 20%, transparent); }
+      .floater--hospital { animation-delay: .4s; }
+      .floater--employer { animation-delay: .8s; }
+      @keyframes pulse { 0%,100% { transform: translateY(0); box-shadow: 0 16px 40px -30px var(--color-card-shadow); } 50% { transform: translateY(-2px); box-shadow: 0 22px 48px -28px var(--color-card-shadow); } }
+
+      /* Small helpers */
+      .section-heading .sub { color: var(--color-subtle); margin-top: 4px; }
+    </style>
+
+    <!-- Upgraded behavior -->
     <script defer src="main.js"></script>
   </head>
   <body data-persona="patient">
@@ -32,6 +91,7 @@
             <li><a href="#why">Why HealthFlo</a></li>
             <li><a href="#solutions">Solutions</a></li>
             <li><a href="#how">How it works</a></li>
+            <li><a href="#hospitals">Hospitals</a></li>
             <li><a href="#pricing">Pricing</a></li>
             <li><a href="#contact">Contact</a></li>
           </ul>
@@ -52,10 +112,10 @@
       </div>
     </header>
 
-    <!-- NEW: Infinite ticker (areas we operate) -->
+    <!-- Infinite ticker (areas we operate) -->
     <section class="ticker" aria-label="Areas we operate">
       <div class="container">
-        <div class="ticker__inner">
+        <div class="ticker__inner" id="ticker">
           <span class="ticker__label">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-5.4 7-11a7 7 0 10-14 0c0 5.6 7 11 7 11zM12 13a3 3 0 110-6 3 3 0 010 6z" fill="currentColor"/></svg>
             We operate in
@@ -86,7 +146,7 @@
               One operating system that lets patients, hospitals, and employers move from guesswork to guided cashless care. Your experience adapts the moment you tell us who you are.
             </p>
 
-            <!-- Persona selector (Insurer removed) -->
+            <!-- Persona selector -->
             <div class="persona-selector" role="group" aria-label="Choose your persona">
               <button type="button" class="persona-option" data-persona="patient">
                 <span class="persona-icon" aria-hidden="true">🧑‍⚕️</span>
@@ -157,6 +217,8 @@
             <p data-solutions-copy>Where HealthFlo shines for patients choosing cashless care.</p>
           </div>
           <div class="solution-grid" data-solution-grid></div>
+
+          <!-- Packages panel shows for patient persona -->
           <div class="package-panel" data-packages hidden>
             <h3>From normal to clinical — transparent packages</h3>
             <div class="package-grid" data-package-grid></div>
@@ -168,15 +230,25 @@
         <div class="container">
           <div class="section-heading">
             <h2>How it works</h2>
-            <p data-how-copy>Upload policy → decode coverage → we run cashless &amp; update you.</p>
+            <p class="sub" data-how-copy>Upload policy → decode coverage → we run cashless &amp; update you.</p>
           </div>
 
-          <!-- NEW: slim progress bar that fills as you scroll this section -->
+          <!-- progress bar that fills while scrolling this section -->
           <div class="how-progress-bar" aria-hidden="true">
             <div class="how-progress"></div>
           </div>
 
           <ol class="step-grid" data-steps></ol>
+        </div>
+      </section>
+
+      <section class="directory" id="hospitals" aria-labelledby="dir-title">
+        <div class="container">
+          <div class="section-heading">
+            <h2 id="dir-title">Hospitals — like a Zomato directory</h2>
+            <p class="sub">From normal to clinical — transparent packages. Add-ons like private room, ICU buffer clearly shown.</p>
+          </div>
+          <div class="dir-grid" data-dir-grid></div>
         </div>
       </section>
 
@@ -198,38 +270,11 @@
         </div>
       </section>
 
-      <section class="objections" id="objections">
-        <div class="container">
-          <div class="section-heading">
-            <h2>Answering your concerns</h2>
-            <p>Transparent guardrails to help you take the next step confidently.</p>
-          </div>
-          <div class="accordion" data-accordion>
-            <details open>
-              <summary>“Cashless pre-network sounds risky.”</summary>
-              <p>It runs under documented, compliant structures with insurer-aligned tariffs, audit trails, and medical director oversight.</p>
-            </details>
-            <details>
-              <summary>“Our team is already stretched.”</summary>
-              <p>We provide SOP templates, pre-filled forms, and an embedded concierge team so your staff can focus on clinical tasks.</p>
-            </details>
-            <details>
-              <summary>“Employees won’t adopt another app.”</summary>
-              <p>They only see essentials: e-cards, claims status, and concierge chat—no noisy feeds or spam.</p>
-            </details>
-            <details>
-              <summary>“We’re locked into existing partners.”</summary>
-              <p>HealthFlo is connective tissue, not a replacement. We integrate with current TPAs, brokers, and HIS stacks.</p>
-            </details>
-          </div>
-        </div>
-      </section>
-
       <section class="pricing" id="pricing">
         <div class="container">
           <div class="section-heading">
             <h2>Pricing, without the guesswork</h2>
-            <p data-pricing-copy>Patients: Core tools free; concierge optional.</p>
+            <p class="sub" data-pricing-copy>Patients: Core tools free; concierge optional.</p>
           </div>
           <div class="pricing-grid" data-pricing-grid></div>
           <a class="btn btn-primary" href="#lead" data-cta="pricing-request">Request pricing</a>
@@ -316,11 +361,11 @@
       </div>
     </footer>
 
+    <!-- AI Copilot preview -->
     <button class="copilot-btn" type="button" data-copilot>
       <span class="copilot-icon" aria-hidden="true">✦</span>
       AI Copilot
     </button>
-
     <div class="copilot-modal" data-copilot-modal hidden role="dialog" aria-modal="true" aria-labelledby="copilot-title">
       <div class="copilot-modal__scrim" data-copilot-close></div>
       <div class="copilot-modal__body">
@@ -334,8 +379,31 @@
       </div>
     </div>
 
+    <!-- Registration floaters -->
+    <div class="floaters" aria-label="Quick registration">
+      <button class="floater floater--patient" data-floater="patient">
+        <span class="ico">🧑‍⚕️</span><span>Patient Registration</span>
+      </button>
+      <button class="floater floater--hospital" data-floater="hospital">
+        <span class="ico">🏥</span><span>Hospital Registration</span>
+      </button>
+      <button class="floater floater--employer" data-floater="employer">
+        <span class="ico">💼</span><span>Employer Registration</span>
+      </button>
+    </div>
+
+    <!-- Hospital Directory Modal -->
+    <div class="dir-modal" data-dir-modal hidden>
+      <div class="dir-scrim" data-dir-close></div>
+      <div class="dir-panel">
+        <button class="dir-close" data-dir-close aria-label="Close">×</button>
+        <h3 data-dir-title>Hospital — Packages</h3>
+        <div data-dir-menu></div>
+      </div>
+    </div>
+
+    <!-- Demo package data for patient view -->
     <script>
-      /* Demo package data for patient view */
       window.healthfloImages = {
         patientPackages: [
           {
@@ -378,5 +446,8 @@
         ]
       };
     </script>
+
+    <!-- Upgraded behavior -->
+    <script defer src="main.js"></script>
   </body>
 </html>
