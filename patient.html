@@ -1,78 +1,359 @@
 <!DOCTYPE html>
-<div>
-<strong>Drop policy PDF</strong>
-<p class="small" style="color:var(--color-subtle)">We auto‑detect insurer, co‑pay, room rent caps & waiting periods.</p>
-<input type="file" id="dropPolicy" accept=".pdf,.jpg,.png"/>
-</div>
-</div>
-<div>
-<div id="coverageOut" style="font-size:.95rem;color:var(--color-subtle)">No file uploaded yet.</div>
-</div>
-</div>
-</section>
+<html lang="en" dir="ltr" data-theme="system">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
+    <title>HealthFlo — Patient Services</title>
+    <meta
+      name="description"
+      content="Explore every patient service at HealthFlo: coverage decoder, treatment packages, reimbursement concierge, denials support, home tests, meds, and more."
+    />
 
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
 
-<!-- Active claims -->
-<section class="card" style="margin-top:16px">
-<h3>My Claims</h3>
-<table>
-<thead><tr><th>Case</th><th>Type</th><th>Status</th><th>Updated</th><th>Action</th></tr></thead>
-<tbody id="claimsTbody">
-<!-- rows injected -->
-</tbody>
-</table>
-</section>
-</main>
+    <!-- Image CDN preconnect (for card media) -->
+    <link rel="preconnect" href="https://storage.googleapis.com" crossorigin />
 
+    <!-- PWA / theme -->
+    <meta name="theme-color" content="#0a93d5" />
+    <link rel="manifest" href="manifest.webmanifest" />
 
-<script>
-const qs = new URLSearchParams(location.search);
-const demo = qs.get('demo')==='1';
-const demoBanner = document.getElementById('demoBanner');
-demoBanner.hidden = !demo;
-document.getElementById('btnDemoToggle').addEventListener('click',()=>{ const next = demo?'' : '?demo=1'; location.search = next; });
+    <!-- Site styles (optional) -->
+    <link rel="stylesheet" href="styles.css" />
+    <!-- Patient page stylesheet (send after you say 'ok') -->
+    <link rel="stylesheet" href="patient.css" />
+  </head>
 
+  <body class="density-compact">
+    <a class="skip-link" href="#main">Skip to content</a>
 
-const toast = (t)=>{ const d=document.createElement('div'); d.className='toast'; d.innerHTML=t; document.body.appendChild(d); setTimeout(()=>d.remove(),2600); };
+    <!-- ===== Header ===== -->
+    <header class="site-header" role="banner">
+      <div class="container header-inner">
+        <a class="logo" href="index.html" aria-label="HealthFlo Home">
+          <span class="logo-dot" aria-hidden="true"></span>
+          <span class="logo-text">HealthFlo</span>
+        </a>
 
+        <nav class="primary-nav" aria-label="Main">
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#solutions">Services</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </nav>
 
-// Policy decode (mock)
-const policyFile = document.getElementById('policyFile');
-const dropPolicy = document.getElementById('dropPolicy');
-const coverageOut = document.getElementById('coverageOut');
-const btnDecode = document.getElementById('btnDecode');
+        <!-- View & Theme controls -->
+        <div class="header-actions">
+          <div class="view-controls" role="group" aria-label="View options">
+            <label for="viewDensity" class="vh">Density</label>
+            <select id="viewDensity" class="select density-select" aria-label="Density">
+              <option value="comfortable">Comfort</option>
+              <option value="cozy">Cozy</option>
+              <option value="compact" selected>Compact</option>
+              <option value="tight">Tight</option>
+            </select>
 
+            <!-- Theme cycles: light → dark → system -->
+            <button
+              id="themeToggle"
+              class="btn btn-ghost btn-icon"
+              aria-pressed="false"
+              aria-label="Toggle theme (light/dark/system)"
+              title="Toggle theme"
+              type="button"
+            >
+              <span class="icon-theme" aria-hidden="true">🌙</span>
+            </button>
+          </div>
 
-function fakeDecode(name){
-const room = ['₹3,000/day','₹5,000/day','Twin sharing','Private room cap: ₹7,500/day'][Math.floor(Math.random()*4)];
-const copay= ['0%','10%','20% (Sr. citizen)','30% (Zone II)'][Math.floor(Math.random()*4)];
-const wait = ['PED: 48 months','Maternity: 9 months','Hernia: 24 months'][Math.floor(Math.random()*3)];
-return `<ul><li><strong>Room rent:</strong> ${room}</li><li><strong>Co‑pay:</strong> ${copay}</li><li><strong>Waiting periods:</strong> ${wait}</li><li><strong>Non‑payables:</strong> as per policy annexure</li></ul><small>File: ${name||'—'}</small>`;
-}
+          <button class="nav-toggle" aria-label="Toggle menu" type="button">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </header>
 
+    <main id="main">
+      <!-- ===== Hero / Toolbar ===== -->
+      <section class="svc-hero" aria-labelledby="svcTitle">
+        <div class="container">
+          <h1 id="svcTitle">Get care on your terms</h1>
+          <p class="sub">
+            Explore every patient service—clear pricing, faster cashless, and predictable claims.
+          </p>
 
-policyFile?.addEventListener('change', (e)=>{ const f=e.target.files[0]; if(f){ coverageOut.innerHTML=fakeDecode(f.name); toast('Policy uploaded. Ready to decode.'); }});
-dropPolicy?.addEventListener('change', (e)=>{ const f=e.target.files[0]; if(f){ coverageOut.innerHTML=fakeDecode(f.name); toast('Policy uploaded. Ready to decode.'); }});
-btnDecode?.addEventListener('click', ()=>{ coverageOut.innerHTML=fakeDecode('uploaded.pdf'); document.getElementById('kpiRoomCap').textContent='₹5,000/day'; toast('Decoded!'); });
+          <div class="svc-toolbar" role="search" aria-describedby="filterHint">
+            <div class="input-wrap">
+              <input
+                id="svcSearch"
+                type="search"
+                placeholder="Search services… (e.g., coverage, packages, bills)"
+                aria-label="Search services"
+                autocomplete="off"
+                inputmode="search"
+              />
+              <span class="input-icon" aria-hidden="true">🔎</span>
+            </div>
 
+            <p id="filterHint" class="vh">Use the chips below to filter services by type.</p>
 
-// Claims table sample
-const claims = [
-{case:'#HF-10234', type:'Cashless', status:'Pre‑auth prepared', updated:'Just now'},
-{case:'#HF-10098', type:'Reimb', status:'Docs pending: pharmacy bill', updated:'3h ago'}
-];
-const tbody = document.getElementById('claimsTbody');
-tbody.innerHTML = claims.map(c=>`<tr><td>${c.case}</td><td>${c.type}</td><td>${c.status}</td><td>${c.updated}</td><td><button class='btn btn-ghost' ${demo?'disabled':''}>Open</button></td></tr>`).join('');
+            <!-- Filter chips with proper tab semantics -->
+            <div
+              class="chip-row"
+              id="chipRow"
+              role="tablist"
+              aria-label="Filter services"
+            >
+              <button class="chip is-active" data-chip="all" role="tab" aria-selected="true" aria-controls="svcGrid" id="chip-all" type="button">All</button>
+              <button class="chip" data-chip="Favorites" role="tab" aria-controls="svcGrid" id="chip-favs" type="button">⭐ Favorites</button>
+              <button class="chip" data-chip="Coverage" role="tab" aria-controls="svcGrid" id="chip-coverage" type="button">Coverage</button>
+              <button class="chip" data-chip="Packages" role="tab" aria-controls="svcGrid" id="chip-packages" type="button">Packages</button>
+              <button class="chip" data-chip="Claims" role="tab" aria-controls="svcGrid" id="chip-claims" type="button">Claims</button>
+              <button class="chip" data-chip="Finance" role="tab" aria-controls="svcGrid" id="chip-finance" type="button">Finance</button>
+              <button class="chip" data-chip="Support" role="tab" aria-controls="svcGrid" id="chip-support" type="button">Support</button>
+              <button class="chip" data-chip="Diagnostics" role="tab" aria-controls="svcGrid" id="chip-diagnostics" type="button">Diagnostics</button>
+              <button class="chip" data-chip="Pharmacy" role="tab" aria-controls="svcGrid" id="chip-pharmacy" type="button">Pharmacy</button>
+            </div>
+          </div>
+        </div>
+      </section>
 
+      <!-- ===== Services grid ===== -->
+      <section class="solutions" id="solutions" aria-live="polite">
+        <div class="container">
+          <div
+            class="solution-grid"
+            id="svcGrid"
+            data-card-size="md"
+            data-card-density="compact"
+          >
+            <!-- Cards injected by JS; noscript fallback below -->
+          </div>
 
-// Other uploads
-document.getElementById('billFile')?.addEventListener('change',()=>toast('Bill received. Running demo checklist…'));
-document.getElementById('reportFile')?.addEventListener('change',()=>toast('Report received. Generating provisional summary…'));
+          <noscript>
+            <p>
+              JavaScript is required to view the interactive service cards. Please enable JavaScript or contact support.
+            </p>
+          </noscript>
+        </div>
+      </section>
 
+      <!-- ===== Metrics ===== -->
+      <section class="proof" id="contact">
+        <div class="container">
+          <div class="metrics">
+            <div class="metric">
+              <strong>92%</strong>
+              Cashless approvals <span class="meta">within SLAs</span>
+            </div>
+            <div class="metric">
+              <strong>5,000+</strong>
+              Policies decoded <span class="meta">accurately</span>
+            </div>
+            <div class="metric">
+              <strong>24×7</strong>
+              Patient support <span class="meta">India-wide</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
 
-// KPI mock
-document.getElementById('kpiApprovals').textContent = Math.floor(Math.random()*5);
-document.getElementById('kpiActive').textContent = claims.length;
-</script>
-</body>
+    <!-- ===== Footer ===== -->
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="footer-brand">
+          <a class="logo" href="index.html">
+            <span class="logo-dot" aria-hidden="true"></span>
+            <span class="logo-text">HealthFlo</span>
+          </a>
+          <p>
+            Unified cashless care, denial recovery, and corporate health—built with privacy by design.
+          </p>
+        </div>
+        <div class="footer-meta">
+          <ul>
+            <li><a href="#privacy">Privacy</a></li>
+            <li><a href="#terms">Terms</a></li>
+            <li><a href="#accessibility">Accessibility</a></li>
+          </ul>
+          <small>Data minimal, encrypted, purpose-bound; you control insurer/TPA sharing.</small>
+        </div>
+      </div>
+    </footer>
+
+    <!-- =========================
+         Customer Support + WhatsApp
+         ========================= -->
+    <!-- Scrim -->
+    <div class="support-scrim" id="supportScrim" hidden></div>
+
+    <!-- Support panel -->
+    <aside
+      class="support-panel"
+      id="supportPanel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="supportTitle"
+      hidden
+    >
+      <header class="support-head">
+        <div class="support-title">
+          <span class="support-avatar" aria-hidden="true">🩺</span>
+          <div>
+            <h3 id="supportTitle">HealthFlo Support</h3>
+            <small class="support-sub">Human help for coverage, claims &amp; packages</small>
+          </div>
+        </div>
+        <button
+          class="support-close btn-ghost"
+          id="supportClose"
+          aria-label="Close support"
+          type="button"
+        >
+          ✕
+        </button>
+      </header>
+
+      <form id="supportForm" class="support-body" autocomplete="on" novalidate>
+        <div class="support-row">
+          <label class="support-label" for="supName">Your name</label>
+          <input
+            id="supName"
+            class="support-input"
+            name="name"
+            placeholder="e.g., Riya Sharma"
+            autocomplete="name"
+            required
+          />
+        </div>
+
+        <div class="support-row">
+          <label class="support-label" for="supTopic">Topic</label>
+          <div class="chip-wrap" id="supChips" role="group" aria-label="Select topic">
+            <button type="button" class="chip" data-topic="Coverage">Coverage</button>
+            <button type="button" class="chip" data-topic="Packages">Packages</button>
+            <button type="button" class="chip" data-topic="Reimbursement">Reimbursement</button>
+            <button type="button" class="chip" data-topic="Finance">Finance</button>
+            <button type="button" class="chip" data-topic="Denials">Denials</button>
+          </div>
+          <input
+            id="supTopic"
+            class="support-input"
+            name="topic"
+            placeholder="(auto-filled if you press a chip)"
+            autocomplete="off"
+            required
+          />
+        </div>
+
+        <div class="support-row">
+          <label class="support-label" for="supMsg">Message</label>
+          <textarea
+            id="supMsg"
+            class="support-input"
+            rows="4"
+            name="message"
+            placeholder="Briefly describe your question…"
+            autocomplete="off"
+          ></textarea>
+          <small class="support-hint">Avoid sharing sensitive personal health details here.</small>
+        </div>
+
+        <div class="support-actions">
+          <a
+            id="supWhatsApp"
+            class="btn btn-primary btn--full"
+            href="#"
+            target="_blank"
+            rel="noopener"
+            data-sound="click"
+            >Chat on WhatsApp</a
+          >
+          <a
+            id="supCall"
+            class="btn btn-ghost btn--full"
+            href="tel:+919999999999"
+            data-sound="click"
+            >Call support</a
+          >
+          <a
+            id="supEmail"
+            class="btn btn-ghost btn--full"
+            href="mailto:support@healthflo.example?subject=Help%20with%20HealthFlo"
+            data-sound="click"
+            >Email us</a
+          >
+        </div>
+      </form>
+      <footer class="support-foot">
+        <small>By contacting us, you consent to being reached on WhatsApp/call/email about this query.</small>
+      </footer>
+    </aside>
+
+    <!-- Floating FABs -->
+    <div class="fab-wrap" aria-live="polite">
+      <button
+        class="fab fab--support"
+        id="fabSupport"
+        aria-label="Open customer support"
+        title="Support"
+        type="button"
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            fill="currentColor"
+            d="M12 2a8 8 0 0 0-8 8v3a3 3 0 0 0 3 3h1v-6H7a5 5 0 0 1 10 0h-1v6h1a3 3 0 0 0 3-3v-3a8 8 0 0 0-8-8z"
+          />
+        </svg>
+        <span>Support</span>
+      </button>
+
+      <a
+        class="fab fab--wa"
+        id="fabWA"
+        href="#"
+        target="_blank"
+        rel="noopener"
+        aria-label="Chat on WhatsApp"
+        title="WhatsApp"
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            fill="currentColor"
+            d="M12.04 2C6.57 2 2.17 6.4 2.17 11.87c0 2.1.6 4.06 1.71 5.72L2 22l4.55-1.82c1.6 1.05 3.5 1.62 5.49 1.62c5.47 0 9.87-4.4 9.87-9.87S17.51 2 12.04 2m5.82 14.15c-.25.7-1.23 1.29-2 1.46c-.53.11-1.22.2-3.57-.74c-3-1.25-4.94-4.34-5.09-4.54c-.15-.2-1.21-1.61-1.21-3.08c0-1.47.77-2.18 1.05-2.48c.28-.3.62-.38.83-.38h.59c.19 0 .45-.07.7.53c.25.6.86 2.06.94 2.21c.08.15.13.33.03.53c-.1.2-.15.33-.31.51c-.15.18-.33.4-.48.54c-.15.15-.3.31-.13.6c.18.3.78 1.29 1.66 2.1c1.15 1.03 2.12 1.35 2.42 1.5c.3.15.48.13.66-.08c.18-.2.76-.88.96-1.18c.2-.3.41-.25.68-.15c.28.1 1.76.83 2.06.98c.3.15.51.23.58.36c.08.12.08.72-.17 1.42z"
+          />
+        </svg>
+        <span>WhatsApp</span>
+      </a>
+    </div>
+
+    <!-- Structured data (site-level) -->
+    <script type="application/ld+json">
+    {
+      "@context":"https://schema.org",
+      "@type":"WebSite",
+      "name":"HealthFlo",
+      "url":"https://example.com/",
+      "potentialAction":{
+        "@type":"SearchAction",
+        "target":"https://example.com/patient.html?q={search_term_string}",
+        "query-input":"required name=search_term_string"
+      }
+    }
+    </script>
+
+    <!-- Interactions script (send after CSS) -->
+    <script src="patient.js" defer></script>
+  </body>
 </html>
