@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HealthFlo — Reimbursement Assistance</title>
+  <meta name="description" content="Relax while HealthFlo coordinates reimbursement with medical audit & claim analysts. Submit your details and we'll take it from here." />
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="reimbursement.css"/>
+</head>
+<body>
+  <a class="skip-link" href="#rbForm">Skip to reimbursement form</a>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="index.html">
+        <span class="logo-dot" aria-hidden="true"></span>
+        <span class="logo-text">HealthFlo</span>
+      </a>
+      <nav class="primary-nav" aria-label="Primary">
+        <ul>
+          <li><a href="packages.html">Treatment Packages</a></li>
+          <li><a href="#rbForm">Reimbursement</a></li>
+          <li><a href="index.html#contact">Support</a></li>
+        </ul>
+      </nav>
+      <div class="view-controls">
+        <button id="themeToggle" class="btn btn-ghost btn-icon" aria-label="Toggle theme">🌗</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" aria-labelledby="heroTitle">
+    <div class="container">
+      <h1 id="heroTitle">Reimbursement Assistance</h1>
+      <p class="sub">
+        You focus on resting—our Medical Desk, audit & claim analysts coordinate the paperwork and evaluation in the background.
+      </p>
+      <div class="hero-cards">
+        <div class="hero-card">
+          <div class="ic">🩺</div>
+          <div>
+            <strong>Medical Desk</strong>
+            <div class="muted">We clarify requirements and guide documents.</div>
+          </div>
+        </div>
+        <div class="hero-card">
+          <div class="ic">📑</div>
+          <div>
+            <strong>Audit Ready</strong>
+            <div class="muted">Paperwork aligned to insurer/TPA expectations.</div>
+          </div>
+        </div>
+        <div class="hero-card">
+          <div class="ic">💬</div>
+          <div>
+            <strong>Claim Analysts</strong>
+            <div class="muted">Evaluation checkpoints & submission support.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Form -->
+  <main class="wrap">
+    <div class="container">
+      <form id="rbForm" class="hf-form" novalidate>
+        <div class="grid-3">
+          <div class="field">
+            <label for="patientName">Patient name <span class="req">*</span></label>
+            <input id="patientName" name="patientName" class="input" placeholder="Full name" required />
+          </div>
+
+          <div class="field">
+            <label for="policyType">Policy type <span class="req">*</span></label>
+            <select id="policyType" name="policyType" class="select" required>
+              <option value="">Select…</option>
+              <option>Retail / Individual</option>
+              <option>Corporate</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="dischargeDate">Date of discharge <span class="req">*</span></label>
+            <input id="dischargeDate" name="dischargeDate" type="date" class="input" required />
+          </div>
+        </div>
+
+        <div class="risk-row" id="riskRow" aria-live="polite">
+          <span class="risk-badge" id="riskBadge">Risk: —</span>
+          <span class="muted">If discharge is over 15 days ago from today, we’ll flag it as high risk.</span>
+        </div>
+
+        <div class="field">
+          <label for="notes">Additional notes (optional)</label>
+          <textarea id="notes" name="notes" class="textarea" placeholder="Insurer/TPA, policy no., brief case summary, anything we should know…"></textarea>
+        </div>
+
+        <div class="actions">
+          <a class="btn btn-ghost" href="packages.html">Explore Treatment Packages</a>
+          <div class="spacer"></div>
+          <button type="reset" class="btn btn-ghost">Clear</button>
+          <button type="submit" class="btn btn-primary">Submit & WhatsApp</button>
+        </div>
+
+        <div id="inlineSuccess" class="inline-success" role="status" aria-live="polite">
+          Your request is submitted successfully.
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- Success Modal -->
+  <div id="successModal" class="s-modal" aria-hidden="true" role="dialog" aria-labelledby="sTitle">
+    <div class="s-modal__backdrop"></div>
+    <div class="s-modal__card" role="document">
+      <div class="s-modal__icon">✅</div>
+      <h3 id="sTitle">Request submitted successfully</h3>
+      <p id="sSubtitle">We’ve opened WhatsApp with your form details.</p>
+      <div class="s-modal__meta">
+        <div><strong>Date & Time:</strong> <span id="sWhen">—</span></div>
+        <div><strong>Reference:</strong> <span id="sRef">—</span></div>
+      </div>
+      <div class="s-modal__actions">
+        <button id="sClose" class="btn btn-primary" type="button">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <noscript>
+    <div style="padding:1rem; text-align:center;">Please enable JavaScript to submit and open WhatsApp.</div>
+  </noscript>
+
+  <script defer src="reimbursement.js"></script>
+</body>
+</html>
