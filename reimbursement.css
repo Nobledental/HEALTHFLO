@@ -120,13 +120,31 @@ label{ font-weight:800; font-size:.95rem; }
 .s-modal[aria-hidden="false"]{ display:grid; place-items:center; }
 .s-modal__backdrop{ position:absolute; inset:0; background:rgba(6,10,18,.46); backdrop-filter: blur(4px); }
 .s-modal__card{
-  position:relative; z-index:1; width:min(520px,92vw);
+  position:relative; z-index:1; width:min(720px,94vw);
   background:var(--surface); color:var(--text); border:1px solid var(--border); border-radius:16px;
   box-shadow: var(--elev-3); padding:18px;
 }
 .s-modal__icon{ font-size:28px; }
 .s-modal h3{ margin:8px 0 4px; font-size:1.25rem; }
 .s-modal__meta{ margin:10px 0 2px; display:grid; gap:6px; }
+
+/* Payment block inside modal */
+.s-pay{ margin-top:14px; border-top:1px dashed var(--border); padding-top:14px; }
+.s-pay__head{ margin-bottom:10px; }
+.s-pay__title{ font-weight:800; }
+.s-pay__meta{ color:var(--muted); font-size:.92rem; margin-top:2px; }
+.s-pay__grid{ display:grid; grid-template-columns:1fr; gap:14px; align-items:center; }
+.s-pay__qr{ display:grid; place-items:center; }
+.s-pay__info{ display:grid; gap:8px; }
+.kv{ display:flex; align-items:center; justify-content:space-between; gap:10px; border:1px solid var(--border); border-radius:10px; padding:8px 10px; }
+.kv span{ color:var(--muted); }
+.s-pay__actions{ display:flex; flex-wrap:wrap; gap:8px; margin-top:4px; }
+.s-pay__hint{ color:var(--muted); font-size:.88rem; }
+
+@media (min-width:780px){
+  .s-pay__grid{ grid-template-columns:auto 1fr; gap:18px; }
+}
+
 .s-modal__actions{ display:flex; justify-content:flex-end; margin-top:12px; }
 
 /* Toast */
