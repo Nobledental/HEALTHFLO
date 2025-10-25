@@ -27,9 +27,21 @@
     <meta name="theme-color" content="#0a93d5" />
     <link rel="manifest" href="manifest.webmanifest" />
 
+    <!-- Prefetch service pages (faster navigation) -->
+    <link rel="prefetch" href="packages.html" />
+    <link rel="prefetch" href="coverage.html" />
+    <link rel="prefetch" href="reimbursement.html" />
+    <link rel="prefetch" href="finance.html" />
+    <link rel="prefetch" href="denials.html" />
+    <link rel="prefetch" href="bills.html" />
+    <link rel="prefetch" href="consult.html" />
+    <link rel="prefetch" href="support.html" />
+    <link rel="prefetch" href="home-tests.html" />
+    <link rel="prefetch" href="meds.html" />
+
     <!-- Site styles (optional) -->
     <link rel="stylesheet" href="styles.css" />
-    <!-- Patient page stylesheet (send after you say 'ok') -->
+    <!-- Patient page stylesheet -->
     <link rel="stylesheet" href="patient.css" />
   </head>
 
@@ -52,28 +64,20 @@
           </ul>
         </nav>
 
-        <!-- View & Theme controls -->
+        <!-- View & Theme controls (wired to patient.js density/theme switcher) -->
         <div class="header-actions">
-          <div class="view-controls" role="group" aria-label="View options">
-            <label for="viewDensity" class="vh">Density</label>
-            <select id="viewDensity" class="select density-select" aria-label="Density">
-              <option value="comfortable">Comfort</option>
-              <option value="cozy">Cozy</option>
-              <option value="compact" selected>Compact</option>
-              <option value="tight">Tight</option>
-            </select>
-
-            <!-- Theme cycles: light → dark → system -->
-            <button
-              id="themeToggle"
-              class="btn btn-ghost btn-icon"
-              aria-pressed="false"
-              aria-label="Toggle theme (light/dark/system)"
-              title="Toggle theme"
-              type="button"
-            >
-              <span class="icon-theme" aria-hidden="true">🌙</span>
-            </button>
+          <div class="view-controls" role="group" aria-label="View & theme options">
+            <div class="display-controls" aria-label="Density">
+              <button class="chip chip--toggle" data-density="comfortable" aria-pressed="false" type="button">Comfort</button>
+              <button class="chip chip--toggle" data-density="cozy" aria-pressed="false" type="button">Cozy</button>
+              <button class="chip chip--toggle is-active" data-density="compact" aria-pressed="true" type="button">Compact</button>
+              <button class="chip chip--toggle" data-density="tight" aria-pressed="false" type="button">Tight</button>
+            </div>
+            <div class="display-controls" aria-label="Theme">
+              <button class="chip chip--toggle" data-theme="light" aria-pressed="false" type="button" title="Light">☀️</button>
+              <button class="chip chip--toggle" data-theme="dark" aria-pressed="false" type="button" title="Dark">🌙</button>
+              <button class="chip chip--toggle is-active" data-theme="system" aria-pressed="true" type="button" title="System">🖥️</button>
+            </div>
           </div>
 
           <button class="nav-toggle" aria-label="Toggle menu" type="button">
@@ -137,13 +141,25 @@
             data-card-size="md"
             data-card-density="compact"
           >
-            <!-- Cards injected by JS; noscript fallback below -->
+            <!-- Cards injected by patient.js -->
           </div>
 
           <noscript>
             <p>
-              JavaScript is required to view the interactive service cards. Please enable JavaScript or contact support.
+              JavaScript is required to view the interactive service cards. Below are direct links to each service:
             </p>
+            <ul>
+              <li><a href="coverage.html">Know your coverage</a></li>
+              <li><a href="packages.html">Treatment packages</a></li>
+              <li><a href="reimbursement.html">Reimbursement concierge</a></li>
+              <li><a href="finance.html">Financial support</a></li>
+              <li><a href="denials.html">Denials &amp; short settlements</a></li>
+              <li><a href="bills.html">Bills → Reimbursable check</a></li>
+              <li><a href="consult.html">Book OPD / IP / ER</a></li>
+              <li><a href="support.html">Medical support</a></li>
+              <li><a href="home-tests.html">Home visit tests</a></li>
+              <li><a href="meds.html">Medicines — same day</a></li>
+            </ul>
           </noscript>
         </div>
       </section>
@@ -177,9 +193,6 @@
             <span class="logo-dot" aria-hidden="true"></span>
             <span class="logo-text">HealthFlo</span>
           </a>
-          <p>
-            Unified cashless care, denial recovery, and corporate health—built with privacy by design.
-          </p>
         </div>
         <div class="footer-meta">
           <ul>
@@ -353,7 +366,7 @@
     }
     </script>
 
-    <!-- Interactions script (send after CSS) -->
+    <!-- Interactions script -->
     <script src="patient.js" defer></script>
   </body>
 </html>
