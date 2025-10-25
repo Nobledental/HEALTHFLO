@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<h3>Cases Today</h3>
+<table>
+<thead><tr><th>MRN</th><th>Patient</th><th>Department</th><th>Status</th><th>Action</th></tr></thead>
+<tbody id="casesT"></tbody>
+</table>
+</section>
+
+
+<section class="card" style="margin-top:16px">
+<h3>Hospital Directory — Packages</h3>
+<div class="grid dir-grid" id="dirGrid"></div>
+</section>
+</main>
+
+
+<!-- Popup menu modal -->
+<div class="menu-modal" id="menuModal" hidden>
+<div class="menu-scrim"></div>
+<div class="menu-body">
+<button class="menu-close" aria-label="Close">×</button>
+<h3 id="menuTitle">Hospital</h3>
+<div id="menuList"></div>
+</div>
+</div>
+
+
+<script>
+const cases = [
+{mrn:'A1023', name:'Karthik R', dept:'Cardiology', status:'Pre‑auth sent'},
+{mrn:'B7790', name:'Meera S', dept:'Ortho', status:'Query from TPA'},
+{mrn:'C5542', name:'Rahul P', dept:'General Surgery', status:'Approved'}
+];
+document.getElementById('casesT').innerHTML = cases.map(c=>`<tr><td>${c.mrn}</td><td>${c.name}</td><td>${c.dept}</td><td>${c.status}</td><td><button class='btn'>Open</button></td></tr>`).join('');
+
+
+const hospitals = [
+{id:'apollo', name:'Apollo Hospitals, Greams Road', city:'Chennai', img:'https://images.healthflo.org/hospitals/apollo-chennai-knee.jpg', tags:['Orthopedics','Cardio'], menu:[{name:'Total Knee Replacement',price:'₹1,85,000',meta:'Unilateral • Twin sharing 2D'},{name:'Angiography',price:'₹18,000',meta:'Daycare'}]},
+{id:'manipal', name:'Manipal Hospital, Old Airport Rd', city:'Bengaluru', img:'https://images.healthflo.org/hospitals/manipal-blr-chole.jpg', tags:['General Surgery','Neuro'], menu:[{name:'Lap Cholecystectomy',price:'₹68,000',meta:'1 bed‑day (twin)'}]},
+{id:'aster', name:'Aster Prime', city:'Hyderabad', img:'https://images.healthflo.org/hospitals/aster-hyd-obs.jpg', tags:['Obstetrics'], menu:[{name:'Normal Delivery',price:'₹52,000',meta:'Mother + newborn • 2D'}]}
+];
+
+
+const grid = document.getElementById('dirGrid');
+grid.innerHTML = hospitals.map(h=>`
+<article class="dir-card">
+<img alt="${h.name}" src="${h.img}">
+<div class="dir-body">
+<h4 style="margin:6px 0">${h.name}</h4>
+<small style="color:rgba(206,220,255,.78)">${h.city}</small>
+<div style="display:flex;gap:6px;margin-top:8px">${h.tags.map(t=>`<span class='tag'>${t}</span>`).join('')}</div>
+<div class="dir-actions">
+<button class="btn btn-primary" data-open-menu="${h.id}">View menu</button>
+<button class="btn">Start cashless</button>
+</div>
+</div>
+</article>
+`).join('');
+
+
+const modal = document.getElementById('menuModal');
+function openMenu(id){
+const h = hospitals.find(x=>x.id===id); if(!h) return;
+document.getElementById('menuTitle').textContent = h.name + ' — Packages';
+document.getElementById('menuList').innerHTML = h.menu.map(m=>`<div class='row'><div><strong>${m.name}</strong><br><small style="color:rgba(206,220,255,.78)">${m.meta||''}</small></div><div class='price'>${m.price}</div><button class='btn btn-primary'>Select</button></div>`).join('');
+modal.hidden = false;
+}
+grid.addEventListener('click',(e)=>{ const b=e.target.closest('[data-open-menu]'); if(b){ openMenu(b.getAttribute('data-open-menu')); }});
+modal.addEventListener('click',(e)=>{ if(e.target.classList.contains('menu-scrim')||e.target.classList.contains('menu-close')) modal.hidden=true; });
+
+
+document.getElementById('btnAddPkg').addEventListener('click',()=>{
+alert('Later: open form to add a surgery package with price & inclusions.');
+});
+</script>
+</body>
+</html>
