@@ -1,28 +1,29 @@
-/* Utilities */
+/* =========================
+   HealthFlo Landing – main.js
+   ========================= */
+
+/* ---------- Helpers ---------- */
 const $  = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
-const state = {
-  persona: 'patient',
-  theme: 'cosmic'
+/* ---------- Routes / Targets ---------- */
+const ROUTES = {
+  PATIENT_APP_URL:   '/patient.html',
+  HOSPITAL_APP_URL:  '/hospital.html',
+  EMPLOYER_APP_URL:  '/employer.html',
+
+  // Registration landing (you can point these at Google Forms/Apps Script web apps)
+  PATIENT_REG_URL:   '/patient.html?signup=1',
+  HOSPITAL_REG_URL:  '/hospital.html?signup=1',
+  EMPLOYER_REG_URL:  '/employer.html?signup=1'
 };
 
-/* Inline SVG icons for steps (stroke follows currentColor) */
-function iconSVG(name) {
-  const base = 'stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"';
-  const wrap = (d) => `<svg viewBox="0 0 24 24" aria-hidden="true"><path ${base} d="${d}"/></svg>`;
-  switch (name) {
-    case 'upload':      return wrap('M12 16V4m0 0l-3.5 3.5M12 4l3.5 3.5M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2');
-    case 'decode':      return wrap('M4 6h10M4 12h16M4 18h8M18 6l2 2-6 6');
-    case 'cashless':    return wrap('M5 12l5 5L19 7M3 7h7l2 3h9');
-    case 'scan':        return wrap('M4 7V4h3M20 7V4h-3M4 17v3h3M20 17v3h-3');
-    case 'launch':      return wrap('M5 19l5-1 9-9a3 3 0 00-4-4l-9 9-1 5zM15 5l4 4');
-    case 'prevent':     return wrap('M12 21c-4.97 0-9-4.03-9-9 0-1.5.37-2.91 1.03-4.15L12 12l7.97-4.15A8.96 8.96 0 0121 12c0 4.97-4.03 9-9 9z');
-    default:            return wrap('M4 12h16');
-  }
-}
+const state = {
+  persona: 'patient',
+  theme: localStorage.getItem('healthfloTheme') || 'cosmic'
+};
 
-/* Personas (Insurer removed) */
+/* ---------- Persona Config (content only; design unchanged) ---------- */
 const personaConfig = {
   patient: {
     heroCta: 'Decode My Policy →',
@@ -30,30 +31,36 @@ const personaConfig = {
     solutionsTitle: 'Get care on your terms',
     solutionsCopy: 'Where HealthFlo shines when you need transparent cashless care and zero surprises.',
     quote: '“Pre-auth moved from 36h to same-day. The concierge kept us updated without a single follow-up call.” — Caregiver, Bengaluru',
-    howCopy: 'Upload policy → decode coverage → we run cashless & update you',
-    riskCopy: 'Patients: Policy decode is free. Concierge activates only after you approve the estimated out-of-pocket.',
+    howCopy: 'Register → Upload policy → decode coverage → run cashless & get updates',
+    riskCopy: 'Policy decode is free. Concierge activates only after you approve the estimated out-of-pocket.',
     pricingCopy: 'Patients: Core tools free; concierge optional.',
     pricingDetails: [
-      { title: 'Policy decoder', body: 'Free forever for PDF uploads across major insurers. Includes room rent caps, co-pay, PED, and non-payables.' },
-      { title: 'Concierge', body: 'Optional add-on per case. Covers document prep, TPA coordination, admission through discharge, and appeals if needed.' },
-      { title: 'City insights', body: 'Benchmark packages by hospital, specialty, and add-ons so you never overpay for cashless care.' }
+      { title: 'Free account', body: 'Limited services. Single user. ₹99/year. Free for kids <5 and seniors ≥70.' },
+      { title: 'Family (up to 4)', body: '₹250/year. One family ID, track members & claims in one place.' },
+      { title: 'Family (5–6)', body: '₹550/year. Priority support. Concierge optional per case.' },
+      { title: 'Note', body: 'Registration charge only. Paid services (reimbursement, pharmacy, investigations, physio, etc.) are billed separately.' }
     ],
     pillars: [
-      { title: 'Clarity before care',  copy: 'Package-first pricing, decoded inclusions/exclusions, and city-wise comparisons before you step into the hospital.' },
-      { title: 'Velocity when it counts', copy: 'AI-prepared pre-auth kits and WhatsApp nudges keep your case moving—even for compliant pre-network cashless.' },
-      { title: 'Recovery & prevention', copy: 'Structured appeals, non-payable checklists, and ombudsman support to recover shortfalls.' }
+      { title: 'Clarity before care',  copy: 'Package-first pricing, decoded inclusions/exclusions, and city-wise comparisons.' },
+      { title: 'Velocity when it counts', copy: 'AI-prepared pre-auth kits and WhatsApp nudges keep your case moving.' },
+      { title: 'Recovery & prevention', copy: 'Structured appeals, non-payable checklists, and ombudsman support.' }
     ],
     solutionsCards: [
-      { title: 'Know your coverage', description: 'Upload PDF → see room rent caps, co-pay, waiting periods, and non-payables in plain language.', cta: 'Decode in 2 minutes →', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-1.webp', analytics: 'policy_decode' },
-      { title: 'Treatment packages', description: 'Transparent bundles by city & specialty. Add-ons like private room or ICU buffer spelled out.', cta: 'Browse packages →', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-5.webp', analytics: 'browse_packages' },
-      { title: 'Cashless concierge', description: 'We prep docs, coordinate TPA, and keep you updated on WhatsApp while you focus on recovery.', cta: 'Start cashless →', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-6.webp', analytics: 'start_cashless' },
-      { title: 'Denials & short settlements', description: 'Structured appeals, ombudsman support, and escalation templates for any shortfall.', cta: 'Get help →', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-7.webp', analytics: 'denial_help' }
+      { title: 'Know your coverage', description: 'Upload PDF → see room rent caps, co-pay, waiting periods, and non-payables in plain language.', cta: 'Decode in 60 seconds →', href: ROUTES.PATIENT_APP_URL + '?demo=1#coverage', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-1.webp', analytics: 'policy_decode' },
+      { title: 'Treatment packages', description: 'Transparent bundles by city & specialty. Add-ons like private room or ICU buffer spelled out.', cta: 'Browse packages →', href: ROUTES.PATIENT_APP_URL + '?demo=1#packages', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-5.webp', analytics: 'browse_packages' },
+      { title: 'Reimbursement concierge', description: 'We coordinate with TPA and keep you updated on WhatsApp / Mail while you recover.', cta: 'Start Reimbursement →', href: ROUTES.PATIENT_APP_URL + '?demo=1#reimbursement', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-6.webp', analytics: 'start_reimb' },
+      { title: 'Financial Support', description: 'Zero-interest EMI (3 months) or standard loan. Check eligibility in under 60 minutes.', cta: 'Check eligibility →', href: ROUTES.PATIENT_APP_URL + '?demo=1#finance', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/guide-1.webp', analytics: 'finance' },
+      { title: 'Denials & short settlements', description: 'Structured appeals, ombudsman support, escalation templates.', cta: 'Get help →', href: ROUTES.PATIENT_APP_URL + '?demo=1#denials', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-7.webp', analytics: 'denial_help' },
+      { title: 'Bills → Reimbursable check', description: 'Upload hospital bills and get a payable/non-payable split (demo).', cta: 'Try demo →', href: ROUTES.PATIENT_APP_URL + '?demo=1#bills', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/guide-2.webp', analytics: 'bill_check' },
+      { title: 'Book OPD / IP / ER', description: 'TOP specialists with hospital tariffs & coverage guardrails.', cta: 'Book now →', href: ROUTES.PATIENT_APP_URL + '?demo=1#consult', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-10.webp', analytics: 'book_consult' },
+      { title: 'Medical Support', description: 'Upload your report, get a provisional summary & direction.', cta: 'Upload report →', href: ROUTES.PATIENT_APP_URL + '?demo=1#support', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-11.webp', analytics: 'med_support' },
+      { title: 'Home visit tests (30% off)', description: 'Direct from hospital / partner labs. Slots 7am–8pm.', cta: 'Book a slot →', href: ROUTES.PATIENT_APP_URL + '?demo=1#home-tests', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-4.webp', analytics: 'home_tests' },
+      { title: 'Medicines — same day', description: 'Hospital pharmacies or top partners nearby.', cta: 'Order now →', href: ROUTES.PATIENT_APP_URL + '?demo=1#meds', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-12.webp', analytics: 'meds' }
     ],
-    // UPDATED: Iconed steps per your spec
     steps: [
-      { title: 'Register with HealthFlo', icon: 'upload',  copy: 'Choose Demo (limited access) or Pro (full concierge). Create your account.' },
-      { title: 'Upload policy & create profile', icon: 'decode', copy: 'Add dependents once; we decode coverage and set your guardrails.' },
-      { title: 'Care across India, from your palm', icon: 'cashless', copy: 'Packages, cashless helpdesk, reimbursements, pharmacy, labs, physio & more.' }
+      { icon: '🆔', title: 'Register with HealthFlo', copy: 'Pick Demo (limited access) or Pro. Create your single-user or family account.' },
+      { icon: '📄', title: 'Upload policy & create profile', copy: 'We auto-detect insurer/plan and decode caps, co-pays & waiting periods.' },
+      { icon: '📲', title: 'Care at your fingertips', copy: 'Make medical services across India accessible from one simple interface.' }
     ],
     leadTitle: 'Decode my policy with a specialist',
     leadFields: [
@@ -72,31 +79,31 @@ const personaConfig = {
     heroCta: 'Launch RCM Cockpit →',
     headerCta: 'Launch cockpit',
     solutionsTitle: 'Revenue acceleration for hospitals',
-    solutionsCopy: 'Compress AR days, expand compliant cashless, and recover denials with connected hospital playbooks.',
+    solutionsCopy: 'Compress AR days, expand compliant cashless, and recover denials.',
     quote: '“Cashless approvals moved from days to hours. The dashboard keeps finance and nursing in sync.” — RCM Head, 250-bed hospital, Chennai',
-    howCopy: 'Baseline & gap scan → launch cashless/empanelment → denial prevention + cockpit',
-    riskCopy: 'Hospitals: If we miss agreed SLAs for two weeks in a row, we fund an extra ops sprint at no cost.',
-    pricingCopy: 'Hospitals: Modular subscription (bed count + features) + optional recovery-share.',
+    howCopy: 'Baseline/gap scan → launch cashless & empanelment → denial prevention + cockpit',
+    riskCopy: 'If we miss agreed SLAs for two weeks in a row, we fund an extra ops sprint at no cost.',
+    pricingCopy: 'Modular subscription (bed count + features) + optional recovery-share.',
     pricingDetails: [
-      { title: 'Cashless Everywhere', body: 'Per-bed subscription covering intake, pre-auth prep, discharge kits, and escalation tracks.' },
-      { title: 'Denial recovery', body: 'Recovery-share aligned to targeted denial categories with 98% average recovery on scoped claims.' },
-      { title: 'RCM cockpit', body: 'Exception heatmaps, same-day %, AR reduction insights, and KPI reviews with finance weekly.' }
+      { title: 'Cashless Everywhere', body: 'Per-bed subscription covering intake, pre-auth prep, discharge kits, escalations.' },
+      { title: 'Denial recovery', body: 'Recovery-share aligned to targeted denial categories.' },
+      { title: 'RCM cockpit', body: 'Same-day %, exception heatmaps, KPI reviews with finance weekly.' }
     ],
     pillars: [
-      { title: 'Clarity before care',  copy: 'Package-first pricing and coverage decoders arm front-office teams before admission.' },
-      { title: 'Velocity when it counts', copy: 'AI-prepared pre-auths and compliant cashless pathways, even in pre-network scenarios.' },
-      { title: 'Recovery & prevention', copy: 'Denial playbooks, resubmission templates, and line-item reconciliation built into ops.' }
+      { title: 'Clarity before care',  copy: 'Package-first pricing and decoders arm front-office before admission.' },
+      { title: 'Velocity when it counts', copy: 'AI-prepared pre-auths and compliant cashless pathways.' },
+      { title: 'Recovery & prevention', copy: 'Denial playbooks, resubmission templates, line-item reconciliation.' }
     ],
     solutionsCards: [
-      { title: 'Cashless Everywhere', description: 'Managed & compliant cashless with admission-to-discharge SOPs and a 60-day post-empanelment runway.', cta: 'Enable now →', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-2.webp', analytics: 'cashless_everywhere' },
-      { title: 'Empanelment desk', description: '20+ insurers & TPAs with live trackers, SLA timers, and tariff governance built in.', cta: 'Expand network →', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-8.webp', analytics: 'empanelment' },
-      { title: 'Denial & recovery', description: 'Category playbooks, forensic audits, and recovery loops that return cash faster.', cta: 'Recover revenue →', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-9.webp', analytics: 'denial_recovery' },
-      { title: 'RCM cockpit', description: 'Pre-auth velocity, same-day %, and exception heatmaps to align finance and floor teams.', cta: 'Open dashboard →', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-3.webp', analytics: 'rcm_cockpit' }
+      { title: 'Cashless Everywhere', description: 'Managed & compliant cashless with SOPs and trackers.', cta: 'Enable now →', href: ROUTES.HOSPITAL_APP_URL + '?demo=1', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-2.webp', analytics: 'cashless_everywhere' },
+      { title: 'Empanelment desk', description: '20+ insurers & TPAs with SLA timers & tariff governance.', cta: 'Expand network →', href: ROUTES.HOSPITAL_APP_URL + '?demo=1#empanel', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-8.webp', analytics: 'empanelment' },
+      { title: 'Denial & recovery', description: 'Category playbooks, audits, recovery loops.', cta: 'Recover revenue →', href: ROUTES.HOSPITAL_APP_URL + '?demo=1#denials', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-9.webp', analytics: 'denial_recovery' },
+      { title: 'RCM cockpit', description: 'Pre-auth velocity, same-day %, exception heatmaps.', cta: 'Open dashboard →', href: ROUTES.HOSPITAL_APP_URL + '?demo=1#cockpit', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-3.webp', analytics: 'rcm_cockpit' }
     ],
     steps: [
-      { title: 'Baseline & gap scan', icon: 'scan', copy: 'Assess AR days, denial mix, and cashless readiness with our ops specialists.' },
-      { title: 'Launch cashless & empanelment', icon: 'launch', copy: 'Deploy SOPs, trackers, and escalation guards across every desk.' },
-      { title: 'Denial prevention + cockpit', icon: 'prevent', copy: 'Daily insights and recovery loops keep finance, nursing, and ops aligned.' }
+      { icon: '🧭', title: 'Baseline & gap scan', copy: 'Assess AR days, denial mix, and cashless readiness.' },
+      { icon: '🚀', title: 'Launch cashless & empanelment', copy: 'Deploy SOPs, trackers, escalations across desks.' },
+      { icon: '📊', title: 'Denial prevention + cockpit', copy: 'Daily insights keep finance, nursing, ops aligned.' }
     ],
     leadTitle: 'Unlock cashless velocity',
     leadFields: [
@@ -116,31 +123,31 @@ const personaConfig = {
     heroCta: 'Design My Employee Plan →',
     headerCta: 'Design my plan',
     solutionsTitle: 'Corporate healthcare your team actually uses',
-    solutionsCopy: 'Design plans, issue e-cards, and support employees with concierge guidance from day one.',
+    solutionsCopy: 'Design plans, issue e-cards, and support employees with concierge guidance.',
     quote: '“E-cards in minutes. Employees actually used benefits.” — HR Lead, 1,200 staff, Bengaluru',
     howCopy: 'Design plan → enroll & issue e-cards → concierge & analytics',
-    riskCopy: 'Employers: If e-cards aren’t issued within 48h of clean data, first-month platform fee is waived.',
-    pricingCopy: 'Employers: Broker-assisted plan + platform per-employee; wellness add-ons.',
+    riskCopy: 'If e-cards aren’t issued within 48h of clean data, first-month platform fee is waived.',
+    pricingCopy: 'Broker-assisted plan + platform per-employee; wellness add-ons.',
     pricingDetails: [
-      { title: 'Plan design', body: 'Model benefits by census & budget with maternity, OPD, and parent riders in one workspace.' },
-      { title: 'Cashless helpdesk', body: 'Live pre-auth support prevents shortfalls and keeps HR updates in one trail.' },
-      { title: 'HR analytics', body: 'Utilisation trends, top claim categories, SLA tracking, and adoption insights (78% avg.).' }
+      { title: 'Plan design', body: 'Model benefits by census & budget with maternity, OPD, and parent riders.' },
+      { title: 'Cashless helpdesk', body: 'Live pre-auth support prevents shortfalls and confusion.' },
+      { title: 'HR analytics', body: 'Utilization trends, top claim categories, SLA tracking.' }
     ],
     pillars: [
-      { title: 'Clarity before care',  copy: 'Plan comparisons, coverage decoders, and census modelling for leadership sign-off.' },
-      { title: 'Velocity when it counts', copy: 'Same-day e-cards, concierge guidance, and WhatsApp updates to avoid surprises.' },
-      { title: 'Recovery & prevention', copy: 'Denial playbooks, reimbursement templates, and renewal-ready analytics.' }
+      { title: 'Clarity before care',  copy: 'Plan comparisons & coverage decoders for leadership sign-off.' },
+      { title: 'Velocity when it counts', copy: 'Same-day e-cards, concierge guidance, WhatsApp updates.' },
+      { title: 'Recovery & prevention', copy: 'Reimbursement templates & renewal-ready analytics.' }
     ],
     solutionsCards: [
-      { title: 'Plan design', description: 'Model benefits by census & budget. Layer maternity, OPD, and parent riders instantly.', cta: 'Design my plan →', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/university-computers.webp', analytics: 'plan_design' },
-      { title: 'Seamless enrollment', description: 'Bulk import employees, push e-cards in minutes, and sync with HRIS/Payroll.', cta: 'Onboard fast →', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/Clinical%20knowledge%20hub%20bg.webp', analytics: 'enrollment' },
-      { title: 'Cashless helpdesk', description: 'Live pre-auth guidance and WhatsApp updates prevent shortfalls and confusion.', cta: 'Protect employees →', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-12.webp', analytics: 'cashless_helpdesk' },
-      { title: 'HR analytics', description: 'Utilisation trends, top claim categories, SLA tracking, and wellness nudges.', cta: 'See HR dashboard →', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/guide-3.webp', analytics: 'hr_analytics' }
+      { title: 'Plan design', description: 'Model census & riders instantly.', cta: 'Design my plan →', href: ROUTES.EMPLOYER_APP_URL + '?demo=1#plan', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/university-computers.webp', analytics: 'plan_design' },
+      { title: 'Seamless enrollment', description: 'Bulk import employees, push e-cards in minutes.', cta: 'Onboard fast →', href: ROUTES.EMPLOYER_APP_URL + '?demo=1#enroll', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/Clinical%20knowledge%20hub%20bg.webp', analytics: 'enrollment' },
+      { title: 'Cashless helpdesk', description: 'Live pre-auth guidance & updates.', cta: 'Protect employees →', href: ROUTES.EMPLOYER_APP_URL + '?demo=1#helpdesk', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-12.webp', analytics: 'cashless_helpdesk' },
+      { title: 'HR analytics', description: 'Utilisation trends, SLA tracking, adoption.', cta: 'See dashboard →', href: ROUTES.EMPLOYER_APP_URL + '?demo=1#analytics', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/guide-3.webp', analytics: 'hr_analytics' }
     ],
     steps: [
-      { title: 'Design plan', icon: 'launch', copy: 'Model census, riders, and budgets with actuarial guardrails.' },
-      { title: 'Enroll & issue e-cards', icon: 'upload', copy: 'Bulk import employees, auto-issue cards, and automate communication.' },
-      { title: 'Concierge & analytics', icon: 'prevent', copy: 'Cashless helpdesk plus dashboards for utilisation anomalies and renewal prep.' }
+      { icon: '🧮', title: 'Design plan', copy: 'Model census, riders, and budgets with guardrails.' },
+      { icon: '🪪', title: 'Enroll & issue e-cards', copy: 'Bulk import, auto-issue, and automate comms.' },
+      { icon: '📈', title: 'Concierge & analytics', copy: 'Helpdesk + dashboards for renewal prep.' }
     ],
     leadTitle: 'Design a plan employees will love',
     leadFields: [
@@ -157,7 +164,7 @@ const personaConfig = {
   }
 };
 
-/* Elements */
+/* ---------- Elements ---------- */
 const elements = {
   body: document.body,
   docEl: document.documentElement,
@@ -174,6 +181,7 @@ const elements = {
   packagesGrid: $('[data-package-grid]'),
   howCopy: $('[data-how-copy]'),
   stepsHost: $('[data-steps]'),
+  howProgress: $('.how-progress'),
   pricingCopy: $('[data-pricing-copy]'),
   pricingGrid: $('[data-pricing-grid]'),
   riskCopy: $('[data-risk-copy]'),
@@ -196,9 +204,18 @@ const elements = {
   copilotOutput: $('[data-copilot-output]'),
   themeButtons: $$('[data-theme-choice]'),
   heroCanvas: $('#heroCanvas'),
+  /* Ticker */
+  tickerRoot: $('#ticker'),
+  tickerTrack: $('[data-ticker-track]'),
+  tickerToggle: $('[data-ticker-toggle]'),
+  /* Directory */
+  dirGrid: $('[data-dir-grid]'),
+  dirModal: $('[data-dir-modal]'),
+  dirTitle: $('[data-dir-title]'),
+  dirMenu: $('[data-dir-menu]')
 };
 
-/* Analytics stub */
+/* ---------- Analytics stub ---------- */
 const analytics = {
   track: (event, payload = {}) => {
     window.dataLayer = window.dataLayer || [];
@@ -208,9 +225,9 @@ const analytics = {
   }
 };
 
-/* Theme */
+/* ---------- Theme ---------- */
 function setTheme(theme, { track = true } = {}) {
-  if (!theme || !personaConfig[state.persona]) return;
+  if (!theme) return;
   state.theme = theme;
   elements.docEl.dataset.theme = theme;
   localStorage.setItem('healthfloTheme', theme);
@@ -218,7 +235,7 @@ function setTheme(theme, { track = true } = {}) {
   if (track) analytics.track('theme_changed', { theme });
 }
 
-/* Persona */
+/* ---------- Persona ---------- */
 function setPersona(persona, { skipTracking = false } = {}) {
   if (!personaConfig[persona]) persona = 'patient';
   state.persona = persona;
@@ -235,22 +252,21 @@ function setPersona(persona, { skipTracking = false } = {}) {
   renderPersonaContent();
 }
 
-/* Persona-aware rendering */
+/* ---------- Rendering ---------- */
 function renderPersonaContent() {
   const config = personaConfig[state.persona];
   if (!config) return;
 
-  if (elements.heroPrimary)  elements.heroPrimary.textContent = config.heroCta;
-  if (elements.headerPrimary) elements.headerPrimary.textContent = config.headerCta;
-  if (elements.quote)        elements.quote.textContent = config.quote;
-  if (elements.solutionTitle) elements.solutionTitle.textContent = config.solutionsTitle;
-  if (elements.solutionCopy)  elements.solutionCopy.textContent = config.solutionsCopy;
-  if (elements.howCopy)       elements.howCopy.textContent = config.howCopy || config.steps.map((s) => s.title).join(' → ');
-  if (elements.pricingCopy)   elements.pricingCopy.textContent = config.pricingCopy;
-  if (elements.riskCopy)      elements.riskCopy.textContent = config.riskCopy;
-  if (elements.leadTitle)     elements.leadTitle.textContent = config.leadTitle;
-  if (elements.copilotCopy)   elements.copilotCopy.textContent = config.copilotCopy;
-
+  if (elements.heroPrimary)    elements.heroPrimary.textContent = config.heroCta;
+  if (elements.headerPrimary)  elements.headerPrimary.textContent = config.headerCta;
+  if (elements.quote)          elements.quote.textContent = config.quote;
+  if (elements.solutionTitle)  elements.solutionTitle.textContent = config.solutionsTitle;
+  if (elements.solutionCopy)   elements.solutionCopy.textContent = config.solutionsCopy;
+  if (elements.howCopy)        elements.howCopy.textContent = config.howCopy || config.steps.map((s) => s.title).join(' → ');
+  if (elements.pricingCopy)    elements.pricingCopy.textContent = config.pricingCopy;
+  if (elements.riskCopy)       elements.riskCopy.textContent = config.riskCopy;
+  if (elements.leadTitle)      elements.leadTitle.textContent = config.leadTitle;
+  if (elements.copilotCopy)    elements.copilotCopy.textContent = config.copilotCopy;
   if (elements.leadToggleLabel) elements.leadToggleLabel.textContent = config.leadToggleLabel || 'Get started';
 
   renderPillars(config.pillars);
@@ -261,10 +277,10 @@ function renderPersonaContent() {
   renderCopilot(config.copilotPrompts);
   updatePackagesVisibility(config.showPackages);
   updateWhatsapp(config.whatsappText);
+  renderDirectory(); // hospitals directory always visible
   observeRevealElements();
 }
 
-/* Sections */
 function renderPillars(pillars = []) {
   if (!elements.pillarsHost) return;
   elements.pillarsHost.innerHTML = '';
@@ -290,7 +306,7 @@ function renderSolutions(cards = [], showPackages = false) {
         <h3>${card.title}</h3>
         <p>${card.description}</p>
       </div>
-      <button class="btn btn-ghost" type="button" data-card-cta data-analytics="${card.analytics}">${card.cta}</button>
+      <a class="btn btn-ghost" ${card.href ? `href="${card.href}"` : ''} data-card-cta data-analytics="${card.analytics}">${card.cta}</a>
     `;
     elements.solutionGrid.appendChild(article);
   });
@@ -324,34 +340,26 @@ function renderPackages() {
         <span class="price">Lead price: ${price}</span>
         <div class="tags">${tags.filter(Boolean).map((tag) => `<span class="tag">${tag}</span>`).join('')}</div>
         <p class="notes">${pkg.notes || ''}</p>
-        <button class="btn btn-primary" type="button" data-cta="package-start" data-package-id="${pkg.id}">Start cashless →</button>
+        <a class="btn btn-primary" href="${ROUTES.PATIENT_APP_URL}?demo=1#cashless" data-cta="package-start" data-package-id="${pkg.id}">Start cashless →</a>
       </div>
     `;
     elements.packagesGrid.appendChild(card);
   });
 }
 
-/* REPLACED: richer steps with icons + animations */
 function renderSteps(steps = []) {
   if (!elements.stepsHost) return;
   elements.stepsHost.innerHTML = '';
-
-  steps.forEach((step, idx) => {
+  steps.forEach((step) => {
     const li = document.createElement('li');
-    li.className = 'step-card step-card--how';
+    li.className = 'step-card';
     li.setAttribute('data-reveal', '');
-    li.style.setProperty('--i', String(idx)); // stagger
     li.innerHTML = `
-      <div class="step-icon">${iconSVG(step.icon)}</div>
-      <div class="step-copy">
-        <h3>${step.title}</h3>
-        <p>${step.copy}</p>
-      </div>
+      <div class="step-icon">${step.icon || '✨'}</div>
+      <div><h3>${step.title}</h3><p>${step.copy}</p></div>
     `;
     elements.stepsHost.appendChild(li);
   });
-
-  initHowUX(); // animations, progress, tilt
 }
 
 function renderPricing(items = []) {
@@ -413,7 +421,7 @@ function renderCopilot(prompts = []) {
 function updatePackagesVisibility(show) {
   if (!elements.packagesBlock) return;
   elements.packagesBlock.hidden = !show;
-  elements.packagesBlock.setAttribute('aria-hidden', show ? 'false' : 'true');
+  elements.packagesBlock.setAttribute('aria-hidden', show ? 'true' : 'false'); // visually shown via parent render
 }
 
 function updateWhatsapp(text) {
@@ -423,9 +431,7 @@ function updateWhatsapp(text) {
       analytics.track('whatsapp_optin', { role: state.persona });
       const personalized = personalizeWhatsapp(text);
       const encoded = encodeURIComponent(personalized);
-      window.dispatchEvent(new CustomEvent('whatsapp_optin', { detail: { role: state.persona } }));
-      const url = `https://wa.me/919940207670?text=${encoded}`;
-      window.open(url, '_blank', 'noopener');
+      window.open(`https://wa.me/919940207670?text=${encoded}`, '_blank', 'noopener');
     };
   });
 }
@@ -439,42 +445,60 @@ function personalizeWhatsapp(template) {
   });
 }
 
-/* THEME + NAV */
-function initTheme() {
-  const stored = localStorage.getItem('healthfloTheme');
-  const theme = stored || state.theme;
-  setTheme(theme, { track: false });
-  elements.themeButtons.forEach((btn) => btn.addEventListener('click', () => setTheme(btn.dataset.themeChoice)));
-}
-function initPersona() {
-  const params = new URLSearchParams(window.location.search);
-  const fromQuery = (params.get('utm_persona') || params.get('persona') || '').toLowerCase();
-  const stored = localStorage.getItem('healthfloPersona');
-  const storedPersona = (stored || '').toLowerCase();
-  const persona = personaConfig[fromQuery] ? fromQuery : (personaConfig[storedPersona] ? storedPersona : 'patient');
-  setPersona(persona, { skipTracking: true });
-  renderPersonaContent();
-  elements.personaButtons.forEach((btn) => btn.addEventListener('click', () => setPersona(btn.dataset.persona)));
-}
-function initNav() {
-  const nav = $('.primary-nav');
-  const navToggle = $('.nav-toggle');
-  if (!nav || !navToggle) return;
-  navToggle.addEventListener('click', () => {
-    const isOpen = nav.classList.toggle('is-open');
-    navToggle.classList.toggle('is-open', isOpen);
-    navToggle.setAttribute('aria-expanded', String(isOpen));
-  });
-  $$('a[href^="#"]').forEach((link) => {
-    link.addEventListener('click', () => {
-      nav.classList.remove('is-open');
-      navToggle.classList.remove('is-open');
-      navToggle.setAttribute('aria-expanded', 'false');
-    });
-  });
+/* ---------- Directory (Zomato-style) ---------- */
+const hospitals = [
+  { id:'apollo',  name:'Apollo Hospitals, Greams Road', city:'Chennai',   img:'https://images.healthflo.org/hospitals/apollo-chennai-knee.jpg',
+    tags:['Orthopedics','Cardio','Emergency'], menu:[
+      { name:'Total Knee Replacement (Unilateral)', price:'₹1,85,000', meta:'Twin sharing • 2 bed-days' },
+      { name:'Angiography',                         price:'₹18,000',   meta:'Daycare' }
+    ]},
+  { id:'manipal', name:'Manipal Hospital, Old Airport Rd', city:'Bengaluru', img:'https://images.healthflo.org/hospitals/manipal-blr-chole.jpg',
+    tags:['General Surgery','Neuro'], menu:[
+      { name:'Laparoscopic Cholecystectomy', price:'₹68,000', meta:'1 bed-day (twin)' }
+    ]},
+  { id:'aster',   name:'Aster Prime', city:'Hyderabad', img:'https://images.healthflo.org/hospitals/aster-hyd-obs.jpg',
+    tags:['Obstetrics','NICU'], menu:[
+      { name:'Normal Delivery', price:'₹52,000', meta:'Mother + newborn • 2D' }
+    ]}
+];
+
+function renderDirectory() {
+  if (!elements.dirGrid) return;
+  elements.dirGrid.innerHTML = hospitals.map(h=>`
+    <article class="dir-card" data-reveal>
+      <img alt="${h.name}" src="${h.img}">
+      <div class="dir-body">
+        <h4 style="margin:6px 0">${h.name}</h4>
+        <small style="color:var(--color-subtle)">${h.city}</small>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">
+          ${h.tags.map(t=>`<span class="dir-tag">${t}</span>`).join('')}
+        </div>
+        <div class="dir-actions">
+          <button class="btn btn-primary" data-open-menu="${h.id}">View menu</button>
+          <a class="btn" href="${ROUTES.PATIENT_APP_URL}?demo=1#cashless">Start cashless</a>
+          <a class="btn" href="${ROUTES.PATIENT_APP_URL}?demo=1#ambulance">Ambulance</a>
+        </div>
+      </div>
+    </article>
+  `).join('');
 }
 
-/* ======= Expandable Lead Panel ======= */
+/* Modal handling */
+function openMenu(id) {
+  const h = hospitals.find(x=>x.id===id); if (!h || !elements.dirModal) return;
+  elements.dirTitle.textContent = `${h.name} — Packages`;
+  elements.dirMenu.innerHTML = h.menu.map(m => `
+    <div class="menu-row">
+      <div><strong>${m.name}</strong><br><small style="color:var(--color-subtle)">${m.meta||''}</small></div>
+      <div class="menu-price">${m.price}</div>
+      <a class="btn btn-primary" href="${ROUTES.PATIENT_APP_URL}?demo=1#cashless">Select</a>
+    </div>
+  `).join('');
+  elements.dirModal.hidden = false;
+}
+function closeMenu() { if (elements.dirModal) elements.dirModal.hidden = true; }
+
+/* ---------- Lead Panel ---------- */
 function openLeadPanel({ focusFirstField = true, track = true } = {}) {
   if (!elements.leadAside || !elements.leadPanel || !elements.leadToggle) return;
   elements.leadAside.classList.add('is-open');
@@ -493,60 +517,21 @@ function closeLeadPanel({ track = true } = {}) {
   elements.leadAside.classList.remove('is-open');
   elements.leadAside.classList.add('is-collapsed');
   elements.leadToggle.setAttribute('aria-expanded', 'false');
-  setTimeout(() => {
-    if (!elements.leadAside.classList.contains('is-open')) elements.leadPanel.hidden = true;
-  }, 360);
+  setTimeout(() => { if (!elements.leadAside.classList.contains('is-open')) elements.leadPanel.hidden = true; }, 360);
   localStorage.setItem('healthfloLeadOpen', '0');
   if (track) analytics.track('lead_panel_closed', { role: state.persona });
 }
-function toggleLeadPanel() {
-  if (elements.leadAside?.classList.contains('is-open')) closeLeadPanel({ track: true });
-  else openLeadPanel({ track: true });
-}
+function toggleLeadPanel() { (elements.leadAside?.classList.contains('is-open')) ? closeLeadPanel() : openLeadPanel(); }
 
-function initLeadToggle() {
-  if (!elements.leadToggle || !elements.leadAside) return;
-  const persisted = localStorage.getItem('healthfloLeadOpen');
-  if (persisted === '1') { closeLeadPanel({ track: false }); } else { closeLeadPanel({ track: false }); }
-  elements.leadToggle.addEventListener('click', toggleLeadPanel);
-
-  document.addEventListener('keydown', (e) => {
-    const tag = (e.target?.tagName || '').toLowerCase();
-    if (tag === 'input' || tag === 'textarea') return;
-    if (e.key.toLowerCase() === 'l') toggleLeadPanel();
-    if (e.key === 'Escape' && elements.leadAside.classList.contains('is-open')) closeLeadPanel();
-  });
-
-  $$('a[href="#lead"]').forEach((a) => {
-    a.addEventListener('click', (e) => {
-      e.preventDefault();
-      openLeadPanel();
-      elements.leadAside.scrollIntoView({ behavior: 'smooth', block: 'end' });
-    });
-  });
-
-  if (location.hash === '#lead') openLeadPanel({ focusFirstField: false });
-}
-
-/* Lead form */
+/* Lead Form */
 function initLeadForm() {
   if (!elements.leadForm) return;
   elements.leadForm.addEventListener('submit', (event) => {
     event.preventDefault();
     const formData = new FormData(elements.leadForm);
-    const payload = { role: state.persona, fields: Array.from(formData.keys()) };
-    analytics.track('lead_submitted', payload);
-    window.dispatchEvent(new CustomEvent('lead_submitted', { detail: payload }));
+    analytics.track('lead_submitted', { role: state.persona, fields: Array.from(formData.keys()) });
     elements.leadForm.reset();
-    const toast = document.createElement('div');
-    toast.className = 'copilot-output';
-    toast.style.position = 'fixed';
-    toast.style.right = '24px';
-    toast.style.bottom = '24px';
-    toast.style.maxWidth = '320px';
-    toast.innerHTML = '<strong>Thanks!</strong> A specialist will reach out shortly.';
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 3200);
+    toast('<strong>Thanks!</strong> A specialist will reach out shortly.');
     closeLeadPanel();
   });
   const altButton = elements.leadForm.querySelector('[data-cta="playbook"]');
@@ -560,26 +545,14 @@ function initLeadForm() {
   }
 }
 
-/* CTA analytics + ripple targets */
-function initCTAs() {
-  document.addEventListener('click', (event) => {
-    const target = event.target.closest('[data-cta], [data-card-cta]');
-    if (!target) return;
-    const label = target.dataset.cta || target.dataset.analytics || target.textContent.trim();
-    const payload = { role: state.persona, cta_label: label };
-    analytics.track('cta_clicked', payload);
-  });
-}
-
-/* Copilot */
+/* ---------- Copilot ---------- */
 function initCopilot() {
   if (!elements.copilotBtn || !elements.copilotModal) return;
   const open = () => { elements.copilotModal.hidden = false; analytics.track('copilot_opened', { role: state.persona }); };
   const close = () => { elements.copilotModal.hidden = true; };
   elements.copilotBtn.addEventListener('click', open);
   elements.copilotClose.forEach((btn) => btn.addEventListener('click', close));
-  elements.copilotModal.addEventListener('click', (event) => { if (event.target === elements.copilotModal) close(); });
-  document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && !elements.copilotModal.hidden) close(); });
+  elements.copilotModal.addEventListener('click', (event) => { if (event.target.dataset?.copilotClose !== undefined || event.target === elements.copilotModal) close(); });
   elements.copilotChips.addEventListener('click', (event) => {
     const chip = event.target.closest('.copilot-chip'); if (!chip) return;
     elements.copilotChips.querySelectorAll('.copilot-chip').forEach((btn) => btn.classList.remove('is-active'));
@@ -591,7 +564,7 @@ function initCopilot() {
   });
 }
 
-/* Ripple */
+/* ---------- Ripple (nice clicks) ---------- */
 function initRipple() {
   document.addEventListener('pointerdown', (event) => {
     const target = event.target.closest('.btn, .persona-option, .copilot-chip, [data-theme-choice], .lead-toggle');
@@ -610,7 +583,7 @@ function initRipple() {
   });
 }
 
-/* Reveal on scroll */
+/* ---------- Reveal on scroll ---------- */
 let revealObserver;
 function initReveal() {
   revealObserver = new IntersectionObserver((entries) => {
@@ -628,15 +601,15 @@ function observeRevealElements() {
   $$('[data-reveal]:not(.is-visible)').forEach((el) => revealObserver.observe(el));
 }
 
-/* Hero canvas */
+/* ---------- Hero canvas (soft glow) ---------- */
 function initCanvas() {
-  const canvas = $('#heroCanvas');
+  const canvas = elements.heroCanvas;
   if (!canvas) return;
   const context = canvas.getContext('2d');
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (prefersReduced) { canvas.style.display = 'none'; return; }
-  let width = canvas.width = canvas.offsetWidth * window.devicePixelRatio;
-  let height = canvas.height = canvas.offsetHeight * window.devicePixelRatio;
+  let width = canvas.width = canvas.offsetWidth * devicePixelRatio;
+  let height = canvas.height = canvas.offsetHeight * devicePixelRatio;
   const particles = Array.from({ length: 90 }, () => createParticle(width, height));
 
   function createParticle(w, h) {
@@ -658,106 +631,137 @@ function initCanvas() {
   function wrap(p, w, h) { if (p.x < -p.orbit) p.x = w + p.orbit; if (p.x > w + p.orbit) p.x = -p.orbit; if (p.y < -p.orbit) p.y = h + p.orbit; if (p.y > h + p.orbit) p.y = -p.orbit; }
   let animationFrame = requestAnimationFrame(draw);
   window.addEventListener('resize', () => {
-    width = canvas.width = canvas.offsetWidth * window.devicePixelRatio;
-    height = canvas.height = canvas.offsetHeight * window.devicePixelRatio;
+    width = canvas.width = canvas.offsetWidth * devicePixelRatio;
+    height = canvas.height = canvas.offsetHeight * devicePixelRatio;
   });
 }
 
-/* HOW: reveal on view, 3D tilt on hover, scroll-linked progress */
-function initHowUX() {
-  const cards = $$('.step-card--how');
-  if (!cards.length) return;
-
-  // In-view stagger reveal
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach((e) => {
-      if (e.isIntersecting) {
-        e.target.classList.add('is-in');
-        obs.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.25 });
-  cards.forEach(c => obs.observe(c));
-
-  // 3D tilt micro-interaction
-  cards.forEach((card) => {
-    card.addEventListener('pointermove', (e) => {
-      const r = card.getBoundingClientRect();
-      const dx = (e.clientX - (r.left + r.width/2)) / r.width;   // -0.5..0.5
-      const dy = (e.clientY - (r.top + r.height/2)) / r.height;  // -0.5..0.5
-      card.style.setProperty('--ry', `${dx * 6}deg`);
-      card.style.setProperty('--rx', `${-dy * 6}deg`);
-    });
-    card.addEventListener('pointerleave', () => {
-      card.style.setProperty('--ry', `0deg`);
-      card.style.setProperty('--rx', `0deg`);
-    });
-  });
-
-  // Scroll progress for "How it works"
-  const bar = $('.how-progress');
-  const section = $('#how');
-  const onScroll = () => {
-    if (!section || !bar) return;
-    const rect = section.getBoundingClientRect();
-    const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-    const start = Math.min(vh, Math.max(0, vh - rect.top));
-    const total = rect.height + vh;
-    const progress = Math.max(0, Math.min(1, start / total));
-    bar.style.width = `${progress * 100}%`;
-  };
-  onScroll();
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll);
-}
-
-/* NEW: Infinite ticker init (areas we operate) */
+/* ---------- Ticker (infinite loop + pause) ---------- */
 function initTicker() {
-  const track = $('[data-ticker-track]');
-  if (!track) return;
-  const viewport = track.parentElement;
-  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (prefersReduced) { track.style.animation = 'none'; return; }
+  const root = elements.tickerRoot;
+  const track = elements.tickerTrack;
+  if (!root || !track) return;
+  // Duplicate items so it looks infinite
+  track.innerHTML = track.innerHTML + track.innerHTML + track.innerHTML;
+  const totalWidth = Array.from(track.children).reduce((w, el) => w + el.getBoundingClientRect().width + 28, 0);
+  // Inject keyframes for this width
+  const dur = Math.max(20, Math.round(totalWidth / 100)); // seconds
+  const style = document.createElement('style');
+  style.textContent = `
+    [data-ticker-track]{ animation: tickerScroll ${dur}s linear infinite; }
+    @keyframes tickerScroll { from { transform: translateX(0) } to { transform: translateX(-${totalWidth/3}px) } }
+  `;
+  document.head.appendChild(style);
 
-  // Duplicate content until it comfortably exceeds 2x viewport width for a seamless loop
-  let safety = 0;
-  const original = track.innerHTML;
-  while (track.scrollWidth < (viewport.offsetWidth * 2) && safety < 20) {
-    track.insertAdjacentHTML('beforeend', original);
-    safety++;
-  }
-
-  // Duration based on content width for consistent speed (~90px/s)
-  const pxPerSec = 90;
-  const duration = track.scrollWidth / pxPerSec;
-  track.style.setProperty('--ticker-anim-duration', `${duration}s`);
-
-  // Pause/Play control
-  const toggle = $('[data-ticker-toggle]');
-  const setBtn = (paused) => {
-    if (!toggle) return;
-    toggle.textContent = paused ? '▶' : '❚❚';
-    toggle.setAttribute('aria-label', paused ? 'Play ticker' : 'Pause ticker');
-  };
-  if (toggle) {
-    toggle.addEventListener('click', () => {
-      track.classList.toggle('is-paused');
-      setBtn(track.classList.contains('is-paused'));
-    });
-  }
-
-  // Pause on hover/focus
-  viewport.addEventListener('mouseenter', () => { track.classList.add('is-paused'); setBtn(true); });
-  viewport.addEventListener('mouseleave', () => { track.classList.remove('is-paused'); setBtn(false); });
-  viewport.addEventListener('focusin', () => { track.classList.add('is-paused'); setBtn(true); });
-  viewport.addEventListener('focusout', () => { track.classList.remove('is-paused'); setBtn(false); });
+  // Pause toggle
+  elements.tickerToggle?.addEventListener('click', () => {
+    root.classList.toggle('is-paused');
+    elements.tickerToggle.textContent = root.classList.contains('is-paused') ? '▶' : '❚❚';
+    elements.tickerToggle.setAttribute('aria-label', root.classList.contains('is-paused') ? 'Play ticker' : 'Pause ticker');
+  });
 }
 
-/* Boot */
+/* ---------- Nav ---------- */
+function initNav() {
+  const nav = $('.primary-nav');
+  const navToggle = $('.nav-toggle');
+  if (!nav || !navToggle) return;
+  navToggle.addEventListener('click', () => {
+    const isOpen = nav.classList.toggle('is-open');
+    navToggle.classList.toggle('is-open', isOpen);
+    navToggle.setAttribute('aria-expanded', String(isOpen));
+  });
+  $$('a[href^="#"]').forEach((link) => {
+    link.addEventListener('click', () => {
+      nav.classList.remove('is-open');
+      navToggle.classList.remove('is-open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+}
+
+/* ---------- Registration Floaters ---------- */
+function initFloaters() {
+  document.addEventListener('click', (e) => {
+    const el = e.target.closest('[data-floater]');
+    if (!el) return;
+    const type = el.dataset.floater;
+    if (type === 'patient')  location.href = ROUTES.PATIENT_REG_URL;
+    if (type === 'hospital') location.href = ROUTES.HOSPITAL_REG_URL;
+    if (type === 'employer') location.href = ROUTES.EMPLOYER_REG_URL;
+  });
+}
+
+/* ---------- CTA analytics ---------- */
+function initCTAs() {
+  document.addEventListener('click', (event) => {
+    const target = event.target.closest('[data-cta], [data-card-cta]');
+    if (!target) return;
+    const label = target.dataset.cta || target.dataset.analytics || target.textContent.trim();
+    analytics.track('cta_clicked', { role: state.persona, cta_label: label });
+  });
+
+  // Directory buttons
+  elements.dirGrid?.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-open-menu]');
+    if (btn) openMenu(btn.getAttribute('data-open-menu'));
+  });
+  elements.dirModal?.addEventListener('click', (e) => {
+    if (e.target.hasAttribute('data-dir-close')) closeMenu();
+  });
+}
+
+/* ---------- Lead toggle ---------- */
+function initLeadToggle() {
+  if (!elements.leadToggle || !elements.leadAside) return;
+  // Always start closed per requirement
+  closeLeadPanel({ track: false });
+  // Toggle click
+  elements.leadToggle.addEventListener('click', toggleLeadPanel);
+  // Keyboard
+  document.addEventListener('keydown', (e) => {
+    const tag = (e.target?.tagName || '').toLowerCase();
+    if (tag === 'input' || tag === 'textarea') return;
+    if (e.key.toLowerCase() === 'l') toggleLeadPanel();
+    if (e.key === 'Escape' && elements.leadAside.classList.contains('is-open')) closeLeadPanel();
+  });
+  // Any link to #lead should open it
+  $$('a[href="#lead"]').forEach((a) => a.addEventListener('click', (e) => { e.preventDefault(); openLeadPanel(); elements.leadAside.scrollIntoView({ behavior: 'smooth', block: 'end' }); }));
+  // If URL has #lead open it
+  if (location.hash === '#lead') openLeadPanel({ focusFirstField: false });
+}
+
+/* ---------- WhatsApp text + Persona buttons ---------- */
+function initPersona() {
+  const params = new URLSearchParams(window.location.search);
+  const fromQuery = (params.get('utm_persona') || params.get('persona') || '').toLowerCase();
+  const stored = (localStorage.getItem('healthfloPersona') || '').toLowerCase();
+  const persona = personaConfig[fromQuery] ? fromQuery : (personaConfig[stored] ? stored : 'patient');
+  setPersona(persona, { skipTracking: true });
+  renderPersonaContent();
+  elements.personaButtons.forEach((btn) => btn.addEventListener('click', () => setPersona(btn.dataset.persona)));
+}
+
+/* ---------- Toast ---------- */
+function toast(html) {
+  const d = document.createElement('div');
+  d.className = 'copilot-output';
+  d.style.position = 'fixed';
+  d.style.right = '24px';
+  d.style.bottom = '24px';
+  d.style.maxWidth = '320px';
+  d.innerHTML = html;
+  document.body.appendChild(d);
+  setTimeout(() => d.remove(), 3200);
+}
+
+/* ---------- Boot ---------- */
 function boot() {
-  initTheme();
-  initPersona();
+  setTheme(state.theme, { track: false });
+  elements.themeButtons.forEach((btn) => btn.addEventListener('click', () => setTheme(btn.dataset.themeChoice)));
+
   initNav();
+  initPersona();
   initLeadToggle();
   initLeadForm();
   initCTAs();
@@ -765,8 +769,11 @@ function boot() {
   initRipple();
   initReveal();
   initCanvas();
-  initTicker();           // NEW: run the infinite ticker
-  renderPersonaContent();
+  initTicker();
+  initFloaters();
+
+  // Directory modal close buttons
+  $$('[data-dir-close]').forEach(b => b.addEventListener('click', closeMenu));
 }
 
 document.addEventListener('DOMContentLoaded', boot);
