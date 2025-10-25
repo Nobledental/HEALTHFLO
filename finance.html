@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HealthFlo — Finance & EMI Assistance</title>
+  <meta name="description" content="Upload KYC & policy docs, check CIBIL, and choose Zero-interest (3 months, for policy holders) or standard EMI with interest." />
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="finance.css"/>
+</head>
+<body>
+  <a class="skip-link" href="#finForm">Skip to finance form</a>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="index.html">
+        <span class="logo-dot" aria-hidden="true"></span>
+        <span class="logo-text">HealthFlo</span>
+      </a>
+      <nav class="primary-nav" aria-label="Primary">
+        <ul>
+          <li><a href="packages.html">Treatment Packages</a></li>
+          <li><a href="#finForm">Finance</a></li>
+          <li><a href="reimbursement.html">Reimbursement</a></li>
+        </ul>
+      </nav>
+      <div class="view-controls">
+        <button id="themeToggle" class="btn btn-ghost btn-icon" aria-label="Toggle theme">🌗</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" aria-labelledby="heroTitle">
+    <div class="container">
+      <h1 id="heroTitle">Finance & EMI Assistance</h1>
+      <p class="sub">
+        Upload your KYC & policy docs so we can check your CIBIL score. If you’re a health insurance policy holder,
+        you can opt for <strong>Zero-interest EMI for 3 months</strong>; or choose standard EMI with interest.
+      </p>
+
+      <div class="hero-cards">
+        <article class="hcard">
+          <div class="hcard__icon">🆔</div>
+          <div class="hcard__body">
+            <h3>KYC + Address</h3>
+            <p class="muted">Aadhaar, PAN, permanent & current address to verify identity.</p>
+          </div>
+        </article>
+        <article class="hcard">
+          <div class="hcard__icon">🏥</div>
+          <div class="hcard__body">
+            <h3>Policy Linked</h3>
+            <p class="muted">Zero-interest 3-month EMI available for active policy holders.</p>
+          </div>
+        </article>
+        <article class="hcard">
+          <div class="hcard__icon">📈</div>
+          <div class="hcard__body">
+            <h3>CIBIL Check</h3>
+            <p class="muted">We’ll run a soft pull & guide you on the best lending option.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Form -->
+  <main class="wrap">
+    <div class="container">
+      <form id="finForm" class="hf-form" novalidate>
+        <!-- Applicant -->
+        <div class="card">
+          <div class="card__head">
+            <h2>Applicant Details</h2>
+            <p class="muted">Registered mobile & email will be used for CIBIL verification.</p>
+          </div>
+          <div class="grid-3">
+            <div class="field">
+              <label for="fullName">Full name <span class="req">*</span></label>
+              <input id="fullName" class="input" placeholder="Patient / Applicant name" required />
+            </div>
+            <div class="field">
+              <label for="regMobile">Registered mobile number <span class="req">*</span></label>
+              <input id="regMobile" class="input" inputmode="numeric" maxlength="10" placeholder="10-digit" required />
+            </div>
+            <div class="field">
+              <label for="regEmail">Registered email <span class="req">*</span></label>
+              <input id="regEmail" class="input" type="email" placeholder="name@email.com" required />
+            </div>
+
+            <div class="field">
+              <label for="aadhaarNum">Aadhaar number</label>
+              <input id="aadhaarNum" class="input" inputmode="numeric" maxlength="12" placeholder="12-digit (optional)" />
+              <small class="muted">We store only last 4 in message; file upload below is preferred.</small>
+            </div>
+            <div class="field">
+              <label for="panNum">PAN number <span class="req">*</span></label>
+              <input id="panNum" class="input" maxlength="10" placeholder="ABCDE1234F" required />
+            </div>
+            <div class="field">
+              <label for="policyType">Policy type <span class="req">*</span></label>
+              <select id="policyType" class="select" required>
+                <option value="">Select…</option>
+                <option>Retail / Individual</option>
+                <option>Corporate</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Address -->
+        <div class="card">
+          <div class="card__head">
+            <h2>Address</h2>
+            <p class="muted">Permanent & current residential address.</p>
+          </div>
+
+          <h3 class="subhead">Permanent Address</h3>
+          <div class="grid-3">
+            <div class="field"><label for="pAddr1">Address line 1 <span class="req">*</span></label><input id="pAddr1" class="input" required></div>
+            <div class="field"><label for="pCity">City <span class="req">*</span></label><input id="pCity" class="input" required></div>
+            <div class="field"><label for="pState">State <span class="req">*</span></label><input id="pState" class="input" required></div>
+            <div class="field"><label for="pPin">Pincode <span class="req">*</span></label><input id="pPin" class="input" inputmode="numeric" maxlength="6" required></div>
+            <div class="field span-2"><label for="pAddr2">Address line 2</label><input id="pAddr2" class="input"></div>
+          </div>
+
+          <div class="row">
+            <label class="check">
+              <input type="checkbox" id="sameAsPermanent" checked />
+              <span>Current residential address is same as permanent</span>
+            </label>
+          </div>
+
+          <div id="currentBlock" class="fade">
+            <h3 class="subhead">Current Address</h3>
+            <div class="grid-3">
+              <div class="field"><label for="cAddr1">Address line 1 <span class="req">*</span></label><input id="cAddr1" class="input"></div>
+              <div class="field"><label for="cCity">City <span class="req">*</span></label><input id="cCity" class="input"></div>
+              <div class="field"><label for="cState">State <span class="req">*</span></label><input id="cState" class="input"></div>
+              <div class="field"><label for="cPin">Pincode <span class="req">*</span></label><input id="cPin" class="input" inputmode="numeric" maxlength="6"></div>
+              <div class="field span-2"><label for="cAddr2">Address line 2</label><input id="cAddr2" class="input"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Documents -->
+        <div class="card">
+          <div class="card__head">
+            <h2>Upload Documents</h2>
+            <p class="muted">Aadhaar, PAN, last 3 months bank statement (PDF), and policy copy.</p>
+          </div>
+          <div class="grid-4">
+            <div class="drop" data-title="Aadhaar (front/back)">
+              <input id="aadhaarFiles" type="file" accept=".pdf,.jpg,.jpeg,.png" multiple />
+              <div class="drop__body"><div class="big">🪪</div><div>Aadhaar</div></div>
+              <ul class="drop__list" id="listAadhaar"></ul>
+            </div>
+            <div class="drop" data-title="PAN">
+              <input id="panFile" type="file" accept=".pdf,.jpg,.jpeg,.png" />
+              <div class="drop__body"><div class="big">🧾</div><div>PAN</div></div>
+              <ul class="drop__list" id="listPAN"></ul>
+            </div>
+            <div class="drop" data-title="Bank statement (3 months)">
+              <input id="bankFiles" type="file" accept=".pdf" multiple />
+              <div class="drop__body"><div class="big">🏦</div><div>Bank Statement</div></div>
+              <ul class="drop__list" id="listBank"></ul>
+            </div>
+            <div class="drop" data-title="Policy copy">
+              <input id="policyFile" type="file" accept=".pdf,.jpg,.jpeg,.png" />
+              <div class="drop__body"><div class="big">📜</div><div>Policy Copy</div></div>
+              <ul class="drop__list" id="listPolicy"></ul>
+            </div>
+          </div>
+          <p class="muted tip">Tip: You’ll be able to attach these in WhatsApp too if needed.</p>
+        </div>
+
+        <!-- Preference -->
+        <div class="card">
+          <div class="card__head">
+            <h2>Loan Preference</h2>
+            <p class="muted">Pick an option. Eligibility for zero-interest requires an active policy.</p>
+          </div>
+
+          <div class="row gap">
+            <label class="radio">
+              <input type="radio" name="emiPref" id="prefZero" value="zero" />
+              <span>Zero-interest EMI (3 months) — <b>Policy holders only</b></span>
+            </label>
+            <label class="radio">
+              <input type="radio" name="emiPref" id="prefStd" value="standard" checked />
+              <span>Standard EMI with interest</span>
+            </label>
+          </div>
+
+          <div class="grid-3">
+            <div class="field">
+              <label for="loanAmt">Desired loan amount (₹) <span class="req">*</span></label>
+              <input id="loanAmt" class="input" inputmode="numeric" placeholder="e.g. 75000" required />
+            </div>
+            <div class="field">
+              <label for="tenure">Tenure (months) <span class="req">*</span></label>
+              <select id="tenure" class="select" required>
+                <option>3</option><option selected>6</option><option>9</option><option>12</option><option>18</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="rate">Interest (APR %)</label>
+              <input id="rate" type="range" min="10" max="22" value="14" />
+              <div class="muted" id="rateLbl">14%</div>
+            </div>
+          </div>
+
+          <div class="emiBox" id="emiBox">
+            <div><span>Estimate EMI</span><strong id="emiOut">—</strong></div>
+            <div class="muted">Indicative only; final offer after verification.</div>
+          </div>
+        </div>
+
+        <!-- Consent -->
+        <div class="card">
+          <div class="card__head">
+            <h2>Consent</h2>
+          </div>
+          <div class="stack">
+            <label class="check">
+              <input type="checkbox" id="consentCibil" required />
+              <span>I authorize HealthFlo to run a bureau/CIBIL check using my registered mobile & email for loan eligibility.</span>
+            </label>
+            <label class="check">
+              <input type="checkbox" id="consentTerms" required />
+              <span>I confirm the information provided is true and I agree to be contacted.</span>
+            </label>
+          </div>
+
+          <div class="actions">
+            <a class="btn btn-ghost" href="packages.html">Explore Treatment Packages</a>
+            <div class="spacer"></div>
+            <button type="reset" class="btn btn-ghost">Clear</button>
+            <button type="submit" class="btn btn-primary">Submit & WhatsApp</button>
+          </div>
+
+          <div id="inlineSuccess" class="inline-success" role="status" aria-live="polite">
+            Your request is submitted successfully.
+          </div>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- Success Modal -->
+  <div id="successModal" class="s-modal" aria-hidden="true" role="dialog" aria-labelledby="sTitle">
+    <div class="s-modal__backdrop"></div>
+    <div class="s-modal__card" role="document">
+      <div class="s-modal__icon">✅</div>
+      <h3 id="sTitle">Submitted — CIBIL verification next</h3>
+      <p>Our team will connect shortly post CIBIL verification.</p>
+      <div class="s-modal__meta">
+        <div><strong>Date & Time:</strong> <span id="sWhen">—</span></div>
+        <div><strong>Reference:</strong> <span id="sRef">—</span></div>
+      </div>
+
+      <div class="emiBox shadowless">
+        <div><span>Your selection</span><strong id="sChoice">—</strong></div>
+        <div><span>Estimated EMI</span><strong id="sEmi">—</strong></div>
+      </div>
+
+      <div class="s-modal__actions">
+        <button id="sClose" class="btn btn-primary" type="button">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <noscript>
+    <div style="padding:1rem; text-align:center;">Please enable JavaScript to submit and share via WhatsApp.</div>
+  </noscript>
+
+  <script defer src="finance.js"></script>
+</body>
+</html>
