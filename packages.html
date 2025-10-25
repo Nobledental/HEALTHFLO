@@ -1,1 +1,364 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HealthFlo — Treatment Packages & Hospitals</title>
+  <meta name="description" content="Compare hospitals & clinics, explore treatment packages, book OPD/IPD, doctors, labs, pharmacy & home visits." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <!-- CSS (you’ll receive these next) -->
+  <link rel="stylesheet" href="package.css" />
+]
+</head>
+
+<body class="density-compact">
+  <a class="skip-link" href="#packages">Skip to hospital list</a>
+
+  <!-- ===== Header ===== -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="#">
+        <span class="logo-dot" aria-hidden="true"></span>
+        <span class="logo-text">HealthFlo</span>
+      </a>
+
+      <nav class="primary-nav" aria-label="Primary">
+        <ul>
+          <li><a href="#packages">Treatment Packages</a></li>
+          <li><a href="#how">How it works</a></li>
+          <li><a href="#contact">Support</a></li>
+        </ul>
+      </nav>
+
+      <div class="view-controls">
+        <button id="themeToggle" class="btn btn-ghost btn-icon" aria-label="Toggle theme">
+          <span class="icon-theme">🌗</span>
+        </button>
+
+        <select id="densitySelect" class="select density-select" aria-label="Density">
+          <option value="compact" selected>Compact</option>
+          <option value="tight">Cozy</option>
+          <option value="comfortable">Comfortable</option>
+        </select>
+
+        <button class="nav-toggle" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Hero / Toolbar ===== -->
+  <section class="svc-hero" id="how" aria-labelledby="heroTitle">
+    <div class="container">
+      <h1 id="heroTitle">Find the right hospital & treatment package</h1>
+      <p class="sub">Compare costs, check services (OPD, IPD, labs, pharmacy, home visit), and book appointments instantly.</p>
+
+      <div class="svc-toolbar" role="region" aria-label="Filters">
+        <div class="input-wrap">
+          <input id="searchInput" type="search" placeholder="Search hospital, treatment, doctor, speciality…" autocomplete="off" aria-label="Search hospitals and packages" />
+          <span class="input-icon" aria-hidden="true">🔎</span>
+        </div>
+
+        <div class="chip-row" aria-label="Quick filters">
+          <button class="chip" data-filter="OPD">OPD</button>
+          <button class="chip" data-filter="IPD">IPD</button>
+          <button class="chip" data-filter="Emergency">Emergency</button>
+          <button class="chip" data-filter="24x7 Pharmacy">24×7 Pharmacy</button>
+          <button class="chip" data-filter="Lab">Lab / Diagnostics</button>
+          <button class="chip" data-filter="Home Visit">Home Visit</button>
+          <button class="chip" data-filter="Cashless">Cashless</button>
+        </div>
+
+        <div class="chip-row" aria-label="Refine">
+          <select id="cityFilter" class="select" aria-label="City">
+            <option value="">All Cities</option>
+            <option>Mumbai</option><option>Delhi</option><option>Bengaluru</option>
+            <option>Hyderabad</option><option>Chennai</option><option>Pune</option>
+            <option>Kolkata</option><option>Ahmedabad</option><option>Jaipur</option>
+          </select>
+
+          <select id="specialtyFilter" class="select" aria-label="Speciality">
+            <option value="">All Specialities</option>
+            <option>Cardiology</option>
+            <option>Orthopaedics</option>
+            <option>Neurology</option>
+            <option>Oncology</option>
+            <option>Gastroenterology</option>
+            <option>ENT</option>
+            <option>Urology</option>
+            <option>Obstetrics & Gynaecology</option>
+            <option>Paediatrics</option>
+            <option>General Surgery</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Packages / Hospital Cards ===== -->
+  <main id="packages" class="solutions" aria-labelledby="listTitle">
+    <div class="container">
+      <h2 id="listTitle" class="vh">Hospitals & Clinics</h2>
+
+      <!-- The grid is injected by JS with 25+ hospitals -->
+      <div id="hospitalGrid" class="solution-grid" aria-live="polite"></div>
+
+      <!-- Optional metrics strip -->
+      <section class="proof" aria-label="Platform metrics">
+        <div class="metrics">
+          <div class="metric"><strong id="metricHospitals">25+</strong><span class="meta">Hospitals & Clinics</span></div>
+          <div class="metric"><strong id="metricDoctors">180+</strong><span class="meta">Doctors Listed</span></div>
+          <div class="metric"><strong id="metricPackages">120+</strong><span class="meta">Treatment Packages</span></div>
+          <div class="metric"><strong>24×7</strong><span class="meta">Support</span></div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- ===== Support FABs (optional) ===== -->
+  <div class="fab-wrap" aria-label="Quick help">
+    <button id="fabSupport" class="fab fab--support" type="button">
+      <span>Support</span>
+    </button>
+    <a id="fabWA" class="fab fab--wa" href="#" target="_blank" rel="noopener">
+      <span>WhatsApp</span>
+    </a>
+  </div>
+
+  <!-- ===== Hospital MODAL (Sheet) ===== -->
+  <div id="hospitalModal" class="hf-modal" role="dialog" aria-modal="true" aria-labelledby="hospitalTitle" aria-hidden="true">
+    <div class="hf-sheet" role="document">
+      <!-- Header -->
+      <div class="hf-sheet__header">
+        <div class="hf-sheet__headL">
+          <div class="hf-sheet__logo">
+            <img id="hospitalLogo" src="" alt="" width="64" height="64" />
+          </div>
+          <div class="hf-sheet__title">
+            <h3 id="hospitalTitle">Hospital Name</h3>
+            <div class="hf-sheet__meta">
+              <span id="hospitalCity" class="hf-row">
+                <span aria-hidden="true">📍</span><span id="hospitalAreaTxt">City, Area</span>
+              </span>
+              <span id="hospitalRating" class="hf-rating" aria-label="Rating">⭐ 4.6</span>
+              <span id="hospitalPills" class="hf-row"></span>
+            </div>
+          </div>
+        </div>
+        <div class="hf-sheet__headR">
+          <button id="btnShare" class="btn btn-ghost" type="button">Share</button>
+          <button id="btnFav" class="btn btn-ghost" type="button">Save</button>
+          <button id="hospitalClose" class="hf-close" aria-label="Close details" type="button">✕</button>
+        </div>
+      </div>
+
+      <!-- Body -->
+      <div class="hf-sheet__body">
+        <!-- Tabs -->
+        <div class="hf-tabs" role="tablist" aria-label="Hospital sections">
+          <button class="hf-tab" role="tab" aria-selected="true" aria-controls="panel-services" id="tab-services" data-tab="services">Services</button>
+          <button class="hf-tab" role="tab" aria-selected="false" aria-controls="panel-packages" id="tab-packages" data-tab="packages">Packages</button>
+          <button class="hf-tab" role="tab" aria-selected="false" aria-controls="panel-doctors" id="tab-doctors" data-tab="doctors">Doctors</button>
+          <button class="hf-tab" role="tab" aria-selected="false" aria-controls="panel-about" id="tab-about" data-tab="about">About & Facilities</button>
+          <button class="hf-tab" role="tab" aria-selected="false" aria-controls="panel-contact" id="tab-contact" data-tab="contact">Contact</button>
+        </div>
+
+        <!-- Panels -->
+        <div class="hf-panels">
+          <!-- Services -->
+          <section id="panel-services" class="hf-panel is-active" role="tabpanel" aria-labelledby="tab-services">
+            <div class="hf-services-grid" id="servicesGrid">
+              <!-- JS injects service cards: OPD/IPD/Pharmacy/Lab/Home Visit/Insurance/Emergency/etc -->
+            </div>
+          </section>
+
+          <!-- Packages -->
+          <section id="panel-packages" class="hf-panel" role="tabpanel" aria-labelledby="tab-packages">
+            <div class="hf-packages" id="packagesList">
+              <!-- JS injects packages (title, price, inclusions) -->
+            </div>
+          </section>
+
+          <!-- Doctors -->
+          <section id="panel-doctors" class="hf-panel" role="tabpanel" aria-labelledby="tab-doctors">
+            <div class="hf-doctors" id="doctorList">
+              <!-- JS injects doctor cards (avatar, speciality, View Profile button) -->
+            </div>
+          </section>
+
+          <!-- About / Facilities -->
+          <section id="panel-about" class="hf-panel" role="tabpanel" aria-labelledby="tab-about">
+            <div class="hf-col">
+              <p id="aboutText">Loading…</p>
+              <div class="hf-facilities" id="facilityChips">
+                <!-- JS injects facility chips -->
+              </div>
+            </div>
+          </section>
+
+          <!-- Contact -->
+          <section id="panel-contact" class="hf-panel" role="tabpanel" aria-labelledby="tab-contact">
+            <div class="hf-contact">
+              <div class="hf-col">
+                <strong>Address</strong>
+                <p id="contactAddress" class="hf-contact__meta">—</p>
+                <div class="hf-row">
+                  <button id="btnGetDirections" class="btn btn-ghost" type="button">Get Directions</button>
+                  <button id="btnCall" class="btn btn-ghost" type="button">Call</button>
+                </div>
+              </div>
+              <div class="hf-col">
+                <strong>Open Hours</strong>
+                <p id="openHours" class="hf-contact__meta">—</p>
+                <div class="hf-row hf-right">
+                  <button id="btnChat" class="btn btn-primary" type="button">Chat / Enquire</button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- Footer actions -->
+        <div class="hf-sheet__footer">
+          <button id="btnBookOPD" class="btn btn-primary">Book OPD</button>
+          <button id="btnBookIPD" class="btn btn-ghost">IPD Admission</button>
+          <button id="btnEnquirePkg" class="btn btn-ghost">Enquire Packages</button>
+          <button id="btnPharmacy" class="btn btn-ghost">Get Pharmacy Delivery</button>
+          <button id="btnLab" class="btn btn-ghost">Book Lab / Home Visit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Nested DOCTOR Modal (inside hospital) ===== -->
+  <div id="doctorModal" class="hf-nested" role="dialog" aria-modal="true" aria-labelledby="doctorName" aria-hidden="true">
+    <div class="hf-nested__card" role="document">
+      <div class="hf-nested__header">
+        <div class="hf-nested__avatar">
+          <img id="doctorAvatar" src="" alt="" width="64" height="64" />
+        </div>
+        <div class="hf-nested__title">
+          <div id="doctorName" class="hf-nested__name">Doctor Name</div>
+          <div id="doctorSub" class="hf-nested__sub">Speciality • Experience</div>
+        </div>
+        <button id="doctorClose" class="hf-nested__close" aria-label="Close doctor profile">✕</button>
+      </div>
+      <div class="hf-nested__body">
+        <div class="hf-facts" id="doctorFacts">
+          <!-- JS: Experience, Languages, Consultation Fee -->
+        </div>
+
+        <div class="hf-col">
+          <strong>About</strong>
+          <p id="doctorBio">—</p>
+        </div>
+
+        <div class="hf-col">
+          <strong>Available Slots</strong>
+          <div class="hf-slots" id="doctorSlots">
+            <!-- JS: time chips -->
+          </div>
+        </div>
+
+        <div class="hf-nested__cta">
+          <button id="btnDoctorChat" class="btn btn-ghost">Chat</button>
+          <button id="btnDoctorBook" class="btn btn-primary">Book Slot</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Templates (Card structures) ===== -->
+  <template id="tpl-hospital-card">
+    <article class="solution-card" data-id="">
+      <figure>
+        <img src="" alt="" loading="lazy" />
+      </figure>
+      <h3 class="hf-row">
+        <span class="card-title">Hospital Name</span>
+        <span class="hf-right hf-pill card-city">City</span>
+      </h3>
+      <p class="card-sub">Top specialities • OPD, IPD, 24×7 Pharmacy</p>
+
+      <div class="badges card-badges">
+        <!-- JS: service badges -->
+      </div>
+
+      <div class="card-cta">
+        <button class="btn btn-primary btn-view" type="button">View Details</button>
+        <button class="btn btn-ghost btn-enquire" type="button">Enquire Package</button>
+      </div>
+    </article>
+  </template>
+
+  <template id="tpl-service-item">
+    <div class="hf-service">
+      <div class="hf-service__icon" aria-hidden="true">🏥</div>
+      <div class="hf-service__body">
+        <div class="hf-service__title">Service Title</div>
+        <div class="hf-service__meta">Details / timing / coverage</div>
+      </div>
+      <div class="hf-service__cta">
+        <button class="btn btn-ghost svc-action" type="button">Action</button>
+      </div>
+    </div>
+  </template>
+
+  <template id="tpl-package-item">
+    <div class="hf-package">
+      <div>
+        <div class="hf-package__title">Package Title</div>
+        <div class="hf-package__meta">Inclusions • Pre-op • Post-op • Stay</div>
+      </div>
+      <div class="hf-col" style="align-items:end">
+        <div class="hf-price">₹ —</div>
+        <button class="btn btn-primary pkg-action" type="button">Enquire</button>
+      </div>
+    </div>
+  </template>
+
+  <template id="tpl-doctor-card">
+    <div class="hf-doc" data-doc-id="">
+      <div class="hf-doc__avatar"><img src="" alt="" width="64" height="64" /></div>
+      <div class="hf-doc__info">
+        <div class="hf-doc__name">Dr. Name</div>
+        <div class="hf-doc__sub">Speciality • 10 yrs</div>
+      </div>
+      <div class="hf-doc__cta">
+        <button class="btn btn-ghost doc-chat" type="button">Chat</button>
+        <button class="btn btn-primary doc-view" type="button">View Profile</button>
+      </div>
+    </div>
+  </template>
+
+  <!-- ===== Footer ===== -->
+  <footer class="site-footer" id="contact" role="contentinfo">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a class="logo" href="#"><span class="logo-dot" aria-hidden="true"></span><span class="logo-text">HealthFlo</span></a>
+        <p>One place for trusted hospitals, transparent treatment packages, doctor discovery, pharmacy and lab services.</p>
+      </div>
+      <div class="footer-meta">
+        <ul>
+          <li><a href="#">Privacy</a></li>
+          <li><a href="#">Terms</a></li>
+          <li><a href="#">Support</a></li>
+        </ul>
+        <small>© 2025 HealthFlo. All rights reserved.</small>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast -->
+  <div id="toast" class="hf-toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <noscript>
+    <div style="padding:1rem; text-align:center;">Please enable JavaScript to view hospital listings and book services.</div>
+  </noscript>
+
+  <!-- JS (you’ll receive this after CSS) -->
+  <script defer src="package.js"></script>
+</body>
+</html>
 
