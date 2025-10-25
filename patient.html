@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<div>
+<strong>Drop policy PDF</strong>
+<p class="small" style="color:var(--color-subtle)">We auto‑detect insurer, co‑pay, room rent caps & waiting periods.</p>
+<input type="file" id="dropPolicy" accept=".pdf,.jpg,.png"/>
+</div>
+</div>
+<div>
+<div id="coverageOut" style="font-size:.95rem;color:var(--color-subtle)">No file uploaded yet.</div>
+</div>
+</div>
+</section>
+
+
+<!-- Active claims -->
+<section class="card" style="margin-top:16px">
+<h3>My Claims</h3>
+<table>
+<thead><tr><th>Case</th><th>Type</th><th>Status</th><th>Updated</th><th>Action</th></tr></thead>
+<tbody id="claimsTbody">
+<!-- rows injected -->
+</tbody>
+</table>
+</section>
+</main>
+
+
+<script>
+const qs = new URLSearchParams(location.search);
+const demo = qs.get('demo')==='1';
+const demoBanner = document.getElementById('demoBanner');
+demoBanner.hidden = !demo;
+document.getElementById('btnDemoToggle').addEventListener('click',()=>{ const next = demo?'' : '?demo=1'; location.search = next; });
+
+
+const toast = (t)=>{ const d=document.createElement('div'); d.className='toast'; d.innerHTML=t; document.body.appendChild(d); setTimeout(()=>d.remove(),2600); };
+
+
+// Policy decode (mock)
+const policyFile = document.getElementById('policyFile');
+const dropPolicy = document.getElementById('dropPolicy');
+const coverageOut = document.getElementById('coverageOut');
+const btnDecode = document.getElementById('btnDecode');
+
+
+function fakeDecode(name){
+const room = ['₹3,000/day','₹5,000/day','Twin sharing','Private room cap: ₹7,500/day'][Math.floor(Math.random()*4)];
+const copay= ['0%','10%','20% (Sr. citizen)','30% (Zone II)'][Math.floor(Math.random()*4)];
+const wait = ['PED: 48 months','Maternity: 9 months','Hernia: 24 months'][Math.floor(Math.random()*3)];
+return `<ul><li><strong>Room rent:</strong> ${room}</li><li><strong>Co‑pay:</strong> ${copay}</li><li><strong>Waiting periods:</strong> ${wait}</li><li><strong>Non‑payables:</strong> as per policy annexure</li></ul><small>File: ${name||'—'}</small>`;
+}
+
+
+policyFile?.addEventListener('change', (e)=>{ const f=e.target.files[0]; if(f){ coverageOut.innerHTML=fakeDecode(f.name); toast('Policy uploaded. Ready to decode.'); }});
+dropPolicy?.addEventListener('change', (e)=>{ const f=e.target.files[0]; if(f){ coverageOut.innerHTML=fakeDecode(f.name); toast('Policy uploaded. Ready to decode.'); }});
+btnDecode?.addEventListener('click', ()=>{ coverageOut.innerHTML=fakeDecode('uploaded.pdf'); document.getElementById('kpiRoomCap').textContent='₹5,000/day'; toast('Decoded!'); });
+
+
+// Claims table sample
+const claims = [
+{case:'#HF-10234', type:'Cashless', status:'Pre‑auth prepared', updated:'Just now'},
+{case:'#HF-10098', type:'Reimb', status:'Docs pending: pharmacy bill', updated:'3h ago'}
+];
+const tbody = document.getElementById('claimsTbody');
+tbody.innerHTML = claims.map(c=>`<tr><td>${c.case}</td><td>${c.type}</td><td>${c.status}</td><td>${c.updated}</td><td><button class='btn btn-ghost' ${demo?'disabled':''}>Open</button></td></tr>`).join('');
+
+
+// Other uploads
+document.getElementById('billFile')?.addEventListener('change',()=>toast('Bill received. Running demo checklist…'));
+document.getElementById('reportFile')?.addEventListener('change',()=>toast('Report received. Generating provisional summary…'));
+
+
+// KPI mock
+document.getElementById('kpiApprovals').textContent = Math.floor(Math.random()*5);
+document.getElementById('kpiActive').textContent = claims.length;
+</script>
+</body>
+</html>
