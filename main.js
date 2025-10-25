@@ -1,21 +1,30 @@
 /* =========================
-   HealthFlo Landing – main.js
+   HealthFlo Landing – main.js (GitHub Pages–safe)
    ========================= */
 
 /* ---------- Helpers ---------- */
 const $  = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
-/* ---------- Routes / Targets ---------- */
-const ROUTES = {
-  PATIENT_APP_URL:   '/patient.html',
-  HOSPITAL_APP_URL:  '/hospital.html',
-  EMPLOYER_APP_URL:  '/employer.html',
+/* ---------- GitHub Pages–safe base path ---------- */
+const BASE_PATH = (() => {
+  // For user sites (repo named USERNAME.github.io), pathname looks like '/patient.html' -> first seg has a dot
+  // For project sites, pathname looks like '/repo-name/index.html' -> first seg is repo folder (no dot)
+  const segs = location.pathname.split('/').filter(Boolean);
+  return segs.length > 0 && !segs[0].includes('.') ? `/${segs[0]}` : '';
+})();
+const pathTo = (p) => `${BASE_PATH}/${String(p).replace(/^\//, '')}`;
 
-  // Registration landing (you can point these at Google Forms/Apps Script web apps)
-  PATIENT_REG_URL:   '/patient.html?signup=1',
-  HOSPITAL_REG_URL:  '/hospital.html?signup=1',
-  EMPLOYER_REG_URL:  '/employer.html?signup=1'
+/* ---------- Routes / Targets (no leading slash) ---------- */
+const ROUTES = {
+  PATIENT_APP_URL:   pathTo('patient.html'),
+  HOSPITAL_APP_URL:  pathTo('hospital.html'),
+  EMPLOYER_APP_URL:  pathTo('employer.html'),
+
+  // Registration landing
+  PATIENT_REG_URL:   pathTo('patient.html?signup=1'),
+  HOSPITAL_REG_URL:  pathTo('hospital.html?signup=1'),
+  EMPLOYER_REG_URL:  pathTo('employer.html?signup=1')
 };
 
 const state = {
@@ -46,16 +55,16 @@ const personaConfig = {
       { title: 'Recovery & prevention', copy: 'Structured appeals, non-payable checklists, and ombudsman support.' }
     ],
     solutionsCards: [
-      { title: 'Know your coverage', description: 'Upload PDF → see room rent caps, co-pay, waiting periods, and non-payables in plain language.', cta: 'Decode in 60 seconds →', href: ROUTES.PATIENT_APP_URL + '?demo=1#coverage', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-1.webp', analytics: 'policy_decode' },
-      { title: 'Treatment packages', description: 'Transparent bundles by city & specialty. Add-ons like private room or ICU buffer spelled out.', cta: 'Browse packages →', href: ROUTES.PATIENT_APP_URL + '?demo=1#packages', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-5.webp', analytics: 'browse_packages' },
-      { title: 'Reimbursement concierge', description: 'We coordinate with TPA and keep you updated on WhatsApp / Mail while you recover.', cta: 'Start Reimbursement →', href: ROUTES.PATIENT_APP_URL + '?demo=1#reimbursement', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-6.webp', analytics: 'start_reimb' },
-      { title: 'Financial Support', description: 'Zero-interest EMI (3 months) or standard loan. Check eligibility in under 60 minutes.', cta: 'Check eligibility →', href: ROUTES.PATIENT_APP_URL + '?demo=1#finance', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/guide-1.webp', analytics: 'finance' },
-      { title: 'Denials & short settlements', description: 'Structured appeals, ombudsman support, escalation templates.', cta: 'Get help →', href: ROUTES.PATIENT_APP_URL + '?demo=1#denials', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-7.webp', analytics: 'denial_help' },
-      { title: 'Bills → Reimbursable check', description: 'Upload hospital bills and get a payable/non-payable split (demo).', cta: 'Try demo →', href: ROUTES.PATIENT_APP_URL + '?demo=1#bills', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/guide-2.webp', analytics: 'bill_check' },
-      { title: 'Book OPD / IP / ER', description: 'TOP specialists with hospital tariffs & coverage guardrails.', cta: 'Book now →', href: ROUTES.PATIENT_APP_URL + '?demo=1#consult', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-10.webp', analytics: 'book_consult' },
-      { title: 'Medical Support', description: 'Upload your report, get a provisional summary & direction.', cta: 'Upload report →', href: ROUTES.PATIENT_APP_URL + '?demo=1#support', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-11.webp', analytics: 'med_support' },
-      { title: 'Home visit tests (30% off)', description: 'Direct from hospital / partner labs. Slots 7am–8pm.', cta: 'Book a slot →', href: ROUTES.PATIENT_APP_URL + '?demo=1#home-tests', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-4.webp', analytics: 'home_tests' },
-      { title: 'Medicines — same day', description: 'Hospital pharmacies or top partners nearby.', cta: 'Order now →', href: ROUTES.PATIENT_APP_URL + '?demo=1#meds', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-12.webp', analytics: 'meds' }
+      { title: 'Know your coverage', description: 'Upload PDF → see room rent caps, co-pay, waiting periods, and non-payables in plain language.', cta: 'Decode in 60 seconds →', href: `${ROUTES.PATIENT_APP_URL}?demo=1#coverage`, image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-1.webp', analytics: 'policy_decode' },
+      { title: 'Treatment packages', description: 'Transparent bundles by city & specialty. Add-ons like private room or ICU buffer spelled out.', cta: 'Browse packages →', href: `${ROUTES.PATIENT_APP_URL}?demo=1#packages`, image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-5.webp', analytics: 'browse_packages' },
+      { title: 'Reimbursement concierge', description: 'We coordinate with TPA and keep you updated on WhatsApp / Mail while you recover.', cta: 'Start Reimbursement →', href: `${ROUTES.PATIENT_APP_URL}?demo=1#reimbursement`, image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-6.webp', analytics: 'start_reimb' },
+      { title: 'Financial Support', description: 'Zero-interest EMI (3 months) or standard loan. Check eligibility in under 60 minutes.', cta: 'Check eligibility →', href: `${ROUTES.PATIENT_APP_URL}?demo=1#finance`, image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/guide-1.webp', analytics: 'finance' },
+      { title: 'Denials & short settlements', description: 'Structured appeals, ombudsman support, escalation templates.', cta: 'Get help →', href: `${ROUTES.PATIENT_APP_URL}?demo=1#denials`, image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-7.webp', analytics: 'denial_help' },
+      { title: 'Bills → Reimbursable check', description: 'Upload hospital bills and get a payable/non-payable split (demo).', cta: 'Try demo →', href: `${ROUTES.PATIENT_APP_URL}?demo=1#bills`, image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/guide-2.webp', analytics: 'bill_check' },
+      { title: 'Book OPD / IP / ER', description: 'TOP specialists with hospital tariffs & coverage guardrails.', cta: 'Book now →', href: `${ROUTES.PATIENT_APP_URL}?demo=1#consult`, image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-10.webp', analytics: 'book_consult' },
+      { title: 'Medical Support', description: 'Upload your report, get a provisional summary & direction.', cta: 'Upload report →', href: `${ROUTES.PATIENT_APP_URL}?demo=1#support`, image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-11.webp', analytics: 'med_support' },
+      { title: 'Home visit tests (30% off)', description: 'Direct from hospital / partner labs. Slots 7am–8pm.', cta: 'Book a slot →', href: `${ROUTES.PATIENT_APP_URL}?demo=1#home-tests`, image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-4.webp', analytics: 'home_tests' },
+      { title: 'Medicines — same day', description: 'Hospital pharmacies or top partners nearby.', cta: 'Order now →', href: `${ROUTES.PATIENT_APP_URL}?demo=1#meds`, image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-12.webp', analytics: 'meds' }
     ],
     steps: [
       { icon: '🆔', title: 'Register with HealthFlo', copy: 'Pick Demo (limited access) or Pro. Create your single-user or family account.' },
@@ -95,10 +104,10 @@ const personaConfig = {
       { title: 'Recovery & prevention', copy: 'Denial playbooks, resubmission templates, line-item reconciliation.' }
     ],
     solutionsCards: [
-      { title: 'Cashless Everywhere', description: 'Managed & compliant cashless with SOPs and trackers.', cta: 'Enable now →', href: ROUTES.HOSPITAL_APP_URL + '?demo=1', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-2.webp', analytics: 'cashless_everywhere' },
-      { title: 'Empanelment desk', description: '20+ insurers & TPAs with SLA timers & tariff governance.', cta: 'Expand network →', href: ROUTES.HOSPITAL_APP_URL + '?demo=1#empanel', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-8.webp', analytics: 'empanelment' },
-      { title: 'Denial & recovery', description: 'Category playbooks, audits, recovery loops.', cta: 'Recover revenue →', href: ROUTES.HOSPITAL_APP_URL + '?demo=1#denials', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-9.webp', analytics: 'denial_recovery' },
-      { title: 'RCM cockpit', description: 'Pre-auth velocity, same-day %, exception heatmaps.', cta: 'Open dashboard →', href: ROUTES.HOSPITAL_APP_URL + '?demo=1#cockpit', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-3.webp', analytics: 'rcm_cockpit' }
+      { title: 'Cashless Everywhere', description: 'Managed & compliant cashless with SOPs and trackers.', cta: 'Enable now →', href: `${ROUTES.HOSPITAL_APP_URL}?demo=1`, image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-2.webp', analytics: 'cashless_everywhere' },
+      { title: 'Empanelment desk', description: '20+ insurers & TPAs with SLA timers & tariff governance.', cta: 'Expand network →', href: `${ROUTES.HOSPITAL_APP_URL}?demo=1#empanel`, image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-8.webp', analytics: 'empanelment' },
+      { title: 'Denial & recovery', description: 'Category playbooks, audits, recovery loops.', cta: 'Recover revenue →', href: `${ROUTES.HOSPITAL_APP_URL}?demo=1#denials`, image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-9.webp', analytics: 'denial_recovery' },
+      { title: 'RCM cockpit', description: 'Pre-auth velocity, same-day %, exception heatmaps.', cta: 'Open dashboard →', href: `${ROUTES.HOSPITAL_APP_URL}?demo=1#cockpit`, image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-3.webp', analytics: 'rcm_cockpit' }
     ],
     steps: [
       { icon: '🧭', title: 'Baseline & gap scan', copy: 'Assess AR days, denial mix, and cashless readiness.' },
@@ -139,10 +148,10 @@ const personaConfig = {
       { title: 'Recovery & prevention', copy: 'Reimbursement templates & renewal-ready analytics.' }
     ],
     solutionsCards: [
-      { title: 'Plan design', description: 'Model census & riders instantly.', cta: 'Design my plan →', href: ROUTES.EMPLOYER_APP_URL + '?demo=1#plan', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/university-computers.webp', analytics: 'plan_design' },
-      { title: 'Seamless enrollment', description: 'Bulk import employees, push e-cards in minutes.', cta: 'Onboard fast →', href: ROUTES.EMPLOYER_APP_URL + '?demo=1#enroll', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/Clinical%20knowledge%20hub%20bg.webp', analytics: 'enrollment' },
-      { title: 'Cashless helpdesk', description: 'Live pre-auth guidance & updates.', cta: 'Protect employees →', href: ROUTES.EMPLOYER_APP_URL + '?demo=1#helpdesk', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-12.webp', analytics: 'cashless_helpdesk' },
-      { title: 'HR analytics', description: 'Utilisation trends, SLA tracking, adoption.', cta: 'See dashboard →', href: ROUTES.EMPLOYER_APP_URL + '?demo=1#analytics', image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/guide-3.webp', analytics: 'hr_analytics' }
+      { title: 'Plan design', description: 'Model census & riders instantly.', cta: 'Design my plan →', href: `${ROUTES.EMPLOYER_APP_URL}?demo=1#plan`, image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/university-computers.webp', analytics: 'plan_design' },
+      { title: 'Seamless enrollment', description: 'Bulk import employees, push e-cards in minutes.', cta: 'Onboard fast →', href: `${ROUTES.EMPLOYER_APP_URL}?demo=1#enroll`, image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/Clinical%20knowledge%20hub%20bg.webp', analytics: 'enrollment' },
+      { title: 'Cashless helpdesk', description: 'Live pre-auth guidance & updates.', cta: 'Protect employees →', href: `${ROUTES.EMPLOYER_APP_URL}?demo=1#helpdesk`, image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/cat-12.webp', analytics: 'cashless_helpdesk' },
+      { title: 'HR analytics', description: 'Utilisation trends, SLA tracking, adoption.', cta: 'See dashboard →', href: `${ROUTES.EMPLOYER_APP_URL}?demo=1#analytics`, image: 'https://storage.googleapis.com/dev_resources_voka_io_303011/common/guide-3.webp', analytics: 'hr_analytics' }
     ],
     steps: [
       { icon: '🧮', title: 'Design plan', copy: 'Model census, riders, and budgets with guardrails.' },
@@ -205,7 +214,7 @@ const elements = {
   themeButtons: $$('[data-theme-choice]'),
   heroCanvas: $('#heroCanvas'),
   /* Ticker */
-  tickerRoot: $('#ticker'),
+  tickerRoot: $('.ticker'),                 // ← class, not #id
   tickerTrack: $('[data-ticker-track]'),
   tickerToggle: $('[data-ticker-toggle]'),
   /* Directory */
@@ -277,7 +286,7 @@ function renderPersonaContent() {
   renderCopilot(config.copilotPrompts);
   updatePackagesVisibility(config.showPackages);
   updateWhatsapp(config.whatsappText);
-  renderDirectory(); // hospitals directory always visible
+  renderDirectory(); // hospitals directory (if present)
   observeRevealElements();
 }
 
@@ -421,7 +430,7 @@ function renderCopilot(prompts = []) {
 function updatePackagesVisibility(show) {
   if (!elements.packagesBlock) return;
   elements.packagesBlock.hidden = !show;
-  elements.packagesBlock.setAttribute('aria-hidden', show ? 'true' : 'false'); // visually shown via parent render
+  elements.packagesBlock.setAttribute('aria-hidden', show ? 'false' : 'true');
 }
 
 function updateWhatsapp(text) {
@@ -552,7 +561,9 @@ function initCopilot() {
   const close = () => { elements.copilotModal.hidden = true; };
   elements.copilotBtn.addEventListener('click', open);
   elements.copilotClose.forEach((btn) => btn.addEventListener('click', close));
-  elements.copilotModal.addEventListener('click', (event) => { if (event.target.dataset?.copilotClose !== undefined || event.target === elements.copilotModal) close(); });
+  elements.copilotModal.addEventListener('click', (event) => {
+    if (event.target.dataset?.copilotClose !== undefined || event.target === elements.copilotModal) close();
+  });
   elements.copilotChips.addEventListener('click', (event) => {
     const chip = event.target.closest('.copilot-chip'); if (!chip) return;
     elements.copilotChips.querySelectorAll('.copilot-chip').forEach((btn) => btn.classList.remove('is-active'));
@@ -640,24 +651,36 @@ function initCanvas() {
 function initTicker() {
   const root = elements.tickerRoot;
   const track = elements.tickerTrack;
+  const toggle = elements.tickerToggle;
   if (!root || !track) return;
+
   // Duplicate items so it looks infinite
   track.innerHTML = track.innerHTML + track.innerHTML + track.innerHTML;
-  const totalWidth = Array.from(track.children).reduce((w, el) => w + el.getBoundingClientRect().width + 28, 0);
-  // Inject keyframes for this width
-  const dur = Math.max(20, Math.round(totalWidth / 100)); // seconds
-  const style = document.createElement('style');
-  style.textContent = `
-    [data-ticker-track]{ animation: tickerScroll ${dur}s linear infinite; }
-    @keyframes tickerScroll { from { transform: translateX(0) } to { transform: translateX(-${totalWidth/3}px) } }
-  `;
-  document.head.appendChild(style);
+
+  // Wait one frame for layout to compute widths
+  requestAnimationFrame(() => {
+    const totalWidth = Array.from(track.children)
+      .reduce((w, el) => w + el.getBoundingClientRect().width + 28, 0);
+
+    const dur = Math.max(20, Math.round(totalWidth / 100)); // seconds
+    const style = document.createElement('style');
+    style.textContent = `
+      [data-ticker-track]{ animation: tickerScroll ${dur}s linear infinite; will-change: transform; }
+      .ticker.is-paused [data-ticker-track]{ animation-play-state: paused; }
+      @keyframes tickerScroll { from { transform: translateX(0) } to { transform: translateX(-${totalWidth/3}px) } }
+    `;
+    document.head.appendChild(style);
+  });
 
   // Pause toggle
-  elements.tickerToggle?.addEventListener('click', () => {
-    root.classList.toggle('is-paused');
-    elements.tickerToggle.textContent = root.classList.contains('is-paused') ? '▶' : '❚❚';
-    elements.tickerToggle.setAttribute('aria-label', root.classList.contains('is-paused') ? 'Play ticker' : 'Pause ticker');
+  toggle?.addEventListener('click', () => {
+    const paused = root.classList.toggle('is-paused');
+    toggle.textContent = paused ? '▶' : '❚❚';
+    toggle.setAttribute('aria-label', paused ? 'Play ticker' : 'Pause ticker');
+    // For browsers not honoring class-based pause:
+    if (elements.tickerTrack) {
+      elements.tickerTrack.style.animationPlayState = paused ? 'paused' : 'running';
+    }
   });
 }
 
@@ -726,7 +749,13 @@ function initLeadToggle() {
     if (e.key === 'Escape' && elements.leadAside.classList.contains('is-open')) closeLeadPanel();
   });
   // Any link to #lead should open it
-  $$('a[href="#lead"]').forEach((a) => a.addEventListener('click', (e) => { e.preventDefault(); openLeadPanel(); elements.leadAside.scrollIntoView({ behavior: 'smooth', block: 'end' }); }));
+  $$('a[href="#lead"]').forEach((a) =>
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      openLeadPanel();
+      elements.leadAside.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    })
+  );
   // If URL has #lead open it
   if (location.hash === '#lead') openLeadPanel({ focusFirstField: false });
 }
@@ -772,7 +801,7 @@ function boot() {
   initTicker();
   initFloaters();
 
-  // Directory modal close buttons
+  // Directory modal close buttons (if present)
   $$('[data-dir-close]').forEach(b => b.addEventListener('click', closeMenu));
 }
 
