@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<section class="grid kpi-grid">
+<div class="kpi"><span class="tag">Coverage</span><strong id="k1">1,224</strong>Lives covered</div>
+<div class="kpi"><span class="tag">Adoption</span><strong id="k2">78%</strong>App adoption</div>
+<div class="kpi"><span class="tag">Claims</span><strong id="k3">₹12.8L</strong>Claims this month</div>
+<div class="kpi"><span class="tag">SLA</span><strong id="k4">96%</strong>Pre‑auth within 6h</div>
+</section>
+
+
+<section class="grid cols">
+<article class="card">
+<h3>Utilization — last 6 months</h3>
+<canvas id="chart"></canvas>
+</article>
+<article class="card">
+<h3>Top claim categories</h3>
+<table>
+<thead><tr><th>Category</th><th>Claims</th><th>Amount</th></tr></thead>
+<tbody id="catT"></tbody>
+</table>
+</article>
+</section>
+
+
+<section class="card" style="margin-top:16px">
+<h3>Helpdesk & Actions</h3>
+<div style="display:flex;gap:10px;flex-wrap:wrap">
+<button class="btn btn-primary" id="btnEnroll">Seamless enrollment</button>
+<button class="btn">Issue e‑cards</button>
+<button class="btn">Cashless helpdesk</button>
+<button class="btn">Download policy</button>
+</div>
+</section>
+</main>
+
+
+<script>
+// Basic line chart without libs
+const c = document.getElementById('chart');
+const ctx = c.getContext('2d');
+const data = [12,18,14,22,19,26];
+function draw(){
+const w=c.width = c.offsetWidth*2, h=c.height = 400; // Hi‑DPI
+ctx.clearRect(0,0,w,h);
+ctx.strokeStyle='rgba(132,182,255,0.6)'; ctx.lineWidth=2; ctx.beginPath();
+const max = Math.max(...data)+5; const stepX = w/(data.length-1);
+data.forEach((v,i)=>{ const x = i*stepX; const y = h - (v/max)* (h-40) - 20; i?ctx.lineTo(x,y):ctx.moveTo(x,y); });
+ctx.stroke();
+ctx.fillStyle='rgba(31,123,255,0.2)'; ctx.lineTo(w,h-20); ctx.lineTo(0,h-20); ctx.closePath(); ctx.fill();
+}
+new ResizeObserver(draw).observe(c);
+
+
+const cats=[
+{name:'Orthopedics', n:18, amt:'₹3.2L'},
+{name:'OBG', n:12, amt:'₹2.6L'},
+{name:'Cardio', n:7, amt:'₹2.1L'},
+{name:'General Surgery', n:9, amt:'₹1.4L'}
+];
+document.getElementById('catT').innerHTML = cats.map(x=>`<tr><td>${x.name}</td><td>${x.n}</td><td>${x.amt}</td></tr>`).join('');
+
+
+document.getElementById('btnDesign').addEventListener('click',()=>alert('Open plan designer (riders, census, budgets)…'));
+document.getElementById('btnEnroll').addEventListener('click',()=>alert('Open bulk enrollment (CSV/HRIS sync)…'));
+</script>
+</body>
+</html>
