@@ -1,0 +1,441 @@
+/* =========================================================
+   HealthFlo — Medicines (Glass / Pastel Blue / Android vibe)
+   meds.css — pastel-blue bg, frost-white glass cards,
+   metallic headings, full-bleed images, compact buttons,
+   sticky quick-links + accordion sections in medicine modal
+   ========================================================= */
+
+/* ---------- Reset ---------- */
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%}
+body,h1,h2,h3,h4,p,figure,blockquote,dl,dd{margin:0}
+img{display:block;max-width:100%;height:auto}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid transparent;box-shadow:0 0 0 3px rgba(0,128,255,.25)}
+.vh{position:absolute!important;clip:rect(1px,1px,1px,1px);padding:0;border:0;height:1px;width:1px;overflow:hidden;white-space:nowrap}
+
+/* ---------- Design Tokens ---------- */
+:root{
+  /* Surfaces */
+  --bg:#eef6ff;
+  --bg-grad:
+    radial-gradient(1200px 520px at 10% -10%, rgba(150,195,255,.25) 0%, transparent 60%),
+    radial-gradient(900px 420px at 110% 10%, rgba(170,210,255,.22) 0%, transparent 60%),
+    linear-gradient(#eef6ff,#eef6ff);
+  --glass:rgba(255,255,255,.75);
+  --glass-strong:rgba(255,255,255,.85);
+  --glass-stroke:color-mix(in srgb, #fff 70%, #9fb7d8 30%);
+  --surface-2:rgba(255,255,255,.55);
+
+  /* Text */
+  --text:#0f1b2d;
+  --muted:#6b7c96;
+  --metal-highlight:#9fb7d8;
+
+  /* Brand */
+  --brand-700:#0c8e66;
+  --brand-600:#10a678;
+  --brand-500:#14b384;
+  --brand-400:#36c79a;
+
+  /* Blues */
+  --blue-500:#1b77ff;
+  --blue-400:#5aa1ff;
+
+  /* Elevation */
+  --elev-1:0 1px 2px rgba(10,25,55,.05),0 4px 14px rgba(10,25,55,.06);
+  --elev-2:0 8px 24px rgba(10,25,55,.10),0 18px 40px rgba(10,25,55,.10);
+  --elev-3:0 18px 46px rgba(10,25,55,.16);
+
+  /* Radii */
+  --r-xxl:24px;
+  --r-xl:18px;
+  --r-lg:14px;
+  --r-md:12px;
+
+  /* Motion */
+  --t-fast:150ms cubic-bezier(.2,.9,.2,1);
+  --t-med:220ms cubic-bezier(.22,.61,.36,1);
+  --t-slow:420ms cubic-bezier(.2,.9,.2,1);
+
+  /* Buttons (compact) */
+  --btn-h:30px;      /* base min-height */
+  --btn-r:10px;
+  --btn-pad-y:.32rem; /* tighter default */
+  --btn-pad-x:.72rem;
+
+  /* Borders */
+  --border:rgba(15,35,65,.16);
+
+  /* State layers */
+  --state-on:rgba(27,119,255,.12);
+
+  /* Sticky offsets */
+  --sticky-top:64px; /* below header inside sheets */
+}
+
+/* ---------- Dark theme ---------- */
+html[data-theme="dark"]{
+  --bg:#0b1220;
+  --bg-grad:
+    radial-gradient(1200px 520px at 10% -10%, rgba(40,80,160,.25) 0%, transparent 60%),
+    radial-gradient(900px 420px at 110% 10%, rgba(30,90,160,.22) 0%, transparent 60%),
+    linear-gradient(#0b1220,#0b1220);
+  --glass:rgba(19,28,46,.72);
+  --glass-strong:rgba(22,32,54,.82);
+  --glass-stroke:rgba(140,170,210,.22);
+  --surface-2:rgba(255,255,255,.06);
+  --text:#eaf2ff;
+  --muted:#afbdd6;
+  --metal-highlight:#d0dbef;
+  --border:rgba(200,220,255,.15);
+  --state-on:rgba(90,160,255,.18);
+}
+
+/* ---------- Global ---------- */
+body{
+  font-family:"Inter",ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  background:var(--bg);
+  background-image:var(--bg-grad);
+  color:var(--text);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+.wrap{width:min(1180px,92vw);margin:0 auto}
+
+/* Material Symbols alignment */
+.material-symbols-rounded{
+  font-variation-settings:"FILL" 1,"wght" 700,"GRAD" 0,"opsz" 24;
+  vertical-align:-6%;
+  font-size:1.15em;
+  line-height:1;
+}
+
+/* ---------- Metallic headings ---------- */
+.title{
+  color:var(--text);
+  font-weight:800;
+  letter-spacing:.2px;
+  background:linear-gradient(180deg,var(--text) 0%,color-mix(in srgb,var(--text) 85%,#fff 15%) 55%,var(--metal-highlight) 120%);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+  text-shadow:0 .4px 0 rgba(255,255,255,.15);
+}
+.sub{color:var(--muted);font-weight:600}
+
+/* ---------- Header ---------- */
+.hf-header{
+  position:sticky;top:0;z-index:50;
+  backdrop-filter:saturate(130%) blur(12px);
+  background:color-mix(in srgb,var(--glass-strong) 90%,transparent);
+  border-bottom:1px solid var(--glass-stroke);
+}
+.header-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0}
+.brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:inherit;font-weight:900}
+.brand .dot{width:14px;height:14px;border-radius:999px;background:var(--blue-500);box-shadow:0 0 0 7px rgba(27,119,255,.16)}
+.brand-text{letter-spacing:.35px}
+
+/* ---------- Buttons (compact / tiers) ---------- */
+.btn{
+  position:relative;display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+  min-height:var(--btn-h);padding:var(--btn-pad-y) var(--btn-pad-x);border:0;border-radius:var(--btn-r);cursor:pointer;
+  font-weight:800;text-decoration:none;transition:transform var(--t-fast),box-shadow var(--t-fast),background var(--t-fast),color var(--t-fast),border-color var(--t-fast);
+  background:var(--glass-strong);color:var(--text);border:1px solid var(--glass-stroke);
+  box-shadow:var(--elev-1);overflow:hidden;will-change:transform;
+}
+.btn:hover{transform:translateY(-1px);box-shadow:var(--elev-2);background:color-mix(in srgb,var(--glass-strong) 92%,#f7fbff)}
+.btn:active{transform:scale(.985)}
+.btn-primary{
+  background:linear-gradient(135deg,var(--blue-400),var(--blue-500));
+  color:#fff;border:1px solid color-mix(in srgb,var(--blue-500) 36%,transparent);
+  box-shadow:0 12px 28px -10px rgba(27,119,255,.45);
+}
+.btn-primary:hover{filter:saturate(1.05)}
+.btn-ghost{
+  background:transparent;color:var(--blue-500);
+  border:1px solid color-mix(in srgb,var(--blue-500) 36%,transparent);
+}
+.btn-xs{ --btn-h:24px; --btn-pad-y:.18rem; --btn-pad-x:.48rem; border-radius:8px;font-weight:800 }
+.btn-sm{ --btn-h:28px; --btn-pad-y:.26rem; --btn-pad-x:.6rem; border-radius:9px }
+.icon-btn{
+  width:34px;height:34px;display:inline-grid;place-items:center;border-radius:12px;border:1px solid var(--glass-stroke);
+  background:var(--glass);box-shadow:var(--elev-1);cursor:pointer
+}
+/* Smaller buttons inside cards automatically */
+.card .btn{ --btn-h:26px; --btn-pad-y:.18rem; --btn-pad-x:.5rem } /* tighter */
+
+/* Segmented control */
+.seg{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--glass-stroke);background:var(--glass);border-radius:999px;padding:3px;box-shadow:var(--elev-1)}
+.seg label{display:inline-flex;align-items:center;gap:6px;padding:.28rem .6rem;border-radius:999px;cursor:pointer;font-weight:800;color:var(--muted);user-select:none}
+.seg input{appearance:none;width:0;height:0;position:absolute}
+.seg input:checked+span, .seg input:checked+label, .seg label:has(input:checked){
+  background:linear-gradient(135deg,var(--blue-400),var(--blue-500));color:#fff;
+}
+
+/* Ripple + press zoom */
+.pressable{position:relative;border-radius:12px;overflow:hidden}
+.ripple{position:relative;overflow:hidden;isolation:isolate}
+.md-ripple{
+  position:absolute;border-radius:999px;pointer-events:none;transform:scale(0);opacity:.16;background:currentColor;mix-blend-mode:multiply;
+  animation:md-ripple-enter 520ms cubic-bezier(.2,.9,.2,1);
+}
+@keyframes md-ripple-enter{0%{transform:scale(0);opacity:.22}60%{transform:scale(1);opacity:.14}100%{transform:scale(1.02);opacity:0}}
+.press-zoom{animation:press-zoom 260ms cubic-bezier(.2,.9,.2,1)}
+@keyframes press-zoom{0%{transform:scale(1)}50%{transform:scale(.97)}100%{transform:scale(1)}}
+
+/* ---------- Hero ---------- */
+.hero{
+  background:
+    radial-gradient(900px 260px at 12% -10%, rgba(140,190,255,.25), transparent 65%),
+    radial-gradient(720px 280px at 100% 0%, rgba(140,190,255,.22), transparent 65%);
+  border-bottom:1px solid var(--glass-stroke);
+}
+.hero-inner{display:grid;grid-template-columns:1.4fr .9fr;gap:16px;align-items:center;padding:28px 0}
+.hero h1{font-size:clamp(1.6rem,2.8vw,2.2rem);line-height:1.18;letter-spacing:.2px}
+.hero .sub{margin-top:4px}
+.hero-kpis{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+.kpi{background:var(--glass);backdrop-filter:blur(12px) saturate(120%);border:1px solid var(--glass-stroke);border-radius:14px;padding:10px 12px;box-shadow:var(--elev-1);text-align:center;min-width:120px}
+.kpi strong{display:block;color:var(--blue-500);font-size:1.15rem;letter-spacing:.2px}
+
+/* ---------- Toolbar ---------- */
+.toolbar{padding:14px 0}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.search{position:relative}
+.field.search input{
+  width:100%;padding:12px 44px 12px 12px;border-radius:12px;border:1px solid var(--glass-stroke);
+  background:var(--glass);backdrop-filter:blur(10px);box-shadow:var(--elev-1);
+  transition:box-shadow var(--t-med),border-color var(--t-med),background var(--t-med)
+}
+.field.search input:hover{background:color-mix(in srgb,var(--glass) 92%,#f2f8ff)}
+.field.search input:focus{box-shadow:0 0 0 3px rgba(27,119,255,.22),var(--elev-2);border-color:color-mix(in srgb,var(--blue-500) 45%,transparent)}
+.field.search .icon{position:absolute;right:12px;top:50%;transform:translateY(-50%);opacity:.75;pointer-events:none}
+.row{display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;margin-top:10px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.field select,
+.field input[type="text"],
+.field input[type="tel"],
+.field input[type="date"],
+.field input[type="time"]{
+  padding:10px 12px;border:1px solid var(--glass-stroke);background:var(--glass);
+  border-radius:12px;box-shadow:var(--elev-1);
+  transition:box-shadow var(--t-med),border-color var(--t-med),background var(--t-med)
+}
+.field select:hover,.field input:hover{background:color-mix(in srgb,var(--glass) 92%,#f2f8ff)}
+.field select:focus,.field input:focus{box-shadow:0 0 0 3px rgba(27,119,255,.22),var(--elev-2);border-color:color-mix(in srgb,var(--blue-500) 45%,transparent)}
+
+.switch{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--glass-stroke);border-radius:999px;background:var(--glass);box-shadow:var(--elev-1)}
+.switch input{appearance:none;width:38px;height:22px;background:rgba(27,119,255,.18);border-radius:999px;position:relative;outline:none;cursor:pointer;transition:background var(--t-fast)}
+.switch input::after{content:"";position:absolute;width:18px;height:18px;background:#fff;border-radius:999px;top:2px;left:2px;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:left var(--t-fast)}
+.switch input:checked{background:linear-gradient(135deg,var(--blue-400),var(--blue-500))}
+.switch input:checked::after{left:18px}
+.switch span{font-weight:800;color:var(--text)}
+
+.hint{margin-top:8px;color:var(--muted);font-size:.92rem}
+
+/* ---------- Chips ---------- */
+.metrics{padding:8px 0 2px}
+.metrics .chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{
+  padding:7px 10px;border-radius:999px;font-weight:800;font-size:.86rem;
+  color:var(--blue-500);
+  background:color-mix(in srgb,var(--blue-400) 12%,transparent);
+  border:1px dashed color-mix(in srgb,var(--blue-500) 28%,transparent);
+  box-shadow:var(--elev-1);
+}
+.chip:focus-visible,.chip:hover{filter:saturate(1.05)}
+
+/* ---------- Grid & Cards ---------- */
+.grid-section{padding:16px 0 48px}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
+.card{
+  display:flex;flex-direction:column;
+  background:var(--glass);backdrop-filter:blur(14px) saturate(140%);
+  border:1px solid var(--glass-stroke);border-radius:var(--r-xl);
+  box-shadow:var(--elev-2);
+  transition:transform var(--t-med), box-shadow var(--t-med), border-color var(--t-med), filter var(--t-slow);
+}
+.card:hover{transform:translateY(-6px) scale(1.01);box-shadow:var(--elev-3);border-color:color-mix(in srgb,var(--blue-500) 26%,var(--glass-stroke));filter:saturate(1.03)}
+.card:active{transform:translateY(-2px) scale(1.005)}
+
+/* Full-bleed image */
+.media{
+  position:relative;aspect-ratio:4/3;overflow:hidden;
+  border-top-left-radius:var(--r-xl);border-top-right-radius:var(--r-xl);
+  background:#e6f0ff;
+}
+.media img{
+  width:100%;height:100%;object-fit:cover;transform:scale(1.02);transition:transform var(--t-slow);cursor:zoom-in
+}
+.card:hover .media img{transform:scale(1.07)}
+.distance{
+  position:absolute;left:10px;top:10px;z-index:2;
+  background:rgba(0,0,0,.6);color:#fff;font-weight:900;font-size:.85rem;
+  padding:4px 9px;border-radius:999px;backdrop-filter:saturate(140%) blur(4px)
+}
+
+/* Card body */
+.body{padding:12px}
+.tags,.badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.pill{
+  padding:4px 7px;border-radius:999px;background:color-mix(in srgb,var(--blue-400) 10%,transparent);
+  border:1px dashed color-mix(in srgb,var(--blue-500) 24%,transparent);
+  font-weight:800;font-size:.75rem;color:var(--blue-500);cursor:default;user-select:none
+}
+.pill[role="tab"], .pill[tabindex]{cursor:pointer}
+.pill:hover{filter:saturate(1.08)}
+
+/* CTA area */
+.cta{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px}
+
+/* ---------- Tabs (used in Store modal) ---------- */
+.tabs{display:flex;gap:8px;border-bottom:1px solid var(--glass-stroke);padding:8px 12px;background:color-mix(in srgb,var(--glass-strong) 88%,transparent)}
+.tab{
+  border:1px solid var(--glass-stroke);background:var(--glass);box-shadow:var(--elev-1);
+  border-bottom:0;border-top-left-radius:10px;border-top-right-radius:10px;
+  padding:.4rem .7rem;font-weight:800;color:var(--muted);cursor:pointer
+}
+.tab.is-active{background:#fff;color:var(--text)}
+html[data-theme="dark"] .tab.is-active{background:color-mix(in srgb,#fff 10%,var(--glass-strong));}
+
+/* ---------- Modal / Sheet ---------- */
+.modal{position:fixed;inset:0;display:none;place-items:end;padding:16px;background:rgba(5,12,25,.35);z-index:60}
+.modal.is-open{display:grid}
+.sheet{
+  width:min(1080px,96vw);max-height:92vh;background:var(--glass-strong);
+  border:1px solid var(--glass-stroke);border-radius:var(--r-xl);
+  box-shadow:var(--elev-3);overflow:hidden;display:flex;flex-direction:column;
+  backdrop-filter:blur(16px) saturate(150%);
+}
+.sheet-head{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:12px;border-bottom:1px solid var(--glass-stroke);
+  background:linear-gradient(180deg,color-mix(in srgb,var(--glass-strong) 90%,#f6fbff),var(--glass-strong));
+}
+.head-cta{display:flex;align-items:center;gap:8px}
+.panels{overflow:auto;scroll-behavior:smooth}
+.panel{display:none;padding:12px}
+.panel.is-active{display:block}
+
+/* Search in-sheet mini */
+.field.search.mini input{padding:10px 40px 10px 10px;min-width:260px}
+
+/* Lists / rows */
+.tests{display:grid;gap:8px}
+.test{
+  display:grid;grid-template-columns:1fr auto;align-items:center;gap:10px;
+  border:1px solid var(--glass-stroke);background:var(--glass);
+  border-radius:12px;padding:10px;box-shadow:var(--elev-1)
+}
+.test label{display:flex;align-items:center;gap:10px;cursor:pointer;font-weight:700}
+.test .tname{font-weight:900}
+.test .price{font-weight:900}
+
+/* Summary card */
+.summary{
+  border:1px solid var(--glass-stroke);background:var(--glass);
+  border-radius:14px;padding:12px;box-shadow:var(--elev-1)
+}
+.summary .h{font-weight:900;margin-bottom:6px}
+
+/* ---------- Toast ---------- */
+.toast{
+  position:fixed;left:50%;bottom:18px;transform:translateX(-50%) translateY(20px);
+  background:#0c1222;color:#fff;padding:10px 14px;border-radius:12px;box-shadow:var(--elev-3);
+  opacity:0;pointer-events:none;transition:opacity var(--t-med), transform var(--t-med);z-index:80
+}
+.toast.is-show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ---------- Medicine Modal: Quick Links + Accordion ---------- */
+
+/* Make quick-links sticky inside the scrolling sheet */
+#medQuickLinks{
+  position:sticky;top:calc(var(--sticky-top));z-index:2;
+  background:color-mix(in srgb,var(--glass-strong) 90%,transparent);
+  padding:8px;border:1px solid var(--glass-stroke);border-radius:12px;box-shadow:var(--elev-1)
+}
+#medQuickLinks .pill{user-select:none}
+#medQuickLinks .pill.is-active{background:linear-gradient(135deg,var(--blue-400),var(--blue-500));color:#fff;border-color:transparent}
+
+/* Anchor offset for headings injected into med sections */
+.med-sections [id]{scroll-margin-top:calc(var(--sticky-top) + 10px)}
+
+/* Accordion */
+.acc{display:grid;gap:8px}
+.acc-item{
+  border:1px solid var(--glass-stroke);background:var(--glass);border-radius:12px;box-shadow:var(--elev-1);overflow:hidden
+}
+.acc-head{
+  display:flex;align-items:center;gap:10px;cursor:pointer;padding:10px 12px;font-weight:900;color:var(--text);
+  background:color-mix(in srgb,var(--glass-strong) 92%,transparent)
+}
+.acc-head .tag{margin-left:auto;color:var(--muted);font-weight:700}
+.acc-head::after{
+  content:"expand_more";font-family:"Material Symbols Rounded";font-variation-settings:"FILL" 1,"wght" 700,"GRAD" 0,"opsz" 24;
+  margin-left:6px;transition:transform var(--t-fast);line-height:1
+}
+.acc-item[open] .acc-head::after{transform:rotate(180deg)}
+.acc-body{
+  padding:10px 12px;color:var(--text);background:var(--glass);
+  animation:acc-open var(--t-med);
+}
+@keyframes acc-open{from{opacity:.6;transform:translateY(-2px)}to{opacity:1;transform:translateY(0)}}
+.acc-body .note{color:var(--muted);font-size:.92rem}
+
+/* ---------- Utilities ---------- */
+[aria-hidden="true"] .sheet{display:none}
+.hidden{display:none !important}
+
+/* Tiny helpers for inline prices/offers */
+.small{font-size:.88rem}
+.muted{color:var(--muted)}
+.grow{flex:1}
+
+/* ---------- Mini map ---------- */
+#miniMap{background:linear-gradient(180deg,#e9f2ff,#e6f0ff);}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 920px){
+  .hero-inner{grid-template-columns:1fr}
+  .hero-kpis{justify-content:flex-start}
+  :root{ --sticky-top:56px }
+}
+@media (max-width: 620px){
+  .grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+  .cta{grid-template-columns:1fr 1fr}
+  .row2{grid-template-columns:1fr}
+  .sheet{max-height:94vh}
+  .icon-btn{width:32px;height:32px}
+}
+
+/* ---------- Optional pretty scrollbar on desktop ---------- */
+@media (pointer:fine){
+  .panels::-webkit-scrollbar{width:10px}
+  .panels::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--blue-500) 20%,#9fb7d8);border-radius:999px}
+  .panels::-webkit-scrollbar-track{background:transparent}
+}
+
+/* --- Card CTA: stop grid from stretching buttons --- */
+.cta{
+  /* your other rules stay; this is the important bit */
+  align-items: center;            /* fixes inconsistent heights across cards */
+}
+
+/* --- Lock button height and compact vertical rhythm --- */
+.btn{
+  --btn-h: 28px;                  /* global compact size */
+  --btn-pad-x: .60rem;
+  height: var(--btn-h);           /* lock height (not just min-height) */
+  min-height: var(--btn-h);       /* fallback */
+  padding-block: 0;               /* remove extra vertical padding */
+  line-height: 1;                 /* avoid growth from body line-height */
+}
+
+/* make card buttons slightly smaller if you like */
+.card .btn{ --btn-h: 26px; }
+
+/* small variant still works consistently */
+.btn-sm{ --btn-h: 24px; }
+
+/* compact icon buttons */
+.icon-btn{ width: 28px; height: 28px; }
