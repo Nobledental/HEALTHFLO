@@ -1,0 +1,327 @@
+<!-- HealthFlo — Home Lab Tests (Light theme / pastel-green gradient) -->
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HealthFlo — Home Lab Tests</title>
+  <meta name="description" content="Find nearby medical labs across India. Compare test prices, check home visit availability, and book appointments." />
+  <meta name="theme-color" content="#f6fff9" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="tests.css" />
+</head>
+
+<body>
+  <!-- ===== Header ===== -->
+  <header class="hf-header" role="banner">
+    <div class="wrap header-inner">
+      <a class="brand" href="#" aria-label="HealthFlo home">
+        <span class="dot" aria-hidden="true"></span>
+        <span class="brand-text">HealthFlo</span>
+      </a>
+
+      <div class="actions">
+        <button id="themeToggle" class="btn btn-ghost ripple pressable" type="button" title="Toggle theme" aria-pressed="false">🌗</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero" aria-labelledby="heroTitle">
+    <div class="wrap hero-inner">
+      <div class="hero-copy">
+        <h1 id="heroTitle">Book home & in-lab tests near you</h1>
+        <p class="sub">15+ cities • Transparent pricing • Home visit option • WhatsApp confirmation</p>
+      </div>
+      <div class="hero-kpis" aria-label="Key metrics">
+        <div class="kpi"><strong id="kLabs">—</strong><span>Labs</span></div>
+        <div class="kpi"><strong>15+</strong><span>Cities</span></div>
+        <div class="kpi"><strong>Fast</strong><span>Home pickup</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Toolbar / Filters ===== -->
+  <section class="toolbar" role="region" aria-label="Search and filters">
+    <div class="wrap">
+      <div class="field search">
+        <input id="searchInput" type="search" inputmode="search" placeholder="Search lab, area, test (CBC, Ultrasound)…" aria-label="Search labs and tests" />
+        <span class="icon" aria-hidden="true">🔎</span>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="cityFilter">City</label>
+          <select id="cityFilter" aria-label="Filter by city">
+            <option value="">All</option>
+            <option>Mumbai</option><option>Delhi</option><option>Bengaluru</option>
+            <option>Hyderabad</option><option>Chennai</option><option>Pune</option>
+            <option>Kolkata</option><option>Ahmedabad</option><option>Jaipur</option>
+            <option>Lucknow</option><option>Chandigarh</option><option>Indore</option>
+            <option>Kochi</option><option>Surat</option><option>Noida</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="typeFilter">Type</label>
+          <select id="typeFilter" aria-label="Filter by test type">
+            <option value="">All</option>
+            <option value="blood">Blood / Pathology</option>
+            <option value="radiology">Radiology / Imaging</option>
+          </select>
+        </div>
+
+        <label class="switch" aria-label="Show only labs with home visit">
+          <input id="homeOnly" type="checkbox" />
+          <span>Home visit only</span>
+        </label>
+
+        <label class="switch" aria-label="Sort results nearest first">
+          <input id="nearestToggle" type="checkbox" checked />
+          <span>Nearest first</span>
+        </label>
+
+        <button id="btnLocate" class="btn ripple pressable" type="button">Use my location</button>
+      </div>
+
+      <div id="sortHint" class="hint" role="status" aria-live="polite">Sorted by nearest — using your current location.</div>
+    </div>
+  </section>
+
+  <!-- ===== Confidence Chips ===== -->
+  <section class="metrics" aria-label="Assurances">
+    <div class="wrap chips">
+      <div class="chip">NABL-grade partners</div>
+      <div class="chip">Transparent pricing</div>
+      <div class="chip">WhatsApp confirmations</div>
+      <div class="chip">Reschedule-friendly</div>
+    </div>
+  </section>
+
+  <!-- ===== Lab Grid ===== -->
+  <main class="grid-section" role="main" aria-labelledby="gridTitle">
+    <h2 id="gridTitle" class="vh">Labs near you</h2>
+    <div class="wrap">
+      <div id="labGrid" class="grid" aria-live="polite"><!-- JS injects cards --></div>
+    </div>
+  </main>
+
+  <!-- ===== Card Template (full-bleed image) ===== -->
+  <template id="tpl-lab-card">
+    <article class="card pressable ripple" tabindex="0" aria-label="Open lab details">
+      <figure class="media">
+        <img src="" alt="" />
+        <span class="distance" aria-label="Distance">— km</span>
+      </figure>
+      <div class="body">
+        <h3 class="title">Lab Name</h3>
+        <div class="sub">Area • City</div>
+        <div class="badges" aria-label="Highlights"></div>
+        <div class="cta">
+          <button class="btn btn-primary btn-view ripple pressable" type="button">View</button>
+          <a class="btn btn-ghost btn-dir ripple pressable" target="_blank" rel="noopener" role="button" aria-label="Get directions">Directions</a>
+          <a class="btn btn-ghost btn-call ripple pressable" role="button" aria-label="Call lab">Call</a>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <!-- ===== Test Row Template ===== -->
+  <template id="tpl-test-row">
+    <div class="test pressable ripple">
+      <label>
+        <input class="pick" type="checkbox" aria-label="Select test" />
+        <span class="tname">Test name</span>
+      </label>
+      <div class="price" aria-label="Price">₹0</div>
+    </div>
+  </template>
+
+  <!-- ===== Modal / Sheet ===== -->
+  <div id="labModal" class="modal" aria-hidden="true">
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="labTitle">
+      <!-- Header -->
+      <div class="sheet-head">
+        <div class="lab-hero">
+          <img id="labLogo" class="logo" alt="Lab logo" />
+          <div class="lab-meta">
+            <h3 id="labTitle">Lab</h3>
+            <div class="meta">
+              <span id="labAreaTxt">City, Area</span>
+              <span class="pill" id="labHome" aria-live="polite">Home visit • —</span>
+              <span class="pill" id="labDistance">— km</span>
+              <span class="pill" id="labCounts">—</span>
+            </div>
+          </div>
+        </div>
+        <div class="head-cta">
+          <a id="labMap" class="btn btn-ghost ripple pressable" target="_blank" rel="noopener" aria-label="Open directions">Directions</a>
+          <a id="labCallBtn" class="btn btn-ghost ripple pressable" aria-label="Call lab">Call</a>
+          <a id="labWABtn" class="btn btn-ghost ripple pressable" target="_blank" rel="noopener" aria-label="WhatsApp lab">WhatsApp</a>
+          <button id="labClose" class="icon-btn ripple pressable" type="button" aria-label="Close">✕</button>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs" role="tablist" aria-label="Lab sections">
+        <button class="tab is-active ripple pressable" data-tab="blood" role="tab" aria-selected="true" aria-controls="panel-blood">Blood Tests</button>
+        <button class="tab ripple pressable" data-tab="radiology" role="tab" aria-selected="false" aria-controls="panel-rad">Radiology</button>
+        <button class="tab ripple pressable" data-tab="book" role="tab" aria-selected="false" aria-controls="panel-book">Book</button>
+        <button class="tab ripple pressable" data-tab="about" role="tab" aria-selected="false" aria-controls="panel-about">About</button>
+      </div>
+
+      <!-- Panels -->
+      <div class="panels">
+        <!-- Blood -->
+        <section id="panel-blood" class="panel is-active" role="tabpanel" aria-labelledby="tab-blood">
+          <div class="panel-head">
+            <div class="field search mini">
+              <input id="bloodSearch" type="search" placeholder="Search blood tests" aria-label="Search blood tests" />
+              <span class="icon" aria-hidden="true">🔎</span>
+            </div>
+            <label class="switch" aria-label="Show only tests with home collection">
+              <input id="bloodHomeToggle" type="checkbox" />
+              <span>Home collection</span>
+            </label>
+            <div id="homeFee" class="muted" aria-live="polite">—</div>
+            <div class="grow" aria-hidden="true"></div>
+            <button id="btnBloodClear" class="btn btn-ghost ripple pressable" type="button">Clear</button>
+            <a id="btnBloodWA" class="btn ripple pressable" role="button">Send on WhatsApp</a>
+          </div>
+          <div id="bloodList" class="tests" aria-live="polite"></div>
+          <div class="panel-foot">
+            <div>Selected: <strong id="bloodCount">0</strong></div>
+            <div class="grow" aria-hidden="true"></div>
+            <div>Total: <strong id="bloodTotal">₹0</strong></div>
+          </div>
+        </section>
+
+        <!-- Radiology -->
+        <section id="panel-rad" class="panel" role="tabpanel" aria-labelledby="tab-radiology">
+          <div class="panel-head">
+            <div class="field search mini">
+              <input id="radSearch" type="search" placeholder="Search radiology" aria-label="Search radiology tests" />
+              <span class="icon" aria-hidden="true">🔎</span>
+            </div>
+            <div class="grow" aria-hidden="true"></div>
+            <button id="btnRadClear" class="btn btn-ghost ripple pressable" type="button">Clear</button>
+            <a id="btnRadWA" class="btn ripple pressable" role="button">Send on WhatsApp</a>
+          </div>
+          <div id="radList" class="tests" aria-live="polite"></div>
+          <div class="panel-foot">
+            <div>Selected: <strong id="radCount">0</strong></div>
+            <div class="grow" aria-hidden="true"></div>
+            <div>Total: <strong id="radTotal">₹0</strong></div>
+          </div>
+        </section>
+
+        <!-- Booking -->
+        <section id="panel-book" class="panel" role="tabpanel" aria-labelledby="tab-book">
+          <div class="book-grid">
+            <div class="col">
+              <div class="field">
+                <label>Visit mode</label>
+                <div class="seg" role="radiogroup" aria-label="Visit mode">
+                  <label class="pressable ripple"><input id="modeVisit" type="radio" name="mode" checked aria-checked="true" /> Visit lab</label>
+                  <label id="modeHomeWrap" class="pressable ripple"><input id="modeHome" type="radio" name="mode" aria-checked="false" /> Home visit</label>
+                </div>
+              </div>
+
+              <div class="row2">
+                <div class="field">
+                  <label for="bookDate">Date</label>
+                  <input id="bookDate" type="date" class="pressable ripple" />
+                </div>
+                <div class="field">
+                  <label for="bookTime">Time</label>
+                  <input id="bookTime" type="time" step="900" class="pressable ripple" />
+                </div>
+              </div>
+
+              <div class="row2">
+                <div class="field">
+                  <label for="bookName">Name</label>
+                  <input id="bookName" type="text" placeholder="Your name" class="pressable ripple" autocomplete="name" />
+                </div>
+                <div class="field">
+                  <label for="bookPhone">Phone</label>
+                  <input id="bookPhone" type="tel" placeholder="10-digit mobile" class="pressable ripple" autocomplete="tel" />
+                </div>
+              </div>
+
+              <!-- Inline default profile editor (inside booking) -->
+              <details id="profileDetails" class="profile-details">
+                <summary class="profile-summary pressable ripple">Edit default profile</summary>
+                <div class="profile-form">
+                  <div class="row2">
+                    <div class="field">
+                      <label for="profileName">Default Name</label>
+                      <input id="profileName" type="text" placeholder="Full name" class="pressable ripple" />
+                    </div>
+                    <div class="field">
+                      <label for="profilePhone">Default Phone</label>
+                      <input id="profilePhone" type="tel" placeholder="10-digit mobile" class="pressable ripple" />
+                    </div>
+                  </div>
+                  <div class="row2">
+                    <div class="field">
+                      <label for="profileCity">Default City</label>
+                      <select id="profileCity" class="pressable ripple">
+                        <option value="">—</option>
+                        <option>Mumbai</option><option>Delhi</option><option>Bengaluru</option>
+                        <option>Hyderabad</option><option>Chennai</option><option>Pune</option>
+                        <option>Kolkata</option><option>Ahmedabad</option><option>Jaipur</option>
+                      </select>
+                    </div>
+                    <div class="field">
+                      <label for="profileSort">Default sort</label>
+                      <select id="profileSort" class="pressable ripple">
+                        <option value="nearest">Nearest</option>
+                        <option value="az">A–Z</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <button id="profileClear" class="btn btn-ghost ripple pressable" type="button">Clear</button>
+                    <div class="grow" aria-hidden="true"></div>
+                    <button id="profileSave" class="btn btn-primary ripple pressable" type="button">Save</button>
+                  </div>
+                </div>
+              </details>
+
+              <div class="row">
+                <button id="btnUseProfile" class="btn btn-ghost ripple pressable" type="button">Use Profile</button>
+                <div class="grow" aria-hidden="true"></div>
+                <button id="btnBookConfirm" class="btn btn-primary ripple pressable" type="button">Confirm & WhatsApp</button>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="summary" aria-live="polite">
+                <div class="h">Summary</div>
+                <div id="bookSummary" class="muted">No tests selected yet.</div>
+                <div class="tot">Total: <strong id="bookTotal">₹0</strong></div>
+                <div class="muted small">Your number will be shared with the lab for coordination.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- About -->
+        <section id="panel-about" class="panel" role="tabpanel" aria-labelledby="tab-about">
+          <p id="labAbout">—</p>
+          <p id="labContact" class="muted">—</p>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Toast ===== -->
+  <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- ===== Scripts ===== -->
+  <script src="app.js" defer></script>
+</body>
+</html>
