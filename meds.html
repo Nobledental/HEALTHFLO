@@ -1,0 +1,686 @@
+<!-- =========================================================
+     HealthFlo — Medicines & Hospital Pharmacies (Glass / Blue)
+     HTML (CSS in meds.css, JS in meds.js)
+     ========================================================= -->
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HealthFlo — Hospital Pharmacies & Medicines</title>
+  <meta name="description" content="Order authentic medicines from nearby hospital pharmacies. Compare prices, request tele-consult, and track delivery live." />
+  <meta name="theme-color" content="#eef6ff" />
+
+  <!-- Inter + Material Symbols Rounded (premium icon set) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,700,1,0" rel="stylesheet" />
+
+  <link rel="stylesheet" href="meds.css" />
+</head>
+<body>
+  <!-- ===== Header ===== -->
+  <header class="hf-header" role="banner">
+    <div class="wrap header-inner">
+      <a class="brand" href="#" aria-label="HealthFlo home">
+        <span class="dot" aria-hidden="true"></span>
+        <span class="brand-text">HealthFlo</span>
+      </a>
+
+      <nav class="actions" aria-label="Primary">
+        <button id="btnPremium" class="btn btn-ghost ripple pressable" type="button" title="Activate Premium perks">
+          <span class="material-symbols-rounded" aria-hidden="true">workspace_premium</span> Get Premium
+        </button>
+        <button id="orderTrackerOpen" class="btn ripple pressable" type="button" title="Track current order">
+          <span class="material-symbols-rounded" aria-hidden="true">location_on</span> Track
+        </button>
+        <button id="orderHistoryOpen" class="btn ripple pressable" type="button" title="View order history">
+          <span class="material-symbols-rounded" aria-hidden="true">history</span> History
+        </button>
+        <button id="cartOpen" class="btn btn-primary ripple pressable" type="button" aria-label="Open cart">
+          <span class="material-symbols-rounded" aria-hidden="true">shopping_cart</span> <span id="cartCount" aria-live="polite">0</span>
+        </button>
+        <button id="themeToggle" class="btn btn-ghost ripple pressable" type="button" title="Toggle theme" aria-pressed="false">
+          <span class="material-symbols-rounded" aria-hidden="true">dark_mode</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero" aria-labelledby="heroTitle">
+    <div class="wrap hero-inner">
+      <div class="hero-copy">
+        <h1 id="heroTitle">Order hospital-grade medicines near you</h1>
+        <p class="sub">Hospital pharmacies only • Authentic stock • Tele-consult if Rx is old • WhatsApp confirmation</p>
+      </div>
+      <div class="hero-kpis" aria-label="Key metrics">
+        <div class="kpi"><strong id="kMeds">—</strong><span>Medicines</span></div>
+        <div class="kpi"><strong id="kStores">—</strong><span>Hospital Pharmacies</span></div>
+        <div class="kpi"><strong>Free</strong><span>Tele-consult (elig.)</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Toolbar / Filters ===== -->
+  <section class="toolbar" role="region" aria-label="Search and filters">
+    <div class="wrap">
+      <div class="field search">
+        <input id="searchInput" type="search" inputmode="search" placeholder="Search brand / generic / condition (e.g., Metronidazole, Dolo, Bacterial Infections)…" aria-label="Search medicines" />
+        <span class="icon" aria-hidden="true">🔎</span>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="conditionFilter">Condition</label>
+          <select id="conditionFilter" aria-label="Filter by condition">
+            <option value="">All</option>
+            <option>Antibiotic</option>
+            <option>Pain Relief</option>
+            <option>Vitamins</option>
+            <option>Allergies</option>
+            <option>Diabetes</option>
+            <option>High Cholesterol</option>
+            <option>Ulcer Reflux Flatulence</option>
+            <option>Asthma Copd</option>
+            <option>Supplements</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="formFilter">Form</label>
+          <select id="formFilter" aria-label="Filter by dosage form">
+            <option value="">All</option>
+            <option>Tablet</option>
+            <option>Capsule</option>
+            <option>Syrup</option>
+            <option>Inhaler</option>
+            <option>Gel</option>
+            <option>Drop</option>
+          </select>
+        </div>
+
+        <label class="switch" aria-label="Show only stores that deliver">
+          <input id="deliveryOnly" type="checkbox" />
+          <span>Delivery only</span>
+        </label>
+
+        <label class="switch" aria-label="Sort pharmacies nearest first">
+          <input id="nearestToggle" type="checkbox" checked />
+          <span>Nearest first</span>
+        </label>
+
+        <button id="btnLocate" class="btn ripple pressable" type="button">
+          <span class="material-symbols-rounded" aria-hidden="true">my_location</span> Use my location
+        </button>
+      </div>
+
+      <!-- Quick categories (tap to search) -->
+      <div class="metrics" style="margin-top:10px" aria-label="Quick categories">
+        <div class="wrap chips" id="quickCats">
+          <button class="chip pressable ripple" data-q="Antibiotic" type="button">Antibiotic</button>
+          <button class="chip pressable ripple" data-q="Pain Relief" type="button">Pain killer</button>
+          <button class="chip pressable ripple" data-q="Vitamins" type="button">Vitamins</button>
+          <button class="chip pressable ripple" data-q="Fever" type="button">Fever</button>
+          <button class="chip pressable ripple" data-q="Cough And Cold" type="button">Cough & Cold</button>
+        </div>
+      </div>
+
+      <div id="sortHint" class="hint" role="status" aria-live="polite">Sorted by nearest — using your current location.</div>
+    </div>
+  </section>
+
+  <!-- ===== Trust chips ===== -->
+  <section class="metrics" aria-label="Assurances">
+    <div class="wrap chips">
+      <div class="chip">Hospital pharmacies only</div>
+      <div class="chip">Transparent pricing</div>
+      <div class="chip">Tele-consult if Rx is old</div>
+      <div class="chip">WhatsApp confirmations</div>
+    </div>
+  </section>
+
+  <!-- ===== Medicines Grid ===== -->
+  <main class="grid-section" role="main" aria-labelledby="medsTitle">
+    <div class="wrap">
+      <h2 id="medsTitle" class="vh">Medicines</h2>
+      <div id="medGrid" class="grid" aria-live="polite"><!-- JS injects medicine cards --></div>
+    </div>
+  </main>
+
+  <!-- ===== Hospital Pharmacies Grid ===== -->
+  <section class="grid-section" role="region" aria-labelledby="storesTitle">
+    <div class="wrap">
+      <h2 id="storesTitle" class="vh">Hospital Pharmacies</h2>
+      <div id="storeGrid" class="grid" aria-live="polite"><!-- JS injects store cards --></div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       Templates
+       ========================================================= -->
+
+  <!-- Medicine Card (JS injects full-bleed figure to avoid duplicates) -->
+  <template id="tpl-med-card">
+    <article class="card pressable ripple" tabindex="0" aria-label="Open medicine details">
+      <div class="body">
+        <h3 class="title brandname">Brand</h3>
+        <div class="sub generic">Generic • strength • pack</div>
+        <div class="badges tags" aria-label="Tags"></div>
+
+        <div class="cta" style="margin-top:10px;grid-template-columns:1fr auto auto">
+          <div>
+            <div><strong class="now">₹0</strong> <span class="muted small">MRP <s class="mrp">₹0</s></span></div>
+            <div class="muted small off">—</div>
+            <div class="muted small offer">—</div>
+          </div>
+          <button class="btn btn-ghost btn-view ripple pressable" type="button">View</button>
+          <button class="btn btn-primary btn-add ripple pressable" type="button">Add</button>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <!-- Store Card -->
+  <template id="tpl-store-card">
+    <article class="card pressable ripple" tabindex="0" aria-label="Open pharmacy details">
+      <figure class="media">
+        <img src="" alt="" loading="lazy" decoding="async" />
+        <span class="distance" aria-label="Distance">— km</span>
+      </figure>
+      <div class="body">
+        <h3 class="title">Hospital Pharmacy</h3>
+        <div class="sub">Area • City</div>
+        <div class="badges" aria-label="Highlights"></div>
+        <div class="cta">
+          <button class="btn btn-primary btn-view ripple pressable" type="button">View</button>
+          <a class="btn btn-ghost btn-dir ripple pressable" target="_blank" rel="noopener" role="button" aria-label="Get directions">Directions</a>
+          <a class="btn btn-ghost btn-call ripple pressable" role="button" aria-label="Call pharmacy">Call</a>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <!-- Cart line template -->
+  <template id="tpl-cart-line">
+    <div class="test pressable ripple">
+      <label><span class="tname">Brand • Pack</span></label>
+      <div class="row" style="gap:8px;align-items:center">
+        <div class="muted small qty">Qty: 1</div>
+        <div class="price"><strong>₹0</strong></div>
+        <button class="btn btn-ghost line-dec ripple pressable" type="button" aria-label="Decrease">−</button>
+        <button class="btn btn-ghost line-inc ripple pressable" type="button" aria-label="Increase">+</button>
+        <button class="btn btn-ghost line-del ripple pressable" type="button" aria-label="Remove">
+          <span class="material-symbols-rounded" aria-hidden="true">close</span>
+        </button>
+      </div>
+    </div>
+  </template>
+
+  <!-- Timeline row template (tracker) -->
+  <template id="tpl-timeline-row">
+    <div class="test">
+      <label><span class="tname">Update text</span></label>
+      <div class="price muted small">00:00</div>
+    </div>
+  </template>
+
+  <!-- Order history row template -->
+  <template id="tpl-history-row">
+    <div class="test">
+      <label><span class="tname">#ORD-0000 — Store — Delivery</span></label>
+      <div class="row" style="gap:8px;align-items:center">
+        <div class="price"><strong>₹0</strong></div>
+        <button class="btn btn-ghost hist-view ripple pressable" type="button">View</button>
+        <button class="btn btn-ghost hist-reorder ripple pressable" type="button">Reorder</button>
+        <button class="btn btn-ghost hist-wa ripple pressable" type="button">WhatsApp</button>
+      </div>
+    </div>
+  </template>
+
+  <!-- =========================================================
+       Medicine Modal (IDs aligned with meds.js)
+       ========================================================= -->
+  <div id="medModal" class="modal" aria-hidden="true">
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="medTitle">
+      <div class="sheet-head">
+        <div>
+          <div id="medMfr" class="muted small" style="font-weight:800;letter-spacing:.3px;text-transform:uppercase">— MANUFACTURER —</div>
+          <h3 id="medTitle" class="title" style="margin-top:4px">Brand • Pack</h3>
+          <div class="meta" style="margin-top:4px">
+            <span id="medCond">Condition</span> • <span id="medForm">Form</span> • <span id="medRx">OTC / Rx</span>
+          </div>
+        </div>
+        <div class="head-cta">
+          <button id="medGoCart" class="btn btn-ghost ripple pressable" type="button">
+            <span class="material-symbols-rounded" aria-hidden="true">shopping_cart</span> Go to Cart
+          </button>
+          <button id="medClose" class="icon-btn ripple pressable" type="button" aria-label="Close">
+            <span class="material-symbols-rounded" aria-hidden="true">close</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="panels">
+        <section class="panel is-active">
+          <!-- Gallery -->
+          <figure id="medGallery" class="media" style="margin-bottom:10px">
+            <img id="medImg" src="" alt="Medicine image" loading="lazy" decoding="async" />
+          </figure>
+
+          <!-- Price & Qty -->
+          <div class="row">
+            <div>
+              <div class="muted small"><span id="qtyTxt">Strip</span></div>
+              <div style="font-size:1.1rem">Best price <strong id="medBest" style="font-size:1.2rem">₹0</strong></div>
+
+              <div style="margin-top:4px">
+                <strong id="medNow">₹0</strong>
+                <span class="muted small"><span id="medOff">—% OFF</span></span>
+              </div>
+
+              <div class="muted small">MRP <s id="medMrp">₹0</s> (Inclusive of all taxes)</div>
+              <div class="muted small" id="medGstNote">New Reduced MRP as per revised GST benefit.</div>
+            </div>
+
+            <div class="grow"></div>
+
+            <div>
+              <div class="muted small" style="margin-bottom:6px">Quantity</div>
+              <div class="seg" role="group" aria-label="Quantity" style="justify-content:flex-end">
+                <button id="qtyMinus" class="btn btn-ghost ripple pressable" type="button">−</button>
+                <button class="btn" style="pointer-events:none" type="button"><span id="qtyVal">1</span></button>
+                <button id="qtyPlus" class="btn btn-ghost ripple pressable" type="button">+</button>
+              </div>
+              <button id="medAdd" class="btn btn-primary ripple pressable" type="button" style="margin-top:8px">
+                <span class="material-symbols-rounded" aria-hidden="true">add_shopping_cart</span> Add to Cart
+              </button>
+            </div>
+          </div>
+
+          <!-- Delivery & Pincode -->
+          <div class="row" style="margin-top:12px">
+            <div class="field" style="min-width:260px">
+              <label>Deliver to</label>
+              <input id="pinInput" type="text" placeholder="110001 Delhi, Delhi" />
+            </div>
+            <div class="grow"></div>
+            <div>
+              <div>Delivery: <strong id="deliverBy">Mon, 27 Oct</strong></div>
+              <div class="muted small"><span id="stockNote">In stock</span></div>
+            </div>
+            <button id="pinEdit" class="btn btn-ghost ripple pressable" type="button">
+              <span class="material-symbols-rounded" aria-hidden="true">edit</span> Edit pincode
+            </button>
+          </div>
+
+          <!-- Trust facts (populated by JS) -->
+          <ul id="medFacts" class="muted small" style="display:grid;gap:4px;margin-top:10px"></ul>
+
+          <!-- Coupons -->
+          <div class="summary" style="margin-top:12px">
+            <div class="h" style="font-weight:900">Coupons</div>
+            <div class="row">
+              <div>View all</div><div class="grow"></div><div>Best price <strong id="medBest2">₹0</strong></div>
+            </div>
+            <div class="row" style="margin-top:6px">
+              <div class="muted small">Add medicines worth <strong id="unlockAmt">₹750.00</strong> more to your cart</div>
+              <div class="grow"></div>
+              <button id="unlockBtn" class="btn btn-ghost ripple pressable" type="button">Unlock Coupon</button>
+            </div>
+            <div class="muted small" style="margin-top:4px">T&amp;C</div>
+          </div>
+
+          <!-- Substitutes -->
+          <div style="margin-top:12px">
+            <h4 class="title" style="font-size:1rem;margin-bottom:6px">Substitutes</h4>
+            <div class="sub" style="margin-bottom:4px">Same composition as: <strong id="sameAs">—</strong></div>
+            <div class="sub" style="margin-bottom:8px">Contains: <strong id="containsComp">—</strong></div>
+            <div id="subsGrid" class="grid" aria-live="polite"><!-- small med cards --></div>
+          </div>
+
+          <!-- Quick links (sticky) -->
+          <div style="margin-top:12px">
+            <div id="medQuickLinks" class="badges" role="tablist" aria-label="Medicine information quick links">
+              <span class="pill" role="tab">Uses</span>
+              <span class="pill" role="tab">How it works</span>
+              <span class="pill" role="tab">Directions for use</span>
+              <span class="pill" role="tab">Side effects</span>
+              <span class="pill" role="tab">Warnings &amp; precautions</span>
+              <span class="pill" role="tab">Interactions</span>
+              <span class="pill" role="tab">Synopsis</span>
+              <span class="pill" role="tab">Useful diagnostic tests</span>
+            </div>
+          </div>
+
+          <!-- Sections container (JS injects blocks) -->
+          <div id="medSections" class="med-sections" style="margin-top:12px"></div>
+
+          <!-- Short intro (JS will fill #medDesc; keep for fallback) -->
+          <div style="margin-top:12px">
+            <h4 class="title" style="font-size:1rem;margin-bottom:6px">Introduction</h4>
+            <p id="medDesc" class="muted small">—</p>
+          </div>
+
+          <!-- More Info -->
+          <div style="margin-top:10px">
+            <h4 class="title" style="font-size:1rem;margin-bottom:6px">More Information</h4>
+            <ul id="medMore" class="muted small" style="display:grid;gap:4px"></ul>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       Store Modal (hospital pharmacies only)
+       ========================================================= -->
+  <div id="storeModal" class="modal" aria-hidden="true">
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="storeTitle">
+      <div class="sheet-head">
+        <div class="lab-hero" style="display:flex;align-items:center;gap:12px">
+          <img id="storeLogo" class="logo" alt="Pharmacy" style="width:52px;height:52px;border-radius:14px;border:1px solid var(--border);object-fit:cover" />
+          <div>
+            <h3 id="storeTitle" class="title">Hospital Pharmacy</h3>
+            <div class="meta">
+              <span id="storeAreaTxt">City, Area</span>
+              <span class="pill" id="storeDeliv">Delivery • Pick-up</span>
+              <span class="pill" id="storeDistance">— km</span>
+            </div>
+          </div>
+        </div>
+        <div class="head-cta">
+          <a id="storeMap" class="btn btn-ghost ripple pressable" target="_blank" rel="noopener">
+            <span class="material-symbols-rounded" aria-hidden="true">map</span> Directions
+          </a>
+          <a id="storeCall" class="btn btn-ghost ripple pressable">
+            <span class="material-symbols-rounded" aria-hidden="true">call</span> Call
+          </a>
+          <button id="storeClose" class="icon-btn ripple pressable" type="button" aria-label="Close">
+            <span class="material-symbols-rounded" aria-hidden="true">close</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="Pharmacy sections">
+        <button class="tab is-active ripple pressable" data-tab="inv" role="tab" aria-selected="true" aria-controls="panel-inv">Inventory</button>
+        <button class="tab ripple pressable" data-tab="about" role="tab" aria-selected="false" aria-controls="panel-about">About</button>
+      </div>
+
+      <div class="panels">
+        <section id="panel-inv" class="panel is-active" role="tabpanel">
+          <div class="panel-head" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px">
+            <div class="field search mini">
+              <input id="storeSearch" type="search" placeholder="Search in this pharmacy…" aria-label="Search pharmacy inventory" />
+              <span class="icon" aria-hidden="true">🔎</span>
+            </div>
+            <div class="grow"></div>
+            <span id="storeOffer" class="muted small">—</span>
+            <button id="storeToCart" class="btn ripple pressable" type="button">
+              <span class="material-symbols-rounded" aria-hidden="true">shopping_cart</span> Go to Cart
+            </button>
+          </div>
+          <div id="storeInv" class="grid" aria-live="polite"><!-- JS injects medicine cards with store pricing --></div>
+        </section>
+
+        <section id="panel-about" class="panel" role="tabpanel">
+          <p id="storeAbout" class="muted">—</p>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       Cart Sheet
+       ========================================================= -->
+  <div id="cartSheet" class="modal" aria-hidden="true">
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
+      <div class="sheet-head">
+        <h3 id="cartTitle">Your Cart</h3>
+        <div class="head-cta">
+          <button id="cartClose" class="icon-btn ripple pressable" type="button" aria-label="Close">
+            <span class="material-symbols-rounded" aria-hidden="true">close</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="panels">
+        <section class="panel is-active">
+          <!-- Store & fulfilment -->
+          <div class="row">
+            <div class="field" style="min-width:260px">
+              <label for="selStore">Hospital Pharmacy</label>
+              <select id="selStore"></select>
+            </div>
+            <div class="field">
+              <label>Fulfilment</label>
+              <div class="seg" role="radiogroup">
+                <label class="pressable ripple"><input id="fulPickup" type="radio" name="ful" /> Pick-up</label>
+                <label class="pressable ripple"><input id="fulDelivery" type="radio" name="ful" checked /> Delivery</label>
+              </div>
+            </div>
+            <div class="grow" aria-hidden="true"></div>
+            <button id="btnClearCart" class="btn btn-ghost ripple pressable" type="button">
+              <span class="material-symbols-rounded" aria-hidden="true">delete</span> Clear
+            </button>
+          </div>
+
+          <!-- Address / phone (delivery only) -->
+          <div id="addrRow" class="row" style="margin-top:8px">
+            <div class="field" style="flex:2">
+              <label for="addr">Delivery address</label>
+              <input id="addr" type="text" placeholder="Flat, street, area, city, pincode" />
+            </div>
+            <div class="field" style="flex:1;min-width:220px">
+              <label for="userPhone">Phone</label>
+              <input id="userPhone" type="tel" placeholder="10-digit mobile" autocomplete="tel" />
+            </div>
+          </div>
+
+          <!-- Prescription date + Tele-consult -->
+          <div class="row" style="margin-top:8px">
+            <div class="field">
+              <label for="rxDate">Prescription date (if Rx items)</label>
+              <input id="rxDate" type="date" />
+              <div id="rxHint" class="muted small" style="margin-top:4px">—</div>
+            </div>
+            <div class="field">
+              <label>Tele-consult (free if Rx is old)</label>
+              <div class="seg" role="radiogroup">
+                <label class="pressable ripple"><input id="teleNo" type="radio" name="tele" checked /> No</label>
+                <label class="pressable ripple"><input id="teleYes" type="radio" name="tele" /> Yes</label>
+              </div>
+            </div>
+            <div class="field">
+              <label for="payMode">Payment mode</label>
+              <select id="payMode">
+                <option>UPI</option>
+                <option>Cash on Delivery</option>
+                <option>Card on Delivery</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Note -->
+          <div class="field" style="margin-top:8px">
+            <label for="note">Note to pharmacy (optional)</label>
+            <input id="note" type="text" placeholder="e.g., ring the bell, landmark, substitute allowed/not allowed…" />
+          </div>
+
+          <!-- Cart lines -->
+          <div id="cartList" class="tests" style="margin-top:10px"><!-- tpl-cart-line --></div>
+
+          <!-- Summary -->
+          <div class="summary" style="margin-top:12px">
+            <div class="h">Summary</div>
+            <div class="row"><div>Items</div><div class="grow"></div><div><strong id="sumItems">₹0</strong></div></div>
+            <div class="row"><div>Delivery fee</div><div class="grow"></div><div><strong id="sumDeliv">₹0</strong></div></div>
+            <div class="row"><div>Premium discount</div><div class="grow"></div><div><strong id="sumDisc">₹0</strong></div></div>
+            <div class="row" style="border-top:1px dashed var(--border);padding-top:8px;margin-top:6px">
+              <div>Total</div><div class="grow"></div><div><strong id="sumTotal">₹0</strong></div>
+            </div>
+            <div id="feeNote" class="muted small" style="margin-top:6px">—</div>
+            <div class="row" style="margin-top:10px">
+              <div class="grow"></div>
+              <button id="btnPlaceOrder" class="btn btn-primary ripple pressable" type="button">
+                <span class="material-symbols-rounded" aria-hidden="true">send</span> Place order &amp; WhatsApp
+              </button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       Order Tracker Sheet
+       ========================================================= -->
+  <div id="trackerSheet" class="modal" aria-hidden="true">
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="trackTitle">
+      <div class="sheet-head">
+        <h3 id="trackTitle">Order Tracker — <span id="trackOrderId">—</span></h3>
+        <div class="head-cta">
+          <a id="trackerWA" class="btn btn-ghost ripple pressable" target="_blank" rel="noopener">
+            <span class="material-symbols-rounded" aria-hidden="true">chat</span> WhatsApp Help
+          </a>
+          <button id="trackerClose" class="icon-btn ripple pressable" type="button" aria-label="Close">
+            <span class="material-symbols-rounded" aria-hidden="true">close</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="panels">
+        <section class="panel is-active">
+          <div class="row">
+            <div>
+              <div id="trackStore"><strong>—</strong></div>
+              <div id="trackMode" class="muted small">—</div>
+              <div id="trackDistance" class="muted small">—</div>
+            </div>
+            <div class="grow"></div>
+            <div style="text-align:right">
+              <div>Status: <strong id="trackStatus">—</strong></div>
+              <div class="muted small" id="trackPartner">—</div>
+              <div class="muted small">ETA: <strong id="etaCountdown">--:--</strong></div>
+            </div>
+          </div>
+
+          <div id="miniMap" style="height:200px;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--surface-2);margin-top:10px"></div>
+
+          <div style="margin-top:12px">
+            <h4 style="margin-bottom:6px">Updates</h4>
+            <div id="trackTimeline" class="tests"><!-- tpl-timeline-row --></div>
+          </div>
+
+          <div class="row" style="margin-top:10px">
+            <button id="btnConfirmReceive" class="btn btn-primary ripple pressable" type="button">
+              <span class="material-symbols-rounded" aria-hidden="true">check_circle</span> Confirm received
+            </button>
+            <div class="grow"></div>
+            <button id="btnReportIssue" class="btn btn-ghost ripple pressable" type="button">
+              <span class="material-symbols-rounded" aria-hidden="true">flag</span> Report issue
+            </button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       Issue / Complaint Modal
+       ========================================================= -->
+  <div id="issueModal" class="modal" aria-hidden="true">
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="issueTitle">
+      <div class="sheet-head">
+        <h3 id="issueTitle">Report an Issue</h3>
+        <div class="head-cta">
+          <button id="issueClose" class="icon-btn ripple pressable" type="button" aria-label="Close">
+            <span class="material-symbols-rounded" aria-hidden="true">close</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="panels">
+        <section class="panel is-active">
+          <div class="row2">
+            <div class="field">
+              <label for="issueType">Issue type</label>
+              <select id="issueType">
+                <option>Missing item</option>
+                <option>Damaged/Leaked</option>
+                <option>Wrong item</option>
+                <option>Late delivery</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="issueText">Details</label>
+              <input id="issueText" type="text" placeholder="Briefly describe the problem…" />
+            </div>
+          </div>
+
+          <div class="field" style="margin-top:8px">
+            <label for="issuePhotos">Photos (optional)</label>
+            <input id="issuePhotos" type="file" accept="image/*" multiple />
+            <div id="issuePreview" class="row" style="margin-top:8px;gap:8px;flex-wrap:wrap"></div>
+          </div>
+
+          <div class="row" style="margin-top:10px">
+            <div class="grow"></div>
+            <button id="issueSubmit" class="btn btn-primary ripple pressable" type="button">
+              <span class="material-symbols-rounded" aria-hidden="true">send</span> Submit
+            </button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       Order History Sheet
+       ========================================================= -->
+  <div id="historySheet" class="modal" aria-hidden="true">
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="historyTitle">
+      <div class="sheet-head">
+        <h3 id="historyTitle">Order History</h3>
+        <div class="head-cta">
+          <button id="historyClose" class="icon-btn ripple pressable" type="button" aria-label="Close">
+            <span class="material-symbols-rounded" aria-hidden="true">close</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="panels">
+        <section class="panel is-active">
+          <div id="historyList" class="tests" aria-live="polite"><!-- tpl-history-row --></div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Toast ===== -->
+  <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- ===== Minimal ripple helper (safe; full click-sound & logic in meds.js) ===== -->
+  <script>
+    document.addEventListener('pointerdown', (e) => {
+      const el = e.target.closest('.ripple, .btn, .pressable');
+      if (!el) return;
+      el.classList.remove('press-zoom'); void el.offsetWidth; el.classList.add('press-zoom');
+      const rect = el.getBoundingClientRect();
+      const s = Math.max(rect.width, rect.height);
+      const r = document.createElement('span');
+      r.className = 'md-ripple';
+      r.style.width = r.style.height = s + 'px';
+      r.style.left = (e.clientX - rect.left - s/2) + 'px';
+      r.style.top  = (e.clientY - rect.top  - s/2) + 'px';
+      el.appendChild(r);
+      r.addEventListener('animationend', () => r.remove(), { once:true });
+    });
+  </script>
+
+  <!-- Main app logic -->
+  <script src="meds.js" defer></script>
+</body>
+</html>
