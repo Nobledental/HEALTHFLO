@@ -1,83 +1,347 @@
 <!doctype html>
-<html lang="en" data-theme="cosmic">
+<html lang="en" data-theme="light" data-persona="none" data-motion="on" data-contrast="normal" data-density="comfortable">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>HealthFlo — Hospitals & Clinics RCM | Cashless Everywhere™</title>
-<meta name="description" content="Predictable revenue for hospitals & clinics: Cashless Everywhere™, denial recovery, payer empanelment, OPD–IPD EMR add-ons, and AI automation—without changing your current workflows." />
-<link rel="canonical" href="https://www.healthflo.org/hospital.html" />
-<meta name="theme-color" content="#0b1022" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HealthFlo — Cashless under SLA • AI-EMR • Predictable Revenue</title>
+  <meta name="description" content="Android-style premium demo UI: cashless approvals, denial prevention, AI-EMR safety checks, billing clarity, and persona-aware flows for Hospitals & Clinics." />
+  <meta name="theme-color" content="#f7fbff" />
 
+  <!-- Google App Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Space+Grotesk:wght@600;700&family=Material+Symbols+Rounded:FILL@0..1&display=swap" rel="stylesheet"/>
 
-<!-- Fonts / existing CSS (keep your current bundle) -->
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/styles.css" />
-<link rel="stylesheet" href="/assets/css/hyperdrive-v12.css" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icons/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
 </head>
+<body id="top">
+  <a class="skiplink" href="#overview">Skip to main content</a>
 
+  <!-- Background (white gradient + subtle software texture) -->
+  <div class="bg" aria-hidden="true">
+    <div class="bg-dots"></div>
+    <div class="bg-shine"></div>
+    <div class="bg-noise"></div>
+  </div>
 
-<!-- Default persona = hospital; theme persists via JS -->
-<body data-persona="hospital">
-<!-- ===== Optional: your existing header goes here (unchanged) ===== -->
-<header class="site-header" id="top" data-skip-rag>
-<nav class="nav">
-<!-- Keep your existing branding & nav structure; below are optional controls only -->
-<div class="nav-right">
-<div class="theme-switch" aria-label="Theme">
-<button class="hf-chip" data-theme="white" title="White theme">White</button>
-<button class="hf-chip" data-theme="dark" title="Dark theme">Dark</button>
-<button class="hf-chip" data-theme="matte" title="Matte Black">Matte</button>
-<button class="hf-chip" data-theme="cosmic" title="Cosmic">Cosmic</button>
-</div>
-<div class="persona-switch" aria-label="Persona">
-<button class="hf-chip" data-persona="patient" title="Patient view">Patient</button>
-<button class="hf-chip" data-persona="hospital" title="Hospital view" aria-current="page">
-<span class="hf-dot" aria-hidden="true"></span>
-Hospital
-</button>
-<button class="hf-chip" data-persona="insurer" title="Insurer view">Insurer</button>
-<button class="hf-chip" data-persona="employer" title="Employer view">Employer</button>
-</div>
-</div>
-</nav>
-</header>
+  <!-- Top Scroll Progress -->
+  <div id="scroll-progress" class="scroll-progress" aria-hidden="true">
+    <div class="scroll-bar"></div>
+  </div>
 
+  <!-- Sticky header -->
+  <header class="site-header is-fixed" role="banner" aria-label="Primary">
+    <a class="brand" href="#top" aria-label="HealthFlo">
+      <span class="brand-orb" aria-hidden="true"></span>
+      <strong class="brand-name gtext">HealthFlo</strong>
+    </a>
 
-<main id="content" tabindex="-1">
-<!-- ================= HERO (Hospital) ================= -->
-<section class="hero" data-persona="hospital">
-<div class="container">
-<h1 data-hf="hero.{persona}.title">Predictable revenue. Cashless Everywhere™.</h1>
-<p class="sub">Improve collections, accelerate cashless, reduce denials, and modernize patient intake—built around your current HIS/EMR.</p>
-<div class="cta-row">
-<a href="#demo" class="btn btn-primary" data-hf="hero.{persona}.cta">Launch live demo</a>
-<a href="#contact" class="btn btn-ghost">Talk to a revenue specialist</a>
-</div>
-</div>
-</section>
+    <nav class="nav" role="navigation" aria-label="Main">
+      <a class="nav-link" href="#overview">Overview</a>
+      <a class="nav-link" href="#solutions">Solutions</a>
+      <a class="nav-link" href="#demo">Demos</a>
+      <a class="nav-link" href="#contact">Contact</a>
+    </nav>
 
+    <!-- Quick Settings + Install -->
+    <div class="qs">
+      <button class="chip chip-ghost md-ripple" id="qs-motion" aria-pressed="false" title="Toggle Motion">Motion: On</button>
+      <button class="chip chip-ghost md-ripple" id="qs-contrast" aria-pressed="false" title="Toggle Contrast">Contrast: Normal</button>
+      <button class="chip chip-ghost md-ripple" id="qs-density" aria-pressed="false" title="Toggle Density">Density: Comfy</button>
+      <button class="chip chip-accent md-ripple" id="qs-install" hidden>Install App</button>
+    </div>
+  </header>
 
-<!-- ================= VALUE CARDS ================= -->
-<section class="value" data-visible-for="hospital">
-<div class="container grid-3">
-<article class="card hf-backlight">
-<h3>Cashless Everywhere™ Desk</h3>
-<p>Standardized pre-auth packets, policy-aware checklists, and automated follow-ups. Typical approval window: 30–90 mins (TPA dependent).</p>
-</article>
-<article class="card hf-backlight">
-<h3>Denial Recovery Engine</h3>
-<p>Auto-triage by payer code & remark, draft rebuttals, and escalate per SLA. Uplift target: 8–15% on aged AR.</p>
-</article>
-<article class="card hf-backlight">
-<h3>Empanelment & Tariffs</h3>
-<p>End-to-end insurer/TPA onboarding, package preparation, compliance documents, and tariff alignment.</p>
-</article>
-</div>
-</section>
+  <!-- Back to Home bar -->
+  <div id="backbar" class="backbar" hidden>
+    <button id="back-home" class="chip chip-home md-ripple" aria-label="Back to Home">
+      <span class="ms">←</span> Back to Home
+    </button>
+  </div>
 
+  <main id="content" role="main">
+    <!-- HERO -->
+    <section id="overview" class="hero section">
+      <div class="hero-inner md-surface elevation-2" data-animate>
+        <div class="hero-copy">
+          <p class="eyebrow">Future-Ready • Professional • Live Demos</p>
+          <h1 class="gtext hero-title" data-typer>
+            Insurance that just works. Denials that don’t return. Cashflows you can plan.
+          </h1>
+          <p class="sub">
+            Choose who you represent to get a tailored walkthrough—simple, measurable, ready for a 7–10 day pilot.
+          </p>
 
-<!-- ================= LIVE DEMO (Client-side only) ================= -->
-<section id="demo" class="demo" data-visible-for="hospital">
+          <!-- Equal persona cards (dark blue, blink, sheen, tilt) -->
+          <div class="persona-choices" role="group" aria-label="Choose persona">
+            <button class="persona-card persona-dark md-surface elevation-2 md-ripple sheen" data-persona="hospital" aria-pressed="false" data-tilt data-sheen>
+              <span class="pc-emoji" aria-hidden="true">🏥</span>
+              <span class="pc-title">I'm a Hospital</span>
+              <span class="pc-sub">RCM • AI-EMR • Cashless • Billing • Empanelment</span>
+            </button>
+
+            <button class="persona-card persona-dark md-surface elevation-2 md-ripple sheen" data-persona="clinic" aria-pressed="false" data-tilt data-sheen>
+              <span class="pc-emoji" aria-hidden="true">🩺</span>
+              <span class="pc-title">I'm a Clinic</span>
+              <span class="pc-sub">Website • Listings • Appointments • Referrals • EMI • RCM Lite</span>
+            </button>
+          </div>
+
+          <ul class="proof-chips">
+            <li class="chip">Pre-auth median <strong>&lt; 2.5h</strong></li>
+            <li class="chip">Clarifications <strong>&lt; 60m</strong></li>
+            <li class="chip">Denials <strong>−18–35%</strong></li>
+            <li class="chip">Variance recovery <strong>+2–5%</strong></li>
+          </ul>
+
+          <div class="hero-cta">
+            <a href="#solutions" class="btn md-ripple btn-primary magnet btn-pulse" data-tilt>
+              See My Solutions
+              <span class="btn-shine" aria-hidden="true"></span>
+            </a>
+            <a href="#demo" class="btn md-ripple btn-outline magnet btn-pulse" data-tilt>Open Demos</a>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="kv md-surface elevation-1" data-tilt>
+            <div class="kv-stat"><span class="kv-k gtext">2.5h</span><span class="kv-l">Pre-auth median</span></div>
+            <div class="kv-stat"><span class="kv-k gtext">−28%</span><span class="kv-l">Denials (90d)</span></div>
+            <div class="kv-stat"><span class="kv-k gtext">+2–5%</span><span class="kv-l">Variance recovery</span></div>
+            <div class="kv-ring" aria-hidden="true"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOLUTIONS (persona-aware) -->
+    <section id="solutions" class="section solutions">
+      <div class="section-head" data-animate>
+        <h2 class="gtext" data-typer>Right solution for your setup</h2>
+        <p class="muted">Content switches based on your choice in the hero.</p>
+      </div>
+
+      <!-- Hospital -->
+      <div class="persona-view" data-show-for="hospital" hidden>
+        <ol class="cards numbered">
+          <li class="card md-surface elevation-1 md-ripple sheen" data-tilt>
+            <h3><span class="num">1</span> Website Creating</h3>
+            <p>SEO-ready site with service pages, structured data, packages, lead capture & analytics.</p>
+            <a class="btn btn-link md-ripple route" href="demos/website.html">Open demo page →</a>
+          </li>
+
+          <li class="card md-surface elevation-1 md-ripple sheen" data-tilt>
+            <h3><span class="num">2</span> Mandatory Certification Assistance</h3>
+            <ul class="bullets"><li>Rohini ID • NABH • Pension • CMCIS</li></ul>
+            <a class="btn btn-link md-ripple route" href="demos/certifications.html">Open demo page →</a>
+          </li>
+
+          <li class="card md-surface elevation-1 md-ripple sheen" data-tilt>
+            <h3><span class="num">3</span> AI-Integrated EMR (OPD/IPD)</h3>
+            <ul class="bullets">
+              <li>Paperless case sheets, labs, meds, X-rays</li>
+              <li><strong>AI allergy alerts</strong> from history</li>
+              <li>Vitals monitor (ICU/ward/home — R&amp;D)</li>
+              <li>Auto discharge + daily post-discharge reminders</li>
+            </ul>
+            <a class="btn btn-link md-ripple route" href="demos/ai-emr.html">Open demo page →</a>
+          </li>
+
+          <li class="card md-surface elevation-1 md-ripple sheen" data-tilt>
+            <h3><span class="num">4</span> Advanced Billing (Lite & Pro)</h3>
+            <p>Non-payables, R&amp;C, <em>pro-rata</em> by room-rent eligibility (R&amp;D).</p>
+            <a class="btn btn-link md-ripple route" href="demos/billing.html">Open demo page →</a>
+          </li>
+
+          <li class="card md-surface elevation-1 md-ripple sheen" data-tilt>
+            <h3><span class="num">5</span> Insurance & TPA Empanelment</h3>
+            <p>20+ insurers & TPAs (MediAssist, MD India, FHPL, Vidal, Volo) + GIPSA.</p>
+            <a class="btn btn-link md-ripple route" href="demos/empanelment.html">Open demo page →</a>
+          </li>
+
+          <li class="card md-surface elevation-1 md-ripple sheen" data-tilt>
+            <h3><span class="num">6</span> Cashless Everywhere™</h3>
+            <p>Immediate cashless for eligible non-network cases + two months of transition support.</p>
+            <a class="btn btn-link md-ripple route" href="demos/cashless.html">Open demo page →</a>
+          </li>
+
+          <li class="card md-surface elevation-1 md-ripple sheen" data-tilt>
+            <h3><span class="num">7</span> Denial & Recovery Management</h3>
+            <p>Reconciliation, root-cause fix, and insurer recovery ledgers.</p>
+            <a class="btn btn-link md-ripple route" href="demos/denials.html">Open demo page →</a>
+          </li>
+
+          <li class="card md-surface elevation-1 md-ripple sheen" data-tilt>
+            <h3><span class="num">8</span> RCM Starter Pack</h3>
+            <ul class="bullets"><li>Rohini • 20+ empanelments • GIPSA • Initial cashless</li></ul>
+            <a class="btn btn-link md-ripple route" href="demos/starter-pack.html">Open demo page →</a>
+          </li>
+
+          <li class="card md-surface elevation-1 md-ripple sheen" data-tilt>
+            <h3><span class="num">9</span> Patient Referral & Listings</h3>
+            <p>List services in the patient app for quick appointments & ambulance.</p>
+            <a class="btn btn-link md-ripple route" href="demos/referrals.html">Open demo page →</a>
+          </li>
+
+          <li class="card md-surface elevation-1 md-ripple sheen" data-tilt>
+            <h3><span class="num">10</span> Hospital Pharmacy Listing</h3>
+            <p>e-Rx validation & home-delivery routing.</p>
+            <a class="btn btn-link md-ripple route" href="demos/pharmacy.html">Open demo page →</a>
+          </li>
+
+          <li class="card md-surface elevation-1 md-ripple sheen" data-tilt>
+            <h3><span class="num">11</span> Lab & Radiology + AI Explainer</h3>
+            <p>Bookings (visit/home) + doctor-verified AI explanations.</p>
+            <a class="btn btn-link md-ripple route" href="demos/lab-radiology.html">Open demo page →</a>
+          </li>
+        </ol>
+      </div>
+
+      <!-- Clinic -->
+      <div class="persona-view" data-show-for="clinic" hidden>
+        <div class="cards">
+          <article class="card md-surface elevation-1 md-ripple sheen" data-tilt>
+            <h3>Website & Online Presence</h3>
+            <p>Service pages, doctor profiles, pricing bands, reviews, maps.</p>
+            <a class="btn btn-link md-ripple route" href="demos/clinic-website.html">Open demo page →</a>
+          </article>
+          <article class="card md-surface elevation-1 md-ripple sheen" data-tilt>
+            <h3>Patient Flow & Appointments</h3>
+            <ul class="bullets"><li>One-tap booking, reminders, queue view & daily roster</li></ul>
+            <a class="btn btn-link md-ripple route" href="demos/clinic-appointments.html">Open demo page →</a>
+          </article>
+          <article class="card md-surface elevation-1 md-ripple sheen" data-tilt>
+            <h3>Referrals & Perks</h3>
+            <p>Referral bonus to partner hospitals + perks for satisfied patients.</p>
+            <a class="btn btn-link md-ripple route" href="demos/clinic-referrals.html">Open demo page →</a>
+          </article>
+          <article class="card md-surface elevation-1 md-ripple sheen" data-tilt>
+            <h3>Home Visits & Tele-care</h3>
+            <p>At-home consults, nurse visits; integrated follow-ups.</p>
+            <a class="btn btn-link md-ripple route" href="demos/clinic-homecare.html">Open demo page →</a>
+          </article>
+          <article class="card md-surface elevation-1 md-ripple sheen" data-tilt>
+            <h3>Pharmacy Listing & Services</h3>
+            <p>Clinic pharmacy online with e-Rx verification and delivery.</p>
+            <a class="btn btn-link md-ripple route" href="demos/clinic-pharmacy.html">Open demo page →</a>
+          </article>
+          <article class="card md-surface elevation-1 md-ripple sheen" data-tilt>
+            <h3>RCM Lite & EMI</h3>
+            <p>Transparent estimates, simple claims help, EMI for selected procedures.</p>
+            <a class="btn btn-link md-ripple route" href="demos/clinic-rcm-emi.html">Open demo page →</a>
+          </article>
+        </div>
+        <div class="stack center">
+          <a class="btn md-ripple btn-primary magnet btn-pulse" href="#demo" data-tilt>Try Clinic Demos</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- DEMOS (no forms, single card) -->
+    <section id="demo" class="section demos">
+      <div class="demo-shell md-surface elevation-3 sheen" data-animate data-sheen>
+        <header class="demo-head">
+          <h2 class="gtext" data-typer>Try the demos (no PHI leaves your device)</h2>
+          <p class="muted">One-tap simulations with illustrative numbers. Build your own demo pages next—these tiles just preview the behavior.</p>
+        </header>
+
+        <div class="demo-tiles">
+          <button class="demo-tile md-ripple sheen" data-sim="cashless" data-tilt data-sheen>
+            <div class="tile-top">
+              <strong>Cashless ETA & Deposit Avoided</strong>
+              <span class="badge">Simulate</span>
+            </div>
+            <div class="tile-metrics">
+              <div><span class="k gtext" data-out="tat">—</span><span class="l">TAT (day band)</span></div>
+              <div><span class="k gtext">₹<span data-out="deposit">—</span></span><span class="l">Deposit avoided / mo</span></div>
+            </div>
+          </button>
+
+          <button class="demo-tile md-ripple sheen" data-sim="billing" data-tilt data-sheen>
+            <div class="tile-top">
+              <strong>Billing Pro-Rata & Non-Payables</strong>
+              <span class="badge">Simulate</span>
+            </div>
+            <div class="tile-metrics">
+              <div><span class="k gtext" data-out="factor">—</span><span class="l">Prorata factor</span></div>
+              <div><span class="k gtext">₹<span data-out="npay">—</span></span><span class="l">Estimated non-payables</span></div>
+            </div>
+          </button>
+
+          <button class="demo-tile md-ripple sheen" data-sim="emr" data-tilt data-sheen>
+            <div class="tile-top">
+              <strong>EMR Safety — Allergy Guard</strong>
+              <span class="badge">Check</span>
+            </div>
+            <div class="tile-metrics">
+              <div><span class="k gtext" data-out="status">—</span><span class="l">Status</span></div>
+              <div><span class="k gtext" data-out="hint">penicillin vs amoxicillin</span><span class="l">Example</span></div>
+            </div>
+          </button>
+
+          <button class="demo-tile md-ripple sheen" data-sim="clinic" data-tilt data-sheen>
+            <div class="tile-top">
+              <strong>Clinic Growth — Referrals & Appointments</strong>
+              <span class="badge">Project</span>
+            </div>
+            <div class="tile-metrics">
+              <div><span class="k gtext" data-out="apps">—</span><span class="l">Projected appointments</span></div>
+              <div><span class="k gtext">₹<span data-out="rev">—</span></span><span class="l">Referral revenue / mo</span></div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT / TRUST -->
+    <section id="contact" class="section contact">
+      <div class="cta md-surface elevation-1 sheen" data-animate data-sheen>
+        <h2 class="gtext" data-typer>Ready to see it with your data?</h2>
+        <div class="stack">
+          <a class="btn md-ripple btn-primary magnet btn-pulse" href="#demo" data-tilt>Run the Demo</a>
+          <a class="btn md-ripple btn-outline magnet btn-pulse" href="#contact" data-tilt>Book a 20-min Walkthrough</a>
+        </div>
+        <p class="fine">Client-side demo rails only. No PHI leaves your browser unless you click Send.</p>
+      </div>
+
+      <div class="trust-grid">
+        <div class="trust-card md-surface elevation-1 sheen" data-tilt data-sheen>
+          <h3>Security & Consent</h3>
+          <ul class="bullets">
+            <li>Role-based access & audit logs</li>
+            <li>Explicit consent before any export</li>
+            <li>Redaction by default in demo exports</li>
+          </ul>
+        </div>
+        <div class="trust-card md-surface elevation-1 sheen" data-tilt data-sheen>
+          <h3>Accessibility</h3>
+          <ul class="bullets">
+            <li>WCAG 2.1 AA intent</li>
+            <li>Reduced-motion & high-contrast friendly</li>
+          </ul>
+        </div>
+        <div class="trust-card md-surface elevation-1 sheen" data-tilt data-sheen>
+          <h3>Transparency</h3>
+          <ul class="bullets">
+            <li>City/time-band medians & peer IQR bands</li>
+            <li>Clear pilot exit criteria</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="foot">
+      <span class="muted">© HealthFlo — Demo UI • No PHI stored</span>
+      <a href="#top" class="nav-link">Back to top ↑</a>
+    </div>
+  </footer>
+
+  <div class="toast-wrap" aria-live="polite" aria-atomic="true"></div>
+  <script defer src="main.js"></script>
+</body>
 </html>
