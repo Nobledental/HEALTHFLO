@@ -1,0 +1,74 @@
+/* =============================================================
+main#content .btn {
+--_bg: rgba(255,255,255,.08); --_fg: var(--hf-text); --_bd: var(--hf-border);
+display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+padding: .7rem 1rem; border-radius: 999px; color: var(--_fg);
+background: var(--_bg); border: 1px solid var(--_bd); text-decoration: none; cursor: pointer;
+}
+main#content .btn:hover { filter: brightness(1.06); }
+main#content .btn-primary {
+--_bg: linear-gradient(180deg, var(--hf-primary), color-mix(in oklab, var(--hf-primary) 70%, black));
+--_bd: transparent; color: white;
+}
+main#content .btn-ghost { --_bg: rgba(255,255,255,.06); }
+
+
+/* KPIs */
+section.metrics .kpi {
+background: var(--hf-surface); border: 1px solid var(--hf-border);
+border-radius: var(--hf-radius-lg); padding: 1rem; text-align: center;
+}
+section.metrics .kpi .num { font-weight: 800; font-size: 1.7rem; letter-spacing: .2px; }
+section.metrics .kpi .lbl { color: var(--hf-text-muted); margin-top: .25rem; font-size: .9rem; }
+section.metrics .fine { color: var(--hf-text-muted); margin-top: .35rem; font-size: .85rem; }
+
+
+/* Badges / logos */
+section.badges .logos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--hf-gap-lg); align-items: center; }
+@media (min-width: 680px) { section.badges .logos { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+section.badges img { max-height: 32px; width: auto; opacity: .85; filter: saturate(0.85); }
+
+
+/* CTA */
+section.cta .cta-row { display: flex; flex-wrap: wrap; gap: var(--hf-gap); margin-top: .75rem; }
+
+
+/* Packages */
+section.packages .grid-3 {
+display: grid; gap: var(--hf-gap-lg);
+grid-template-columns: 1fr;
+}
+@media (min-width: 880px) {
+section.packages .grid-3 { grid-template-columns: repeat(3, 1fr); }
+}
+.pkg-card {
+position: relative; overflow: hidden;
+border: 1px solid var(--hf-border); border-radius: var(--hf-radius-lg);
+background: var(--hf-surface); box-shadow: var(--hf-shadow-soft);
+}
+.pkg-card img { display: block; width: 100%; height: 200px; object-fit: cover; }
+.pkg-card figcaption { padding: .85rem .9rem; display: grid; gap: .25rem; }
+
+
+/* Cities */
+section.cities .city-tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .5rem; }
+section.cities .city-tags li {
+list-style: none; padding: .45rem .7rem; border: 1px solid var(--hf-border); color: var(--hf-text);
+background: var(--hf-surface-2); border-radius: 999px; font-size: .9rem;
+}
+
+
+/* Persona gating helpers (visual smoothing) */
+[hidden] { display: none !important; }
+
+
+/* Focus visibility for keyboard users */
+:where(.copilot-close, .copilot-mic, .copilot-send, main#content .btn, section.demo input, section.demo textarea):focus-visible {
+outline: 0; box-shadow: 0 0 0 3px rgba(124,92,255,.28);
+}
+
+
+/* Motion safety */
+@media (prefers-reduced-motion: reduce) {
+.hf-dot { animation: none; }
+}
