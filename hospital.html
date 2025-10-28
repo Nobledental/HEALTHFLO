@@ -1,77 +1,217 @@
-<!DOCTYPE html>
-<h3>Cases Today</h3>
-<table>
-<thead><tr><th>MRN</th><th>Patient</th><th>Department</th><th>Status</th><th>Action</th></tr></thead>
-<tbody id="casesT"></tbody>
-</table>
-</section>
+<!doctype html>
+<html lang="en" data-theme="cosmic">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HealthFlo — Hospitals & Clinics RCM | Cashless Everywhere™</title>
+    <meta name="description" content="Predictable revenue for hospitals & clinics: Cashless Everywhere™, denial recovery, payer empanelment, OPD–IPD EMR add‑ons, and AI automation—without changing your current workflows." />
+    <link rel="canonical" href="https://www.healthflo.org/hospital.html" />
+    <meta name="theme-color" content="#0b1022" />
 
+    <!-- Fonts / existing CSS (keep your current bundle) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
 
-<section class="card" style="margin-top:16px">
-<h3>Hospital Directory — Packages</h3>
-<div class="grid dir-grid" id="dirGrid"></div>
-</section>
-</main>
+  <!-- Default persona = hospital; theme persists via JS -->
+  <body data-persona="hospital">
+    <!-- ===== Optional: your existing header goes here (unchanged) ===== -->
+    <header class="site-header" id="top" data-skip-rag>
+      <nav class="nav">
+        <!-- Keep your existing branding & nav structure; below are optional controls only -->
+        <div class="nav-right">
+          <div class="theme-switch" aria-label="Theme">
+            <button data-theme="white"  title="White theme">W</button>
+            <button data-theme="dark"   title="Dark theme">D</button>
+            <button data-theme="matte"  title="Matte Black">M</button>
+            <button data-theme="cosmic" title="Cosmic">C</button>
+          </div>
+          <div class="persona-switch" aria-label="Persona">
+            <button data-persona="patient"  title="Patient view">Patient</button>
+            <button data-persona="hospital" title="Hospital view" aria-current="page">Hospital</button>
+            <button data-persona="insurer"  title="Insurer view">Insurer</button>
+            <button data-persona="employer" title="Employer view">Employer</button>
+          </div>
+        </div>
+      </nav>
+    </header>
 
+    <main id="content" tabindex="-1">
+      <!-- ================= HERO (Hospital) ================= -->
+      <section class="hero" data-persona="hospital">
+        <div class="container">
+          <h1 data-hf="hero.{persona}.title">Predictable revenue. Cashless Everywhere™.</h1>
+          <p class="sub">Improve collections, accelerate cashless, reduce denials, and modernize patient intake—built around your current HIS/EMR.</p>
+          <div class="cta-row">
+            <a href="#demo" class="btn btn-primary" data-hf="hero.{persona}.cta">Launch live demo</a>
+            <a href="#contact" class="btn btn-ghost">Talk to a revenue specialist</a>
+          </div>
+        </div>
+      </section>
 
-<!-- Popup menu modal -->
-<div class="menu-modal" id="menuModal" hidden>
-<div class="menu-scrim"></div>
-<div class="menu-body">
-<button class="menu-close" aria-label="Close">×</button>
-<h3 id="menuTitle">Hospital</h3>
-<div id="menuList"></div>
-</div>
-</div>
+      <!-- ================= VALUE CARDS ================= -->
+      <section class="value" data-visible-for="hospital">
+        <div class="container grid-3">
+          <article class="card">
+            <h3>Cashless Everywhere™ Desk</h3>
+            <p>Standardized pre‑auth packets, policy‑aware checklists, and automated follow‑ups. Typical approval window: 30–90 mins (TPA dependent).</p>
+          </article>
+          <article class="card">
+            <h3>Denial Recovery Engine</h3>
+            <p>Auto‑triage by payer code & remark, draft rebuttals, and escalate per SLA. Uplift target: 8–15% on aged AR.</p>
+          </article>
+          <article class="card">
+            <h3>Empanelment & Tariffs</h3>
+            <p>End‑to‑end insurer/TPA onboarding, package preparation, compliance documents, and tariff alignment.</p>
+          </article>
+        </div>
+      </section>
 
+      <!-- ================= LIVE DEMO (Client-side only) ================= -->
+      <section id="demo" class="demo" data-visible-for="hospital">
+        <div class="container">
+          <h2>Automation & AI — live demo</h2>
+          <div class="grid-2">
+            <div class="panel">
+              <h4>Pre‑auth checklist generator</h4>
+              <p class="muted">Enter procedure + payer → get a baseline checklist. (Runs on‑device, no keys.)</p>
+              <form class="demo-form" id="preauth-form">
+                <label>
+                  <span>Procedure</span>
+                  <input type="text" id="proc" placeholder="e.g., Laparoscopic Cholecystectomy" />
+                </label>
+                <label>
+                  <span>Payer/TPA</span>
+                  <input type="text" id="payer" placeholder="e.g., MediAssist" />
+                </label>
+                <button type="button" id="preauth-generate" class="btn">Generate checklist</button>
+              </form>
+              <div id="preauth-output" class="output" aria-live="polite"></div>
+            </div>
 
-<script>
-const cases = [
-{mrn:'A1023', name:'Karthik R', dept:'Cardiology', status:'Pre‑auth sent'},
-{mrn:'B7790', name:'Meera S', dept:'Ortho', status:'Query from TPA'},
-{mrn:'C5542', name:'Rahul P', dept:'General Surgery', status:'Approved'}
-];
-document.getElementById('casesT').innerHTML = cases.map(c=>`<tr><td>${c.mrn}</td><td>${c.name}</td><td>${c.dept}</td><td>${c.status}</td><td><button class='btn'>Open</button></td></tr>`).join('');
+            <div class="panel">
+              <h4>Denial remark → rebuttal draft</h4>
+              <p class="muted">Paste a denial remark and get a structured rebuttal outline. (Local AI fallback rules.)</p>
+              <form class="demo-form" id="denial-form">
+                <label>
+                  <span>Denial remark</span>
+                  <textarea id="denial" rows="4" placeholder="e.g., Pre‑auth not obtained; missing investigation reports"></textarea>
+                </label>
+                <button type="button" id="denial-generate" class="btn">Draft rebuttal</button>
+              </form>
+              <div id="denial-output" class="output" aria-live="polite"></div>
+            </div>
+          </div>
+        </div>
+      </section>
 
+      <!-- ================= METRICS ================= -->
+      <section class="metrics" data-visible-for="hospital">
+        <div class="container grid-4">
+          <div class="kpi"><div class="num">30–90m</div><div class="lbl">Pre‑auth window*</div></div>
+          <div class="kpi"><div class="num">8–15%</div><div class="lbl">AR uplift target</div></div>
+          <div class="kpi"><div class="num"><span aria-hidden="true">∞</span>+</div><div class="lbl">TPA/insurer support</div></div>
+          <div class="kpi"><div class="num">0 keys</div><div class="lbl">Runs client‑side</div></div>
+        </div>
+        <p class="fine container muted">*TPA/payer dependent; based on policy & case type.</p>
+      </section>
 
-const hospitals = [
-{id:'apollo', name:'Apollo Hospitals, Greams Road', city:'Chennai', img:'https://images.healthflo.org/hospitals/apollo-chennai-knee.jpg', tags:['Orthopedics','Cardio'], menu:[{name:'Total Knee Replacement',price:'₹1,85,000',meta:'Unilateral • Twin sharing 2D'},{name:'Angiography',price:'₹18,000',meta:'Daycare'}]},
-{id:'manipal', name:'Manipal Hospital, Old Airport Rd', city:'Bengaluru', img:'https://images.healthflo.org/hospitals/manipal-blr-chole.jpg', tags:['General Surgery','Neuro'], menu:[{name:'Lap Cholecystectomy',price:'₹68,000',meta:'1 bed‑day (twin)'}]},
-{id:'aster', name:'Aster Prime', city:'Hyderabad', img:'https://images.healthflo.org/hospitals/aster-hyd-obs.jpg', tags:['Obstetrics'], menu:[{name:'Normal Delivery',price:'₹52,000',meta:'Mother + newborn • 2D'}]}
-];
+      <!-- ================= BADGES ================= -->
+      <section class="badges" data-visible-for="hospital">
+        <div class="container logos">
+          <img src="/images/payers/mediassist.svg" alt="MediAssist" />
+          <img src="/images/payers/star-health.svg" alt="Star Health" />
+          <img src="/images/payers/icici-lombard.svg" alt="ICICI Lombard" />
+          <img src="/images/payers/hdfc-ergo.svg" alt="HDFC ERGO" />
+          <img src="/images/payers/care-health.svg" alt="Care Health" />
+        </div>
+      </section>
 
+      <!-- ================= CTA ================= -->
+      <section class="cta" data-visible-for="hospital">
+        <div class="container">
+          <h2>Ready to modernize cashless & collections?</h2>
+          <div class="cta-row">
+            <a href="#demo" class="btn btn-primary">Try live demo</a>
+            <a href="#contact" class="btn btn-ghost">Book a 20‑min consult</a>
+          </div>
+        </div>
+      </section>
 
-const grid = document.getElementById('dirGrid');
-grid.innerHTML = hospitals.map(h=>`
-<article class="dir-card">
-<img alt="${h.name}" src="${h.img}">
-<div class="dir-body">
-<h4 style="margin:6px 0">${h.name}</h4>
-<small style="color:rgba(206,220,255,.78)">${h.city}</small>
-<div style="display:flex;gap:6px;margin-top:8px">${h.tags.map(t=>`<span class='tag'>${t}</span>`).join('')}</div>
-<div class="dir-actions">
-<button class="btn btn-primary" data-open-menu="${h.id}">View menu</button>
-<button class="btn">Start cashless</button>
-</div>
-</div>
-</article>
-`).join('');
+      <!-- ================= Cities (moved near footer) ================= -->
+      <section class="cities" id="cities" data-visible-for="hospital">
+        <div class="container">
+          <h3>Operating in</h3>
+          <ul class="city-tags">
+            <li>Hyderabad</li><li>Bengaluru</li><li>Chennai</li><li>Mumbai</li><li>Pune</li>
+          </ul>
+        </div>
+      </section>
+    </main>
 
+    <!-- ===== Optional: your existing footer goes here (unchanged) ===== -->
+    <footer class="site-footer" data-skip-rag>
+      <div class="container">
+        <small>© HealthFlo Healthcare</small>
+      </div>
+    </footer>
 
-const modal = document.getElementById('menuModal');
-function openMenu(id){
-const h = hospitals.find(x=>x.id===id); if(!h) return;
-document.getElementById('menuTitle').textContent = h.name + ' — Packages';
-document.getElementById('menuList').innerHTML = h.menu.map(m=>`<div class='row'><div><strong>${m.name}</strong><br><small style="color:rgba(206,220,255,.78)">${m.meta||''}</small></div><div class='price'>${m.price}</div><button class='btn btn-primary'>Select</button></div>`).join('');
-modal.hidden = false;
-}
-grid.addEventListener('click',(e)=>{ const b=e.target.closest('[data-open-menu]'); if(b){ openMenu(b.getAttribute('data-open-menu')); }});
-modal.addEventListener('click',(e)=>{ if(e.target.classList.contains('menu-scrim')||e.target.classList.contains('menu-close')) modal.hidden=true; });
+    <!-- Persona-aware copy map (safe to remove if not needed) -->
+    <script id="hf-data" type="application/json">
+    {
+      "hero": {
+        "patient":  { "title": "Clear prices. Faster cashless.",            "cta": "Find my package" },
+        "hospital": { "title": "Predictable revenue. Cashless Everywhere™.", "cta": "Launch live demo" },
+        "insurer":  { "title": "Accurate adjudication. Fewer denials.",     "cta": "Partner with HealthFlo" },
+        "employer": { "title": "Benefits employees actually use.",           "cta": "Setup benefits" }
+      }
+    }
+    </script>
 
+    <!-- ===== HYPERDRIVE v12: Copilot stub + scripts (no visual change) ===== -->
+    <div id="hf-copilot" class="hf-copilot" hidden>
+      <div class="copilot-shell" role="dialog" aria-modal="true" aria-labelledby="copilot-title">
+        <header class="copilot-header">
+          <h3 id="copilot-title">HealthFlo Copilot</h3>
+          <button type="button" class="copilot-close" aria-label="Close">×</button>
+        </header>
+        <div class="copilot-main">
+          <div class="copilot-thread" aria-live="polite" aria-atomic="false"></div>
+          <form class="copilot-form" autocomplete="off">
+            <input name="q" class="copilot-input" placeholder="Ask about cashless, packages, policies…" />
+            <div class="copilot-actions">
+              <button class="copilot-mic" type="button" aria-label="Start voice input">🎙️</button>
+              <button class="copilot-send" type="submit" aria-label="Send">Send</button>
+            </div>
+          </form>
+        </div>
+        <footer class="copilot-footer">
+          <label class="copilot-switch">
+            <input type="checkbox" id="copilot-local-ai" checked />
+            <span>Local AI (free, on‑device)</span>
+          </label>
+          <details>
+            <summary>Advanced</summary>
+            <label class="copilot-switch">
+              <input type="checkbox" id="copilot-embeddings" checked />
+              <span>Use embeddings for smarter answers</span>
+            </label>
+          </details>
+        </footer>
+      </div>
+    </div>
 
-document.getElementById('btnAddPkg').addEventListener('click',()=>{
-alert('Later: open form to add a surgery package with price & inclusions.');
-});
-</script>
-</body>
+    <button id="hf-copilot-fab" class="hf-copilot-fab" aria-haspopup="dialog" aria-controls="hf-copilot" aria-expanded="false" title="Ask HealthFlo">
+      <span class="hf-dot" aria-hidden="true"></span>
+      <span class="hf-fab-label">Ask</span>
+    </button>
+
+    <!-- Scripts: keep order; place AFTER your existing scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/regexp-parser-linyu@1.3.2/dist/index.umd.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@xenova/transformers@2.16.1/dist/transformers.min.js" defer></script>
+    <script src="/assets/js/hyperdrive-v12.js" defer></script>
+    <script src="/assets/js/hyperdrive-ai.js" defer></script>
+  </body>
 </html>
