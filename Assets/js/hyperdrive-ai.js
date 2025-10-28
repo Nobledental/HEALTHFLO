@@ -1,9 +1,9 @@
 /*
-  HealthFlo HYPERDRIVE v12 — FREE‑AI+++ (client‑side only)
+  HealthFlo HYPERDRIVE v12 — FREE-AI+++ (client-side only)
   - Transformers.js pipelines (embeddings, QA, sentiment) via CDN (no keys)
   - Voice in/out: Web Speech API when available
   - Lightweight RAG over visible page text
-  - Demo generators for pre‑auth checklist & denial rebuttal
+  - Demo generators for pre-auth checklist & denial rebuttal
 */
 (function(){
   const doc = document;
@@ -151,12 +151,14 @@
   preBtn?.addEventListener('click', () => {
     const proc = ($('#proc')?.value || 'Procedure').trim();
     const payer = ($('#payer')?.value || 'Payer/TPA').trim();
+    preOut.textContent = 'Generating…'; // hint
     const list = preauthChecklist(proc, payer);
     preOut.innerHTML = `<ol>${list.map(li=>`<li>${li}</li>`).join('')}</ol>`;
   });
 
   denialBtn?.addEventListener('click', () => {
     const remark = ($('#denial')?.value || '').trim();
+    denialOut.textContent = 'Generating…'; // hint
     const draft = denialRebuttal(remark);
     denialOut.innerHTML = `<div class="reb">
       <p><strong>Summary</strong>: ${draft.summary}</p>
@@ -179,8 +181,8 @@
       'Past medical / surgical history (if relevant)',
       'KYC & consent forms'
     ];
-    const payerAdds = (/mediassist|fhpl|health india/i.test(payer)) ? ['Payer‑specific pre‑auth template'] : [];
-    const procAdds = (/laparoscopic|cardiac|joint|neuro/i.test(proc)) ? ['Procedure‑specific imaging & anaesthesia evaluation'] : [];
+    const payerAdds = (/mediassist|fhpl|health india/i.test(payer)) ? ['Payer-specific pre-auth template'] : [];
+    const procAdds = (/laparoscopic|cardiac|joint|neuro/i.test(proc)) ? ['Procedure-specific imaging & anaesthesia evaluation'] : [];
     return [...base, ...payerAdds, ...procAdds];
   }
 
@@ -188,8 +190,8 @@
     const t = (remark || '').toLowerCase();
     const common = {
       summary: 'Request reconsideration with appended documentation and clarifications. Patient eligible per policy; services medically necessary.',
-      root: 'Documentation gaps and/or pre‑auth variance addressed in attachments.',
-      attachments: [ 'Consultation notes', 'Investigation reports', 'Pre‑auth / intimation proof', 'Discharge summary', 'Invoices & receipts' ],
+      root: 'Documentation gaps and/or pre-auth variance addressed in attachments.',
+      attachments: [ 'Consultation notes', 'Investigation reports', 'Pre-auth / intimation proof', 'Discharge summary', 'Invoices & receipts' ],
       points: [
         'Policy eligibility & waiting periods validated; clause references attached.',
         'Medical necessity established with guideline references.',
@@ -199,8 +201,8 @@
       ]
     };
 
-    if (/pre.?auth/.test(t)) common.points.unshift('Pre‑auth obtained; attach approval ref. If not, intimation submitted with timestamp.');
-    if (/missing|report|document/.test(t)) common.points.unshift('All listed documents appended; checklist cross‑verified.');
+    if (/pre.?auth/.test(t)) common.points.unshift('Pre-auth obtained; attach approval ref. If not, intimation submitted with timestamp.');
+    if (/missing|report|document/.test(t)) common.points.unshift('All listed documents appended; checklist cross-verified.');
     if (/exclusion|waiting/.test(t)) common.points.unshift('Policy clause interpretation clarified; exception justification attached.');
 
     return common;
