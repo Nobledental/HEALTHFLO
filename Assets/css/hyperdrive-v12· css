@@ -1,0 +1,190 @@
+/* =============================================================
+   HealthFlo — HYPERDRIVE v12 CSS (FULL PATCH)
+   Scope: additive + non‑breaking. Does not override your base styles.
+   - All Copilot UI styles are .hf-* prefixed
+   - Hospital page sections are targeted by explicit section classes
+   - Theme tokens wired to html[data-theme="white|dark|matte|cosmic"]
+   ============================================================= */
+
+/* ---------- Tokens (scoped to custom props) ---------- */
+:root {
+  --hf-radius-sm: 10px;
+  --hf-radius-md: 14px;
+  --hf-radius-lg: 20px;
+  --hf-gap-xs: .375rem;
+  --hf-gap-sm: .6rem;
+  --hf-gap: .9rem;
+  --hf-gap-lg: 1.25rem;
+  --hf-gap-xl: 2rem;
+  --hf-shadow-soft: 0 12px 36px rgba(0,0,0,.20);
+  --hf-shadow-strong: 0 24px 80px rgba(0,0,0,.35);
+  --hf-blur: saturate(140%) blur(12px);
+
+  /* Neutral fallbacks; theme maps below will refine */
+  --hf-bg: #0b1022;
+  --hf-surface: rgba(15,18,35,.85);
+  --hf-surface-2: rgba(20,24,45,.75);
+  --hf-border: rgba(126,140,255,.35);
+  --hf-text: #eaf1ff;
+  --hf-text-muted: #b7c4ff;
+  --hf-primary: #1f7bff;
+  --hf-accent: #7c5cff;
+  --hf-accent-2: #ff6b9c;
+  --hf-good: #42d392;
+  --hf-bad: #ff6464;
+}
+
+/* ---------- Theme maps (no global overrides; tokens only) ---------- */
+html[data-theme="white"] {
+  --hf-bg: #f6f9ff;
+  --hf-surface: rgba(255,255,255,.92);
+  --hf-surface-2: rgba(255,255,255,.78);
+  --hf-border: rgba(14,40,120,.14);
+  --hf-text: #0f1a3a;
+  --hf-text-muted: rgba(15,26,58,.68);
+  --hf-primary: #1f7bff;
+  --hf-accent: #335dff;
+}
+html[data-theme="dark"] {
+  --hf-bg: #0d1226;
+  --hf-surface: rgba(18,22,40,.92);
+  --hf-surface-2: rgba(16,20,38,.78);
+  --hf-border: rgba(120,140,220,.22);
+  --hf-text: #eaf1ff;
+  --hf-text-muted: rgba(210,220,255,.72);
+  --hf-primary: #78a7ff;
+  --hf-accent: #7c5cff;
+}
+html[data-theme="matte"] {
+  --hf-bg: #050607;
+  --hf-surface: rgba(12,13,15,.96);
+  --hf-surface-2: rgba(10,11,13,.86);
+  --hf-border: rgba(255,255,255,.08);
+  --hf-text: #f1f3f5;
+  --hf-text-muted: rgba(241,243,245,.66);
+  --hf-primary: #2ea8ff;
+  --hf-accent: #66e0a3;
+}
+html[data-theme="cosmic"] {
+  --hf-bg: #050816;
+  --hf-surface: rgba(12,16,35,.80);
+  --hf-surface-2: rgba(10,15,38,.72);
+  --hf-border: rgba(124,92,255,.35);
+  --hf-text: #f5f7fb;
+  --hf-text-muted: rgba(245,247,251,.70);
+  --hf-primary: #78f0ff;
+  --hf-accent: #7c5cff;
+  --hf-accent-2: #ff6b9c;
+}
+
+/* ---------- Utilities (scoped to HF selectors to avoid collisions) ---------- */
+.hf-visually-hidden { position:absolute !important; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0; }
+
+/* ---------- Copilot modal & FAB ---------- */
+.hf-copilot[hidden] { display: none !important; }
+.hf-copilot { position: fixed; right: 1rem; bottom: 5.25rem; width: min(520px, 94vw); z-index: 10020; color: var(--hf-text); }
+
+.copilot-shell { background: var(--hf-surface); -webkit-backdrop-filter: var(--hf-blur); backdrop-filter: var(--hf-blur);
+  border: 1px solid var(--hf-border); border-radius: var(--hf-radius-lg); box-shadow: var(--hf-shadow-strong); overflow: hidden; }
+.copilot-header, .copilot-footer { display: flex; justify-content: space-between; align-items: center; gap: var(--hf-gap);
+  padding: .75rem 1rem; background: linear-gradient(180deg, rgba(255,255,255,.06), transparent); }
+.copilot-main { padding: .5rem 1rem 1rem; }
+.copilot-thread { max-height: 52vh; overflow: auto; display: grid; gap: .55rem; padding-bottom: .5rem; }
+.copilot-thread::-webkit-scrollbar { width: 8px; }
+.copilot-thread::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--hf-border), transparent); border-radius: 10px; }
+
+.msg { padding: .65rem .85rem; border-radius: 12px; line-height: 1.35; border: 1px solid transparent; }
+.msg-user { background: rgba(127, 178, 255, .12); border-color: rgba(127,178,255,.35); }
+.msg-assistant { background: rgba(124, 92, 255, .10); border-color: rgba(124,92,255,.35); }
+
+.copilot-form { display: flex; gap: var(--hf-gap-sm); }
+.copilot-input { flex: 1; min-width: 0; padding: .7rem .9rem; border-radius: 12px; color: var(--hf-text); background: rgba(255,255,255,.06);
+  border: 1px solid var(--hf-border); outline: none; }
+.copilot-input:focus { box-shadow: 0 0 0 3px rgba(124, 92, 255, .25); }
+.copilot-actions { display: flex; gap: var(--hf-gap-sm); }
+.copilot-send, .copilot-mic, .copilot-close { cursor: pointer; padding: .6rem .8rem; border-radius: 12px; color: var(--hf-text);
+  background: rgba(255,255,255,.08); border: 1px solid var(--hf-border); }
+.copilot-send:hover, .copilot-mic:hover, .copilot-close:hover { filter: brightness(1.08); }
+
+.hf-copilot-fab { position: fixed; right: 1rem; bottom: 1rem; z-index: 10010; display: inline-flex; align-items: center; gap: .55rem;
+  padding: .7rem 1rem; border-radius: 999px; color: var(--hf-text); background: linear-gradient(180deg, rgba(124,92,255,.22), rgba(124,92,255,.14));
+  border: 1px solid var(--hf-border); box-shadow: var(--hf-shadow-soft); -webkit-backdrop-filter: var(--hf-blur); backdrop-filter: var(--hf-blur); }
+.hf-copilot-fab:focus-visible { outline: 0; box-shadow: 0 0 0 3px rgba(124, 92, 255, .25); }
+.hf-dot { width: .6rem; height: .6rem; border-radius: 999px; background: currentColor; animation: hfBlink 1.2s infinite alternate; }
+@keyframes hfBlink { from { opacity: .45; transform: scale(.9); } to { opacity: 1; transform: scale(1.08); } }
+
+/* ---------- Hospital page sections (scoped by section class) ---------- */
+main#content { color: var(--hf-text); }
+
+/* Common containers */
+section .container { max-width: 1120px; margin: 0 auto; padding: 2.2rem 1.25rem; }
+@media (min-width: 1080px) { section .container { padding: 3rem 1.25rem; } }
+
+/* Grid helpers (low specificity & scoped) */
+section.value .grid-3, section.demo .grid-2, section.metrics .grid-4 { display: grid; gap: var(--hf-gap-lg); }
+section.demo .grid-2 { grid-template-columns: 1fr; }
+@media (min-width: 960px) { section.demo .grid-2 { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 820px) { section.value .grid-3 { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1024px) { section.metrics .grid-4 { grid-template-columns: repeat(4, 1fr); } }
+
+/* HERO */
+section.hero { position: relative; }
+section.hero .sub { color: var(--hf-text-muted); margin-top: .5rem; max-width: 62ch; }
+section.hero .cta-row { display: flex; flex-wrap: wrap; gap: var(--hf-gap); margin-top: 1rem; }
+
+/* Cards / Panels (opt‑in backlight via .hf-backlight) */
+section.value .card, section.demo .panel { background: var(--hf-surface); border: 1px solid var(--hf-border);
+  border-radius: var(--hf-radius-lg); box-shadow: var(--hf-shadow-soft); padding: 1rem; position: relative; overflow: hidden; }
+section.value .card h3, section.demo .panel h4 { margin: .25rem 0 .35rem; }
+section.value .card p, section.demo .panel p { color: var(--hf-text-muted); }
+.hf-backlight::before { content: ""; position: absolute; inset: -40% -20%; background: radial-gradient(60% 60% at 30% 20%, var(--hf-accent) 0%, transparent 60%),
+  radial-gradient(60% 60% at 70% 70%, var(--hf-accent-2) 0%, transparent 60%); opacity: .16; filter: blur(24px); pointer-events: none; }
+
+/* Forms */
+section.demo .demo-form { display: grid; gap: var(--hf-gap); margin-top: .35rem; }
+section.demo label span { display: block; font-size: .9rem; color: var(--hf-text-muted); margin-bottom: .35rem; }
+section.demo input, section.demo textarea { width: 100%; color: var(--hf-text); background: var(--hf-surface-2); border: 1px solid var(--hf-border);
+  border-radius: var(--hf-radius-md); padding: .7rem .85rem; outline: none; }
+section.demo input:focus, section.demo textarea:focus { box-shadow: 0 0 0 3px rgba(127,178,255,.25); }
+section.demo .output { margin-top: .75rem; border-radius: var(--hf-radius-md); background: var(--hf-surface-2); border: 1px solid var(--hf-border);
+  padding: .85rem; min-height: 3rem; }
+
+/* Buttons (scoped to main content to avoid global override) */
+main#content .btn { --_bg: rgba(255,255,255,.08); --_fg: var(--hf-text); --_bd: var(--hf-border);
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem; padding: .7rem 1rem; border-radius: 999px;
+  color: var(--_fg); background: var(--_bg); border: 1px solid var(--_bd); text-decoration: none; cursor: pointer; }
+main#content .btn:hover { filter: brightness(1.06); }
+main#content .btn-primary { --_bg: linear-gradient(180deg, var(--hf-primary), color-mix(in oklab, var(--hf-primary) 70%, black)); --_bd: transparent; color: white; }
+main#content .btn-ghost { --_bg: rgba(255,255,255,.06); }
+
+/* KPIs */
+section.metrics .kpi { background: var(--hf-surface); border: 1px solid var(--hf-border); border-radius: var(--hf-radius-lg); padding: 1rem; text-align: center; }
+section.metrics .kpi .num { font-weight: 800; font-size: 1.7rem; letter-spacing: .2px; }
+section.metrics .kpi .lbl { color: var(--hf-text-muted); margin-top: .25rem; font-size: .9rem; }
+section.metrics .fine { color: var(--hf-text-muted); margin-top: .35rem; font-size: .85rem; }
+
+/* Badges / logos */
+section.badges .logos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--hf-gap-lg); align-items: center; }
+@media (min-width: 680px) { section.badges .logos { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+section.badges img { max-height: 32px; width: auto; opacity: .85; filter: saturate(0.85); }
+
+/* CTA */
+section.cta .cta-row { display: flex; flex-wrap: wrap; gap: var(--hf-gap); margin-top: .75rem; }
+
+/* Cities */
+section.cities .city-tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .5rem; }
+section.cities .city-tags li { list-style: none; padding: .45rem .7rem; border: 1px solid var(--hf-border); color: var(--hf-text);
+  background: var(--hf-surface-2); border-radius: 999px; font-size: .9rem; }
+
+/* Persona gating helpers (visual smoothing) */
+[hidden] { display: none !important; }
+
+/* Focus visibility for keyboard users */
+:where(.copilot-close, .copilot-mic, .copilot-send, main#content .btn, section.demo input, section.demo textarea):focus-visible {
+  outline: 0; box-shadow: 0 0 0 3px rgba(124,92,255,.28);
+}
+
+/* Motion safety */
+@media (prefers-reduced-motion: reduce) {
+  .hf-dot { animation: none; }
+}
