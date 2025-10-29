@@ -22,13 +22,25 @@
       <p class="muted">Frictionless booking with reminders and real-time queue visibility.</p>
     </header>
 
-    <div class="cards">
-      <div class="card md-surface elevation-1 md-ripple sheen" data-tilt data-sheen>
-        <h3>Flows</h3>
-        <ul class="bullets"><li>Quick booking</li><li>Reminders & queue view</li><li>Daily roster</li></ul>
-        <button class="btn btn-primary md-ripple magnet" disabled>Run Appointment Demo (coming soon)</button>
+    <article class="md-surface elevation-2 demo-shell sheen" data-animate data-sheen>
+      <div class="demo-head">
+        <h2 class="gtext">Try the demo (no PHI leaves your device)</h2>
+        <p class="muted">Project appointment growth and no-show reduction.</p>
       </div>
-    </div>
+
+      <div class="demo-tiles">
+        <button class="demo-tile md-ripple sheen" data-sim="clinic-apps" data-tilt data-sheen>
+          <div class="tile-top">
+            <strong>Growth & No-show Impact</strong><span class="badge">Project</span>
+          </div>
+          <div class="tile-metrics">
+            <div><span class="k gtext" data-out="apps">—</span><span class="l">Projected appointments</span></div>
+            <div><span class="k gtext" data-out="noshow">—</span><span class="l">No-show reduction</span></div>
+          </div>
+        </button>
+      </div>
+      <p class="fine muted">Local math only — just a feel for trajectory.</p>
+    </article>
 
     <nav class="stack center">
       <a class="btn md-ripple" href="./clinic-website.html">← Previous</a>
@@ -40,4 +52,3 @@
   <script defer src="../main.js"></script>
 </body>
 </html>
-
