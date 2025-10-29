@@ -22,17 +22,35 @@
       <p class="muted">Broaden network coverage with structured, SLA-driven empanelment.</p>
     </header>
 
-    <div class="cards">
-      <div class="card md-surface elevation-1 md-ripple sheen" data-tilt data-sheen>
-        <h3>Coverage</h3>
-        <p>We coordinate with 20+ insurers & TPAs (MediAssist, MD India, FHPL, Vidal, Volo) and support GIPSA.</p>
-        <button class="btn btn-primary md-ripple magnet" disabled>Empanelment Tracker (coming soon)</button>
+    <article class="md-surface elevation-2 demo-shell sheen" data-animate data-sheen>
+      <div class="demo-head">
+        <h2 class="gtext">Try the demo (no PHI leaves your device)</h2>
+        <p class="muted">Estimate coverage and go-live ETA with one tap.</p>
       </div>
-      <div class="card md-surface elevation-1">
-        <h3>Artifacts</h3>
-        <ul class="bullets"><li>Document vault</li><li>Policy matrix</li><li>Communication log</li></ul>
+
+      <div class="demo-tiles">
+        <button class="demo-tile md-ripple sheen" data-sim="empanel" data-tilt data-sheen>
+          <div class="tile-top">
+            <strong>Network Coverage & ETA</strong><span class="badge">Simulate</span>
+          </div>
+          <div class="tile-metrics">
+            <div><span class="k gtext" data-out="count">—</span><span class="l">Insurers / TPAs</span></div>
+            <div><span class="k gtext" data-out="eta">—</span><span class="l">Days to go-live</span></div>
+          </div>
+        </button>
+
+        <button class="demo-tile md-ripple sheen" data-sim="empanel-sla" data-tilt data-sheen>
+          <div class="tile-top">
+            <strong>Docs Checklist & SLA</strong><span class="badge">Simulate</span>
+          </div>
+          <div class="tile-metrics">
+            <div><span class="k gtext" data-out="docs">—</span><span class="l">Docs gathered</span></div>
+            <div><span class="k gtext" data-out="sla">—</span><span class="l">On-time tasks</span></div>
+          </div>
+        </button>
       </div>
-    </div>
+      <p class="fine muted">Demo rails only — local calculations, nothing uploaded.</p>
+    </article>
 
     <nav class="stack center">
       <a class="btn md-ripple" href="./certifications.html">← Previous</a>
