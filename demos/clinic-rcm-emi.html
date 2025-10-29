@@ -22,13 +22,25 @@
       <p class="muted">Clarity before care — simple claims and EMI where applicable.</p>
     </header>
 
-    <div class="cards">
-      <div class="card md-surface elevation-1 md-ripple sheen" data-tilt data-sheen>
-        <h3>Flows</h3>
-        <ul class="bullets"><li>Transparent estimates</li><li>Basic claim support</li><li>EMI for selected procedures</li></ul>
-        <button class="btn btn-primary md-ripple magnet" disabled>Open EMI Calculator (coming soon)</button>
+    <article class="md-surface elevation-2 demo-shell sheen" data-animate data-sheen>
+      <div class="demo-head">
+        <h2 class="gtext">Try the demo (no PHI leaves your device)</h2>
+        <p class="muted">One-tap EMI illustration (0% for demo; just math on the client).</p>
       </div>
-    </div>
+
+      <div class="demo-tiles">
+        <button class="demo-tile md-ripple sheen" data-sim="emi" data-amount="60000" data-months="9" data-tilt data-sheen>
+          <div class="tile-top">
+            <strong>EMI for ₹60,000 / 9 months</strong><span class="badge">Calculate</span>
+          </div>
+          <div class="tile-metrics">
+            <div><span class="k gtext">₹<span data-out="emi">—</span></span><span class="l">Monthly EMI (demo)</span></div>
+            <div><span class="k gtext" data-out="total">—</span><span class="l">Total payable</span></div>
+          </div>
+        </button>
+      </div>
+      <p class="fine muted">For illustration only. Real EMI terms vary by provider.</p>
+    </article>
 
     <nav class="stack center">
       <a class="btn md-ripple" href="./clinic-pharmacy.html">← Previous</a>
@@ -40,4 +52,3 @@
   <script defer src="../main.js"></script>
 </body>
 </html>
-
