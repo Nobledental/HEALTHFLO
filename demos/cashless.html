@@ -1,1 +1,158 @@
 
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>HealthFlo Demo — Cashless Everywhere</title>
+
+  <!-- Fonts & base styles from main site -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet"/>
+
+  <link rel="stylesheet" href="../styles.css"/>
+  <link rel="stylesheet" href="./demo.css"/>
+</head>
+<body class="demo-app" data-persona="hospital">
+  <!-- App bar -->
+  <header class="appbar">
+    <button class="btn-icon md-ripple back-home" aria-label="Back to home">←</button>
+    <div class="title">
+      <h1><span class="orb" aria-hidden="true"></span> Cashless Everywhere™</h1>
+      <small class="muted">Pre-auth ETA • Deposit avoided • Transition support</small>
+    </div>
+    <div class="segments md-ripple" role="tablist" aria-label="Views">
+      <button class="segment md-ripple" aria-pressed="true" data-pane="overview">Overview</button>
+      <button class="segment md-ripple" aria-pressed="false" data-pane="simulate">Simulate</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Screen: Overview -->
+    <section data-screen="home">
+      <div class="grid cols-3" data-pane="overview">
+        <div class="card">
+          <h3>SLA Bands</h3>
+          <div class="grid">
+            <div class="kpi"><span class="k">2.5 h</span><span class="l">Median pre-auth</span></div>
+            <div class="kpi"><span class="k">≤ 60 m</span><span class="l">Clarification cycle</span></div>
+            <div class="kpi"><span class="k">+2–5%</span><span class="l">Variance recovery</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Network & Non-Network</h3>
+          <p class="muted">Immediate cashless for eligible non-network cases; 2-month transition after empanelment.</p>
+          <div class="space"></div>
+          <div class="chip good">✓ Transition support</div>
+          <div class="chip good">✓ Approval desk</div>
+        </div>
+        <div class="card">
+          <h3>Playbook</h3>
+          <div class="grid">
+            <div class="row"><span class="label">Check policy</span><span>Automated</span></div>
+            <div class="row"><span class="label">Docs packet</span><span>Standardized</span></div>
+            <div class="row"><span class="label">Follow-ups</span><span>Measured</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Simulate -->
+      <div class="card" data-pane="simulate" hidden>
+        <h3>Simulate impact</h3>
+        <div class="grid cols-2">
+          <div class="grid">
+            <div class="slider-wrap">
+              <div class="meta"><span>Monthly cases</span><span><strong id="casesOut">180</strong></span></div>
+              <input id="cases" type="range" min="30" max="600" value="180"/>
+            </div>
+            <div class="slider-wrap">
+              <div class="meta"><span>Network coverage</span><span id="netOut"><strong>60%</strong></span></div>
+              <input id="net" type="range" min="0" max="100" value="60"/>
+            </div>
+            <div class="slider-wrap">
+              <div class="meta"><span>Avg deposit (₹)</span><span><strong id="depOut">85,000</strong></span></div>
+              <input id="dep" type="range" min="10000" max="200000" step="5000" value="85000"/>
+            </div>
+          </div>
+          <div class="grid">
+            <div class="kpi"><span class="k" id="etaK">2.5 h</span><span class="l">Estimated pre-auth ETA</span></div>
+            <div class="kpi"><span class="k">₹<span id="avoidK">—</span></span><span class="l">Deposit avoided / month</span></div>
+            <div class="kpi"><span class="k" id="clarK">≤ 60 m</span><span class="l">Clarification turnaround</span></div>
+          </div>
+        </div>
+        <div class="row-right">
+          <button class="btn md-ripple" data-open-sheet>View assumptions</button>
+          <button class="btn btn-primary md-ripple" id="apply">Start a 10-day pilot</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Bottom bar -->
+  <nav class="bottom-bar">
+    <div class="nav">
+      <button class="md-ripple" aria-pressed="true" data-target="home">Home</button>
+      <button class="md-ripple" aria-pressed="false" data-target="home">Metrics</button>
+      <button class="md-ripple" aria-pressed="false" data-target="home">Actions</button>
+    </div>
+  </nav>
+  <button class="fab md-ripple" data-open-sheet aria-label="Quick actions">⋯</button>
+
+  <!-- Sheet -->
+  <aside class="sheet" aria-modal="true" role="dialog">
+    <div class="head">
+      <strong>Assumptions</strong>
+      <button class="btn-icon md-ripple" data-close-sheet>✕</button>
+    </div>
+    <div class="body">
+      <div class="row"><span class="label">Non-network eligible</span><span>policy+diagnosis matrix</span></div>
+      <div class="row"><span class="label">Transition post-empanelment</span><span>2 months</span></div>
+      <div class="row"><span class="label">Clarification window</span><span>≤ 60 minutes</span></div>
+      <div class="row"><span class="label">Pre-auth desk</span><span>9am–9pm</span></div>
+    </div>
+  </aside>
+
+  <script src="./demo.js" defer></script>
+  <script defer>
+    const { HFCount, HF, HFToast } = window;
+    const cases = document.getElementById('cases');
+    const net   = document.getElementById('net');
+    const dep   = document.getElementById('dep');
+    const casesOut = document.getElementById('casesOut');
+    const netOut   = document.getElementById('netOut');
+    const depOut   = document.getElementById('depOut');
+    const avoidK   = document.getElementById('avoidK');
+    const etaK     = document.getElementById('etaK');
+    const clarK    = document.getElementById('clarK');
+
+    function recompute(){
+      const c = +cases.value;
+      const n = +net.value / 100;     // network ratio
+      const d = +dep.value;
+
+      casesOut.textContent = HF.inr(c);
+      netOut.innerHTML = `<strong>${(n*100).toFixed(0)}%</strong>`;
+      depOut.textContent = HF.inr(d);
+
+      // heuristic: more network coverage => faster ETA; non-network eligible cases covered by our desk reduce deposits.
+      const eta = (2.8 - (n * 0.9)).toFixed(1);       // hours
+      etaK.textContent = `${eta} h`;
+      clarK.textContent = '≤ 60 m';
+
+      const nonNet = c * (1 - n);
+      const avoided = Math.round(nonNet * d * 0.12);  // 12% of avg deposit avoided via approvals
+      HFCount(avoidK, avoided, 900, (v)=>HF.inr(v));
+    }
+    [cases, net, dep].forEach(el => el.addEventListener('input', recompute));
+    recompute();
+
+    document.getElementById('apply').addEventListener('click', () => {
+      HFToast('Pilot request noted. We’ll reach out shortly.');
+    });
+
+    // Default to Simulate pane
+    document.querySelector('.segment[data-pane="simulate"]').click();
+  </script>
+</body>
+</html>
