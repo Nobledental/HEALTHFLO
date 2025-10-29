@@ -22,21 +22,35 @@
       <p class="muted">Stop repeat denials and recover stuck revenue with audit-ready evidence.</p>
     </header>
 
-    <div class="cards">
-      <div class="card md-surface elevation-1 md-ripple sheen" data-tilt data-sheen>
-        <h3>What’s included</h3>
-        <ul class="bullets">
-          <li>Claim reconciliation & follow-ups</li>
-          <li>Root-cause analytics & corrective actions</li>
-          <li>Recovery ledger with insurer conversations</li>
-        </ul>
-        <button class="btn btn-primary md-ripple magnet" disabled>Run Denial Analyzer (coming soon)</button>
+    <article class="md-surface elevation-2 demo-shell sheen" data-animate data-sheen>
+      <div class="demo-head">
+        <h2 class="gtext">Try the demo (no PHI leaves your device)</h2>
+        <p class="muted">Project recovery from today’s baseline volumes.</p>
       </div>
-      <div class="card md-surface elevation-1">
-        <h3>Reporting</h3>
-        <p class="muted">Cohort trends, payer heatmaps, and recurring-rule alerts.</p>
+
+      <div class="demo-tiles">
+        <button class="demo-tile md-ripple sheen" data-sim="denials" data-tilt data-sheen>
+          <div class="tile-top">
+            <strong>Denial Drop & Recovery</strong><span class="badge">Simulate</span>
+          </div>
+          <div class="tile-metrics">
+            <div><span class="k gtext" data-out="drop">—</span><span class="l">Denial drop</span></div>
+            <div><span class="k gtext">₹<span data-out="recovery">—</span></span><span class="l">Recovery / 90d</span></div>
+          </div>
+        </button>
+
+        <button class="demo-tile md-ripple sheen" data-sim="denial-rules" data-tilt data-sheen>
+          <div class="tile-top">
+            <strong>Repeat-Rule Fixes</strong><span class="badge">Analyze</span>
+          </div>
+          <div class="tile-metrics">
+            <div><span class="k gtext" data-out="rules">—</span><span class="l">Recurring rules</span></div>
+            <div><span class="k gtext" data-out="impact">—</span><span class="l">Impact on TAT</span></div>
+          </div>
+        </button>
       </div>
-    </div>
+      <p class="fine muted">Illustrative only. Numbers are generated locally.</p>
+    </article>
 
     <nav class="stack center">
       <a class="btn md-ripple" href="./cashless.html">← Previous</a>
@@ -48,4 +62,3 @@
   <script defer src="../main.js"></script>
 </body>
 </html>
-
