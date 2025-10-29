@@ -1,1 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>HealthFlo Demo — AI-EMR (Allergy Guard)</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet"/>
+
+  <link rel="stylesheet" href="../styles.css"/>
+  <link rel="stylesheet" href="./demo.css"/>
+</head>
+<body class="demo-app" data-persona="hospital">
+  <header class="appbar">
+    <button class="btn-icon md-ripple back-home" aria-label="Back to home">←</button>
+    <div class="title">
+      <h1><span class="orb" aria-hidden="true"></span> AI-EMR — Allergy Guard</h1>
+      <small class="muted">Checks meds vs. history and suggests safer alternatives</small>
+    </div>
+    <div class="segments" role="tablist">
+      <button class="segment md-ripple" aria-pressed="true" data-pane="patient">Patient</button>
+      <button class="segment md-ripple" aria-pressed="false" data-pane="prescribe">Prescribe</button>
+      <button class="segment md-ripple" aria-pressed="false" data-pane="alerts">Alerts</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="grid cols-2 card" data-pane="patient">
+      <div class="grid">
+        <div class="kpi"><span class="k">John K</span><span class="l">OPD-14322 • M • 42</span></div>
+        <div class="kpi"><span class="k">Penicillin</span><span class="l">Allergy (hives)</span></div>
+        <div class="kpi"><span class="k">RBC 4.9 • Cr 0.9</span><span class="l">Recent labs (15d)</span></div>
+      </div>
+      <div class="grid">
+        <div class="card">
+          <h3>History summary</h3>
+          <p class="muted">URI episodes • Completed amoxicillin (2018) → rash; avoided beta-lactams since.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid cols-2 card" data-pane="prescribe" hidden>
+      <div class="grid">
+        <div class="input">
+          <label>Proposed drug</label>
+          <input id="drug" type="text" value="amoxicillin"/>
+        </div>
+        <div class="input">
+          <label>Dose</label>
+          <input id="dose" type="text" value="500 mg TID × 5d"/>
+        </div>
+        <button id="check" class="btn btn-primary md-ripple">Check safety</button>
+      </div>
+      <div class="grid">
+        <div class="kpi"><span class="k" id="status">Pending</span><span class="l">Safety status</span></div>
+        <div class="card" id="altCard">
+          <h3>Suggested alternatives</h3>
+          <p class="muted" id="alts">—</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" data-pane="alerts" hidden>
+      <h3>Recent alerts</h3>
+      <div class="grid">
+        <div class="chip warn">⚠️ penicillin × amoxicillin — avoid</div>
+        <div class="chip good">✓ azithromycin suggested — compatible</div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="bottom-bar">
+    <div class="nav">
+      <button class="md-ripple" aria-pressed="true" data-target="home">Home</button>
+      <button class="md-ripple" aria-pressed="false" data-target="home">Vitals</button>
+      <button class="md-ripple" aria-pressed="false" data-target="home">Orders</button>
+    </div>
+  </nav>
+  <button class="fab md-ripple" data-open-sheet aria-label="Quick actions">⋯</button>
+
+  <aside class="sheet" aria-modal="true" role="dialog">
+    <div class="head">
+      <strong>Why blocked?</strong>
+      <button class="btn-icon md-ripple" data-close-sheet>✕</button>
+    </div>
+    <div class="body">
+      <p class="muted">Cross-reactivity noted between patient’s recorded allergy (penicillin) and the proposed drug.</p>
+      <div class="grid">
+        <div class="chip warn">Avoid beta-lactams</div>
+        <div class="chip good">Consider macrolides (e.g., azithromycin)</div>
+      </div>
+    </div>
+  </aside>
+
+  <script src="./demo.js" defer></script>
+  <script defer>
+    const statusEl = document.getElementById('status');
+    const altsEl = document.getElementById('alts');
+    const altCard = document.getElementById('altCard');
+
+    document.getElementById('check').addEventListener('click', () => {
+      const drug = (document.getElementById('drug').value || '').toLowerCase().trim();
+      // Simple demo rule: block penicillins / amoxicillin
+      if (/penicillin|amoxicillin/.test(drug)) {
+        statusEl.textContent = '⚠️ Conflict — do not prescribe';
+        altsEl.textContent = 'Try azithromycin 500 mg OD × 3d; monitor response.';
+        document.querySelector('[data-open-sheet]').click();
+      } else {
+        statusEl.textContent = '✓ Compatible';
+        altsEl.textContent = 'Proceed per protocol.';
+      }
+    });
+  </script>
+</body>
+</html>
