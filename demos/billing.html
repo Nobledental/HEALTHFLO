@@ -1,1 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>HealthFlo Demo — Billing Pro (Prorata & Non-payables)</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet"/>
+
+  <link rel="stylesheet" href="../styles.css"/>
+  <link rel="stylesheet" href="./demo.css"/>
+</head>
+<body class="demo-app" data-persona="hospital">
+  <header class="appbar">
+    <button class="btn-icon md-ripple back-home" aria-label="Back to home">←</button>
+    <div class="title">
+      <h1><span class="orb" aria-hidden="true"></span> Billing — Prorata & Non-payables</h1>
+      <small class="muted">Room-rent caps • R&C • Estimated non-payables</small>
+    </div>
+    <div class="segments" role="tablist">
+      <button class="segment md-ripple" aria-pressed="true" data-pane="calc">Calculator</button>
+      <button class="segment md-ripple" aria-pressed="false" data-pane="explain">Explain</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="grid cols-2 card" data-pane="calc">
+      <div class="grid">
+        <div class="input">
+          <label>Total Bill (₹)</label>
+          <input id="bill" type="number" value="90000" min="0" step="1000"/>
+        </div>
+        <div class="input">
+          <label>Room Rent / day (₹)</label>
+          <input id="rent" type="number" value="3000" min="0" step="100"/>
+        </div>
+        <div class="slider-wrap">
+          <div class="meta"><span>Assumed room-cost share of bill</span><span id="shareOut"><strong>30%</strong></span></div>
+          <input id="share" type="range" min="10" max="60" value="30"/>
+        </div>
+        <div class="slider-wrap">
+          <div class="meta"><span>Non-payables base (%)</span><span id="npBaseOut"><strong>15%</strong></span></div>
+          <input id="npBase" type="range" min="0" max="35" value="15"/>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="kpi"><span class="k">₹<span id="capK">—</span></span><span class="l">Room-rent cap (5× day rent)</span></div>
+        <div class="kpi"><span class="k" id="factorK">—</span><span class="l">Prorata factor</span></div>
+        <div class="kpi"><span class="k">₹<span id="npK">—</span></span><span class="l">Est. non-payables</span></div>
+        <div class="row-right">
+          <button class="btn md-ripple" data-open-sheet>Assumptions</button>
+          <button class="btn btn-primary md-ripple" id="apply">Export illustration (demo)</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" data-pane="explain" hidden>
+      <h3>How this demo works</h3>
+      <p class="muted">We illustrate common policy constraints by applying a “room-rent cap” and then estimating non-payables as a percentage of the uncovered portion. Exact behaviors vary by insurer & policy, so treat this as a visual demo only.</p>
+      <div class="grid cols-3">
+        <div class="kpi"><span class="k" id="assumedRoom">—</span><span class="l">Assumed room share</span></div>
+        <div class="kpi"><span class="k" id="coveredRoom">—</span><span class="l">Covered at cap</span></div>
+        <div class="kpi"><span class="k" id="uncoveredRoom">—</span><span class="l">Uncovered portion</span></div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="bottom-bar">
+    <div class="nav">
+      <button class="md-ripple" aria-pressed="true" data-target="home">Home</button>
+      <button class="md-ripple" aria-pressed="false" data-target="home">Metrics</button>
+      <button class="md-ripple" aria-pressed="false" data-target="home">Actions</button>
+    </div>
+  </nav>
+  <button class="fab md-ripple" data-open-sheet aria-label="Quick actions">⋯</button>
+
+  <aside class="sheet" aria-modal="true" role="dialog">
+    <div class="head">
+      <strong>Assumptions</strong>
+      <button class="btn-icon md-ripple" data-close-sheet>✕</button>
+    </div>
+    <div class="body">
+      <div class="row"><span class="label">Room-rent cap</span><span>5 × daily rent</span></div>
+      <div class="row"><span class="label">Room share of bill</span><span>slider (10–60%)</span></div>
+      <div class="row"><span class="label">Non-payables base</span><span>slider (0–35%)</span></div>
+    </div>
+  </aside>
+
+  <script src="./demo.js" defer></script>
+  <script defer>
+    const { HF, HFCount, HFToast } = window;
+    const bill = document.getElementById('bill');
+    const rent = document.getElementById('rent');
+    const share = document.getElementById('share');
+    const npBase = document.getElementById('npBase');
+
+    const shareOut = document.getElementById('shareOut');
+    const npBaseOut = document.getElementById('npBaseOut');
+
+    const capK = document.getElementById('capK');
+    const factorK = document.getElementById('factorK');
+    const npK = document.getElementById('npK');
+
+    const assumedRoom = document.getElementById('assumedRoom');
+    const coveredRoom = document.getElementById('coveredRoom');
+    const uncoveredRoom = document.getElementById('uncoveredRoom');
+
+    function recompute(){
+      const B = +bill.value || 0;
+      const R = +rent.value || 0;
+      const S = (+share.value || 0) / 100;
+      const NP = (+npBase.value || 0) / 100;
+
+      shareOut.innerHTML = `<strong>${(S*100).toFixed(0)}%</strong>`;
+      npBaseOut.innerHTML = `<strong>${(NP*100).toFixed(0)}%</strong>`;
+
+      const cap = R * 5;
+      HFCount(capK, cap, 600, (v)=>HF.inr(v));
+
+      const roomAssumed = B * S;
+      const factor = Math.min(1, cap / Math.max(roomAssumed, 1));
+      factorK.textContent = factor.toFixed(2);
+
+      const uncovered = Math.max(0, roomAssumed - cap);
+      const nonPayables = Math.round(uncovered * NP);
+
+      HFCount(npK, nonPayables, 800, (v)=>HF.inr(v));
+      assumedRoom.textContent = '₹' + HF.inr(Math.round(roomAssumed));
+      coveredRoom.textContent = '₹' + HF.inr(Math.round(Math.min(roomAssumed, cap)));
+      uncoveredRoom.textContent = '₹' + HF.inr(Math.round(uncovered));
+    }
+
+    [bill, rent, share, npBase].forEach(el => el.addEventListener('input', recompute));
+    recompute();
+
+    document.getElementById('apply').addEventListener('click', () => HFToast('Demo export queued (mock).'));
+  </script>
+</body>
+</html>
 
