@@ -5,8 +5,10 @@
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
+const themes = ['white', 'cosmic'];
+const savedTheme = localStorage.getItem('healthfloTheme');
 const state = {
-  theme: localStorage.getItem('healthfloTheme') || 'cosmic'
+  theme: themes.includes(savedTheme) ? savedTheme : 'cosmic'
 };
 
 const elements = {
@@ -43,7 +45,7 @@ const analytics = {
 };
 
 function setTheme(theme) {
-  if (!theme) return;
+  if (!theme || !themes.includes(theme)) return;
   state.theme = theme;
   elements.docEl.dataset.theme = theme;
   localStorage.setItem('healthfloTheme', theme);
