@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>HealthFlo — Cashless Care &amp; RCM for Patients, Hospitals &amp; Employers</title>
+    <title>HealthFlo — Neo Guardian OS for AI-First Care</title>
     <meta
       name="description"
-      content="Transparent packages, faster cashless, denial recovery, and corporate health benefits—trusted by 570+ NABH partners."
+      content="HealthFlo is the Neo Guardian Patient OS and AI cashless engine for patients, hospitals, and employers—real-time guidance, futuristic operating system, and predictive denial prevention."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -14,97 +14,35 @@
       href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-
-    <!-- Your base styles (unchanged) -->
     <link rel="stylesheet" href="styles.css" />
-
-    <!-- Minimal add-on styles (only for NEW pieces) -->
-    <style>
-      /* ===== Infinite ticker ===== */
-      .ticker { padding: 10px 0; border-bottom: 1px solid var(--color-border); background: color-mix(in srgb, var(--color-surface) 86%, transparent); }
-      .ticker__inner { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 16px; }
-      .ticker__label { display: inline-flex; align-items: center; gap: 8px; color: var(--color-subtle); font-weight: 700; }
-      .ticker__label svg { width: 18px; height: 18px; opacity: .9; }
-      .ticker__viewport { overflow: hidden; }
-      .ticker__track { display: inline-flex; gap: 28px; white-space: nowrap; will-change: transform; }
-      .ticker__item { padding: 6px 12px; border-radius: 999px; background: color-mix(in srgb, var(--color-primary) 18%, transparent); }
-      .ticker__pause { border-radius: 999px; border: 1px solid var(--color-border); background: transparent; color: var(--color-text); padding: 6px 10px; cursor: pointer; }
-      .is-paused [data-ticker-track] { animation-play-state: paused !important; }
-
-      /* ===== How it works: progress + animated cards ===== */
-      .how-progress-bar { position: sticky; top: 64px; height: 6px; border-radius: 6px; background: color-mix(in srgb, var(--color-surface) 85%, transparent); overflow: hidden; margin-bottom: 16px; }
-      .how-progress { height: 100%; width: 0%; background: linear-gradient(90deg, var(--color-primary), var(--color-accent)); transition: width .2s ease; }
-      .step-card { display: grid; grid-template-columns: 44px 1fr; gap: 12px; align-items: start; }
-      .step-card .step-icon { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 12px; background: color-mix(in srgb, var(--color-primary) 20%, transparent); }
-      .step-card[data-reveal] { transform-origin: 50% 100%; }
-      .step-card.is-visible { animation: float-in .7s cubic-bezier(.2,.9,.2,1) both; }
-      @keyframes float-in {
-        from { opacity: 0; transform: translateY(18px) scale(.98); }
-        to   { opacity: 1; transform: translateY(0) scale(1); }
-      }
-
-      /* ===== Hospitals directory (Z-style) ===== */
-      .directory { padding: 70px 0; }
-      .dir-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
-      .dir-card { border: 1px solid var(--color-border); border-radius: var(--radius-md); background: color-mix(in srgb, var(--color-surface) 90%, transparent); overflow: hidden; box-shadow: 0 22px 48px -35px var(--color-card-shadow); }
-      .dir-card img { width: 100%; height: 140px; object-fit: cover; }
-      .dir-body { padding: 14px; display: grid; gap: 8px; }
-      .dir-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-      .dir-tag { font-size: .72rem; padding: 4px 8px; border-radius: 999px; background: color-mix(in srgb, var(--color-primary) 18%, transparent); display: inline-block; }
-
-      /* Popup */
-      .dir-modal[hidden] { display: none; }
-      .dir-modal { position: fixed; inset: 0; display: grid; place-items: center; z-index: 900; }
-      .dir-scrim { position: absolute; inset: 0; background: rgba(0,0,0,.5); }
-      .dir-panel { position: relative; width: min(780px, 92vw); border-radius: var(--radius-lg); border: 1px solid var(--color-border); background: color-mix(in srgb, var(--color-surface) 92%, transparent); padding: 18px; box-shadow: 0 26px 80px -40px var(--color-card-shadow); }
-      .dir-close { position: absolute; right: 12px; top: 8px; border: 0; background: none; color: inherit; font-size: 1.6rem; cursor: pointer; }
-      .menu-row { display: grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items: center; border: 1px solid var(--color-border); border-radius: 12px; padding: 10px; margin-bottom: 10px; }
-      .menu-price { font-weight: 800; }
-
-      /* ===== Registration floaters (3 blinking FABs) ===== */
-      .floaters { position: fixed; left: 24px; bottom: 24px; z-index: 850; display: grid; gap: 10px; }
-      .floater { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--color-border); padding: 10px 14px; border-radius: 999px; background: color-mix(in srgb, var(--color-surface) 92%, transparent); box-shadow: 0 16px 40px -30px var(--color-card-shadow); cursor: pointer; font-weight: 800; animation: pulse 1.8s infinite; }
-      .floater .ico { width: 20px; height: 20px; display: grid; place-items: center; border-radius: 6px; background: color-mix(in srgb, var(--color-primary) 20%, transparent); }
-      .floater--hospital { animation-delay: .4s; }
-      .floater--employer { animation-delay: .8s; }
-      @keyframes pulse { 0%,100% { transform: translateY(0); box-shadow: 0 16px 40px -30px var(--color-card-shadow); } 50% { transform: translateY(-2px); box-shadow: 0 22px 48px -28px var(--color-card-shadow); } }
-
-      /* Small helpers */
-      .section-heading .sub { color: var(--color-subtle); margin-top: 4px; }
-    </style>
-
-    <!-- Upgraded behavior -->
     <script defer src="main.js"></script>
   </head>
-  <body data-persona="patient">
+  <body class="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)]">
     <a class="skip-link" href="#main">Skip to content</a>
 
     <header class="site-header" id="top">
       <div class="container header-inner">
-        <a class="logo" href="#top" aria-label="HealthFlo">
+        <a class="logo" href="index.html" aria-label="HealthFlo">
           <span class="logo-dot" aria-hidden="true"></span>
           <span class="logo-text">HealthFlo</span>
         </a>
 
         <nav class="primary-nav" aria-label="Primary">
-          <ul>
-            <li><a href="#why">Why HealthFlo</a></li>
-            <li><a href="#solutions">Solutions</a></li>
-            <li><a href="#how">How it works</a></li>
-            <li><a href="#hospitals">Hospitals</a></li>
-            <li><a href="#pricing">Pricing</a></li>
-            <li><a href="#contact">Contact</a></li>
+          <ul class="flex items-center gap-6 text-[15px] font-semibold">
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="patient.html">Patients</a></li>
+            <li><a href="hospital.html">Hospitals</a></li>
+            <li><a href="#about">About u</a></li>
+            <li><a href="employer.html">StakeHolder</a></li>
           </ul>
         </nav>
 
         <div class="header-actions">
           <div class="theme-switch" role="group" aria-label="Theme switcher">
             <button type="button" data-theme-choice="white">White</button>
-            <button type="button" data-theme-choice="dark">Dark</button>
-            <button type="button" data-theme-choice="matte">Matte Black</button>
             <button type="button" data-theme-choice="cosmic">Cosmic</button>
           </div>
-          <a class="btn btn-primary" data-cta="header-primary" href="#lead">Start now</a>
+          <a class="btn btn-primary" data-cta="header-primary" href="#lead">Launch Neo Guardian →</a>
           <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">
             <span></span><span></span><span></span>
           </button>
@@ -112,21 +50,21 @@
       </div>
     </header>
 
-    <!-- Infinite ticker (areas we operate) -->
-    <section class="ticker" aria-label="Areas we operate">
+    <section class="ticker" aria-label="Operating locations">
       <div class="container">
-        <div class="ticker__inner" id="ticker">
+        <div class="ticker__inner" data-ticker>
           <span class="ticker__label">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-5.4 7-11a7 7 0 10-14 0c0 5.6 7 11 7 11zM12 13a3 3 0 110-6 3 3 0 010 6z" fill="currentColor"/></svg>
-            We operate in
+            Active networks
           </span>
           <div class="ticker__viewport">
             <div class="ticker__track" data-ticker-track>
+              <span class="ticker__item">Neo Guardian OS • live</span>
+              <span class="ticker__item">Cashless engine • 45s median pre-auth</span>
               <span class="ticker__item">Tamil Nadu</span>
               <span class="ticker__item">Bengaluru</span>
-              <span class="ticker__item">Karnataka</span>
-              <span class="ticker__item">Andhra Pradesh</span>
               <span class="ticker__item">Hyderabad</span>
+              <span class="ticker__item">Andhra Pradesh</span>
             </div>
           </div>
           <button class="ticker__pause" type="button" aria-label="Pause ticker" data-ticker-toggle>❚❚</button>
@@ -134,320 +72,528 @@
       </div>
     </section>
 
-    <main id="main">
+    <main id="main" class="relative overflow-hidden">
       <section class="hero" aria-labelledby="hero-title">
         <canvas id="heroCanvas" aria-hidden="true"></canvas>
         <div class="hero-overlay"></div>
-        <div class="container hero-inner">
-          <div class="hero-copy">
-            <p class="hero-support">570+ NABH partners • 92% same-day approvals • 45s pre-auth median • 150k+ claims navigated</p>
-            <h1 id="hero-title">Healthcare that just works — clear prices, faster cashless, and predictable claims.</h1>
-            <p class="hero-body">
-              One operating system that lets patients, hospitals, and employers move from guesswork to guided cashless care. Your experience adapts the moment you tell us who you are.
+        <div class="container hero-inner grid lg:grid-cols-[1.1fr_0.9fr] gap-10 items-center">
+          <div class="hero-copy space-y-7" data-reveal>
+            <p class="hero-support text-sm uppercase tracking-[0.2em]">AI-first healthcare • Neo Guardian OS</p>
+            <h1 id="hero-title" class="text-4xl lg:text-5xl font-extrabold leading-tight">
+              AI care without friction. Cosmic-grade patient OS with real-time cashless, guided triage, and predictive denials.
+            </h1>
+            <p class="text-lg text-[var(--color-subtle)] max-w-2xl">
+              HealthFlo operates like a futuristic medical operating system—AI diagnosis assistant, AI cashless engine, AI hospital cockpit, and transparent patient rails that feel like tomorrow.
             </p>
-
-            <!-- Persona selector -->
-            <div class="persona-selector" role="group" aria-label="Choose your persona">
-              <button type="button" class="persona-option" data-persona="patient">
-                <span class="persona-icon" aria-hidden="true">🧑‍⚕️</span>
-                <span>I’m a Patient</span>
-              </button>
-              <button type="button" class="persona-option" data-persona="hospital">
-                <span class="persona-icon" aria-hidden="true">🏥</span>
-                <span>I represent a Hospital</span>
-              </button>
-              <button type="button" class="persona-option" data-persona="employer">
-                <span class="persona-icon" aria-hidden="true">💼</span>
-                <span>I’m an Employer</span>
-              </button>
+            <div class="flex flex-wrap gap-4">
+              <a class="btn btn-primary" data-cta="hero-primary" href="#lead">Activate the OS</a>
+              <a class="btn btn-ghost" data-cta="hero-secondary" href="#demos">View demo systems</a>
             </div>
-
-            <div class="hero-ctas">
-              <a class="btn btn-primary" data-cta="hero-primary" href="#lead" data-persona-label>Decode My Policy →</a>
-              <button class="btn btn-ghost" type="button" data-cta="whatsapp" data-whatsapp-trigger>
-                Prefer WhatsApp? Get a 2-min summary (no sales calls)
-              </button>
+            <div class="flex flex-wrap gap-3 text-sm text-[var(--color-subtle)]">
+              <span class="pill">Real-time guidance</span>
+              <span class="pill">AI diagnosis assistant</span>
+              <span class="pill">AI cashless engine</span>
             </div>
-
-            <div class="whatsapp-note" aria-live="polite">
-              <strong>Prefer WhatsApp?</strong> Tap above to open a chat with the right starter message.
+            <article class="hero-card" data-reveal>
+              <div class="hero-card__top">
+                <span class="pill">Neo Guardian signal</span>
+                <span class="status-dot">Live 45s pre-auth</span>
+              </div>
+              <p class="text-lg font-bold">One premium card. Full journey stitched.</p>
+              <p class="text-sm text-[var(--color-subtle)]">
+                AI triage, policy decode, clause guardrails, smart doctor routing, and cashless prep—all in one hovering ceramic card with the original hover glow.
+              </p>
+            </article>
+            <div class="play-card" data-reveal>
+              <div class="play-card__meta">
+                <div class="icon-circle" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2 12c0-5.523 4.477-10 10-10 5.524 0 10 4.477 10 10 0 5.524-4.476 10-10 10C6.477 22 2 17.524 2 12z" stroke="currentColor" stroke-width="1.4" />
+                    <path d="M10 8l6 4-6 4V8z" fill="currentColor" />
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-xs uppercase tracking-[0.18em] text-[var(--color-subtle)]">Google Play</p>
+                  <p class="font-bold">HealthFlo Patient OS app</p>
+                </div>
+              </div>
+              <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.healthflo.app" target="_blank" rel="noreferrer">Download on Play Store</a>
+              <p class="text-sm text-[var(--color-subtle)]">Instant access to AI care navigation, claims copilot, and hospital cockpit companion.</p>
             </div>
           </div>
           <div class="hero-visual" aria-hidden="true">
-            <div class="hero-badge">Persona-aware</div>
-            <img
-              src="https://storage.googleapis.com/dev_resources_voka_io_303011/common/preview.webp"
-              alt="HealthFlo experience preview"
-            />
+            <div class="hero-badge">Next-gen medical OS</div>
+            <div class="hero-visual-card">
+              <img
+                class="rounded-3xl shadow-2xl"
+                src="https://storage.googleapis.com/dev_resources_voka_io_303011/common/preview.webp"
+                alt="HealthFlo experience preview"
+              />
+              <div class="hero-visual-floating" aria-hidden="true">
+                <img src="https://storage.googleapis.com/dev_resources_voka_io_303011/common/preview.webp" alt="Preview tile" />
+                <div class="floating-meta">
+                  <p class="text-xs uppercase tracking-[0.2em] text-[var(--color-subtle)]">AI cockpit</p>
+                  <p class="font-semibold">Coverage decoded • Doctor routed</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      <section class="social-proof" aria-labelledby="social-proof-title">
-        <div class="container">
-          <h2 id="social-proof-title" class="visually-hidden">Trusted partners</h2>
-          <ul class="logo-strip">
-            <li><img src="https://images.healthflo.org/logos/aster.svg" alt="Aster" /></li>
-            <li><img src="https://images.healthflo.org/logos/fortis.svg" alt="Fortis" /></li>
-            <li><img src="https://images.healthflo.org/logos/manipal.svg" alt="Manipal" /></li>
-            <li><img src="https://images.healthflo.org/logos/apollo.svg" alt="Apollo" /></li>
-            <li><img src="https://images.healthflo.org/logos/careplus.svg" alt="Care Plus" /></li>
+      <section id="about" class="container py-16 grid lg:grid-cols-[1.1fr_0.9fr] gap-10 items-center">
+        <div class="space-y-5" data-reveal>
+          <p class="eyebrow">About u • Neo Guardian</p>
+          <h2 class="text-3xl font-bold">A white + cosmic medical cockpit with vivid, clinical clarity.</h2>
+          <p class="text-[var(--color-subtle)] text-lg">
+            We blend premium care design with AI orchestration—real-time coverage decoding, AI-powered pre-auth, predictive denial
+            prevention, and transparent patient rails. Everything is purposeful, minimal, and trustworthy.
+          </p>
+          <ul class="grid sm:grid-cols-2 gap-3">
+            <li class="feature-tile" data-reveal><span>AI hospital cockpit</span><small>Live signals across beds & finance</small></li>
+            <li class="feature-tile" data-reveal><span>AI diagnosis assistant</span><small>Explains labs and next steps</small></li>
+            <li class="feature-tile" data-reveal><span>AI-powered pre-auth</span><small>Clause guardrails without friction</small></li>
+            <li class="feature-tile" data-reveal><span>Predictive denial radar</span><small>Exception heatmaps on autopilot</small></li>
           </ul>
-          <blockquote class="quote" data-quote>
-            “Cashless approvals moved from days to hours. The dashboard keeps finance and nursing in sync.” — RCM Head, 250-bed hospital, Chennai
-          </blockquote>
         </div>
-      </section>
-
-      <section class="why" id="why">
-        <div class="container">
-          <div class="section-heading">
-            <h2>Why choose HealthFlo</h2>
-            <p>Clarity, velocity, and proactive recovery—tailored for every persona.</p>
+        <div class="glass-card space-y-4" data-reveal>
+          <div class="hero-card__image">
+            <img src="https://storage.googleapis.com/dev_resources_voka_io_303011/common/preview.webp" alt="Cosmic HealthFlo interface" />
+            <div class="hero-card__glass">
+              <p class="text-xs uppercase tracking-[0.2em] text-[var(--color-subtle)]">Patient OS preview</p>
+              <p class="text-sm font-semibold">AI-guided intake • Coverage decoded • Next steps illuminated</p>
+            </div>
           </div>
-          <div class="pillar-grid" data-pillars></div>
-          <a class="btn btn-link" href="#how" data-cta="why-see-how">See how it works →</a>
-        </div>
-      </section>
-
-      <section class="solutions" id="solutions">
-        <div class="container">
-          <div class="section-heading">
-            <h2 data-solutions-title>Get care on your terms</h2>
-            <p data-solutions-copy>Where HealthFlo shines for patients choosing cashless care.</p>
-          </div>
-          <div class="solution-grid" data-solution-grid></div>
-
-          <!-- Packages panel shows for patient persona -->
-          <div class="package-panel" data-packages hidden>
-            <h3>From normal to clinical — transparent packages</h3>
-            <div class="package-grid" data-package-grid></div>
+          <div class="flex gap-3 flex-wrap">
+            <span class="pill">White + Cosmic duality</span>
+            <span class="pill">Medical-grade gradients</span>
+            <span class="pill">Canvas hero intact</span>
           </div>
         </div>
       </section>
 
-      <section class="how" id="how">
-        <div class="container">
-          <div class="section-heading">
-            <h2>How it works</h2>
-            <p class="sub" data-how-copy>Upload policy → decode coverage → we run cashless &amp; update you.</p>
+      <section class="container py-16 grid lg:grid-cols-[1.2fr_1fr] gap-12 items-center" id="why">
+        <div class="space-y-6" data-reveal>
+          <p class="eyebrow">Neo Guardian • Patient OS</p>
+          <h2 class="text-3xl font-bold">A premium, cosmic interface for clarity before care.</h2>
+          <p class="text-lg text-[var(--color-subtle)]">
+            Every journey flows through the Neo Guardian Patient OS—AI triage, AI symptom mapping, coverage guardrails, transparent
+            packages, and smart doctor routing. Patients get real-time guidance while hospitals receive compliant cashless kits.
+          </p>
+          <ul class="grid md:grid-cols-2 gap-3 text-[var(--color-text)]">
+            <li class="feature-tile" data-reveal><span>AI-powered pre-auth</span><small>45s median prep</small></li>
+            <li class="feature-tile" data-reveal><span>Predictive denial prevention</span><small>Exception heatmaps</small></li>
+            <li class="feature-tile" data-reveal><span>AI diagnosis assistant</span><small>Real-time insights</small></li>
+            <li class="feature-tile" data-reveal><span>AI cashless engine</span><small>Cashless everywhere</small></li>
+          </ul>
+        </div>
+        <div class="glass-card" data-reveal>
+          <div class="flex items-center gap-3 mb-3">
+            <div class="badge-icon">🔮</div>
+            <div>
+              <p class="text-sm uppercase tracking-[0.18em] text-[var(--color-subtle)]">Neo Guardian OS</p>
+              <p class="text-xl font-bold">Patient services overview</p>
+            </div>
           </div>
-
-          <!-- progress bar that fills while scrolling this section -->
-          <div class="how-progress-bar" aria-hidden="true">
-            <div class="how-progress"></div>
+          <div class="grid grid-cols-2 gap-3 text-sm">
+            <div class="stack-tile">
+              <h3>Patient OS</h3>
+              <ul>
+                <li>AI triage & symptom mapping</li>
+                <li>AI policy decode & coverage guardrails</li>
+                <li>Transparent packages</li>
+                <li>Smart doctor routing</li>
+                <li>OPD / IP / ER booking</li>
+                <li>Home sample collection</li>
+                <li>Medicines delivery</li>
+                <li>AI claims copilot</li>
+                <li>Health timeline & insights</li>
+              </ul>
+            </div>
+            <div class="stack-tile">
+              <h3>Hospital OS</h3>
+              <ul>
+                <li>AI hospital cockpit</li>
+                <li>Cashless engine</li>
+                <li>Empanelment automation</li>
+                <li>RCM cockpit & SLA tracking</li>
+                <li>Exception heatmaps</li>
+                <li>Predictive denial prevention</li>
+              </ul>
+              <h3 class="mt-3">Employer OS</h3>
+              <ul>
+                <li>Corporate plan design</li>
+                <li>Bulk e-card issuance</li>
+                <li>AI-powered claims navigation</li>
+                <li>HR analytics with renewal guardrails</li>
+              </ul>
+            </div>
           </div>
-
-          <ol class="step-grid" data-steps></ol>
         </div>
       </section>
 
-      <section class="directory" id="hospitals" aria-labelledby="dir-title">
-        <div class="container">
-          <div class="section-heading">
-            <h2 id="dir-title">Hospitals — directory</h2>
-            <p class="sub">From normal to clinical — transparent packages. Add-ons like private room, ICU buffer clearly shown.</p>
+      <section id="patient-app" class="py-16 bg-[var(--surface-layer)]">
+        <div class="container space-y-10">
+          <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+            <div class="space-y-3" data-reveal>
+              <p class="eyebrow">Patient app • Live sample</p>
+              <h2 class="text-3xl font-bold">See how AI healthcare works inside the app.</h2>
+              <p class="text-[var(--color-subtle)] max-w-3xl">
+                One-touch onboarding, AI symptom mapping, policy decoding, doctor routing, AI cashless prep, and Copilot at every step.
+                Powered by the same canvas hero animation, ripple micro-interactions, and reveal-on-scroll you love.
+              </p>
+            </div>
+            <a class="btn btn-primary" data-cta="patient-app" href="demos/cashless.html">Launch patient sample</a>
+          </div>
+          <div class="grid md:grid-cols-3 gap-6" data-reveal>
+            <article class="demo-card">
+              <div class="demo-card__media">
+                <img src="https://voka.io/wp-content/uploads/2024/03/Live-AR.png" alt="AI triage sample" />
+              </div>
+              <div class="demo-card__body">
+                <div class="pill">AI triage</div>
+                <h3>Symptom mapping + coverage guardrails</h3>
+                <p>Real-time eligibility, exclusions, and cashless readiness while patients capture vitals.</p>
+              </div>
+            </article>
+            <article class="demo-card">
+              <div class="demo-card__media">
+                <img src="https://voka.io/wp-content/uploads/2024/03/Second-Opinions.png" alt="AI healthcare guidance" />
+              </div>
+              <div class="demo-card__body">
+                <div class="pill">AI healthcare</div>
+                <h3>Doctor routing + AI diagnosis assistant</h3>
+                <p>Explains labs, plans next steps, and books OPD/IP/ER with a single tap.</p>
+              </div>
+            </article>
+            <article class="demo-card">
+              <div class="demo-card__media">
+                <img src="https://voka.io/wp-content/uploads/2025/01/ShowCase.png" alt="Claims copilot preview" />
+              </div>
+              <div class="demo-card__body">
+                <div class="pill">Claims copilot</div>
+                <h3>AI cashless + predictive denials</h3>
+                <p>Preps insurer-ready kits, shows EMI/zero-EMI options, and keeps discharge on-rail.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="demos" class="py-16 bg-[var(--surface-layer)]">
+        <div class="container space-y-8">
+          <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+            <div class="space-y-3" data-reveal>
+              <p class="eyebrow">Demo versions</p>
+              <h2 class="text-3xl font-bold">Jump into live sandboxes without waitlists.</h2>
+              <p class="text-[var(--color-subtle)] max-w-2xl">
+                Explore the AI-first experiences across patient, hospital, and employer journeys. Every demo uses the same ceramic cards
+                and hover effects as production so you feel the cockpit instantly.
+              </p>
+            </div>
+            <a class="btn btn-primary" href="#lead" data-cta="demo-cta">Request guided demo</a>
+          </div>
+          <div class="demo-grid">
+            <article class="demo-card" data-reveal>
+              <div class="demo-card__media">
+                <img src="https://storage.googleapis.com/dev_resources_voka_io_303011/common/preview.webp" alt="Patient OS demo" />
+              </div>
+              <div class="demo-card__body">
+                <div class="pill">Patient OS — Neo Guardian</div>
+                <h3>AI triage, coverage decode, guided admissions</h3>
+                <p>Experience the patient cockpit with real-time symptom mapping and transparent package guidance.</p>
+                <div class="demo-card__actions">
+                  <a class="btn btn-primary" href="demos/cashless.html" data-cta="demo-patient">Launch patient demo</a>
+                  <a class="btn btn-ghost" href="patient.html">View patient services</a>
+                </div>
+              </div>
+            </article>
+            <article class="demo-card" data-reveal>
+              <div class="demo-card__media">
+                <img src="https://voka.io/wp-content/uploads/2025/10/cropped-Logo-site.png" alt="Hospital cockpit demo" />
+              </div>
+              <div class="demo-card__body">
+                <div class="pill">Hospital OS — AI cockpit</div>
+                <h3>Cashless engine, RCM cockpit, denial radar</h3>
+                <p>Run the command center view with SLA tracking, empanelment automation, and AI denial prediction.</p>
+                <div class="demo-card__actions">
+                  <a class="btn btn-primary" href="demos/denials.html" data-cta="demo-hospital">Launch hospital demo</a>
+                  <a class="btn btn-ghost" href="hospital.html">Hospital playbooks</a>
+                </div>
+              </div>
+            </article>
+            <article class="demo-card" data-reveal>
+              <div class="demo-card__media">
+                <img src="https://storage.googleapis.com/dev_resources_voka_io_303011/common/preview.webp" alt="Employer OS demo" />
+              </div>
+              <div class="demo-card__body">
+                <div class="pill">Employer OS — Plan cockpit</div>
+                <h3>Corporate plan design with AI claims navigation</h3>
+                <p>Preview renewal guardrails, HR analytics, and proactive member support inside the employer cockpit.</p>
+                <div class="demo-card__actions">
+                  <a class="btn btn-primary" href="demos/starter-pack.html" data-cta="demo-employer">Launch employer demo</a>
+                  <a class="btn btn-ghost" href="employer.html">Employer command</a>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="solutions" class="py-16 bg-[var(--surface-layer)]">
+        <div class="container space-y-10">
+          <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+            <div class="space-y-3" data-reveal>
+              <p class="eyebrow">Futuristic medical operating system</p>
+              <h2 class="text-3xl font-bold">One cockpit for patients, hospitals, and employers.</h2>
+              <p class="text-[var(--color-subtle)] max-w-3xl">
+                From AI-powered pre-auth to claims navigation and predictive denial prevention, HealthFlo orchestrates every actor in
+                real-time. Neo Guardian OS keeps everyone in sync with premium clarity.
+              </p>
+            </div>
+            <div class="flex gap-3" data-reveal>
+              <button class="btn btn-ghost" data-copilot>Open Copilot</button>
+              <a class="btn btn-primary" href="#lead" data-cta="solutions">Book a guided run →</a>
+            </div>
+          </div>
+          <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-6" data-reveal>
+            <article class="solution-card">
+              <div class="solution-icon">🛰️</div>
+              <h3>AI hospital cockpit</h3>
+              <p>Live bed status, compliant cashless kits, AI symptom signals, and transparent tariffs in one control room.</p>
+              <a class="btn btn-ghost" href="hospital.html" data-cta="cockpit">Launch cockpit</a>
+            </article>
+            <article class="solution-card">
+              <div class="solution-icon">🧠</div>
+              <h3>AI diagnosis assistant</h3>
+              <p>Translates reports into guided next steps, medication guardrails, and specialist routing without the guesswork.</p>
+              <a class="btn btn-ghost" href="patient.html" data-cta="diagnosis">Try diagnosis assistant</a>
+            </article>
+            <article class="solution-card">
+              <div class="solution-icon">💫</div>
+              <h3>AI cashless engine</h3>
+              <p>Pre-auth kits, insurer-ready documentation, and predictive denial alerts so approvals land on time.</p>
+              <a class="btn btn-ghost" href="patient.html#coverage" data-cta="cashless">Enable cashless</a>
+            </article>
+            <article class="solution-card">
+              <div class="solution-icon">🛰️</div>
+              <h3>AI-powered pre-auth</h3>
+              <p>Neo Guardian OS maps coverage, policy clauses, and non-payables instantly for faster clearance.</p>
+              <a class="btn btn-ghost" href="patient.html#coverage" data-cta="preauth">Run pre-auth</a>
+            </article>
+            <article class="solution-card">
+              <div class="solution-icon">🌌</div>
+              <h3>Predictive denial prevention</h3>
+              <p>Exception heatmaps, SLA trackers, and AI nudges to keep claims on-rail before they derail.</p>
+              <a class="btn btn-ghost" href="denials.html" data-cta="denials">See heatmaps</a>
+            </article>
+            <article class="solution-card">
+              <div class="solution-icon">👁️‍🗨️</div>
+              <h3>AI claims copilot</h3>
+              <p>Guides patients and finance teams with real-time insights, status visibility, and smart escalation playbooks.</p>
+              <a class="btn btn-ghost" href="reimbursement.html" data-cta="claims">Navigate claims</a>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="how" class="container py-16 space-y-10">
+        <div class="space-y-3" data-reveal>
+          <p class="eyebrow">How Neo Guardian OS flows</p>
+          <h2 class="text-3xl font-bold">From signal to settlement in guided steps.</h2>
+          <p class="text-[var(--color-subtle)] max-w-3xl">AI-first workflows keep patients, hospitals, and employers aligned.</p>
+        </div>
+        <div class="how-progress-bar" aria-hidden="true"><div class="how-progress"></div></div>
+        <ol class="grid md:grid-cols-3 gap-6" data-steps>
+          <li class="step-card" data-reveal>
+            <div class="step-icon">1</div>
+            <div>
+              <h3>Signal</h3>
+              <p>AI triage, symptom mapping, and policy decode build a live clinical + financial profile.</p>
+            </div>
+          </li>
+          <li class="step-card" data-reveal>
+            <div class="step-icon">2</div>
+            <div>
+              <h3>Orchestrate</h3>
+              <p>AI cashless engine preps pre-auth, coverage guardrails, and smart doctor routing automatically.</p>
+            </div>
+          </li>
+          <li class="step-card" data-reveal>
+            <div class="step-icon">3</div>
+            <div>
+              <h3>Settle</h3>
+              <p>AI claims copilot guides discharge, reimbursements, and predictive denial prevention with SLA tracking.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section id="hospitals" class="py-16 bg-[var(--surface-layer)]">
+        <div class="container space-y-6">
+          <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+            <div data-reveal>
+              <p class="eyebrow">Hospital directory</p>
+              <h2 class="text-3xl font-bold">Transparent packages with AI coverage guardrails.</h2>
+              <p class="text-[var(--color-subtle)]">Browse featured hospitals and launch AI cashless instantly.</p>
+            </div>
+            <a class="btn btn-primary" href="#lead" data-cta="directory">Talk to cashless command</a>
           </div>
           <div class="dir-grid" data-dir-grid></div>
         </div>
       </section>
 
-      <section class="proof" id="proof">
-        <div class="container">
-          <div class="metrics">
-            <div class="metric"><strong>92%</strong><span>same-day approvals</span></div>
-            <div class="metric"><strong>45s</strong><span>median pre-auth prep</span></div>
-            <div class="metric"><strong>98%</strong><span>recovery on targeted denials</span></div>
+      <section id="pricing" class="container py-16 grid lg:grid-cols-2 gap-10 items-center">
+        <div class="space-y-4" data-reveal>
+          <p class="eyebrow">Pricing</p>
+          <h2 class="text-3xl font-bold">Aligned for every actor in the network.</h2>
+          <p class="text-[var(--color-subtle)]">Transparent pricing with concierge-grade support and AI automation baked in.</p>
+          <ul class="grid sm:grid-cols-2 gap-3">
+            <li class="pricing-card" data-reveal>
+              <h3>Patient OS</h3>
+              <p>Transparent packages, AI policy decode, claims copilot. Concierge optional.</p>
+            </li>
+            <li class="pricing-card" data-reveal>
+              <h3>Hospital OS</h3>
+              <p>Cashless engine, denial prevention, RCM cockpit. SLA-aligned.</p>
+            </li>
+            <li class="pricing-card" data-reveal>
+              <h3>Employer OS</h3>
+              <p>Corporate plan design, bulk e-cards, AI claims navigation, HR analytics.</p>
+            </li>
+            <li class="pricing-card" data-reveal>
+              <h3>Premium support</h3>
+              <p>24/7 command center, compliance playbooks, and live Copilot guidance.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="glass-card space-y-4" data-reveal>
+          <h3 class="text-xl font-bold">Lead capture</h3>
+          <p class="text-[var(--color-subtle)]">Tell us your scenario—we respond with a guided run in under 15 minutes.</p>
+          <form class="grid gap-4" data-lead-form>
+            <div class="grid gap-2">
+              <label class="text-sm font-semibold" for="contact">Email or WhatsApp</label>
+              <input id="contact" name="contact" required placeholder="you@email.com / +91 98xxxxxxx" />
+            </div>
+            <div class="grid gap-2">
+              <label class="text-sm font-semibold" for="org">Organization / City</label>
+              <input id="org" name="org" required placeholder="Apollo, Chennai" />
+            </div>
+            <div class="grid gap-2">
+              <label class="text-sm font-semibold" for="intent">What do you need?</label>
+              <textarea id="intent" name="intent" rows="3" placeholder="AI cashless engine, denial prevention, or patient OS"></textarea>
+            </div>
+            <button class="btn btn-primary w-full" type="submit" data-cta="lead-submit">Send to command</button>
+          </form>
+        </div>
+      </section>
+
+      <section id="finance" class="py-16 bg-[var(--surface-layer)]">
+        <div class="container space-y-8">
+          <div class="space-y-3" data-reveal>
+            <p class="eyebrow">Financing • EMI + cashless</p>
+            <h2 class="text-3xl font-bold">Loans with EMI, loans without EMI, and cashless in one pane.</h2>
+            <p class="text-[var(--color-subtle)] max-w-3xl">
+              AI cashless engine pairs with HealthFlo Finance to unlock medical loans: split bills into low-EMI plans, enable zero-EMI for insured limits, and keep every stakeholder aligned.
+            </p>
           </div>
-          <div class="guarantees">
-            <h3>Proof &amp; guarantees</h3>
-            <ul>
-              <li>Outcomes vary by specialty, city tier, and documentation quality.</li>
-              <li data-risk-copy>Hospitals: If we miss agreed SLAs for two weeks in a row, we fund an extra ops sprint at no cost.</li>
-              <li>Compliance: IRDAI aligned, privacy by design, role-based access, quarterly audits.</li>
-            </ul>
+          <div class="grid md:grid-cols-3 gap-6" data-reveal>
+            <article class="solution-card">
+              <div class="solution-icon">💳</div>
+              <h3>Zero-EMI within coverage</h3>
+              <p>Apply coverage guardrails, convert out-of-pocket to zero-cost installments, and maintain insurer compliance.</p>
+            </article>
+            <article class="solution-card">
+              <div class="solution-icon">📈</div>
+              <h3>Flexible EMI loans</h3>
+              <p>Instant approvals with transparent APR, dynamic tenure, and AI nudges that keep repayments on time.</p>
+            </article>
+            <article class="solution-card">
+              <div class="solution-icon">🛡️</div>
+              <h3>End-to-end process</h3>
+              <p>From triage to discharge, the same card tracks loan status, cashless stages, and predictive denial prevention.</p>
+            </article>
           </div>
         </div>
       </section>
 
-      <section class="pricing" id="pricing">
-        <div class="container">
-          <div class="section-heading">
-            <h2>Pricing, without the guesswork</h2>
-            <p class="sub" data-pricing-copy>Patients: Core tools free; concierge optional.</p>
+      <section id="contact" class="container py-14 flex flex-col md:flex-row gap-6 items-start">
+        <div class="flex-1 space-y-3" data-reveal>
+          <p class="eyebrow">Copilot</p>
+          <h2 class="text-3xl font-bold">HealthFlo Copilot is ready.</h2>
+          <p class="text-[var(--color-subtle)]">Ask Copilot to prep denial playbooks, decode coverage, or route patients.</p>
+          <button class="btn btn-ghost" data-copilot>Try Copilot</button>
+          <div class="social-strip" aria-label="Social and chat links">
+            <a class="social-link" href="https://wa.me/919999999999" target="_blank" rel="noreferrer">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.04 2C6.56 2 2 6.26 2 11.53c0 1.76.46 3.41 1.26 4.86L2 22l5.78-1.83c1.42.77 3.05 1.2 4.77 1.2 5.48 0 10.04-4.26 10.04-9.52C22.6 6.26 17.52 2 12.04 2Zm0 17.32c-1.39 0-2.68-.36-3.78-.99l-.27-.16-3.43 1.09 1.12-3.17-.18-.3a7.52 7.52 0 0 1-1.1-3.98c0-4.15 3.61-7.52 8.06-7.52 4.45 0 8.06 3.37 8.06 7.52 0 4.15-3.61 7.52-8.06 7.52Zm4.43-5.6c-.24-.12-1.41-.69-1.63-.77-.22-.08-.38-.12-.54.12-.16.24-.62.77-.76.93-.14.16-.28.18-.52.06-.24-.12-1-.37-1.9-1.18-.7-.62-1.18-1.39-1.32-1.62-.14-.24-.02-.36.1-.48.1-.1.24-.26.36-.38.12-.12.16-.2.24-.34.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.77-.2-.48-.4-.42-.54-.42-.14 0-.3 0-.46 0-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2 0 1.18.86 2.32.98 2.48.12.16 1.7 2.66 4.24 3.62.59.24 1.05.38 1.41.48.59.18 1.12.16 1.54.1.46-.06 1.41-.58 1.61-1.16.2-.58.2-1.08.14-1.18-.06-.12-.22-.18-.46-.3Z"/></svg>
+              WhatsApp Chat
+            </a>
+            <a class="social-link" href="https://facebook.com" target="_blank" rel="noreferrer">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M13 10h2.5l.5-3H13V5.5c0-.9.3-1.5 1.6-1.5H16V1.1C15.5 1 14.4 1 13.1 1 10.4 1 8.5 2.6 8.5 5.2V7H6v3h2.5v8h4.5v-8Z"/></svg>
+              Facebook
+            </a>
+            <a class="social-link" href="https://www.linkedin.com" target="_blank" rel="noreferrer">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5ZM.2 8.4h4.6v13.6H.2V8.4Zm7.4 0h4.4v1.9h.1c.6-1.1 2-2.3 4.1-2.3 4.4 0 5.2 2.9 5.2 6.6v7.4h-4.6v-6.5c0-1.6 0-3.7-2.3-3.7-2.3 0-2.7 1.8-2.7 3.6v6.6H7.6V8.4Z"/></svg>
+              LinkedIn
+            </a>
           </div>
-          <div class="pricing-grid" data-pricing-grid></div>
-          <a class="btn btn-primary" href="#lead" data-cta="pricing-request">Request pricing</a>
         </div>
+        <aside id="lead" class="lead-aside" aria-expanded="false">
+          <button class="lead-toggle" data-lead-toggle aria-expanded="false">
+            <span data-lead-toggle-label>Lead capture</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 15.5l-7-7 1.4-1.4L12 12.7l5.6-5.6L19 8.5z"/></svg>
+          </button>
+          <div id="lead-panel" class="lead-panel" hidden>
+            <p class="text-sm text-[var(--color-subtle)] mb-3">We respond in minutes with AI-personalized steps.</p>
+            <form class="grid gap-3" data-lead-form>
+              <label class="grid gap-2 text-sm font-semibold" for="lead-email">
+                Contact
+                <input id="lead-email" name="lead-email" required placeholder="you@company.com / +91" />
+              </label>
+              <label class="grid gap-2 text-sm font-semibold" for="lead-role">
+                Role / Persona
+                <input id="lead-role" name="lead-role" required placeholder="Patient, Hospital, or Employer" />
+              </label>
+              <label class="grid gap-2 text-sm font-semibold" for="lead-notes">
+                What should we solve?
+                <textarea id="lead-notes" name="lead-notes" rows="3" placeholder="Cashless everywhere, denial prevention, AI triage"></textarea>
+              </label>
+              <button class="btn btn-primary w-full" type="submit" data-cta="lead-panel-submit">Send brief</button>
+            </form>
+          </div>
+        </aside>
       </section>
     </main>
 
-    <!-- Expandable sticky lead (closed by default) -->
-    <aside class="sticky-lead is-collapsed" id="lead" aria-label="Quick lead capture">
-      <button
-        class="lead-toggle"
-        type="button"
-        aria-controls="lead-panel"
-        aria-expanded="false"
-        data-lead-toggle
-      >
-        <span class="lead-toggle__icon" aria-hidden="true">✉️</span>
-        <span class="lead-toggle__label" data-lead-toggle-label>Decode my policy</span>
-        <span class="lead-toggle__chev" aria-hidden="true">▴</span>
-      </button>
-
-      <div id="lead-panel" class="lead-panel" hidden>
-        <form class="lead-form" data-lead-form>
-          <h3 data-lead-title>Decode my policy with a specialist</h3>
-          <p>No spam. Opt out anytime.</p>
-          <div class="form-grid" data-lead-fields></div>
-
-          <label class="checkbox">
-            <input type="checkbox" name="whatsappOptin" data-lead-whatsapp />
-            <span>Send me updates on WhatsApp</span>
-          </label>
-
-          <label class="file-upload" data-file-upload hidden>
-            <span>Upload Policy (optional)</span>
-            <input type="file" name="policy" accept=".pdf,.jpg,.png" />
-          </label>
-
-          <button class="btn btn-primary" type="submit" data-cta="lead-submit">Send</button>
-          <p class="alt-capture">
-            Prefer a quick primer?
-            <button type="button" data-cta="playbook" class="link-button">Get a 3-slide playbook →</button>
-          </p>
-        </form>
-      </div>
-    </aside>
-
-    <section class="contact" id="contact">
-      <div class="container contact-inner">
-        <div>
-          <h2>Talk to HealthFlo</h2>
-          <p>7+ years, 100+ empanelments, multi-city operations. Data minimal, encrypted, purpose-bound.</p>
-          <ul class="contact-points">
-            <li>Compliance: ROHINI/NABH/GIPSA expertise; quarterly audits</li>
-            <li>Phone: <a href="tel:+919940207670">+91 99402 07670</a></li>
-            <li>Email: <a href="mailto:hello@healthflo.in">hello@healthflo.in</a></li>
-            <li>WhatsApp: <a href="#" data-whatsapp-trigger class="link-button">Chat with us</a></li>
-          </ul>
-        </div>
-        <div class="office-card">
-          <h3>Operations hubs</h3>
-          <p>Chennai • Bengaluru • Hyderabad</p>
-          <p>On-ground claim navigators &amp; denial specialists covering Tier-1 and Tier-2 cities.</p>
-        </div>
-      </div>
-    </section>
-
-    <footer class="site-footer">
-      <div class="container footer-inner">
-        <div class="footer-brand">
-          <a class="logo" href="#top">
-            <span class="logo-dot" aria-hidden="true"></span>
-            <span class="logo-text">HealthFlo</span>
-          </a>
-          <p>Unified cashless care, denial recovery, and corporate health—built with privacy by design.</p>
-        </div>
-        <div class="footer-meta">
-          <ul>
-            <li><a href="#privacy">Privacy</a></li>
-            <li><a href="#terms">Terms</a></li>
-            <li><a href="#accessibility">Accessibility</a></li>
-          </ul>
-          <small>Data minimal, encrypted, purpose-bound; you control insurer/TPA sharing.</small>
-        </div>
-      </div>
-    </footer>
-
-    <!-- AI Copilot preview -->
-    <button class="copilot-btn" type="button" data-copilot>
-      <span class="copilot-icon" aria-hidden="true">✦</span>
-      AI Copilot
-    </button>
-    <div class="copilot-modal" data-copilot-modal hidden role="dialog" aria-modal="true" aria-labelledby="copilot-title">
-      <div class="copilot-modal__scrim" data-copilot-close></div>
-      <div class="copilot-modal__body">
-        <button type="button" class="copilot-close" data-copilot-close aria-label="Close Copilot">×</button>
-        <h2 id="copilot-title">HealthFlo Copilot</h2>
-        <p data-copilot-copy>Summarize my policy</p>
-        <div class="copilot-chips" data-copilot-chips></div>
-        <div class="copilot-output" data-copilot-output>
-          <p>Select a prompt to preview how Copilot guides you.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Registration floaters -->
-    <div class="floaters" aria-label="Quick registration">
-      <button class="floater floater--patient" data-floater="patient">
-        <span class="ico">🧑‍⚕️</span><span>Patient DEMO-portal</span>
-      </button>
-      <button class="floater floater--hospital" data-floater="hospital">
-        <span class="ico">🏥</span><span>Hospital DEMO-portal</span>
-      </button>
-      <button class="floater floater--employer" data-floater="employer">
-        <span class="ico">💼</span><span>Employer DEMO-portal</span>
-      </button>
-    </div>
-
-    <!-- Hospital Directory Modal -->
     <div class="dir-modal" data-dir-modal hidden>
-      <div class="dir-scrim" data-dir-close></div>
+      <div class="dir-scrim" data-dir-close aria-label="Close directory"></div>
       <div class="dir-panel">
-        <button class="dir-close" data-dir-close aria-label="Close">×</button>
-        <h3 data-dir-title>Hospital — Packages</h3>
-        <div data-dir-menu></div>
+        <button class="dir-close" type="button" data-dir-close aria-label="Close directory">×</button>
+        <h3 class="text-xl font-bold mb-3" data-dir-title>Hospital packages</h3>
+        <div class="dir-menu" data-dir-menu></div>
       </div>
     </div>
 
-    <!-- Demo package data for patient view -->
-    <script>
-      window.healthfloImages = {
-        patientPackages: [
-          {
-            id: 'pkg_apollo_knee_chennai',
-            procedure: 'Total Knee Replacement (Unilateral)',
-            specialty: 'Orthopedics',
-            city: 'Chennai',
-            hospital: 'Apollo Hospitals, Greams Road',
-            image: 'https://images.healthflo.org/hospitals/apollo-chennai-knee.jpg',
-            lead_price_inr: 185000,
-            inclusions: ['OT & Anesthesia', 'Implant (standard)', '2 bed-days (twin)', 'Nursing', 'Pre-op labs'],
-            exclusions: ['Private room upgrade', 'Implant premium', 'Non-payables'],
-            cashless_eligible: true,
-            notes: 'Subject to policy terms, room rent caps, and sub-limits.'
-          },
-          {
-            id: 'pkg_manipal_lsc_chole_blr',
-            procedure: 'Laparoscopic Cholecystectomy',
-            specialty: 'General Surgery',
-            city: 'Bengaluru',
-            hospital: 'Manipal Hospital, Old Airport Road',
-            image: 'https://images.healthflo.org/hospitals/manipal-blr-chole.jpg',
-            lead_price_inr: 68000,
-            inclusions: ['OT', 'Anesthesia', 'Surgeon fee', '1 bed-day (twin)', 'Basic meds'],
-            exclusions: ['Room upgrade', 'High-cost consumables'],
-            cashless_eligible: true
-          },
-          {
-            id: 'pkg_aster_normal_delivery_hyd',
-            procedure: 'Normal Delivery (Mother & Newborn)',
-            specialty: 'Obstetrics',
-            city: 'Hyderabad',
-            hospital: 'Aster Prime',
-            image: 'https://images.healthflo.org/hospitals/aster-hyd-obs.jpg',
-            lead_price_inr: 52000,
-            inclusions: ['Labor room', 'Nursing', 'Standard meds', '2 bed-days (general)'],
-            exclusions: ['NICU', 'Epidural', 'Private room'],
-            cashless_eligible: true
-          }
-        ]
-      };
-    </script>
-
-    <!-- Upgraded behavior -->
-    <script defer src="main.js"></script>
+    <div class="copilot-modal" data-copilot-modal hidden>
+      <div class="copilot-scrim" data-copilot-close></div>
+      <div class="copilot-panel">
+        <header class="flex items-center justify-between mb-4">
+          <div>
+            <p class="text-sm text-[var(--color-subtle)]">HealthFlo Copilot</p>
+            <p class="text-lg font-bold" data-copilot-copy>Ask anything about your medical OS.</p>
+          </div>
+          <button class="btn btn-ghost" type="button" data-copilot-close aria-label="Close Copilot">Close</button>
+        </header>
+        <div class="flex flex-wrap gap-2 mb-4" data-copilot-chips>
+          <button class="copilot-chip" type="button">Summarize my policy</button>
+          <button class="copilot-chip" type="button">Flag denial risks</button>
+          <button class="copilot-chip" type="button">Prep cashless kit</button>
+          <button class="copilot-chip" type="button">Route to the right doctor</button>
+        </div>
+        <div class="copilot-output" data-copilot-output>
+          <p>Select a prompt to preview Copilot guidance.</p>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
