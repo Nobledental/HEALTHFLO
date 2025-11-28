@@ -14,6 +14,13 @@
       href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+      integrity="sha512-HHcMk9YOWuVvImspYH0wPqTA00o3EJS6w4+R2zD1pR+M7M7m2O7MOuRrW6D2HPCz/Ppb9co3FUxbwSY3Kc8jIw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+      defer
+    ></script>
     <link rel="stylesheet" href="styles.css" />
     <script defer src="main.js"></script>
   </head>
@@ -32,7 +39,7 @@
             <li><a href="index.html">HOME</a></li>
             <li><a href="patient.html">Patients</a></li>
             <li><a href="hospital.html">Hospitals</a></li>
-            <li><a href="#about">About u</a></li>
+            <li><a href="#about">About us</a></li>
             <li><a href="employer.html">StakeHolder</a></li>
           </ul>
         </nav>
@@ -139,6 +146,67 @@
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section class="container py-14 future-rail" aria-labelledby="future-rail-title">
+        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-8">
+          <div class="space-y-3" data-reveal data-animate="lift">
+            <p class="eyebrow">Cosmic motion • Competitive edge</p>
+            <h2 id="future-rail-title" class="text-3xl font-bold">
+              Animated service rail that outshines every other healthcare site.
+            </h2>
+            <p class="text-[var(--color-subtle)] max-w-3xl">
+              Borrowed from our patient, hospital, reimbursement, and demo playbooks—this strip streams live capabilities with GSAP micro-animations, neon shadows, and tactile hover glows.
+            </p>
+          </div>
+          <div class="orbit-hint" data-animate="pulse">Cosmic-grade UI · White + grey halo</div>
+        </div>
+        <div class="rail-grid" data-animate="stagger">
+          <article class="rail-card">
+            <div class="rail-icon">🚀</div>
+            <div class="rail-body">
+              <h3>Instant Patient Launch</h3>
+              <p>Guided triage, AI diagnosis, and coverage guardrails from <strong>patient.html</strong> delivered with zero friction.</p>
+              <div class="rail-actions">
+                <a class="btn btn-primary" href="patient.html">See patient cockpit</a>
+                <a class="btn btn-ghost" href="demos/cashless.html">Run cashless demo</a>
+              </div>
+            </div>
+          </article>
+          <article class="rail-card">
+            <div class="rail-icon">🏥</div>
+            <div class="rail-body">
+              <h3>Hospital Control Room</h3>
+              <p>Pulls RCM, empanelment, and denial radar cards from <strong>hospital.html</strong> with amplified shadows and motion.</p>
+              <div class="rail-actions">
+                <a class="btn btn-primary" href="hospital.html">Open hospital OS</a>
+                <a class="btn btn-ghost" href="demos/denials.html">Preview cockpit</a>
+              </div>
+            </div>
+          </article>
+          <article class="rail-card">
+            <div class="rail-icon">💸</div>
+            <div class="rail-body">
+              <h3>Reimbursement Autopilot</h3>
+              <p>Fast-track claim support with playbooks lifted from <strong>reimbursement.html</strong>—now with neon claim progress.</p>
+              <div class="rail-actions">
+                <a class="btn btn-primary" href="reimbursement.html">See reimbursement OS</a>
+                <a class="btn btn-ghost" href="demos/starter-pack.html">Explore starter pack</a>
+              </div>
+            </div>
+          </article>
+          <article class="rail-card">
+            <div class="rail-icon">🪐</div>
+            <div class="rail-body">
+              <h3>Demo Galaxy</h3>
+              <p>Every sandbox in <strong>demos/</strong> opens inside animated ceramic shells—crafted to beat every competitor landing page.</p>
+              <div class="rail-actions">
+                <a class="btn btn-primary" href="#demos">Jump to demos</a>
+                <a class="btn btn-ghost" href="#solutions">View all services</a>
+              </div>
+            </div>
+          </article>
         </div>
       </section>
 
@@ -604,6 +672,52 @@
               <h3>Stakeholder cockpit</h3>
               <p>Hospitals, employers, and patients see the same cosmic truth—reducing calls, delays, and denials.</p>
             </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="download" class="py-16 download-strip">
+        <div class="container grid lg:grid-cols-[1.1fr_0.9fr] gap-10 items-center">
+          <div class="space-y-5" data-reveal data-animate="lift">
+            <p class="eyebrow">Download • Futuristic build</p>
+            <h2 class="text-3xl font-bold">Take the cosmic Patient OS with you.</h2>
+            <p class="text-[var(--color-subtle)] text-lg max-w-3xl">
+              The downloadable app carries every animation—ceramic cards, white + grey shadows, neon pulses, and GSAP-guided transitions. It is built to feel richer than any competitor while staying clinical and calm.
+            </p>
+            <div class="flex flex-wrap gap-4">
+              <a class="store-badge" href="https://play.google.com/store/apps/details?id=com.healthflo.app" target="_blank" rel="noreferrer" aria-label="Download on Google Play">
+                <svg viewBox="0 0 512 512" aria-hidden="true" focusable="false">
+                  <path fill="#00a0ff" d="m93.7 25.3 198.1 198.1c7.6 7.6 7.6 20 0 27.6L93.7 449.1C74.5 429.9 64 401.2 64 370.5V141.5C64 110.8 74.5 82.1 93.7 62.9Z"/>
+                  <path fill="#00d2ff" d="M291.8 223.4 93.7 25.3C99.7 19.2 107.9 16 116.4 16c8.5 0 16.7 3.2 22.7 9.3l183.6 183.6-30.9 30.5Z"/>
+                  <path fill="#00f076" d="m291.8 288.6 30.9 30.9-183.6 183.2C133.1 508.8 124.9 512 116.4 512c-8.5 0-16.7-3.2-22.7-9.3L93.7 449l198.1-160.4Z"/>
+                  <path fill="#ffe000" d="m437.9 252.4-115.2 66.6-30.9-30.4 30.9-30.4 115.2 66.6c6.3-9.7 9.9-21.2 9.9-33.6 0-12.4-3.6-24-9.9-33.8Z"/>
+                  <path fill="#ff3a44" d="m437.9 252.4-115.2-66.6-30.9 30.5 30.9 30.5 115.2-66.6c6.3 9.7 9.9 21.4 9.9 33.8 0 12.4-3.6 24-9.9 33.6Z"/>
+                </svg>
+                <div class="store-copy">
+                  <small>GET IT ON</small>
+                  <span>Google Play</span>
+                </div>
+              </a>
+              <div class="pill">Ceramic white frames</div>
+              <div class="pill">Grey cosmic shadow</div>
+            </div>
+            <div class="download-points">
+              <div class="point" data-animate="pulse">Live claim guardrails</div>
+              <div class="point" data-animate="pulse">AI hospital cockpit companion</div>
+              <div class="point" data-animate="pulse">Demo sandboxes in-app</div>
+            </div>
+          </div>
+          <div class="download-showcase" data-animate="stagger">
+            <div class="download-card">
+              <p class="pill">Realtime claim prep</p>
+              <h3>Cashless, reimbursements, EMI—everything in one futuristic rail.</h3>
+              <p class="text-[var(--color-subtle)]">Built from the reimbursement, hospital, and finance journeys so you see the entire stack in motion.</p>
+            </div>
+            <div class="download-card muted">
+              <p class="pill">GSAP motion</p>
+              <h3>Micro-motions that keep the experience premium.</h3>
+              <p class="text-[var(--color-subtle)]">Cards float, gradients glow, and orbits pulse without sacrificing clarity.</p>
+            </div>
           </div>
         </div>
       </section>
