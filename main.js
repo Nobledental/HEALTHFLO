@@ -300,6 +300,22 @@ function initHowSteps() {
   steps.forEach((s) => observer.observe(s));
 }
 
+function initGSAPMotion() {
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!window.gsap || prefersReduced) return;
+  const { gsap } = window;
+
+  gsap.utils.toArray('[data-animate="stagger"] > *').forEach((el, index) => {
+    el.style.setProperty('--i', index);
+  });
+
+  gsap.from('.hero-copy > *', { opacity: 0, y: 26, stagger: 0.08, duration: 1.1, ease: 'power2.out' });
+  gsap.to('.hero-visual-floating', { y: -12, yoyo: true, repeat: -1, duration: 3.2, ease: 'sine.inOut' });
+  gsap.to('.orbit-hint', { boxShadow: '0 24px 60px -38px rgba(89,181,255,.5)', repeat: -1, yoyo: true, duration: 2.6, ease: 'sine.inOut' });
+  gsap.from('.rail-card', { opacity: 0, y: 20, stagger: 0.08, duration: 0.9, ease: 'power2.out' });
+  gsap.from('.download-card', { opacity: 0, x: 20, stagger: 0.12, duration: 0.9, ease: 'power2.out', delay: 0.2 });
+}
+
 function toast(html) {
   const d = document.createElement('div');
   d.className = 'copilot-output';
@@ -326,6 +342,7 @@ function boot() {
   initCanvas();
   initTicker();
   initHowSteps();
+  initGSAPMotion();
   renderDirectory();
 
   $$('[data-dir-close]').forEach(b => b.addEventListener('click', closeMenu));
