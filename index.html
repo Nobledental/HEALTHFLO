@@ -79,8 +79,8 @@
       <section class="hero" aria-labelledby="hero-title">
         <canvas id="heroCanvas" aria-hidden="true"></canvas>
         <div class="hero-overlay"></div>
-        <div class="container hero-inner grid lg:grid-cols-2 gap-10 items-center">
-          <div class="hero-copy space-y-6" data-reveal>
+        <div class="container hero-inner grid lg:grid-cols-[1.1fr_0.9fr] gap-10 items-center">
+          <div class="hero-copy space-y-7" data-reveal>
             <p class="hero-support text-sm uppercase tracking-[0.2em]">AI-first healthcare • Neo Guardian OS</p>
             <h1 id="hero-title" class="text-4xl lg:text-5xl font-extrabold leading-tight">
               Futuristic medical OS for real-time cashless care, predictive denials, and guided recovery.
@@ -91,21 +91,49 @@
             </p>
             <div class="flex flex-wrap gap-4">
               <a class="btn btn-primary" data-cta="hero-primary" href="#lead">Activate the OS</a>
-              <a class="btn btn-ghost" data-cta="hero-secondary" href="#hospitals">View AI hospital cockpit</a>
+              <a class="btn btn-ghost" data-cta="hero-secondary" href="#demos">View demo systems</a>
             </div>
             <div class="flex flex-wrap gap-3 text-sm text-[var(--color-subtle)]">
               <span class="pill">Real-time guidance</span>
               <span class="pill">AI diagnosis assistant</span>
               <span class="pill">AI cashless engine</span>
             </div>
+            <div class="hero-card-deck">
+              <article class="hero-card" data-reveal>
+                <div class="hero-card__top">
+                  <span class="pill">Neo Guardian signal</span>
+                  <span class="status-dot">Live</span>
+                </div>
+                <p class="text-lg font-bold">Realtime triage → pre-auth in 45s</p>
+                <p class="text-sm text-[var(--color-subtle)]">Policy decode, clause guardrails, and AI cashless prep without paperwork lag.</p>
+              </article>
+              <article class="hero-card" data-reveal>
+                <div class="hero-card__image">
+                  <img src="https://voka.io/wp-content/uploads/2025/10/cropped-Logo-site.png" alt="Voka sample interface" />
+                  <div class="hero-card__glass">
+                    <p class="text-xs uppercase tracking-[0.2em] text-[var(--color-subtle)]">Sample feed</p>
+                    <p class="text-sm font-semibold">Guided claims + AI navigation</p>
+                  </div>
+                </div>
+              </article>
+            </div>
           </div>
           <div class="hero-visual" aria-hidden="true">
             <div class="hero-badge">Next-gen medical OS</div>
-            <img
-              class="rounded-3xl shadow-2xl"
-              src="https://storage.googleapis.com/dev_resources_voka_io_303011/common/preview.webp"
-              alt="HealthFlo experience preview"
-            />
+            <div class="hero-visual-card">
+              <img
+                class="rounded-3xl shadow-2xl"
+                src="https://storage.googleapis.com/dev_resources_voka_io_303011/common/preview.webp"
+                alt="HealthFlo experience preview"
+              />
+              <div class="hero-visual-floating" aria-hidden="true">
+                <img src="https://storage.googleapis.com/dev_resources_voka_io_303011/common/preview.webp" alt="Preview tile" />
+                <div class="floating-meta">
+                  <p class="text-xs uppercase tracking-[0.2em] text-[var(--color-subtle)]">AI cockpit</p>
+                  <p class="font-semibold">Coverage decoded • Doctor routed</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -166,6 +194,66 @@
                 <li>HR analytics with renewal guardrails</li>
               </ul>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="demos" class="py-16 bg-[var(--surface-layer)]">
+        <div class="container space-y-8">
+          <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+            <div class="space-y-3" data-reveal>
+              <p class="eyebrow">Demo versions</p>
+              <h2 class="text-3xl font-bold">Jump into live sandboxes without waitlists.</h2>
+              <p class="text-[var(--color-subtle)] max-w-2xl">
+                Explore the AI-first experiences across patient, hospital, and employer journeys. Every demo uses the same ceramic cards
+                and hover effects as production so you feel the cockpit instantly.
+              </p>
+            </div>
+            <a class="btn btn-primary" href="#lead" data-cta="demo-cta">Request guided demo</a>
+          </div>
+          <div class="demo-grid">
+            <article class="demo-card" data-reveal>
+              <div class="demo-card__media">
+                <img src="https://storage.googleapis.com/dev_resources_voka_io_303011/common/preview.webp" alt="Patient OS demo" />
+              </div>
+              <div class="demo-card__body">
+                <div class="pill">Patient OS — Neo Guardian</div>
+                <h3>AI triage, coverage decode, guided admissions</h3>
+                <p>Experience the patient cockpit with real-time symptom mapping and transparent package guidance.</p>
+                <div class="demo-card__actions">
+                  <a class="btn btn-primary" href="demos/cashless.html" data-cta="demo-patient">Launch patient demo</a>
+                  <a class="btn btn-ghost" href="patient.html">View patient services</a>
+                </div>
+              </div>
+            </article>
+            <article class="demo-card" data-reveal>
+              <div class="demo-card__media">
+                <img src="https://voka.io/wp-content/uploads/2025/10/cropped-Logo-site.png" alt="Hospital cockpit demo" />
+              </div>
+              <div class="demo-card__body">
+                <div class="pill">Hospital OS — AI cockpit</div>
+                <h3>Cashless engine, RCM cockpit, denial radar</h3>
+                <p>Run the command center view with SLA tracking, empanelment automation, and AI denial prediction.</p>
+                <div class="demo-card__actions">
+                  <a class="btn btn-primary" href="demos/denials.html" data-cta="demo-hospital">Launch hospital demo</a>
+                  <a class="btn btn-ghost" href="hospital.html">Hospital playbooks</a>
+                </div>
+              </div>
+            </article>
+            <article class="demo-card" data-reveal>
+              <div class="demo-card__media">
+                <img src="https://storage.googleapis.com/dev_resources_voka_io_303011/common/preview.webp" alt="Employer OS demo" />
+              </div>
+              <div class="demo-card__body">
+                <div class="pill">Employer OS — Plan cockpit</div>
+                <h3>Corporate plan design with AI claims navigation</h3>
+                <p>Preview renewal guardrails, HR analytics, and proactive member support inside the employer cockpit.</p>
+                <div class="demo-card__actions">
+                  <a class="btn btn-primary" href="demos/starter-pack.html" data-cta="demo-employer">Launch employer demo</a>
+                  <a class="btn btn-ghost" href="employer.html">Employer command</a>
+                </div>
+              </div>
+            </article>
           </div>
         </div>
       </section>
