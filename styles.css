@@ -1,19 +1,19 @@
 @import url('https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css');
 
 :root {
-  --color-bg: #0b1028;
-  --color-surface: rgba(20, 24, 50, 0.9);
-  --color-surface-alt: rgba(14, 18, 38, 0.72);
-  --color-border: rgba(136, 170, 255, 0.18);
-  --color-text: rgba(237, 244, 255, 0.98);
-  --color-subtle: rgba(206, 220, 255, 0.78);
-  --color-primary: #4da7ff;
-  --color-primary-soft: rgba(77, 167, 255, 0.22);
-  --color-accent: #ff9e5e;
-  --color-card-shadow: rgba(7, 12, 32, 0.55);
-  --color-card-glow: rgba(77, 167, 255, 0.4);
-  --color-hero-overlay: radial-gradient(circle at 20% 0%, rgba(77, 167, 255, 0.34), transparent 60%),
-    radial-gradient(circle at 85% 5%, rgba(174, 80, 255, 0.34), transparent 60%);
+  --color-bg: #090f24;
+  --color-surface: rgba(20, 26, 48, 0.94);
+  --color-surface-alt: rgba(14, 19, 36, 0.8);
+  --color-border: rgba(136, 170, 255, 0.24);
+  --color-text: rgba(235, 244, 255, 0.98);
+  --color-subtle: rgba(204, 220, 255, 0.78);
+  --color-primary: #59b5ff;
+  --color-primary-soft: rgba(89, 181, 255, 0.22);
+  --color-accent: #ffb07c;
+  --color-card-shadow: rgba(5, 10, 28, 0.64);
+  --color-card-glow: rgba(89, 181, 255, 0.55);
+  --color-hero-overlay: radial-gradient(circle at 20% 0%, rgba(89, 181, 255, 0.34), transparent 60%),
+    radial-gradient(circle at 85% 5%, rgba(156, 91, 255, 0.32), transparent 60%);
   --color-hero-line: rgba(255, 255, 255, 0.4);
   --color-hero-canvas: rgba(53, 114, 255, 0.7);
   --shadow-soft: 0 26px 80px -36px rgba(7, 12, 32, 0.8);
@@ -40,30 +40,6 @@ html[data-theme='white'] {
     radial-gradient(circle at 85% 5%, rgba(13, 94, 231, 0.2), transparent 60%);
   --surface-layer: rgba(255, 255, 255, 0.78);
   color-scheme: light;
-}
-html[data-theme='dark'] {
-  --color-bg: #0a1329;
-  --color-surface: rgba(14, 20, 38, 0.94);
-  --color-surface-alt: rgba(12, 18, 34, 0.78);
-  --color-border: rgba(162, 189, 255, 0.12);
-  --color-text: rgba(236, 242, 255, 0.95);
-  --color-subtle: rgba(202, 220, 255, 0.68);
-  --color-card-shadow: rgba(0, 0, 0, 0.38);
-  --color-card-glow: rgba(48, 130, 255, 0.36);
-  --surface-layer: rgba(12, 18, 34, 0.78);
-  color-scheme: dark;
-}
-html[data-theme='matte'] {
-  --color-bg: #050607;
-  --color-surface: rgba(10, 11, 12, 0.96);
-  --color-surface-alt: rgba(9, 10, 12, 0.82);
-  --color-border: rgba(255, 255, 255, 0.06);
-  --color-text: rgba(247, 249, 255, 0.95);
-  --color-subtle: rgba(231, 235, 255, 0.6);
-  --color-card-shadow: rgba(0, 0, 0, 0.6);
-  --color-card-glow: rgba(53, 154, 255, 0.5);
-  --surface-layer: rgba(9, 10, 12, 0.9);
-  color-scheme: dark;
 }
 html[data-theme='cosmic'] { color-scheme: dark; }
 
@@ -149,6 +125,10 @@ button { font-family: inherit; }
 .hero-card__image img { width: 100%; height: 180px; object-fit: cover; display: block; }
 .hero-card__glass { position: absolute; inset: auto 8px 8px 8px; padding: 10px; border-radius: var(--radius-md); background: color-mix(in srgb, var(--color-surface) 85%, transparent); backdrop-filter: blur(8px); border: 1px solid var(--color-border); box-shadow: inset 0 0 0 1px rgba(255,255,255,.04); }
 .status-dot { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; background: color-mix(in srgb, var(--color-primary) 26%, transparent); font-weight: 800; }
+.play-card { display: grid; gap: 10px; padding: 16px; border-radius: var(--radius-lg); border: 1px solid var(--color-border); background: linear-gradient(145deg, color-mix(in srgb, var(--color-surface) 88%, transparent), color-mix(in srgb, var(--color-surface-alt) 88%, transparent)); box-shadow: var(--shadow-soft); }
+.play-card__meta { display: flex; align-items: center; gap: 12px; }
+.icon-circle { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: color-mix(in srgb, var(--color-primary) 25%, transparent); border: 1px solid var(--color-border); }
+.play-card svg { width: 18px; height: 18px; }
 
 .feature-tile { padding: 14px 16px; border-radius: var(--radius-md); border: 1px solid var(--color-border); background: var(--surface-layer); box-shadow: var(--shadow-soft); display: grid; gap: 4px; }
 .feature-tile small { color: var(--color-subtle); }
@@ -210,6 +190,11 @@ button { font-family: inherit; }
 .copilot-chip { border: 1px solid var(--color-border); border-radius: 999px; padding: 8px 12px; background: color-mix(in srgb, var(--color-surface-alt) 90%, transparent); cursor: pointer; font-weight: 700; }
 .copilot-chip.is-active { background: var(--color-primary-soft); color: var(--color-text); }
 .copilot-output { border: 1px dashed var(--color-border); border-radius: var(--radius-md); padding: 12px; background: color-mix(in srgb, var(--color-surface) 88%, transparent); min-height: 120px; }
+
+.social-strip { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+.social-link { display: inline-flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--color-border); background: color-mix(in srgb, var(--color-surface-alt) 85%, transparent); color: var(--color-text); box-shadow: inset 0 0 0 1px rgba(255,255,255,.04); }
+.social-link svg { width: 18px; height: 18px; }
+.social-link:hover { background: color-mix(in srgb, var(--color-primary) 14%, var(--color-surface)); }
 
 .ticker { position: relative; z-index: 580; border-bottom: 1px solid var(--color-border); background: color-mix(in srgb, var(--color-surface-alt) 86%, transparent); }
 .ticker__inner { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; padding: 10px 0; }
